@@ -134,7 +134,7 @@
             <id>default-cli</id>
             <configuration>
               <mainClass>
-                org.group4.librarymanagercode/org.group4.librarymanagercode.HelloApplication
+                org.group4.librarymanagercode/org.group4.librarymanagercode.Main
               </mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
