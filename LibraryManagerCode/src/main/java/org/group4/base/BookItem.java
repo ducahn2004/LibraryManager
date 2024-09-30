@@ -1,3 +1,4 @@
+package org.group4.base;
 import java.time.LocalDate;
 
 public class BookItem {
