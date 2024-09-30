@@ -7,5 +7,12 @@ public class BookItem {
   private LocalDate borrowed;
   private LocalDate dueDate;
   private double price;
+  private BookFormat format;
+  private BookStatus status;
+  private LocalDate dateOfPurchase;
+  private LocalDate publicationDate;
 
+  public boolean checkOut() {
+    return false;
+  }
 }
