@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.FirstPageController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.FirstPageController">
    <children>
-      <ImageView fitHeight="550.0" fitWidth="700.0" layoutX="90.0" layoutY="50.0">
+      <ImageView fitHeight="393.0" fitWidth="375.0" layoutX="87.0" layoutY="79.0">
          <image>
-            <Image url="@1693156805497.jpg" />
+            <Image url="@Library-rafiki.png" />
          </image>
       </ImageView>
+      <Label layoutX="463.0" layoutY="175.0" text="Library">
+         <font>
+            <Font name=".VnHelvetIns Medium" size="66.0" />
+         </font>
+      </Label>
+      <Pane prefHeight="47.0" prefWidth="700.0" style="-fx-background-color: E5D9F2;">
+         <children>
+            <Button fx:id="signUpButton" layoutX="525.0" layoutY="8.0" mnemonicParsing="false" onAction="#SignUPAction" text="Sign Up">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="loginButton" layoutX="605.0" layoutY="8.0" mnemonicParsing="false" onAction="#LoginAction" prefHeight="31.0" prefWidth="73.0" text="Log in">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Label layoutX="457.0" layoutY="298.0" text="System">
+         <font>
+            <Font name=".VnHelvetIns Medium" size="66.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
