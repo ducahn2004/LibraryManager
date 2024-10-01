@@ -11,12 +11,21 @@ public class Librarian extends Account {
   public boolean addBookItem(BookItem bookItem) {
     return true;
   }
+
   public boolean blockMember(Member member) {
-    return true;
+    if (member instanceof Account) {
+      ((Account) member).setStatus(AccountStatus.Blacklisted);
+      return true;
+    }
+    return false;
   }
 
   public boolean unblockMember(Member member) {
-    return true;
+    if (member instanceof Account) {
+      ((Account) member).setStatus(AccountStatus.Active);
+      return true;
+    }
+    return false;
   }
 
 }

@@ -1,0 +1,11 @@
+package org.group4.base;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public interface Search {
+  List<BookItem> searchByTitle(String title);
+  List<BookItem> searchByAuthor(String author);
+  List<BookItem> searchBySubject(String subject);
+  List<BookItem> searchByPubDate(LocalDate publicationDate);
+}
