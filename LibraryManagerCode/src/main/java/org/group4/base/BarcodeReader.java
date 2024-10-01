@@ -7,8 +7,6 @@ public class BarcodeReader {
   private LocalDate registereAt;
   private boolean active;
 
-  public boolean isActive() {
-
-  }
+ // public boolean isActive() {}
 
 }
