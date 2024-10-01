@@ -3,12 +3,12 @@ package org.group4.base;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rank {
+public class Rack {
   private int number;
   private String locationIdentifier;
   private List<Book> bookItems;
 
-  public Rank(int number, String locationIdentifier) {
+  public Rack(int number, String locationIdentifier) {
     this.number = number;
     this.locationIdentifier = locationIdentifier;
     this.bookItems = new ArrayList<>();

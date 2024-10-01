@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1381dc6-1017-492f-89b7-87d30bc1f173" name="Changes" comment="Delete compiled classes and FXML resources&#10;&#10;Removed all compiled class files, FXML files, and image assets from the target directory to clean up the project. These generated files are unnecessary for version control and can be rebuilt.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Catalog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Rank.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Search.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Book.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/BookItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/BookItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/Librarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Librarian.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Person.java" afterDir="false" />
-    </list>
+    <list default="true" id="b1381dc6-1017-492f-89b7-87d30bc1f173" name="Changes" comment="Add Catalog, Search, and Rank classes, and extend Book&#10;&#10;Introduced new `Catalog`, `Search`, and `Rank` classes to handle library cataloging, searching, and ranking functionalities. Enhanced `Book` and `BookItem` classes with constructors and additional fields to support these new features. Updated `Author` and `Librarian` to include books and membership control functionality respectively." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -113,7 +103,7 @@
       <workItem from="1727778903785" duration="909000" />
       <workItem from="1727779834994" duration="2308000" />
       <workItem from="1727782668961" duration="9646000" />
-      <workItem from="1727793125669" duration="5403000" />
+      <workItem from="1727793125669" duration="5709000" />
     </task>
     <task id="LOCAL-00001" summary="Update hello-view.fxml, InitialPageController.java, Main.java, pom.xml">
       <option name="closed" value="true" />
@@ -147,7 +137,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727788584410</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add Catalog, Search, and Rank classes, and extend Book&#10;&#10;Introduced new `Catalog`, `Search`, and `Rank` classes to handle library cataloging, searching, and ranking functionalities. Enhanced `Book` and `BookItem` classes with constructors and additional fields to support these new features. Updated `Author` and `Librarian` to include books and membership control functionality respectively.">
+      <option name="closed" value="true" />
+      <created>1727800238587</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1727800238587</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -169,6 +167,7 @@
     <MESSAGE value="Refactor enum classes and convert Person and Address to records&#10;&#10;Replaced enums with more descriptive values for BookStatus, AccountStatus, and added a new RevervationStatus enum. Converted Person and Address classes to records for better immutable data representation. Removed the unused resetPassword method from Account class." />
     <MESSAGE value="Enhance Account and Member classes with constructors and setters&#10;&#10;Updated the `Account` class to include constructors, getters, and setters. Improved the `Member` class by extending `Account` and adding initialization in the constructor. Additionally, updated `AccountStatus` enum to use camelCase for consistency." />
     <MESSAGE value="Delete compiled classes and FXML resources&#10;&#10;Removed all compiled class files, FXML files, and image assets from the target directory to clean up the project. These generated files are unnecessary for version control and can be rebuilt." />
-    <option name="LAST_COMMIT_MESSAGE" value="Delete compiled classes and FXML resources&#10;&#10;Removed all compiled class files, FXML files, and image assets from the target directory to clean up the project. These generated files are unnecessary for version control and can be rebuilt." />
+    <MESSAGE value="Add Catalog, Search, and Rank classes, and extend Book&#10;&#10;Introduced new `Catalog`, `Search`, and `Rank` classes to handle library cataloging, searching, and ranking functionalities. Enhanced `Book` and `BookItem` classes with constructors and additional fields to support these new features. Updated `Author` and `Librarian` to include books and membership control functionality respectively." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Catalog, Search, and Rank classes, and extend Book&#10;&#10;Introduced new `Catalog`, `Search`, and `Rank` classes to handle library cataloging, searching, and ranking functionalities. Enhanced `Book` and `BookItem` classes with constructors and additional fields to support these new features. Updated `Author` and `Librarian` to include books and membership control functionality respectively." />
   </component>
 </project>
