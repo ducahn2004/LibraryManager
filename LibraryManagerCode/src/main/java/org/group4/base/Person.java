@@ -1,7 +1,8 @@
 package org.group4.base;
 
-public enum Person {
-  librarian,
-  member,
-  admin;
+public record Person(String name,
+                     Address address,
+                     String email,
+                     String phone) {
+
 }

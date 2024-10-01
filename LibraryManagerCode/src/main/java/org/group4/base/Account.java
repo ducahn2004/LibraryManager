@@ -6,7 +6,6 @@ public class Account {
   private AccountStatus status;
   private Person person;
 
-  public boolean resetPassword() {
-    return false;
-  }
+
+
 }
