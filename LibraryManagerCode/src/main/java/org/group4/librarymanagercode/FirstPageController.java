@@ -13,3 +13,4 @@ public class FirstPageController {
     welcomeText.setText("Welcome to JavaFX Application!");
   }
 }
+
