@@ -1,8 +1,9 @@
 package org.group4.base;
 
 public enum BookStatus {
-  Available,
-  Reserved,
-  Loaned,
-  Lost
+  AVAILABLE,
+  RESERVED,
+  LOANED,
+  LOST,
+  NONE
 }

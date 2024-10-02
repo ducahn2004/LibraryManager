@@ -7,7 +7,7 @@ public class Member extends Account{
   private int totalBooksCheckedOut;
 
   public Member() {
-    super(null, null, AccountStatus.None, null);
+    super(null, null, AccountStatus.NONE, null);
     this.dateOfMembership = dateOfMembership;
     this.totalBooksCheckedOut = totalBooksCheckedOut;
   }
@@ -30,6 +30,18 @@ public class Member extends Account{
 
   public int getTotalCheckedoutBooks() {
     return totalBooksCheckedOut;
+  }
+
+
+  public void reserveBookItem(BookItem book) {
+    book.setStatus(BookStatus.NONE);
+  }
+
+  public boolean checkoutBookItem(BookItem book) {
+    if (this.getTotalBooksCheckedOut() >= 5) {
+      return false;
+    }
+    return true;
   }
 
 }

@@ -105,8 +105,8 @@ public class BookItem extends Book {
     if (this.isReferenceOnly) {
       return false;
     }
-    if (this.status == BookStatus.Available) {
-      this.status = BookStatus.Loaned;
+    if (this.status == BookStatus.AVAILABLE) {
+      this.status = BookStatus.LOANED;
       this.borrowed = LocalDate.now();
       this.dueDate = this.borrowed.plusDays(14);
       return true;

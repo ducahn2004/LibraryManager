@@ -10,10 +10,12 @@ public class Account {
   /**
    * Creates a new Account with the specified id, password, status, and associated person details.
    *
-   * @param id the unique identifier for the account
+   * @param id       the unique identifier for the account
    * @param password the password for the account
-   * @param status the current status of the account, represented by an {@link AccountStatus} value
-   * @param person the personal details associated with the account, represented by a {@link Person} object
+   * @param status   the current status of the account, represented by an {@link AccountStatus}
+   *                 value
+   * @param person   the personal details associated with the account, represented by a
+   *                 {@link Person} object
    */
   public Account(String id, String password, AccountStatus status, Person person) {
     this.id = id;

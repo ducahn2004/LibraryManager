@@ -14,7 +14,7 @@ public class Librarian extends Account {
 
   public boolean blockMember(Member member) {
     if (member instanceof Account) {
-      ((Account) member).setStatus(AccountStatus.Blacklisted);
+      ((Account) member).setStatus(AccountStatus.BLACKLISTED);
       return true;
     }
     return false;
@@ -22,7 +22,7 @@ public class Librarian extends Account {
 
   public boolean unblockMember(Member member) {
     if (member instanceof Account) {
-      ((Account) member).setStatus(AccountStatus.Active);
+      ((Account) member).setStatus(AccountStatus.ACTIVE);
       return true;
     }
     return false;
