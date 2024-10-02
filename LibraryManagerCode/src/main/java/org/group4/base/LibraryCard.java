@@ -8,8 +8,4 @@ public class LibraryCard {
   private LocalDate issueDate;
   private boolean active;
 
-  public boolean isActive() {
-    return active;
-  }
-
 }

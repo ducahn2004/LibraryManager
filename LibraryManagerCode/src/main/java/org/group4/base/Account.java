@@ -3,7 +3,7 @@ public class Account {
 
   private String id;
   private String password;
-  private AccountStatus status;
+  AccountStatus status;
   private Person person;
 
 
@@ -40,7 +40,7 @@ public class Account {
     this.password = password;
   }
 
-  public AccountStatus getStatus() {
+  AccountStatus getStatus() {
     return status;
   }
 
