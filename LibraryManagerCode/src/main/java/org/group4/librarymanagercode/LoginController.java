@@ -90,7 +90,7 @@ public class LoginController {
       stage.show();
     } catch (IOException e) {
       e.printStackTrace();
-      showAlert(AlertType.ERROR, "Error", "Unable to load login page.");
+      showAlert(AlertType.ERROR, "Error", "Unable to load Sign Up page.");
     }
   }
 }

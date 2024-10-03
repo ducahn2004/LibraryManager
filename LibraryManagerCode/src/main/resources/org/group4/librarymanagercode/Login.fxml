@@ -14,7 +14,7 @@
    <children>
       <ImageView fitHeight="353.0" fitWidth="368.0" layoutX="56.0" layoutY="99.0">
          <image>
-            <Image url="@Library-rafiki.png" />
+            <Image url="@Image/Library-rafiki.png" />
          </image>
       </ImageView>
       <Pane layoutX="424.0" layoutY="185.0" prefHeight="200.0" prefWidth="200.0">
