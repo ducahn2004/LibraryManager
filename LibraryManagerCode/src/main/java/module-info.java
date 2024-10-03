@@ -1,5 +1,4 @@
 module org.group4.librarymanagercode {
-  requires javafx.controls;
   requires javafx.fxml;
   requires javafx.web;
 
@@ -10,6 +9,8 @@ module org.group4.librarymanagercode {
   requires org.kordamp.bootstrapfx.core;
   requires eu.hansolo.tilesfx;
   requires com.almasb.fxgl.all;
+  requires com.jfoenix;
+  requires java.logging;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;
