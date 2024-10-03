@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.FirstPageController">
+   <children>
+      <Label layoutX="415.0" layoutY="184.0" text="LIBRARY">
+         <font>
+            <Font name=".VnHelvetIns Medium" size="66.0" />
+         </font>
+      </Label>
+      <Pane prefHeight="47.0" prefWidth="700.0" style="-fx-background-color: E5D9F2;">
+         <children>
+            <Button fx:id="loginButton" layoutX="605.0" layoutY="8.0" mnemonicParsing="false" onAction="#LoginAction" prefHeight="31.0" prefWidth="73.0" text="Log in">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="signUpButton" layoutX="525.0" layoutY="8.0" mnemonicParsing="false" onAction="#SignUPAction" text="Sign Up">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Label layoutX="419.0" layoutY="308.0" text="SYSTEM">
+         <font>
+            <Font name=".VnHelvetIns Medium" size="66.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="297.0" fitWidth="306.0" layoutX="92.0" layoutY="127.0">
+         <image>
+            <Image url="@Image/Library-bro.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
