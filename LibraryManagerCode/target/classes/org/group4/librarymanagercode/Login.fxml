@@ -7,28 +7,16 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.LoginController">
    <children>
       <ImageView fitHeight="353.0" fitWidth="368.0" layoutX="56.0" layoutY="99.0">
          <image>
-            <Image url="@Image/Library-rafiki.png" />
          </image>
       </ImageView>
-      <Pane layoutX="424.0" layoutY="185.0" prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Label layoutX="66.0" layoutY="14.0" text="Login" textAlignment="CENTER" textFill="#403333">
-               <font>
-                  <Font name=".VnHelvetIns Medium" size="30.0" />
-               </font>
-            </Label>
-            <TextField layoutX="2.0" layoutY="59.0" prefHeight="26.0" prefWidth="196.0" promptText="Account " />
-            <PasswordField layoutX="2.0" layoutY="100.0" prefHeight="26.0" prefWidth="196.0" promptText="Password" />
-            <Button layoutX="57.0" layoutY="146.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Login" />
-         </children>
-      </Pane>
-      <Button fx:id="signUpButton" layoutX="624.0" layoutY="26.0" mnemonicParsing="false" onAction="#handleGoToSignUPAction" text="Sign Up" />
+         <font>
+            <Font name=".VnHelvetIns Medium" size="30.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
