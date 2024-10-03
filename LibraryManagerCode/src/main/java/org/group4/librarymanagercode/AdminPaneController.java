@@ -6,8 +6,6 @@ import javafx.scene.layout.VBox;
 
 public class AdminPaneController {
   @FXML
-  private VBox homeButtonPanel;
-  @FXML
   private JFXButton homeButton;
   @FXML
   private JFXButton bookButton;
@@ -25,4 +23,10 @@ public class AdminPaneController {
   private JFXButton settingButton;
   @FXML
   private JFXButton closeButton;
+
+  @FXML
+  public void onHomeAction(){
+
+  }
+
 }
