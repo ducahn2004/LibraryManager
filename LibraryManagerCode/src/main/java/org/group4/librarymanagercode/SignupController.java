@@ -17,8 +17,7 @@ import javafx.scene.control.TextField;
 
 
 import javafx.stage.Stage;
-import org.group4.base.Member;
-import org.group4.base.University;
+import org.group4.base.enums.University;
 
 public class SignupController {
   @FXML

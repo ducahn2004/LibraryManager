@@ -13,8 +13,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import javafx.scene.Node;
-import org.group4.base.Member;
-import org.group4.base.UserStore;
 
 public class LoginController {
 
