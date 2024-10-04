@@ -28,5 +28,37 @@ public class AdminPaneController {
   public void onHomeAction(){
 
   }
+  @FXML
+  public void onBookAction(){
+
+  }
+  @FXML
+  public void onStudentsAction(){
+
+  }
+  @FXML
+  public void onIssueBookAction(){
+
+  }
+  @FXML
+  public void RemoveBook(){
+
+  }
+  @FXML
+  public void AddBookAction(){
+
+  }
+  @FXML
+  public void ReturnBookAction(){
+
+  }
+  @FXML
+  public void SettingAction(){
+
+  }
+  @FXML
+  public void closeAction(){
+
+  }
 
 }
