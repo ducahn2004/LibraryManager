@@ -8,4 +8,36 @@ public class LibraryCard {
   private LocalDate issueDate;
   private boolean active;
 
+
+  public String getCardNumber() {
+    return cardNumber;
+  }
+
+  public void setCardNumber(String cardNumber) {
+    this.cardNumber = cardNumber;
+  }
+
+  public String getBarCodeNumber() {
+    return barcode;
+  }
+
+  public void setBarCodeNumber(String barCodeNumber) {
+    this.barcode = barCodeNumber;  // Sửa lại: gán barCodeNumber vào barcode
+  }
+
+  public LocalDate getIssuedAt() {
+    return issueDate;
+  }
+
+  public void setIssuedAt(LocalDate issuedAt) {
+    this.issueDate = issuedAt;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
 }
