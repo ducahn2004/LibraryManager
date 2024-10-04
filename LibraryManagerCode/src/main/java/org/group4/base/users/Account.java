@@ -7,25 +7,14 @@ public class Account {
 
   private String id;
   private String password;
-  AccountStatus status;
+  private AccountStatus status;
   private Person person;
 
-
-  /**
-   * Creates a new Account with the specified id, password, status, and associated person details.
-   *
-   * @param id       the unique identifier for the account
-   * @param password the password for the account
-   * @param status   the current status of the account, represented by an {@link AccountStatus}
-   *                 value
-   * @param person   the personal details associated with the account, represented by a
-   *                 {@link Person} object
-   */
-  public Account(String id, String password, AccountStatus status, Person person) {
+  public Account(String id, String password, Person person,  AccountStatus status) {
     this.id = id;
     this.password = password;
-    this.status = status;
     this.person = person;
+    this.status = status;
   }
 
   public String getId() {
@@ -60,18 +49,37 @@ public class Account {
     this.person = person;
   }
 
-  /**
-   * Resets the account password to the specified new password.
-   *
-   * @param newPassword the new password to set; must not be null or empty
-   * @return true if the password was successfully reset; false otherwise
-   */
-  public boolean resetPassword(String newPassword) {
-    if (newPassword != null || newPassword.isEmpty()) {
+  public boolean isActive() {
+    return this.status == AccountStatus.ACTIVE;
+  }
+
+  public void closedAccount() {
+    this.status = AccountStatus.CLOSED;
+  }
+
+  public boolean login (String id, String password) {
+    if (this.id.equals(id) && this.password.equals(password)) {
+      return true;
+    }
+    return false;
+  }
+
+  public static Account register (String id, String password, Person person) {
+    Account newAccount = new Account(id, password, person, AccountStatus.ACTIVE);
+    return newAccount;
+  }
+
+  public boolean changePassword(String oldPassword, String newPassword) {
+    if (this.password.equals(oldPassword)) {
       this.password = newPassword;
       return true;
     }
     return false;
   }
+
+  public void resetPassword(String newPassword) {
+    this.password = newPassword;
+  }
+
 
 }

@@ -6,7 +6,11 @@ public class Notification {
   private int notificationId;
   private LocalDate createdOn;
   private String content;
-  
+
+  Notification() {
+
+  }
+
   public Notification(int notificationId, LocalDate createdOn, String content) {
     this.notificationId = notificationId;
     this.createdOn = createdOn;
