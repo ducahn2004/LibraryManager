@@ -24,7 +24,6 @@ public class Account {
   public void setId(String id) {
     this.id = id;
   }
-
   public String getPassword() {
     return password;
   }
@@ -33,7 +32,7 @@ public class Account {
     this.password = password;
   }
 
-  AccountStatus getStatus() {
+  public AccountStatus getStatus() {
     return status;
   }
 
@@ -41,13 +40,6 @@ public class Account {
     this.status = status;
   }
 
-  public Person getPerson() {
-    return person;
-  }
-
-  public void setPerson(Person person) {
-    this.person = person;
-  }
 
   public boolean isActive() {
     return this.status == AccountStatus.ACTIVE;

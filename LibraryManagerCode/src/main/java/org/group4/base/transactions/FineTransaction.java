@@ -36,5 +36,71 @@ public class FineTransaction {
     return false;
   }
 
+  public boolean saveTransaction() {
+    return true;
+  }
+
+  public boolean updateTransaction() {
+    return true;
+  }
+
+  public boolean fetchTransaction(String transactionId) {
+    return true;
+  }
+
+  public boolean fetchTransaction(String transactionId, String memberId) {
+    return true;
+  }
+
+  public boolean fetchTransaction(String transactionId, String memberId, String bookItemBarcode) {
+    return true;
+  }
+
+  public boolean fetchTransaction(String transactionId, String memberId, String bookItemBarcode, String fineId) {
+    return true;
+  }
+
+  public boolean fetchTransaction(String transactionId, String memberId, String bookItemBarcode, String fineId, String fineAmount) {
+    return true;
+  }
+
+
+  public boolean createFine(String memberId, String bookItemBarcode, long days) {
+    return true;
+  }
+
+  public boolean calculateFine(String memberId, String bookItemBarcode, long days) {
+    return true;
+  }
+
+  public boolean updateFine(String memberId, String bookItemBarcode, long days) {
+    return true;
+  }
+
+  public boolean fetchFine(String memberId, String bookItemBarcode) {
+    return true;
+  }
+
+  public boolean fetchFine(String memberId, String bookItemBarcode, String fineId) {
+    return true;
+  }
+
+  public boolean fetchFine(String memberId, String bookItemBarcode, String fineId, String fineAmount) {
+    return true;
+  }
+
+  public boolean fetchFine(String memberId, String bookItemBarcode, String fineId, String fineAmount, String creationDate) {
+    return true;
+  }
+
+  public boolean fetchFine(String memberId, String bookItemBarcode, String fineId, String fineAmount, String creationDate, String isPaid) {
+    return true;
+  }
+
+  public boolean payFine(String memberId, String fineId) {
+    return true;
+  }
+
+
 
 }

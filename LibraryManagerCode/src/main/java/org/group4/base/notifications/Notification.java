@@ -7,9 +7,6 @@ public class Notification {
   private LocalDate createdOn;
   private String content;
 
-  Notification() {
-
-  }
 
   public Notification(int notificationId, LocalDate createdOn, String content) {
     this.notificationId = notificationId;
@@ -48,5 +45,6 @@ public class Notification {
     }
     return true;
   }
+
 
 }

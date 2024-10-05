@@ -6,8 +6,8 @@ import org.group4.base.books.BookItem;
 
 public class Librarian extends Account {
 
-  public Librarian(String id, String password, AccountStatus status, Person person) {
-    super(id, password, status, person);
+  public Librarian(String id, String password, Person person, AccountStatus status) {
+    super(id, password, person, status);
   }
 
   public boolean addBookItem(BookItem bookItem) {
@@ -21,6 +21,8 @@ public class Librarian extends Account {
     }
     return false;
   }
+
+
 
   public boolean unblockMember(Member member) {
     if (member instanceof Account) {
