@@ -23,5 +23,8 @@ public class CreditCardTransaction extends FineTransaction {
   public void setNameOnCard(String nameOnCard) {
     this.nameOnCard = nameOnCard;
   }
-  
+
+  public void processCreditCardPayment() {
+    // TODO: Implement this method.
+  }
 }

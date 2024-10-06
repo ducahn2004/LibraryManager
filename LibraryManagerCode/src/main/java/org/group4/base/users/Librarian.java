@@ -27,7 +27,17 @@ public class Librarian extends Account {
   }
 
   public boolean addBookItem(BookItem bookItem) {
+    // TODO: implement
     return true;
+  }
+
+  public boolean removeBookItem(BookItem bookItem) {
+    // TODO: implement
+    return true;
+  }
+
+  public void updateBookItemDetails(BookItem bookItem) {
+    // TODO: implement
   }
 
   public boolean blockMember(Member member) {

@@ -24,4 +24,7 @@ public class CashTransaction extends FineTransaction {
     this.cashTendered = cashTendered;
   }
 
+  public void processCashPayment() {
+    // TODO: Implement this method.
+  }
 }

@@ -84,5 +84,10 @@ public class Account {
     this.password = newPassword;
   }
 
+  public boolean logout() {
+    // TODO: implement
+    return true;
+  }
+
 
 }

@@ -35,5 +35,7 @@ public class CheckTransaction extends FineTransaction {
     this.checkNumber = checkNumber;
   }
 
-  
+  public void processCheckPayment() {
+    // TODO: Implement this method.
+  }
 }

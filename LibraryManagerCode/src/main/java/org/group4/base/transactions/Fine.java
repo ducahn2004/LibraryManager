@@ -22,5 +22,13 @@ public class Fine {
     this.amount = amount;
   }
 
+  public double calculateFine() {
+    // TODO: Implement this method.
+    return amount;
+  }
+
+  public void payFine(FineTransaction transaction) {
+    // TODO: Implement this method.
+  }
 
 }
