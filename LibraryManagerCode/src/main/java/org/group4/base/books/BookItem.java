@@ -7,38 +7,19 @@ import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 
+/**
+ * Thong tin chi tiet cua mot cuon sach. Moi cuon sach se co ban sao va duoc quan ly boi ma vach cua no.
+ */
 public class BookItem extends Book {
-
-  /**
-   * Thong tin chi tiet cua mot cuon sach. Moi cuon sach se co ban sao va duoc quan ly boi ma vach cua no.
-   *
-   * @param barcode         Ma vach cua cuon sach.
-   *                        Ma vach cua cuon sach la duy nhat.
-   * @param isReferenceOnly Chi dinh sach chi de tham khao.
-   *                        Sach chi de tham khao khong the muon.
-   * @param borrowed        Ngay muon sach.
-   *                        Khi mot cuon sach duoc muon, ngay muon se duoc cap nhat.
-   * @param dueDate         Ngay tra sach.
-   *                        Khi mot cuon sach duoc muon, ngay tra se duoc cap nhat.
-   * @param price           Gia cua cuon sach.
-   *                        Gia cua cuon sach se duoc cap nhat khi mua.
-   * @param format          Dinh dang cua cuon sach.
-   *                        Dinh dang cua cuon sach co the la EBOOK, HARDCOVER, PAPERBACK, AUDIO_BOOK, ...
-   * @param status          Trang thai cua cuon sach.
-   *                        Trang thai cua cuon sach co the la AVAILABLE, RESERVED, LOANED, LOST, ...
-   *                        Trang thai cua cuon sach se cap nhat khi co thay doi.
-   * @param dateOfPurchase Ngay mua cuon sach.
-   * @param publicationDate Ngay xuat ban cua cuon sach.
-   */
-  private String barcode;
-  private boolean isReferenceOnly;
-  private LocalDate borrowed;
-  private LocalDate dueDate;
-  private double price;
-  private BookFormat format;
-  private BookStatus status;
-  private LocalDate dateOfPurchase;
-  private LocalDate publicationDate;
+  private String barcode; // Ma vach cua cuon sach.
+  private final boolean isReferenceOnly; // Chi dinh sach chi de tham khao.
+  private LocalDate borrowed; // Ngay muon sach.
+  private LocalDate dueDate; // Ngay tra sach.
+  private double price; // Gia cua cuon sach.
+  private BookFormat format; // Dinh dang cua cuon sach.
+  private BookStatus status; // Trang thai cua cuon sach.
+  private LocalDate dateOfPurchase; // Ngay mua cuon sach.
+  private LocalDate publicationDate; // Ngay xuat ban cua cuon sach.
 
   /**
    * Tao mot cuon sach moi.
@@ -152,7 +133,7 @@ public class BookItem extends Book {
     if (this.isReferenceOnly) {
       return false;
     }
-    if (this.status != BookStatus.AVAILABLE) {
+    else if (this.status != BookStatus.AVAILABLE) {
       return false;
     }
     // TODO: Implement this method

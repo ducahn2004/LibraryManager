@@ -1,28 +1,14 @@
 package org.group4.base.books;
 
 import java.time.LocalDate;
-import java.util.Map;
 
+/**
+ * Quan ly viec muon sach.
+ */
 public class BookLending {
-
-  /**
-   * Thong tin ve ngay tao, ngay den han va ngay tra sach cua mot phieu muon sach.
-   *
-   * @param creationDate Ngay tao phieu muon sach
-   *                     Khi mot phieu muon sach duoc tao, ngay tao se duoc cap nhat
-   *                     Biet ngay muon de xac dinh thoi han tra sach, tinh tien phat neu tra tre
-   * @param dueDate      Ngay den han tra sach
-   *                     Duoc tinh dua tren so ngay muon toi da cho mot cuon sach
-   *                     So sanh voi ngay tra sach de xac dinh qua han chua
-   *                     Gui thong bao den han hoac qua han
-   * @param returnDate   Ngay tra sach thuc te
-   *                     Kiem tra xem sach da duoc dung han hay khong: so sanh voi dueDate
-   *                     Tinh tien phat neu tra tre
-   */
-  private LocalDate creationDate;
-  private LocalDate dueDate;
-  private LocalDate returnDate;
-
+  private final LocalDate creationDate; // Ngay tao phieu muon sach: De tinh thoi han tra sach va tien phat neu tre.
+  private LocalDate dueDate; // Ngay den han tra sach: Duoc tinh dua tren so ngay muon toi da
+  private LocalDate returnDate; // Ngay tra sach thuc te: So sanh voi voi dueDate de xem co tra dung han khong.
 
   /**
    * Tao va luu thong tin cua mot phieu muon sach.
@@ -53,9 +39,9 @@ public class BookLending {
 
   /**
    * Phuong thuc muon sach.
-   * @param barcode
-   * @param id
-   * @return
+   * @param barcode Ma vach cua sach
+   * @param id Ma so cua nguoi dung
+   * @return true neu muon sach thanh cong, false neu khong muon duoc
    */
   public boolean lendBookItem(String barcode, String id) {
     // TODO: Kiem tra xem sach co duoc muon khong
@@ -79,6 +65,10 @@ public class BookLending {
     // Cap nhap trang thai phieu muon
     // Cap nhap trang thai sach
     // Cap nhap trang thai nguoi dung
+  }
+
+  public void renewBookItem(int lendingPeriodDays) {
+    this.dueDate = dueDate.plusDays(lendingPeriodDays);
   }
 
   /**

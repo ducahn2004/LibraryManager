@@ -8,14 +8,21 @@ import java.util.Map;
 import org.group4.base.entities.Author;
 import org.group4.base.books.BookItem;
 
+/**
+ * Quan ly tim kiem va to chuc sach trong thu vien.
+ */
 public class Catalog {
-  private LocalDate creationDate;
-  private int totalBooks;
-  private Map<String, List<BookItem>> bookTitles;
-  private Map<String, List<BookItem>> bookAuthors;
-  private Map<String, List<BookItem>> bookSubjects;
-  private Map<String, List<BookItem>> bookPublicationDates;
+  private final LocalDate creationDate; // Ngay tao catalog
+  private int totalBooks; // Tong so sach trong catalog
+  private final Map<String, List<BookItem>> bookTitles; // Danh sach cac sach theo tieu de
+  private final Map<String, List<BookItem>> bookAuthors; // Danh sach cac sach theo tac gia
+  private final Map<String, List<BookItem>> bookSubjects; // Danh sach cac sach theo chu de
+  private final Map<String, List<BookItem>> bookPublicationDates; // Danh sach cac sach theo ngay xuat ban
 
+  /**
+   * Tao mot catalog moi.
+   * @param creationDate Ngay tao catalog
+   */
   public Catalog(LocalDate creationDate) {
     this.creationDate = creationDate;
     this.totalBooks = 0;
@@ -59,6 +66,5 @@ public class Catalog {
       return false;
     }
   }
-
 
 }

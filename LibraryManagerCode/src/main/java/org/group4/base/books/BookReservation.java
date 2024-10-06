@@ -6,28 +6,16 @@ import org.group4.base.notifications.Notification;
 import org.group4.base.users.Member;
 import java.util.Random;
 
-
+/**
+ * Quan ly viec dat sach.
+ */
 public class BookReservation {
-
-  /**
-   * Thong tin cua phieu dat sach.
-   *
-   * @param creationDate Ngay tao phieu dat sach.
-   *                     Khi mot phieu dat sach duoc tao, ngay tao se duoc cap nhat.
-   *                     Luu giu ngay tao phieu dat sach.
-   *                     Khong the thay doi ngay tao phieu dat sach sau khi da tao.
-   *                     Xac dinh thu tu uu tien
-   *                     Theo doi thoi gian cho
-   * @param status       Trang thai cua phieu dat sach.
-   *                     Khi mot phieu dat sach duoc tao, trang thai se duoc cap nhat.
-   *                     Luu giu trang thai cua phieu dat sach.
-   */
-  private LocalDate creationDate;
-  private RevervationStatus status;
-
+  private final LocalDate creationDate; // Ngay tao phieu dat sach: Xac dinh thu tu uu tien, theo doi thoi gian cho.
+  private RevervationStatus status; // Trang thai phieu dat sach: Khi phieu dat sach duoc tao, trang thai se cap nhat.
 
   /**
    * Tao va luu thong tin cua mot phieu dat sach.
+   * @param status Trang thai cua phieu dat sach.
    */
   public BookReservation(RevervationStatus status) {
     this.status = status;
@@ -37,7 +25,7 @@ public class BookReservation {
   /**
    * Lay ngay tao phieu dat sach.
    *
-   * @return Ngay tao phieu dat sach.
+   * @return  Ngay tao phieu dat sach.
    */
   public LocalDate getCreationDate() {
     return creationDate;

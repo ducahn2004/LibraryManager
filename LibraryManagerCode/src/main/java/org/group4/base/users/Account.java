@@ -3,19 +3,34 @@ package org.group4.base.users;
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 
+/**
+ * Tai khoan cua nguoi dung.
+ * Chua cac thong tin cua tai khoan nhu id, password, trang thai, nguoi dung.
+ * Co cac phuong thuc de thay doi mat khau, dang nhap, dang ky tai khoan.
+ * Co cac phuong thuc de kiem tra trang thai cua tai khoan.
+ * Co cac phuong thuc de thay doi trang thai cua tai khoan.
+ * Co cac phuong thuc de reset mat khau.
+ */
 public class Account {
+  private String id; // Ma so cua tai khoan.
+  private String password; // Mat khau cua tai khoan.
+  private AccountStatus status; // Trang thai cua tai khoan.
+  private Person person; // Nguoi dung cua tai khoan.
 
-  private String id;
-  private String password;
-  private AccountStatus status;
-  private Person person;
-
-  public Account(String id, String password, Person person,  AccountStatus status) {
-    this.id = id;
-    this.password = password;
-    this.person = person;
-    this.status = status;
+  /**
+   * Tao mot tai khoan moi.
+   * @param id Ma so cua tai khoan.
+   * @param password Mat khau cua tai khoan.
+   * @param person Nguoi dung cua tai khoan.
+   * @param status Trang thai cua tai khoan.
+   */
+  public Account(String id, String password, Person person, AccountStatus status) {
+      this.id = id;
+      this.password = password;
+      this.person = person;
+      this.status = status;
   }
+
 
   public String getId() {
     return id;
@@ -50,15 +65,11 @@ public class Account {
   }
 
   public boolean login (String id, String password) {
-    if (this.id.equals(id) && this.password.equals(password)) {
-      return true;
-    }
-    return false;
+    return this.id.equals(id) && this.password.equals(password);
   }
 
   public static Account register (String id, String password, Person person) {
-    Account newAccount = new Account(id, password, person, AccountStatus.ACTIVE);
-    return newAccount;
+    return new Account(id, password, person, AccountStatus.ACTIVE);
   }
 
   public boolean changePassword(String oldPassword, String newPassword) {
