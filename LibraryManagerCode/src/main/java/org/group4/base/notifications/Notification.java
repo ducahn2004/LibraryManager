@@ -2,11 +2,20 @@ package org.group4.base.notifications;
 
 import java.time.LocalDate;
 
+/**
+ * Lop co so cho cac loai thong bao.
+ */
 public class Notification {
-  private int notificationId;
-  private LocalDate createdOn;
-  private String content;
-  
+  private int notificationId; // Ma so cua thong bao.
+  private LocalDate createdOn; // Ngay tao thong bao.
+  private String content; // Noi dung thong bao.
+
+  /**
+   * Tao mot thong bao moi.
+   * @param notificationId Ma so cua thong bao.
+   * @param createdOn Ngay tao thong bao.
+   * @param content Noi dung thong bao.
+   */
   public Notification(int notificationId, LocalDate createdOn, String content) {
     this.notificationId = notificationId;
     this.createdOn = createdOn;
@@ -44,5 +53,6 @@ public class Notification {
     }
     return true;
   }
+
 
 }
