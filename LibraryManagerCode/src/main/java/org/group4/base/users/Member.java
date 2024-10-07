@@ -94,6 +94,11 @@ public class Member extends Account {
     return 0;
   }
 
+  public Account updateAccount(Person person) {
+    // TODO: implement
+    return null;
+  }
+
 }
 
 
