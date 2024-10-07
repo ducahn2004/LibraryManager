@@ -1,12 +1,23 @@
 package org.group4.base.entities;
 
+/**
+ * Dai dien cho dia chi cua nguoi dung hoac thu vien.
+ */
 public class Address {
-  private String streetAddress;
-  private String city;
-  private String state;
-  private String zipcode;
-  private String country;
+  private String streetAddress; // Dia chi nha.
+  private String city; // Thanh pho.
+  private String state; // Tinh.
+  private String zipcode; // Ma buu chinh.
+  private String country; // Quoc gia.
 
+  /**
+   * Tao dia chi moi.
+   * @param streetAddress Dia chi nha.
+   * @param city Thanh pho.
+   * @param state Tinh.
+   * @param zipcode Ma buu chinh.
+   * @param country Quoc gia.
+   */
   public Address(String streetAddress, String city, String state, String zipcode, String country) {
     this.streetAddress = streetAddress;
     this.city = city;

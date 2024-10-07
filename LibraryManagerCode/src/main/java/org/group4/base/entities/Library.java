@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import org.group4.base.books.BookItem;
 
+/**
+ * Dai dien cho thu vien, quan ly danh sach cac sach.
+ */
 public class Library {
-  private String name;
-  private Address address;
-  private List<BookItem> bookItems;
+  private String name; // Ten cua thu vien.
+  private Address address; // Dia chi cua thu vien.
+  private List<BookItem> bookItems; // Danh sach cac sach trong thu vien.
 
+  /**
+   * Tao mot thu vien moi.
+   * @param name Ten cua thu vien.
+   * @param address Dia chi cua thu vien.
+   */
   public Library(String name, Address address) {
     this.name = name;
     this.address = address;
