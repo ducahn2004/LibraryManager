@@ -45,6 +45,7 @@ public class BookLending {
    */
   public boolean lendBookItem(String barcode, String id) {
     // TODO: Kiem tra xem sach co duoc muon khong
+
     // Cap nhat trang thai sach
     // Cap nhat trang thai nguoi dung
     // Cap nhat trang thai phieu muon
