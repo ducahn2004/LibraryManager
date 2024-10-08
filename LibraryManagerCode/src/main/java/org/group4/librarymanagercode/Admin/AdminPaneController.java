@@ -1,8 +1,7 @@
-package org.group4.librarymanagercode;
+package org.group4.librarymanagercode.Admin;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
-import javafx.scene.layout.VBox;
 
 public class AdminPaneController {
   @FXML
