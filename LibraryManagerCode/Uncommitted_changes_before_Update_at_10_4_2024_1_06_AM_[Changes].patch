@@ -1,0 +1,43 @@
+Subject: [PATCH] Uncommitted changes before Update at 10/4/2024 1:06 AM [Changes]
+---
+Index: LibraryManagerCode/.idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/LibraryManagerCode/.idea/workspace.xml b/LibraryManagerCode/.idea/workspace.xml
+--- a/LibraryManagerCode/.idea/workspace.xml	(revision 8c21f4cc6a6a59da05014a8edd8dbe10f7f607a9)
++++ b/LibraryManagerCode/.idea/workspace.xml	(date 1727978597251)
+@@ -4,31 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="b1381dc6-1017-492f-89b7-87d30bc1f173" name="Changes" comment="Rename class Rank to Rack&#10;&#10;Renamed the class `Rank` to `Rack` to better reflect its purpose of representing a physical book rack. Updated relevant files and configuration entries to apply this change consistently across the project.">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/BookLending.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/BookReservation.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/CashTransaction.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/CheckTransaction.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/CreditCardTransaction.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/EmailNotification.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Fine.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/FineTransaction.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Notification.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/PostalNotification.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Account.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/AccountStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/AccountStatus.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/BarcodeReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/BarcodeReader.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/BookFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/BookFormat.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/BookItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/BookItem.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/BookStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/BookStatus.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/Librarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Librarian.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/Library.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Library.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/Member.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/base/RevervationStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/base/RevervationStatus.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/group4/librarymanagercode/FirstPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/group4/librarymanagercode/FirstPage.fxml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/group4/librarymanagercode/Signup.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/group4/librarymanagercode/Signup.fxml" afterDir="false" />
+-    </list>
++    <list default="true" id="b1381dc6-1017-492f-89b7-87d30bc1f173" name="Changes" comment="Rename class Rank to Rack&#10;&#10;Renamed the class `Rank` to `Rack` to better reflect its purpose of representing a physical book rack. Updated relevant files and configuration entries to apply this change consistently across the project." />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
