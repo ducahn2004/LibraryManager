@@ -15,13 +15,13 @@
    <center>
       <TableView prefHeight="189.0" prefWidth="386.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="ISBN" prefWidth="75.0" text="ISBN" />
-          <TableColumn fx:id="Tittle" prefWidth="75.0" text="Tittle" />
-          <TableColumn fx:id="Subject" prefWidth="75.0" text="Subject" />
-          <TableColumn fx:id="Publisher" prefWidth="75.0" text="Publisher" />
-          <TableColumn fx:id="Language" prefWidth="75.0" text="Language" />
-          <TableColumn fx:id="NO Page" prefWidth="75.0" text="NO Page" />
-          <TableColumn fx:id="Author" prefWidth="75.0" text="Author " />
+          <TableColumn fx:id="ISBN" prefWidth="98.39996182918549" text="ISBN" />
+          <TableColumn prefWidth="98.40003204345703" text="Tittle" />
+            <TableColumn prefWidth="63.20001220703125" text="Subject" />
+            <TableColumn prefWidth="71.20001220703125" text="Publisher" />
+            <TableColumn prefWidth="72.79998779296875" text="Language" />
+            <TableColumn prefWidth="79.20001220703125" text="NO Page" />
+            <TableColumn prefWidth="85.60006713867188" text="Author " />
         </columns>
       </TableView>
    </center>
