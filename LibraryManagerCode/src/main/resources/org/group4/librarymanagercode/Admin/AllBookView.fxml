@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <TableView prefHeight="189.0" prefWidth="386.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="ISBN" prefWidth="98.39996182918549" text="ISBN" />
+          <TableColumn prefWidth="98.40003204345703" text="Tittle" />
+            <TableColumn prefWidth="63.20001220703125" text="Subject" />
+            <TableColumn prefWidth="71.20001220703125" text="Publisher" />
+            <TableColumn prefWidth="72.79998779296875" text="Language" />
+            <TableColumn prefWidth="79.20001220703125" text="NO Page" />
+            <TableColumn prefWidth="85.60006713867188" text="Author " />
+        </columns>
+      </TableView>
+   </center>
+   <left>
+      <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="studentsButton" alignment="TOP_LEFT" centerShape="false" prefHeight="46.0" prefWidth="133.0" text="Students" textFill="#fff8f8" textOverrun="CLIP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="bookButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="IssueBookButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="135.0" text="Issue Book" textFill="#fff8f8" textOverrun="CLIP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="removeBookButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="133.0" text="Remove Book" textFill="#fff8f8" textOverrun="CLIP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="addBookButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="135.0" text="Add Book" textFill="#fff8f8" textOverrun="CLIP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="returnBookButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="137.0" text="Return Book" textFill="#fff8f8" textOverrun="CLIP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="settingButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="closeButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
+   </left>
+   <top>
+      <HBox prefHeight="80.0" prefWidth="684.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="100.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
+            <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" prefHeight="96.0" prefWidth="114.0" text="Book" textFill="#2e069c">
+               <font>
+                  <Font name=".VnArial Bold" size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
