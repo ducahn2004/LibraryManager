@@ -3,9 +3,9 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
@@ -60,16 +60,17 @@
       </children>
     </VBox>
   </left>
-  <top>
-    <HBox prefHeight="100.0" prefWidth="684.0" BorderPane.alignment="CENTER">
-      <children>
-        <Pane prefHeight="100.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
-        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" prefHeight="96.0" prefWidth="193.0" text="Dashboard" textFill="#2e069c">
-          <font>
-            <Font name=".VnArial Bold" size="30.0" />
-          </font>
-        </Label>
-      </children>
-    </HBox>
-  </top>
+   <top>
+      <Pane prefHeight="100.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="112.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
+            <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="136.0" layoutY="8.0" prefHeight="96.0" prefWidth="172.0" text="Dashboard" textFill="#2e069c">
+               <font>
+                  <Font name=".VnArial Bold" size="30.0" />
+               </font>
+            </Label>
+            <Line endX="508.4000244140625" layoutX="246.0" layoutY="104.0" startX="-102.0" />
+         </children>
+      </Pane>
+   </top>
 </BorderPane>
