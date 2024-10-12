@@ -1,8 +1,10 @@
-package org.group4.librarymanagercode;
+package org.group4.librarymanagercode.Admin;
 
 import com.jfoenix.controls.JFXButton;
+import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.scene.layout.VBox;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.BorderPane;
 
 public class AdminPaneController {
   @FXML
@@ -25,8 +27,10 @@ public class AdminPaneController {
   private JFXButton closeButton;
 
   @FXML
-  public void onHomeAction(){
-
+  public void onHomeAction () throws IOException {
+    BorderPane borderPane = (BorderPane) FXMLLoader.load(getClass().getResource("/librarymanagementsystem/view/librarian.fxml"));
+    BorderPane borderpane = null;
+    borderpane.setCenter(borderPane);
   }
   @FXML
   public void onBookAction(){
