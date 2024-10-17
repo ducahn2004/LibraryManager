@@ -25,8 +25,8 @@ public class Book {
    * @param numberOfPages So trang cua cuon sach.
    * @param authors Tac gia cua cuon sach.
    */
-  public Book(String ISBN, String title, String subject, String publisher, String language,
-      int numberOfPages, List<Author> authors) {
+  public Book(String ISBN, String title, String subject, String publisher, String language, int numberOfPages,
+      List<Author> authors) {
     this.ISBN = ISBN;
     this.tittle = title;
     this.subject = subject;
@@ -56,40 +56,8 @@ public class Book {
     return language;
   }
 
-  public int getNumberOfPages() {
-    return numberOfPages;
-  }
-
   public List<Author> getAuthors() {
     return authors;
-  }
-
-  public void setISBN(String ISBN) {
-    this.ISBN = ISBN;
-  }
-
-  public void setTitle(String title) {
-    this.tittle = title;
-  }
-
-  public void setSubject(String subject) {
-    this.subject = subject;
-  }
-
-  public void setPublisher(String publisher) {
-    this.publisher = publisher;
-  }
-
-  public void setLanguage(String language) {
-    this.language = language;
-  }
-
-  public void setNumberOfPages(int numberOfPages) {
-    this.numberOfPages = numberOfPages;
-  }
-
-  public void setAuthors(List<Author> authors) {
-    this.authors = authors;
   }
 
 }

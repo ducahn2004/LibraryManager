@@ -10,23 +10,16 @@ public class BookLending {
   private LocalDate dueDate; // Ngay den han tra sach: Duoc tinh dua tren so ngay muon toi da
   private LocalDate returnDate; // Ngay tra sach thuc te: So sanh voi voi dueDate de xem co tra dung han khong.
 
-  /**
-   * Tao va luu thong tin cua mot phieu muon sach.
-   *
-   * @param lendingPeriodDays So ngay toi da cho mot cuon sach
-   */
-  public BookLending(int lendingPeriodDays) {
+
+  public BookLending() {
     this.creationDate = LocalDate.now();
-    this.dueDate = this.creationDate.plusDays(lendingPeriodDays);
+    this.dueDate = creationDate.plusDays(14);
     this.returnDate = null;
   }
 
+  // Getter
   public LocalDate getReturnDate() {
     return returnDate;
-  }
-
-  public void setReturnDate(LocalDate returnDate) {
-    this.returnDate = returnDate;
   }
 
   public LocalDate getCreationDate() {
@@ -37,6 +30,11 @@ public class BookLending {
     return dueDate;
   }
 
+  // Setter
+  public void setReturnDate(LocalDate returnDate) {
+    this.returnDate = returnDate;
+  }
+
   /**
    * Phuong thuc muon sach.
    * @param barcode Ma vach cua sach
@@ -45,11 +43,13 @@ public class BookLending {
    */
   public boolean lendBookItem(String barcode, String id) {
     // TODO: Kiem tra xem sach co duoc muon khong
-
+    // Neu khong return false
+    // Neu co:
     // Cap nhat trang thai sach
     // Cap nhat trang thai nguoi dung
     // Cap nhat trang thai phieu muon
     // Gui thong bao muon sach thanh cong
+
     return true;
   }
 
@@ -85,6 +85,7 @@ public class BookLending {
     // Neu co, tra ve thong tin chi tiet cua phieu muon sach
     // return lendingDetails.get(barcode);
     // Neu khong, tra ve null
+
     return null;
   }
 

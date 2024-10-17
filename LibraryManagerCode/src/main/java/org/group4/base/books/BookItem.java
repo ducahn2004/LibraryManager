@@ -7,19 +7,20 @@ import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 
+
 /**
  * Thong tin chi tiet cua mot cuon sach. Moi cuon sach se co ban sao va duoc quan ly boi ma vach cua no.
  */
 public class BookItem extends Book {
-  private String barcode; // Ma vach cua cuon sach.
+  private final String barcode; // Ma vach cua cuon sach.
   private final boolean isReferenceOnly; // Chi dinh sach chi de tham khao.
-  private LocalDate borrowed; // Ngay muon sach.
-  private LocalDate dueDate; // Ngay tra sach.
-  private double price; // Gia cua cuon sach.
-  private BookFormat format; // Dinh dang cua cuon sach.
+  private final LocalDate borrowed; // Ngay muon sach.
+  private final LocalDate dueDate; // Ngay tra sach.
+  private final double price; // Gia cua cuon sach.
+  private final BookFormat format; // Dinh dang cua cuon sach.
   private BookStatus status; // Trang thai cua cuon sach.
-  private LocalDate dateOfPurchase; // Ngay mua cuon sach.
-  private LocalDate publicationDate; // Ngay xuat ban cua cuon sach.
+  private final LocalDate dateOfPurchase; // Ngay mua cuon sach.
+  private final LocalDate publicationDate; // Ngay xuat ban cua cuon sach.
 
   /**
    * Tao mot cuon sach moi.
@@ -56,15 +57,12 @@ public class BookItem extends Book {
     this.publicationDate = publicationDate;
   }
 
+  // Getter
   public String getBarcode() {
     return barcode;
   }
 
-  public void setBarcode(String barcode) {
-    this.barcode = barcode;
-  }
-
-  public boolean isReferenceOnly() {
+  public boolean getReferenceOnly() {
     return isReferenceOnly;
   }
 
@@ -72,56 +70,33 @@ public class BookItem extends Book {
     return borrowed;
   }
 
-  public void setBorrowed(LocalDate borrowed) {
-    this.borrowed = borrowed;
-  }
-
   public LocalDate getDueDate() {
     return dueDate;
-  }
-
-  public void setDueDate(LocalDate dueDate) {
-    this.dueDate = dueDate;
   }
 
   public double getPrice() {
     return price;
   }
 
-  public void setPrice(double price) {
-    this.price = price;
-  }
-
   public BookFormat getFormat() {
     return format;
-  }
-
-  public void setFormat(BookFormat format) {
-    this.format = format;
   }
 
   public BookStatus getStatus() {
     return status;
   }
 
-  public void setStatus(BookStatus status) {
-    this.status = status;
-  }
-
   public LocalDate getDateOfPurchase() {
     return dateOfPurchase;
-  }
-
-  public void setDateOfPurchase(LocalDate dateOfPurchase) {
-    this.dateOfPurchase = dateOfPurchase;
   }
 
   public LocalDate getPublicationDate() {
     return publicationDate;
   }
 
-  public void setPublicationDate(LocalDate publicationDate) {
-    this.publicationDate = publicationDate;
+  // Setter
+  public void setStatus(BookStatus status) {
+    this.status = status;
   }
 
   /**
@@ -129,26 +104,17 @@ public class BookItem extends Book {
    *
    * @return true neu cuon sach co the muon, nguoc lai tra ve false.
    */
-  public boolean checkOut(String id) {
-    if (this.isReferenceOnly) {
-      return false;
-    }
-    else if (this.status != BookStatus.AVAILABLE) {
-      return false;
-    }
-    // TODO: Implement this method
-
-    return false;
+  public boolean checkOut() {
+    return !(this.isReferenceOnly || this.status == BookStatus.LOANED);
   }
 
-  /**
-   * Lay thong tin chi tiet cua mot cuon sach.
-   *
-   * @param barcode Ma vach cua cuon sach.
-   * @return Thong tin chi tiet cua cuon sach.
-   */
-  public static List<BookItem> fetchBookItemDetails(String barcode) {
-    // TODO: Implement this method
-    return null;
-  }
+//  public static BookItem fetchBookItemDetails(String barcode) {
+//    List<BookItem> bookItems = Database.getBookItems(); // Can tao Database
+//    for (BookItem bookItem : bookItems) {
+//      if (bookItem.getBarcode().equals(barcode)) {
+//        return bookItem;
+//      }
+//    }
+//    return null;
+//  }
 }
