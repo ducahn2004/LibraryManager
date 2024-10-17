@@ -16,7 +16,7 @@ import org.group4.base.entities.Book;
 public class Rack {
   private int number; // So thu tu cua ke sach.
   private String locationIdentifier; // Ma so vi tri cua ke sach.
-  private List<Book> bookItems; // Danh sach cac cuon sach trong ke sach.
+  private final List<Book> bookItems; // Danh sach cac cuon sach trong ke sach.
 
   /**
    * Tao mot ke sach moi.
@@ -45,12 +45,12 @@ public class Rack {
     this.locationIdentifier = locationIdentifier;
   }
 
-  public List<Book> getBookItems() {
+  public List<Book> getBookItemsOnRack() {
     return bookItems;
   }
 
-  public void setBookItems(List<Book> bookItems) {
-    this.bookItems = bookItems;
+  public void addBookItemToRack(Book bookItem) {
+    bookItems.add(bookItem);
   }
 
 }

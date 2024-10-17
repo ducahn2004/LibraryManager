@@ -15,10 +15,9 @@ public class BookReservation {
 
   /**
    * Tao va luu thong tin cua mot phieu dat sach.
-   * @param status Trang thai cua phieu dat sach.
    */
-  public BookReservation(RevervationStatus status) {
-    this.status = status;
+  public BookReservation() {
+    this.status = RevervationStatus.WAITING;
     this.creationDate = LocalDate.now();
   }
 
@@ -59,11 +58,6 @@ public class BookReservation {
    */
   public static BookReservation fetchReservationDetails(String barcode) {
     // TODO: Implement this method
-    for (BookItem bookItem : BookItem.fetchBookItemDetails(barcode)) {
-      if (bookItem.getBarcode().equals(barcode)) {
-        return new BookReservation(RevervationStatus.WAITING);
-      }
-    }
     return null;
   }
 

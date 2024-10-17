@@ -1,8 +1,13 @@
 package org.group4.base.users;
 
+import eu.hansolo.tilesfx.tools.Rank;
+import java.awt.List;
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 import org.group4.base.books.BookItem;
+import org.group4.base.enums.AccountType;
+import org.group4.base.entities.Book;
+import org.group4.base.catalog.Rack;
 
 /**
  * Thu thu cua thu vien.
@@ -20,15 +25,26 @@ public class Librarian extends Account {
    * @param id Ma so cua tai khoan.
    * @param password Mat khau cua tai khoan.
    * @param person Nguoi dung cua tai khoan.
-   * @param status Trang thai cua tai khoan.
    */
-  public Librarian(String id, String password, Person person, AccountStatus status) {
-    super(id, password, person, status);
+  public Librarian(String id, String password, Person person) {
+    super(id, password, person, AccountType.LIBRARIAN, AccountStatus.ACTIVE);
+  }
+
+  public void addBook(Book book) {
+    // TODO: implement
+  }
+
+  public void viewBookDetails(Book book) {
+    // TODO: implement
   }
 
   public boolean addBookItem(BookItem bookItem) {
     // TODO: implement
     return true;
+  }
+
+  public void viewBookItemDetails(BookItem bookItem) {
+    // TODO: implement
   }
 
   public boolean removeBookItem(BookItem bookItem) {
@@ -37,6 +53,10 @@ public class Librarian extends Account {
   }
 
   public void updateBookItemDetails(BookItem bookItem) {
+    // TODO: implement
+  }
+
+  public void viewBookItemsOnRack(Rack rack) {
     // TODO: implement
   }
 
@@ -54,6 +74,10 @@ public class Librarian extends Account {
       return true;
     }
     return false;
+  }
+
+  public void viewMemberDetails(Member member) {
+    // TODO: implement
   }
 
 }

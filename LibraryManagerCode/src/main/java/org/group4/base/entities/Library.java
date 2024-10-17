@@ -43,20 +43,4 @@ public class Library {
     return bookItems;
   }
 
-  public void setBookItems(List<BookItem> bookItems) {
-    this.bookItems = bookItems;
-  }
-
-  public void addBookItem(BookItem bookItem) {
-    bookItems.add(bookItem);
-  }
-
-  public void removeBookItem(BookItem bookItem) {
-    bookItems.remove(bookItem);
-  }
-
-  public int getTotalBooks() {
-    return bookItems.size();
-  }
-
 }

@@ -2,6 +2,7 @@ package org.group4.base.users;
 
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
+import org.group4.base.enums.AccountType;
 
 /**
  * Tai khoan cua nguoi dung.
@@ -15,6 +16,7 @@ public class Account {
   private String id; // Ma so cua tai khoan.
   private String password; // Mat khau cua tai khoan.
   private AccountStatus status; // Trang thai cua tai khoan.
+  private AccountType accountType; // Loai tai khoan.
   private Person person; // Nguoi dung cua tai khoan.
 
   /**
@@ -24,10 +26,11 @@ public class Account {
    * @param person Nguoi dung cua tai khoan.
    * @param status Trang thai cua tai khoan.
    */
-  public Account(String id, String password, Person person, AccountStatus status) {
+  public Account(String id, String password, Person person, AccountType accountType, AccountStatus status) {
       this.id = id;
       this.password = password;
       this.person = person;
+      this.accountType = accountType;
       this.status = status;
   }
 
@@ -68,8 +71,14 @@ public class Account {
     return this.id.equals(id) && this.password.equals(password);
   }
 
-  public static Account register (String id, String password, Person person) {
-    return new Account(id, password, person, AccountStatus.ACTIVE);
+  public static Account register(String id, String password, Person person, AccountType accountType) {
+    if (accountType == AccountType.MEMBER) {
+      return new Member(id, password, person);
+    } else if (accountType == AccountType.LIBRARIAN) {
+      return new Librarian(id, password, person);
+    } else {
+      throw new IllegalArgumentException("Loại tài khoản không hợp lệ");
+    }
   }
 
   public boolean changePassword(String oldPassword, String newPassword) {
@@ -88,6 +97,7 @@ public class Account {
     // TODO: implement
     return true;
   }
+
 
 
 }

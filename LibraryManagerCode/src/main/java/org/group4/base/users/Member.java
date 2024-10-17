@@ -6,6 +6,7 @@ import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 import org.group4.base.notifications.Notification;
 import org.group4.base.transactions.FineTransaction;
+import org.group4.base.enums.AccountType;
 /**
  * Thanh vien cua thu vien.
  * Quan ly cac hoat dong nhu muon sach, tra sach, gia han sach, dat sach, huy dat sach.
@@ -20,7 +21,7 @@ import org.group4.base.transactions.FineTransaction;
 public class Member extends Account {
 
   private LocalDate dateOfMembership; // Ngay thanh vien
-  private final int totalBooksCheckedOut = 0; // Tong so sach da muon.
+  private final int totalBooksCheckedOut; // Tong so sach da muon.
   private static final int MAX_BOOKS_ISSUED_TO_A_USER = 5; // So sach toi da duoc muon.
 
   /**
@@ -31,8 +32,9 @@ public class Member extends Account {
    * @param person   Nguoi dung cua tai khoan.
    */
   public Member(String id, String password, Person person) {
-    super(null, null, null, AccountStatus.ACTIVE);
+    super(id, password, person, AccountType.MEMBER, AccountStatus.ACTIVE);
     this.dateOfMembership = LocalDate.now();
+    this.totalBooksCheckedOut = 0;
   }
 
   public LocalDate getDateOfMembership() {

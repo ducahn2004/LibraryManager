@@ -10,7 +10,7 @@ import java.util.List;
 public class Author {
   private final String name; // Ten tac gia.
   private final String description; // Mo ta ve tac gia.
-  private List<Book> books; // Danh sach cac cuon sach cua tac gia.
+  private final List<Book> books; // Danh sach cac cuon sach cua tac gia.
 
   /**
    * Tao tac gia moi.
@@ -30,14 +30,6 @@ public class Author {
 
   public String getDescription() {
     return description;
-  }
-
-  public List<Book> getBooks() {
-    return books;
-  }
-
-  public void setBooks(List<Book> books) {
-    this.books = books;
   }
 
 }
