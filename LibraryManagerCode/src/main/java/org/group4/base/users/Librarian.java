@@ -1,7 +1,5 @@
 package org.group4.base.users;
 
-import eu.hansolo.tilesfx.tools.Rank;
-import java.awt.List;
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 import org.group4.base.books.BookItem;
