@@ -75,7 +75,11 @@ public class Librarian extends Account {
   }
 
   public void viewMemberDetails(Member member) {
-    // TODO: implement
+    System.out.println("Member ID: " + member.getId());
+    System.out.println("Member name: " + member.getPerson().getName());
+    System.out.println("Member email: " + member.getPerson().getEmail());
+    System.out.println("Member date of membership: " + member.getDateOfMembership());
+    System.out.println("Member total books checked out: " + member.getTotalBooksCheckedOut());
   }
 
 }

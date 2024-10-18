@@ -6,6 +6,7 @@ import org.group4.base.entities.Author;
 import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
+import org.group4.base.Database.BookItemDatabase;
 
 
 /**
@@ -108,13 +109,18 @@ public class BookItem extends Book {
     return !(this.isReferenceOnly || this.status == BookStatus.LOANED);
   }
 
-//  public static BookItem fetchBookItemDetails(String barcode) {
-//    List<BookItem> bookItems = Database.getBookItems(); // Can tao Database
-//    for (BookItem bookItem : bookItems) {
-//      if (bookItem.getBarcode().equals(barcode)) {
-//        return bookItem;
-//      }
-//    }
-//    return null;
-//  }
+  /**
+   * Lay thong tin chi tiet cua cuon sach dua tren ma vach.
+   * @param barcode Ma vach cua cuon sach.
+   * @return Thong tin chi tiet cua cuon sach.
+   */
+  public static BookItem fetchBookItemDetails(String barcode) {
+    List<BookItem> bookItems = BookItemDatabase.getBookItems(); // Dang dung database gia lap
+    for (BookItem bookItem : bookItems) {
+      if (bookItem.getBarcode().equals(barcode)) {
+        return bookItem;
+      }
+    }
+    return null;
+  }
 }

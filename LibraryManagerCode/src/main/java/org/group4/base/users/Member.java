@@ -1,5 +1,6 @@
 package org.group4.base.users;
 
+import java.util.List;
 import java.time.LocalDate;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Person;
@@ -7,6 +8,7 @@ import org.group4.base.enums.AccountStatus;
 import org.group4.base.notifications.Notification;
 import org.group4.base.transactions.FineTransaction;
 import org.group4.base.enums.AccountType;
+import org.group4.base.Database.MemberDatabase;
 /**
  * Thanh vien cua thu vien.
  * Quan ly cac hoat dong nhu muon sach, tra sach, gia han sach, dat sach, huy dat sach.
@@ -37,6 +39,14 @@ public class Member extends Account {
     this.totalBooksCheckedOut = 0;
   }
 
+  public String getId() {
+    return super.getId();
+  }
+
+  public Person getPerson() {
+    return super.getPerson();
+  }
+
   public LocalDate getDateOfMembership() {
     return dateOfMembership;
   }
@@ -47,6 +57,16 @@ public class Member extends Account {
 
   public int getTotalBooksCheckedOut() {
     return totalBooksCheckedOut;
+  }
+
+  public static Member fetchMemberDetails(String id) {
+    List<Member> members = MemberDatabase.getMembers(); // Dang dung database gia lap
+    for (Member member : members) {
+      if (member.getId().equals(id)) {
+        return member;
+      }
+    }
+    return null;
   }
 
   public void receiveNotification(Notification notification) {
@@ -100,6 +120,8 @@ public class Member extends Account {
     // TODO: implement
     return null;
   }
+
+
 
 }
 

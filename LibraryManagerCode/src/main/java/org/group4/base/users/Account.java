@@ -58,6 +58,9 @@ public class Account {
     this.status = status;
   }
 
+  public Person getPerson() {
+    return person;
+  }
 
   public boolean isActive() {
     return this.status == AccountStatus.ACTIVE;
