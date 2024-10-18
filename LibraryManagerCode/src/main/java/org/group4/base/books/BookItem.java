@@ -6,7 +6,7 @@ import org.group4.base.entities.Author;
 import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
-import org.group4.base.Database.BookItemDatabase;
+import org.group4.base.database.BookItemDatabase;
 
 
 /**

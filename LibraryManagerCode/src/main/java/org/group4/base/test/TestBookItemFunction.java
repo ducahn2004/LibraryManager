@@ -2,7 +2,7 @@ package org.group4.base.test;
 
 import org.group4.base.books.BookItem;
 
-public class TestFunction {
+public class TestBookItemFunction {
     public static void main(String[] args) {
         testFetchBookItemDetails();
     }
@@ -29,4 +29,8 @@ public class TestFunction {
             System.out.println("Book not found with barcode: " + barcode);
         }
     }
+
+
+
+
 }

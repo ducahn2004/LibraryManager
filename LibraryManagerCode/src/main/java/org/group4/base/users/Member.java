@@ -8,7 +8,7 @@ import org.group4.base.enums.AccountStatus;
 import org.group4.base.notifications.Notification;
 import org.group4.base.transactions.FineTransaction;
 import org.group4.base.enums.AccountType;
-import org.group4.base.Database.MemberDatabase;
+import org.group4.base.database.MemberDatabase;
 /**
  * Thanh vien cua thu vien.
  * Quan ly cac hoat dong nhu muon sach, tra sach, gia han sach, dat sach, huy dat sach.
@@ -34,7 +34,7 @@ public class Member extends Account {
    * @param person   Nguoi dung cua tai khoan.
    */
   public Member(String id, String password, Person person) {
-    super(id, password, person, AccountType.MEMBER, AccountStatus.ACTIVE);
+    super(id, password, person, AccountType.MEMBER);
     this.dateOfMembership = LocalDate.now();
     this.totalBooksCheckedOut = 0;
   }
@@ -49,10 +49,6 @@ public class Member extends Account {
 
   public LocalDate getDateOfMembership() {
     return dateOfMembership;
-  }
-
-  public void setDateOfMembership(LocalDate dateOfMembership) {
-    this.dateOfMembership = dateOfMembership;
   }
 
   public int getTotalBooksCheckedOut() {
@@ -73,16 +69,16 @@ public class Member extends Account {
     System.out.println("Notification: " + notification.getContent());
   }
 
+  public boolean reserveBookItem(BookItem bookItem) {
+    // TODO: implement
+    return false;
+  }
+
   public void payFine(FineTransaction fineTransaction) {
     // TODO: implement
   }
 
   public boolean renewBookItem(BookItem bookItem) {
-    // TODO: implement
-    return false;
-  }
-
-  public boolean reserveBookItem(BookItem bookItem) {
     // TODO: implement
     return false;
   }
@@ -109,11 +105,6 @@ public class Member extends Account {
 
   public void viewNotifications() {
     // TODO: implement
-  }
-
-  public int getTotalCheckedoutBooks() {
-    // TODO: implement
-    return 0;
   }
 
   public Account updateAccount(Person person) {

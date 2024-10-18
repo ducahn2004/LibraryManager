@@ -1,4 +1,4 @@
-package org.group4.base.Database;
+package org.group4.base.database;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.group4.base.Database;
+package org.group4.base.database;
 
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Author;

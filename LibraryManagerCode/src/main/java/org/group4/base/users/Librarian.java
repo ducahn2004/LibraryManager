@@ -25,7 +25,7 @@ public class Librarian extends Account {
    * @param person Nguoi dung cua tai khoan.
    */
   public Librarian(String id, String password, Person person) {
-    super(id, password, person, AccountType.LIBRARIAN, AccountStatus.ACTIVE);
+    super(id, password, person, AccountType.LIBRARIAN);
   }
 
   public void addBook(Book book) {
