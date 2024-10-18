@@ -1,10 +1,8 @@
 package org.group4.base.users;
 
-import java.util.List;
 import org.group4.base.database.AccountDatabase;
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
-import org.group4.base.enums.AccountType;
 
 /**
  * Tai khoan cua nguoi dung.
@@ -18,9 +16,8 @@ public class Account {
 
   private String id; // Ma so cua tai khoan.
   private String password; // Mat khau cua tai khoan.
+  private final Person person; // Nguoi dung cua tai khoan.
   private AccountStatus status; // Trang thai cua tai khoan.
-  private AccountType accountType; // Loai tai khoan.
-  private Person person; // Nguoi dung cua tai khoan.
 
   /**
    * Tao mot tai khoan moi.
@@ -29,11 +26,10 @@ public class Account {
    * @param password Mat khau cua tai khoan.
    * @param person   Nguoi dung cua tai khoan.
    */
-  public Account(String id, String password, Person person, AccountType accountType) {
+  public Account(String id, String password, Person person) {
     this.id = id;
     this.password = password;
     this.person = person;
-    this.accountType = accountType;
     this.status = AccountStatus.ACTIVE;
   }
 
@@ -72,37 +68,41 @@ public class Account {
 
   public void closedAccount() {
     this.status = AccountStatus.CLOSED;
+    AccountDatabase.getAccounts().removeIf(acc -> acc.getId().equals(this.id));
   }
 
   public boolean login(String id, String password) {
-    return this.id.equals(id) && this.password.equals(password);
+    return this.id.equals(id) && this.password.equals(password) && this.status == AccountStatus.ACTIVE;
+  }
 
-//  public static Account register(String id, String password, Person person, AccountType accountType) {
-//    if (accountType == AccountType.MEMBER) {
-//      return new Member(id, password, person);
-//    } else if (accountType == AccountType.LIBRARIAN) {
-//      return new Librarian(id, password, person);
-//    } else {
-//      throw new IllegalArgumentException("Loại tài khoản không hợp lệ");
-//    }
-//  }
+  public static boolean register(String id, String password, String rePassword, Person person) {
+    if (AccountDatabase.getAccounts().stream().anyMatch(acc -> acc.getId().equals(id)) || !password.equals(
+        rePassword)) {
+      return false;
+    }
+    Account newAccount = new Account(id, password, person);
+    AccountDatabase.getAccounts().add(newAccount);
+    return true;
+  }
 
-//  public boolean changePassword(String oldPassword, String newPassword) {
-//    if (this.password.equals(oldPassword)) {
-//      this.password = newPassword;
-//      return true;
-//    }
-//    return false;
-//  }
-//
-//  public void resetPassword(String newPassword) {
-//    this.password = newPassword;
-//  }
-//
-//  public boolean logout() {
-//    // TODO: implement
-//    return true;
-//  }
+  public boolean changePassword(String oldPassword, String newPassword, String reNewPassword) {
+    if (this.password.equals(oldPassword) && newPassword.equals(reNewPassword)) {
+      this.password = newPassword;
+      return true;
+    }
+    return false;
+  }
 
+  public boolean logout() {
+    return true;
+  }
+
+  public boolean resetPassword(String newPassword, String reNewPassword) {
+    if (!newPassword.equals(reNewPassword)) {
+      return false;
+    }
+    this.password = newPassword;
+    return true;
   }
 }
+

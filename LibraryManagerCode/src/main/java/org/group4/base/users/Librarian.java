@@ -3,9 +3,9 @@ package org.group4.base.users;
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 import org.group4.base.books.BookItem;
-import org.group4.base.enums.AccountType;
 import org.group4.base.entities.Book;
 import org.group4.base.catalog.Rack;
+import org.group4.base.database.AccountDatabase;
 
 /**
  * Thu thu cua thu vien.
@@ -25,7 +25,7 @@ public class Librarian extends Account {
    * @param person Nguoi dung cua tai khoan.
    */
   public Librarian(String id, String password, Person person) {
-    super(id, password, person, AccountType.LIBRARIAN);
+    super(id, password, person);
   }
 
   public void addBook(Book book) {

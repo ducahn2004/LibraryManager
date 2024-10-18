@@ -1,4 +1,3 @@
-// AccountDatabase.java
 package org.group4.base.database;
 
 import java.util.ArrayList;

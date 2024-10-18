@@ -3,11 +3,10 @@ package org.group4.base.users;
 import java.util.List;
 import java.time.LocalDate;
 import org.group4.base.books.BookItem;
+import org.group4.base.database.AccountDatabase;
 import org.group4.base.entities.Person;
-import org.group4.base.enums.AccountStatus;
 import org.group4.base.notifications.Notification;
 import org.group4.base.transactions.FineTransaction;
-import org.group4.base.enums.AccountType;
 import org.group4.base.database.MemberDatabase;
 /**
  * Thanh vien cua thu vien.
@@ -34,7 +33,7 @@ public class Member extends Account {
    * @param person   Nguoi dung cua tai khoan.
    */
   public Member(String id, String password, Person person) {
-    super(id, password, person, AccountType.MEMBER);
+    super(id, password, person);
     this.dateOfMembership = LocalDate.now();
     this.totalBooksCheckedOut = 0;
   }
