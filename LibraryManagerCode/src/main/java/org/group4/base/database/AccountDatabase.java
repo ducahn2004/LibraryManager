@@ -1,22 +1,22 @@
 package org.group4.base.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.group4.base.entities.Person;
 import org.group4.base.users.Account;
 import org.group4.base.users.Member;
 
-public class AccountDatabase {
-    private final static List<Account> accounts = new ArrayList<>();
+public class AccountDatabase extends Database<Account> {
+    private static final AccountDatabase instance = new AccountDatabase();
 
-    static {
-        // Add accounts to the database
+    private AccountDatabase() {
         Person NguyenDogAhn = new Person("Nguyen Dog Ahn", "22022171@vnu.edu.vn");
-        accounts.add(new Member("22022171", "123", NguyenDogAhn)); // Add Member instance
+        addItem(new Member("22022171", "123", NguyenDogAhn));
+
+        Person TranDogAnh = new Person("Tran Dog Anh", "22022189@vnu.edu.vn");
+        addItem(new Member("22022189", "123", TranDogAnh));
     }
 
-    public static List<Account> getAccounts() {
-        return accounts;
+    public static AccountDatabase getInstance() {
+        return instance;
     }
+
 }

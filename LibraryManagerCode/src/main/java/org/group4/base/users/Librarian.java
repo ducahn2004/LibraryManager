@@ -1,69 +1,68 @@
 package org.group4.base.users;
 
+import java.util.List;
+
+import org.group4.base.database.BookDatabase;
+import org.group4.base.database.BookItemDatabase;
+import org.group4.base.database.AccountDatabase;
+
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
-import org.group4.base.catalog.Rack;
+
+import org.jetbrains.annotations.NotNull;
 
 public class Librarian extends Account {
 
+  // Constructor
   public Librarian(String id, String password, Person person) {
     super(id, password, person);
   }
 
   public void addBook(Book book) {
-    // TODO: implement
+    BookDatabase.getInstance().addItem(book);
   }
 
-  public void viewBookDetails(Book book) {
-    // TODO: implement
+  public void viewBookDetails(@NotNull Book book) {
+    book.printDetails();
   }
 
-  public boolean addBookItem(BookItem bookItem) {
-    // TODO: implement
-    return true;
+  public void addBookItem(BookItem bookItem) {
+    BookItemDatabase.getInstance().addItem(bookItem);
   }
 
-  public void viewBookItemDetails(BookItem bookItem) {
-    // TODO: implement
+  public void viewBookItemDetails(@NotNull BookItem bookItem) {
+    bookItem.printDetails();
   }
 
-  public boolean removeBookItem(BookItem bookItem) {
-    // TODO: implement
-    return true;
+  public void removeBookItem(BookItem bookItem) {
+    BookItemDatabase.getInstance().removeItem(bookItem);
   }
 
-  public void updateBookItemDetails(BookItem bookItem) {
-    // TODO: implement
-  }
-
-  public void viewBookItemsOnRack(Rack rack) {
-    // TODO: implement
-  }
-
-  public boolean blockMember(Member member) {
-    if (member != null) {
-      member.setStatus(AccountStatus.BLACKLISTED);
-      return true;
+  public boolean blockMember(String id) {
+    List<Account> accounts = AccountDatabase.getInstance().getItems();
+    for (Account account : accounts) {
+      if (account.getId().equals(id) && account instanceof Member) {
+        account.setStatus(AccountStatus.BLACKLISTED);
+        return true;
+      }
     }
     return false;
   }
 
-  public boolean unblockMember(Member member) {
-    if (member != null) {
-      member.setStatus(AccountStatus.ACTIVE);
-      return true;
+  public boolean unblockMember(String id) {
+    List<Account> accounts = AccountDatabase.getInstance().getItems();
+    for (Account account : accounts) {
+      if (account.getId().equals(id) && account instanceof Member) {
+        account.setStatus(AccountStatus.ACTIVE);
+        return true;
+      }
     }
     return false;
   }
 
-  public void viewMemberDetails(Member member) {
-    System.out.println("Member ID: " + member.getId());
-    System.out.println("Member name: " + member.getPerson().getName());
-    System.out.println("Member email: " + member.getPerson().getEmail());
-    System.out.println("Member date of membership: " + member.getDateOfMembership());
-    System.out.println("Member total books checked out: " + member.getTotalBooksCheckedOut());
+  public void viewMemberDetails(@NotNull Member member) {
+    member.printDetails();
   }
-
 }

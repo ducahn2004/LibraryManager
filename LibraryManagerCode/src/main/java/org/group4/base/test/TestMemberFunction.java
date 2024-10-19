@@ -39,27 +39,27 @@ public class TestMemberFunction {
 
     public static void testReserveBookItem(@NotNull Member member) {
         member.setTotalBooksCheckedOut(5);
-        BookItem bookItem = BookItemDatabase.getBookItems().getFirst();
+        BookItem bookItem = BookItemDatabase.getInstance().getItems().getFirst();
         member.reserveBookItem(bookItem);
     }
 
     public static void testCancelReservation(@NotNull Member member) {
-        BookItem bookItem = BookItemDatabase.getBookItems().getFirst();
+        BookItem bookItem = BookItemDatabase.getInstance().getItems().getFirst();
         member.cancelReservation(bookItem);
     }
 
     public static void testLendBookItem(@NotNull Member member) {
-        BookItem bookItem = BookItemDatabase.getBookItems().get(1);
+        BookItem bookItem = BookItemDatabase.getInstance().getItems().get(1);
         member.lendBookItem(bookItem);
     }
 
     public static void testRenewBookItem(@NotNull Member member) {
-        BookItem bookItem = BookItemDatabase.getBookItems().get(1);
+        BookItem bookItem = BookItemDatabase.getInstance().getItems().get(1);
         member.renewBookItem(bookItem);
     }
 
     public static void testReturnBookItem(@NotNull Member member) {
-        BookItem bookItem = BookItemDatabase.getBookItems().get(1);
+        BookItem bookItem = BookItemDatabase.getInstance().getItems().get(1);
         member.returnBookItem(bookItem);
     }
 

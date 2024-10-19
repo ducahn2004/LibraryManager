@@ -18,7 +18,7 @@ public class TestAccountFunction {
         String id = "22022171";
         String password = "123";
 
-        Account account = AccountDatabase.getAccounts().stream()
+        Account account = AccountDatabase.getInstance().getItems().stream()
             .filter(acc -> acc.getId().equals(id))
             .findFirst()
             .orElse(null);
@@ -71,7 +71,7 @@ public class TestAccountFunction {
         String newPassword = "234";
         String reNewPassword = "234";
 
-        Account account = AccountDatabase.getAccounts().stream()
+        Account account = AccountDatabase.getInstance().getItems().stream()
             .filter(acc -> acc.getId().equals(id))
             .findFirst()
             .orElse(null);

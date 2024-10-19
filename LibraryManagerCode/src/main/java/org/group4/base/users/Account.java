@@ -54,7 +54,7 @@ public class Account {
 
   public void closedAccount() {
     setStatus(AccountStatus.CLOSED);
-    AccountDatabase.getAccounts().removeIf(acc -> acc.getId().equals(this.id));
+    AccountDatabase.getInstance().getItems().removeIf(acc -> acc.getId().equals(this.id));
   }
 
   public boolean login(String id, String password) {
@@ -62,13 +62,13 @@ public class Account {
   }
 
   public static boolean register(String id, String password, String rePassword, Person person) {
-    if (AccountDatabase.getAccounts().stream().anyMatch(acc -> acc.getId().equals(id)) || !password.equals(
+    if (AccountDatabase.getInstance().getItems().stream().anyMatch(acc -> acc.getId().equals(id)) || !password.equals(
         rePassword)) {
       return false;
     }
     Account newAccount = new Account(id, password, person);
     newAccount.setStatus(AccountStatus.ACTIVE);
-    AccountDatabase.getAccounts().add(newAccount);
+    AccountDatabase.getInstance().getItems().add(newAccount);
     return true;
   }
 

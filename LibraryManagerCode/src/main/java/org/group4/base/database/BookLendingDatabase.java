@@ -1,14 +1,16 @@
 package org.group4.base.database;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import org.group4.base.books.BookLending;
 
-public class BookLendingDatabase {
-  private final static List<BookLending> bookLendings = new ArrayList<>();
+public class BookLendingDatabase extends Database<BookLending> {
+    private static final BookLendingDatabase instance = new BookLendingDatabase();
 
-  public static List<BookLending> getBookLendings() {
-    return bookLendings;
-  }
+    private BookLendingDatabase() {
+
+    }
+
+    public static BookLendingDatabase getInstance() {
+        return instance;
+    }
+
 }

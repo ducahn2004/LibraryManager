@@ -7,6 +7,7 @@ import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.base.database.BookItemDatabase;
+import org.jetbrains.annotations.Nullable;
 
 public class BookItem extends Book {
   private final String barcode;
@@ -82,8 +83,9 @@ public class BookItem extends Book {
     return !this.isReferenceOnly && this.status == BookStatus.AVAILABLE;
   }
 
+  @Nullable
   public static BookItem fetchBookItemDetails(String barcode) {
-    List<BookItem> bookItems = BookItemDatabase.getBookItems();
+    List<BookItem> bookItems = BookItemDatabase.getInstance().getItems();
     for (BookItem bookItem : bookItems) {
       if (bookItem.getBarcode().equals(barcode)) {
         return bookItem;
@@ -92,21 +94,17 @@ public class BookItem extends Book {
     return null;
   }
 
+  @Override
   public void printDetails() {
+    super.printDetails();
     System.out.println("Barcode: " + getBarcode());
-    System.out.println("Title: " + getTitle());
-    System.out.println("Subject: " + getSubject());
-    System.out.println("Publisher: " + getPublisher());
-    System.out.println("Language: " + getLanguage());
-    System.out.println("Number of Pages: " + getNumberOfPages());
-    System.out.println("Authors: " + getAuthors());
-    System.out.println("Reference Only: " + isReferenceOnly);
+    System.out.println("Reference only: " + isReferenceOnly);
     System.out.println("Borrowed: " + getBorrowed());
-    System.out.println("Due Date: " + getDueDate());
+    System.out.println("Due date: " + getDueDate());
     System.out.println("Price: " + getPrice());
     System.out.println("Format: " + getFormat());
     System.out.println("Status: " + getStatus());
-    System.out.println("Date of Purchase: " + getDateOfPurchase());
-    System.out.println("Publication Date: " + getPublicationDate());
+    System.out.println("Date of purchase: " + getDateOfPurchase());
+    System.out.println("Publication date: " + getPublicationDate());
   }
 }

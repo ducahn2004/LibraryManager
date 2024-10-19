@@ -1,15 +1,16 @@
 package org.group4.base.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.group4.base.books.BookReservation;
 
-public class BookReservationDatabase {
+public class BookReservationDatabase extends Database<BookReservation> {
+    private static final BookReservationDatabase instance = new BookReservationDatabase();
 
-    private final static List<BookReservation> bookReservations = new ArrayList<>();
+    private BookReservationDatabase() {
 
-    public static List<BookReservation> getBookReservations() {
-        return bookReservations;
     }
+
+    public static BookReservationDatabase getInstance() {
+        return instance;
+    }
+
 }

@@ -58,7 +58,7 @@ public class Member extends Account {
 
   @Nullable
   public static Member fetchMemberDetails(String id) {
-    List<Member> members = MemberDatabase.getMembers();
+    List<Member> members = MemberDatabase.getInstance().getItems();
     for (Member member : members) {
       if (member.getId().equals(id)) {
         return member;
@@ -196,7 +196,7 @@ public class Member extends Account {
   }
 
   public void viewLendingHistory() {
-    List<BookLending> memberLendings = BookLendingDatabase.getBookLendings().stream()
+    List<BookLending> memberLendings = BookLendingDatabase.getInstance().getItems().stream()
         .filter(lending -> lending.getMember().equals(this))
         .toList();
 
@@ -221,7 +221,7 @@ public class Member extends Account {
   }
 
   public void viewReservationsHistory() {
-    List<BookReservation> memberReservations = BookReservationDatabase.getBookReservations().stream()
+    List<BookReservation> memberReservations = BookReservationDatabase.getInstance().getItems().stream()
         .filter(reservation -> reservation.getMember().equals(this))
         .toList();
 

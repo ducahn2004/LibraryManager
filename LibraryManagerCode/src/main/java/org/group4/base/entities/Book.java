@@ -52,5 +52,18 @@ public class Book {
     return authors;
   }
 
+  public void printDetails() {
+    System.out.println("ISBN: " + getISBN());
+    System.out.println("Title: " + getTitle());
+    System.out.println("Subject: " + getSubject());
+    System.out.println("Publisher: " + getPublisher());
+    System.out.println("Language: " + getLanguage());
+    System.out.println("Number of pages: " + getNumberOfPages());
+    System.out.println("Authors: ");
+    for (Author author : authors) {
+      System.out.println(author.getName());
+    }
+  }
+
 
 }

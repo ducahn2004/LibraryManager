@@ -50,18 +50,18 @@ public class BookReservation {
     if (bookItem.getStatus() == BookStatus.AVAILABLE) {
       this.setStatus(RevervationStatus.COMPLETED);
       bookItem.setStatus(BookStatus.RESERVED);
-      BookReservationDatabase.getBookReservations().add(this);
+      BookReservationDatabase.getInstance().addItem(this);
       return "Successfully reserved! You can check out the book";
     } else {
       this.setStatus(RevervationStatus.WAITING);
-      BookReservationDatabase.getBookReservations().add(this);
+      BookReservationDatabase.getInstance().addItem(this);
       return "Book is currently loaned. Reservation is waiting. Due date: " + bookItem.getDueDate();
     }
   }
 
   @Nullable
   public static BookReservation fetchReservationDetails(String barcode) {
-    List<BookReservation> reservations = BookReservationDatabase.getBookReservations();
+    List<BookReservation> reservations = BookReservationDatabase.getInstance().getItems();
 
     for (BookReservation reservation : reservations) {
       if (reservation.getBookItem().getBarcode().equals(barcode)) {

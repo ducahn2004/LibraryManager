@@ -55,12 +55,12 @@ public class BookLending {
     bookItem.setStatus(BookStatus.LOANED);
     bookItem.setDueDate(LocalDate.now().plusWeeks(2));
     member.setTotalBooksCheckedOut(member.getTotalBooksCheckedOut() + 1);
-    BookLendingDatabase.getBookLendings().add(this);
+    BookLendingDatabase.getInstance().addItem(this);
     return "Book lending successful. Due date: " + bookItem.getDueDate();
   }
 
   public static BookLending fetchLendingDetails(String barcode) {
-    return BookLendingDatabase.getBookLendings().stream()
+    return BookLendingDatabase.getInstance().getItems().stream()
         .filter(lending -> lending.getBookItem().getBarcode().equals(barcode))
         .findFirst()
         .orElse(null);
