@@ -2,6 +2,8 @@ package org.group4.base.test;
 
 import org.group4.base.users.Member;
 import org.group4.base.entities.Person;
+import org.group4.base.books.BookItem;
+import org.group4.base.database.BookItemDatabase;
 
 public class TestMemberFunction {
     public static void main(String[] args) {
@@ -10,6 +12,7 @@ public class TestMemberFunction {
 
         testGetDateOfMembership(member1);
         testFetchMemberDetails("22022171");
+        testReserveBookItem(member1);
     }
 
     public static void testGetDateOfMembership(Member member) {
@@ -26,5 +29,12 @@ public class TestMemberFunction {
         } else {
             System.out.println("Member with ID: " + id + " not found.");
         }
+    }
+
+    public static void testReserveBookItem(Member member) {
+        member.setTotalBooksCheckedOut(5);
+        // Fetch a sample BookItem from the database
+        BookItem bookItem = BookItemDatabase.getBookItems().getFirst();
+        member.reserveBookItem(bookItem);
     }
 }

@@ -1,24 +1,28 @@
 package org.group4.base.notifications;
 
 import java.time.LocalDate;
+import java.util.Random;
+
+import org.group4.base.users.Member;
+import org.group4.base.books.BookItem;
+import org.group4.base.database.NotificationDatabase;
 
 /**
  * Lop co so cho cac loai thong bao.
  */
 public class Notification {
-  private int notificationId; // Ma so cua thong bao.
-  private LocalDate createdOn; // Ngay tao thong bao.
+  private final int notificationId; // Ma so cua thong bao.
+  private final LocalDate createdOn; // Ngay tao thong bao.
   private String content; // Noi dung thong bao.
 
   /**
    * Tao mot thong bao moi.
    * @param notificationId Ma so cua thong bao.
-   * @param createdOn Ngay tao thong bao.
    * @param content Noi dung thong bao.
    */
-  public Notification(int notificationId, LocalDate createdOn, String content) {
+  public Notification(int notificationId, String content) {
     this.notificationId = notificationId;
-    this.createdOn = createdOn;
+    this.createdOn = LocalDate.now();
     this.content = content;
   }
 
@@ -26,16 +30,8 @@ public class Notification {
     return notificationId;
   }
 
-  public void setNotificationId(int notificationId) {
-    this.notificationId = notificationId;
-  }
-
   public LocalDate getCreatedOn() {
     return createdOn;
-  }
-
-  public void setCreatedOn(LocalDate createdOn) {
-    this.createdOn = createdOn;
   }
 
   public String getContent() {
@@ -46,12 +42,11 @@ public class Notification {
     this.content = content;
   }
 
-
-  public boolean sendNotification() {
-    if (this.content == null || this.content.isEmpty()) {
-      return false;
-    }
-    return true;
+  public static void sendNotification(Member member, String content) {
+    int notificationId = new Random().nextInt();
+    Notification notification = new Notification(notificationId, content);
+    NotificationDatabase.getNotifications().add(notification);
+    member.receiveNotification(notification);
   }
 
 

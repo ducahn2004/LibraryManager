@@ -11,12 +11,11 @@ public class EmailNotification extends Notification {
   /**
    * Tao thong bao qua email moi.
    * @param notificationId Ma so cua thong bao.
-   * @param createdOn Ngay tao thong bao.
    * @param content Noi dung thong bao.
    * @param email Dia chi email cua nguoi nhan thong bao.
    */
-  public EmailNotification(int notificationId, LocalDate createdOn, String content, String email) {
-    super(notificationId, createdOn, content);
+  public EmailNotification(int notificationId, String content, String email) {
+    super(notificationId, content);
     this.email = email;
   }
 

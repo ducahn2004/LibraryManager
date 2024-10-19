@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookItemDatabase {
-  private static List<BookItem> bookItems = new ArrayList<>();
+  private final static List<BookItem> bookItems = new ArrayList<>();
 
   static {
       // Add actual books to the database
@@ -47,7 +47,7 @@ public class BookItemDatabase {
               LocalDate.now().plusDays(25),
               50.00,
               BookFormat.PAPERBACK,
-              BookStatus.AVAILABLE,
+              BookStatus.RESERVED,
               LocalDate.now().minusYears(2),
               LocalDate.of(2008, 8, 1)
       ));

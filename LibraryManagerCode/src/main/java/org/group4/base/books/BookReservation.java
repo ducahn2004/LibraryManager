@@ -2,9 +2,7 @@ package org.group4.base.books;
 
 import java.time.LocalDate;
 import org.group4.base.enums.RevervationStatus;
-import org.group4.base.notifications.Notification;
-import org.group4.base.users.Member;
-import java.util.Random;
+
 
 /**
  * Quan ly viec dat sach.
@@ -43,20 +41,6 @@ public class BookReservation {
   public static BookReservation fetchReservationDetails(String barcode) {
     // TODO: Implement this method
     return null;
-  }
-
-  /**
-   * Notification duoc su dung de gui thong bao cho thanh vien
-   *
-   * @param member Thanh vien duoc gui thong bao.
-   * @param bookItem Sach duoc dat truoc.
-   */
-  public void notificationMember(Member member, BookItem bookItem) {
-    int notificationId = new Random().nextInt();
-    LocalDate createdOn = LocalDate.now();
-    String content = "Book " + bookItem.getTitle() + " has been reserved for you.";
-    Notification notification = new Notification(notificationId, createdOn, content);
-    member.receiveNotification(notification);
   }
 
 }
