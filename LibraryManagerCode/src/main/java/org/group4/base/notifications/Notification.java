@@ -4,22 +4,14 @@ import java.time.LocalDate;
 import java.util.Random;
 
 import org.group4.base.users.Member;
-import org.group4.base.books.BookItem;
 import org.group4.base.database.NotificationDatabase;
 
-/**
- * Lop co so cho cac loai thong bao.
- */
 public class Notification {
-  private final int notificationId; // Ma so cua thong bao.
-  private final LocalDate createdOn; // Ngay tao thong bao.
-  private String content; // Noi dung thong bao.
+  private final int notificationId;
+  private final LocalDate createdOn;
+  private String content;
 
-  /**
-   * Tao mot thong bao moi.
-   * @param notificationId Ma so cua thong bao.
-   * @param content Noi dung thong bao.
-   */
+  // Constructor
   public Notification(int notificationId, String content) {
     this.notificationId = notificationId;
     this.createdOn = LocalDate.now();
@@ -45,8 +37,14 @@ public class Notification {
   public static void sendNotification(Member member, String content) {
     int notificationId = new Random().nextInt();
     Notification notification = new Notification(notificationId, content);
-    NotificationDatabase.getNotifications().add(notification);
+    NotificationDatabase.addNotification(member, notification);
     member.receiveNotification(notification);
+  }
+
+  public void printNotification() {
+    System.out.println("Notification ID: " + getNotificationId());
+    System.out.println("Created On: " + getCreatedOn());
+    System.out.println("Content: " + getContent());
   }
 
 

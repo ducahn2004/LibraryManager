@@ -1,11 +1,13 @@
-// BookReservation.java
 package org.group4.base.books;
 
-import java.time.LocalDate;
-import java.util.List;
-import org.group4.base.enums.RevervationStatus;
-import org.group4.base.database.BookReservationDatabase;
 import org.jetbrains.annotations.Nullable;
+import java.util.List;
+import java.time.LocalDate;
+
+import org.group4.base.database.BookReservationDatabase;
+
+import org.group4.base.enums.BookStatus;
+import org.group4.base.enums.RevervationStatus;
 import org.group4.base.users.Member;
 
 public class BookReservation {
@@ -17,9 +19,9 @@ public class BookReservation {
   // Constructor
   public BookReservation(BookItem bookItem, Member member) {
     this.bookItem = bookItem;
-    this.status = RevervationStatus.NONE;
-    this.creationDate = LocalDate.now();
     this.member = member;
+    this.creationDate = LocalDate.now();
+    this.status = RevervationStatus.NONE;
   }
 
   // Getter
@@ -35,13 +37,26 @@ public class BookReservation {
     return status;
   }
 
-  public Member getMember() { // Add this getter
+  public Member getMember() {
     return member;
   }
 
   // Setter
   public void setStatus(RevervationStatus status) {
     this.status = status;
+  }
+
+  public String processReservation() {
+    if (bookItem.getStatus() == BookStatus.AVAILABLE) {
+      this.setStatus(RevervationStatus.COMPLETED);
+      bookItem.setStatus(BookStatus.RESERVED);
+      BookReservationDatabase.getBookReservations().add(this);
+      return "Successfully reserved! You can check out the book";
+    } else {
+      this.setStatus(RevervationStatus.WAITING);
+      BookReservationDatabase.getBookReservations().add(this);
+      return "Book is currently loaned. Reservation is waiting. Due date: " + bookItem.getDueDate();
+    }
   }
 
   @Nullable
@@ -55,5 +70,12 @@ public class BookReservation {
     }
 
     return null;
+  }
+
+  public void printDetails() {
+    System.out.println("BookItem: " + bookItem.getBarcode());
+    System.out.println("Member: " + member.getId());
+    System.out.println("Creation Date: " + getCreationDate());
+    System.out.println("Status: " + getStatus());
   }
 }

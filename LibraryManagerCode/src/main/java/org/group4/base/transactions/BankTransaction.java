@@ -28,11 +28,7 @@ public class BankTransaction extends FineTransaction {
 
   public boolean processBankPayment() {
     // Implement bank validation logic here
-    if (validateBank()) {
-      isCompleted();
-      return true;
-    }
-    return false;
+    return validateBank();
   }
 
   private boolean validateBank() {

@@ -17,10 +17,6 @@ public class CashTransaction extends FineTransaction {
   }
 
   public boolean processCashPayment() {
-    if (cashTendered >= getFine().getAmount()) {
-
-      return true;
-    }
-    return false;
+    return cashTendered >= getFine().getAmount();
   }
 }

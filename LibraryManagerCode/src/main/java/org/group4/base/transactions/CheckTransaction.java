@@ -28,11 +28,7 @@ public class CheckTransaction extends FineTransaction {
 
   public boolean processCheckPayment() {
     // Implement check validation logic here
-    if (validateCheck()) {
-      isCompleted();
-      return true;
-    }
-    return false;
+    return validateCheck();
   }
 
   private boolean validateCheck() {

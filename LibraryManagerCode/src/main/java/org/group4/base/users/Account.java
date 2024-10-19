@@ -6,7 +6,7 @@ import org.group4.base.enums.AccountStatus;
 
 public class Account {
 
-  private String id;
+  private final String id;
   private String password;
   private final Person person;
   private AccountStatus status;
@@ -21,10 +21,6 @@ public class Account {
 
   public String getId() {
     return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getPassword() {
@@ -43,6 +39,11 @@ public class Account {
     this.status = status;
   }
 
+  public void setPerson(Person person) {
+    this.person.setName(person.getName());
+    this.person.setEmail(person.getEmail());
+  }
+
   public Person getPerson() {
     return person;
   }
@@ -52,12 +53,12 @@ public class Account {
   }
 
   public void closedAccount() {
-    this.status = AccountStatus.CLOSED;
+    setStatus(AccountStatus.CLOSED);
     AccountDatabase.getAccounts().removeIf(acc -> acc.getId().equals(this.id));
   }
 
   public boolean login(String id, String password) {
-    return this.id.equals(id) && this.password.equals(password) && this.status == AccountStatus.ACTIVE;
+    return this.id.equals(id) && getPassword().equals(password) && isActive();
   }
 
   public static boolean register(String id, String password, String rePassword, Person person) {
@@ -72,8 +73,8 @@ public class Account {
   }
 
   public boolean changePassword(String oldPassword, String newPassword, String reNewPassword) {
-    if (this.password.equals(oldPassword) && newPassword.equals(reNewPassword)) {
-      this.password = newPassword;
+    if (getPassword().equals(oldPassword) && newPassword.equals(reNewPassword)) {
+      setPassword(newPassword);
       return true;
     }
     return false;
@@ -87,7 +88,7 @@ public class Account {
     if (!newPassword.equals(reNewPassword)) {
       return false;
     }
-    this.password = newPassword;
+    setPassword(newPassword);
     return true;
   }
 }
