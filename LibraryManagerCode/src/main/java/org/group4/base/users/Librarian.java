@@ -5,25 +5,9 @@ import org.group4.base.enums.AccountStatus;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
 import org.group4.base.catalog.Rack;
-import org.group4.base.database.AccountDatabase;
 
-/**
- * Thu thu cua thu vien.
- * Quan ly viec them, sua, xoa sach.
- * Quan ly viec block, unblock tai khoan cua nguoi dung.
- * Co the thay doi thong tin cua tai khoan cua minh.
- * Co the xem thong tin cua sach, nguoi dung.
- * Co the xem thong tin cua cac giao dich.
- * Co the xem thong tin cua cac thong bao.
- * Co the xem thong tin cua cac phieu muon, dat, huy sach.
- */
 public class Librarian extends Account {
 
-  /**
-   * @param id Ma so cua tai khoan.
-   * @param password Mat khau cua tai khoan.
-   * @param person Nguoi dung cua tai khoan.
-   */
   public Librarian(String id, String password, Person person) {
     super(id, password, person);
   }

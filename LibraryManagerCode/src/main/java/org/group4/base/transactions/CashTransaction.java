@@ -1,16 +1,8 @@
 package org.group4.base.transactions;
 
-/**
- * Giao dich bang tien mat.
- */
 public class CashTransaction extends FineTransaction {
-  double cashTendered; // So tien khach tra.
+  private double cashTendered;
 
-  /**
-   * Tao giao dich bang tien mat moi.
-   * @param fine Phat can thanh toan.
-   * @param cashTendered So tien khach tra.
-   */
   public CashTransaction(Fine fine, double cashTendered) {
     super(fine);
     this.cashTendered = cashTendered;
@@ -24,7 +16,11 @@ public class CashTransaction extends FineTransaction {
     this.cashTendered = cashTendered;
   }
 
-  public void processCashPayment() {
-    // TODO: Implement this method.
+  public boolean processCashPayment() {
+    if (cashTendered >= getFine().getAmount()) {
+
+      return true;
+    }
+    return false;
   }
 }

@@ -4,35 +4,20 @@ import org.group4.base.database.AccountDatabase;
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 
-/**
- * Tai khoan cua nguoi dung.
- * Chua cac thong tin cua tai khoan nhu id, password, trang thai, nguoi dung.
- * Co cac phuong thuc de thay doi mat khau, dang nhap, dang ky tai khoan.
- * Co cac phuong thuc de kiem tra trang thai cua tai khoan.
- * Co cac phuong thuc de thay doi trang thai cua tai khoan.
- * Co cac phuong thuc de reset mat khau.
- */
 public class Account {
 
-  private String id; // Ma so cua tai khoan.
-  private String password; // Mat khau cua tai khoan.
-  private final Person person; // Nguoi dung cua tai khoan.
-  private AccountStatus status; // Trang thai cua tai khoan.
+  private String id;
+  private String password;
+  private final Person person;
+  private AccountStatus status;
 
-  /**
-   * Tao mot tai khoan moi.
-   *
-   * @param id       Ma so cua tai khoan.
-   * @param password Mat khau cua tai khoan.
-   * @param person   Nguoi dung cua tai khoan.
-   */
+  // Constructor
   public Account(String id, String password, Person person) {
     this.id = id;
     this.password = password;
     this.person = person;
-    this.status = AccountStatus.ACTIVE;
+    this.status = AccountStatus.NONE;
   }
-
 
   public String getId() {
     return id;
@@ -81,6 +66,7 @@ public class Account {
       return false;
     }
     Account newAccount = new Account(id, password, person);
+    newAccount.setStatus(AccountStatus.ACTIVE);
     AccountDatabase.getAccounts().add(newAccount);
     return true;
   }

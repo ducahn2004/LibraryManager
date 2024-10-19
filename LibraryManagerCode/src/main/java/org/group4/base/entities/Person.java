@@ -1,32 +1,27 @@
 package org.group4.base.entities;
 
-/**
- * Dai dien cho nguoi dung cua he thong.
- */
 public class Person {
-  private String name; // Ten cua nguoi dung.
-  private String email; // Dia chi email cua nguoi dung.
+  private String name;
+  private String email;
 
-  /**
-   * Tao nguoi dung moi.
-   * @param name Ten cua nguoi dung.
-   * @param email  Dia chi email cua nguoi dung.
-   */
+  // Constructor
   public Person(String name, String email) {
     this.name = name;
     this.email = email;
   }
 
+  // Getter
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public String getEmail() {
     return email;
+  }
+
+  // Setter
+  public void setName(String name) {
+    this.name = name;
   }
 
   public void setEmail(String email) {

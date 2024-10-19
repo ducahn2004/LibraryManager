@@ -5,26 +5,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.group4.base.entities.Author;
 import org.group4.base.books.BookItem;
 
-/**
- * Quan ly tim kiem va to chuc sach trong thu vien.
- */
-public class Catalog {
-  private final LocalDate creationDate; // Ngay tao catalog
-  private int totalBooks; // Tong so sach trong catalog
-  private final Map<String, List<BookItem>> bookTitles; // Danh sach cac sach theo tieu de
-  private final Map<String, List<BookItem>> bookAuthors; // Danh sach cac sach theo tac gia
-  private final Map<String, List<BookItem>> bookSubjects; // Danh sach cac sach theo chu de
-  private final Map<String, List<BookItem>> bookPublicationDates; // Danh sach cac sach theo ngay xuat ban
 
-  /**
-   * Tao mot catalog moi.
-   * @param creationDate Ngay tao catalog
-   */
-  public Catalog(LocalDate creationDate) {
-    this.creationDate = creationDate;
+public class Catalog {
+  private final LocalDate creationDate;
+  private int totalBooks;
+  private final Map<String, List<BookItem>> bookTitles;
+  private final Map<String, List<BookItem>> bookAuthors;
+  private final Map<String, List<BookItem>> bookSubjects;
+  private final Map<String, List<BookItem>> bookPublicationDates;
+
+  public Catalog() {
+    this.creationDate = LocalDate.now();
     this.totalBooks = 0;
     this.bookTitles = new HashMap<>();
     this.bookAuthors = new HashMap<>();

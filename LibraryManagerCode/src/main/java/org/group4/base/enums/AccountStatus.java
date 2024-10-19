@@ -1,12 +1,9 @@
 package org.group4.base.enums;
 
-/**
- * Trang thai cua tai khoan.
- */
 public enum AccountStatus {
-  ACTIVE, // Tai khoan dang hoat dong.
-  CLOSED, // Tai khoan da bi dong.
-  CANCELED, // Tai khoan da bi huy.
-  BLACKLISTED, // Tai khoan bi cam.
-  NONE // Khong co trang thai nao.
+  ACTIVE, // Account is active.
+  CLOSED, // Account is closed.
+  CANCELED, // Account is canceled.
+  BLACKLISTED, // Account is blacklisted.
+  NONE // No status.
 }

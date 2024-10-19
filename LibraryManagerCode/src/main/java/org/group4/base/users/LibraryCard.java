@@ -2,22 +2,13 @@ package org.group4.base.users;
 
 import java.time.LocalDate;
 
-/**
- * Quan ly the thu vien.
- */
 public class LibraryCard {
-  private String cardNumber; // Ma so the.
-  private String barcode; // Ma vach.
-  private LocalDate issueDate; // Ngay cap the.
-  private boolean active; // Trang thai hoat dong cua the.
+  private String cardNumber;
+  private String barcode;
+  private LocalDate issueDate;
+  private boolean active;
 
-  /**
-   * Tao the thu vien moi.
-   * @param cardNumber Ma so the.
-   * @param barcode Ma vach.
-   * @param issueDate Ngay cap the.
-   * @param active Trang thai hoat dong cua the.
-   */
+  // Constructor
   public LibraryCard(String cardNumber, String barcode, LocalDate issueDate, boolean active) {
     this.cardNumber = cardNumber;
     this.barcode = barcode;

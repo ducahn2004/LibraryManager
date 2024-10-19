@@ -1,17 +1,15 @@
 package org.group4.base.transactions;
 
-/**
- * Dai dien cho tien phat khi tra sach tre.
- */
-public class Fine {
-  private double amount; // So tien phat.
+import java.time.LocalDate;
 
-  /**
-   * Tao tien phat moi.
-   * @param amount So tien phat.
-   */
-  public Fine(double amount) {
-    this.amount = amount;
+import org.group4.base.books.BookItem;
+import org.jetbrains.annotations.NotNull;
+
+public class Fine {
+  private double amount;
+
+  public Fine() {
+    this.amount = 0;
   }
 
   public double getAmount() {
@@ -22,13 +20,22 @@ public class Fine {
     this.amount = amount;
   }
 
-  public double calculateFine() {
-    // TODO: Implement this method.
-    return amount;
-  }
+ public void calculateFine(@NotNull BookItem bookItem) {
+    LocalDate dueDate = bookItem.getDueDate();
+    double overdueDays = LocalDate.now().toEpochDay() - dueDate.toEpochDay();
+    if (overdueDays > 0) {
+        setAmount(overdueDays * 20000);
+    } else {
+        setAmount(0);
+    }
+}
 
-  public void payFine(FineTransaction transaction) {
-    // TODO: Implement this method.
+  public void payFine(@NotNull FineTransaction transaction) {
+    if (transaction.processFinePayment()) {
+      System.out.println("Fine paid successfully.");
+    } else {
+      System.out.println("Fine payment failed.");
+    }
   }
 
 }

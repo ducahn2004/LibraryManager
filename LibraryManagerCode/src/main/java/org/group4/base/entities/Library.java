@@ -4,43 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 import org.group4.base.books.BookItem;
 
-/**
- * Dai dien cho thu vien, quan ly danh sach cac sach.
- */
 public class Library {
-  private String name; // Ten cua thu vien.
-  private Address address; // Dia chi cua thu vien.
-  private List<BookItem> bookItems; // Danh sach cac sach trong thu vien.
+  private String name;
+  private Address address;
+  private final List<BookItem> bookItems;
 
-  /**
-   * Tao mot thu vien moi.
-   * @param name Ten cua thu vien.
-   * @param address Dia chi cua thu vien.
-   */
+  // Constructor
   public Library(String name, Address address) {
     this.name = name;
     this.address = address;
     this.bookItems = new ArrayList<>();
   }
 
+  // Getter
   public String getName() {
     return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public Address getAddress() {
     return address;
   }
 
-  public void setAddress(Address address) {
-    this.address = address;
-  }
-
   public List<BookItem> getBookItems() {
     return bookItems;
+  }
+
+  // Setter
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
   }
 
 }

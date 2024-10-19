@@ -1,18 +1,9 @@
 package org.group4.base.transactions;
 
-/**
- * Giao dich bang check.
- */
 public class CheckTransaction extends FineTransaction {
-  private String bankName; // Ten ngan hang.
-  private String checkNumber; // So cua check.
+  private String bankName;
+  private String checkNumber;
 
-  /**
-   * Tao giao dich bang check moi.
-   * @param fine Phat can thanh toan.
-   * @param bankName Ten ngan hang.
-   * @param checkNumber So cua check.
-   */
   public CheckTransaction(Fine fine, String bankName, String checkNumber) {
     super(fine);
     this.bankName = bankName;
@@ -35,7 +26,17 @@ public class CheckTransaction extends FineTransaction {
     this.checkNumber = checkNumber;
   }
 
-  public void processCheckPayment() {
-    // TODO: Implement this method.
+  public boolean processCheckPayment() {
+    // Implement check validation logic here
+    if (validateCheck()) {
+      isCompleted();
+      return true;
+    }
+    return false;
+  }
+
+  private boolean validateCheck() {
+    // Placeholder for actual check validation logic
+    return true;
   }
 }
