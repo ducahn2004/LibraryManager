@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Random;
 
 import org.group4.base.users.Member;
-import org.group4.base.database.NotificationDatabase;
+import org.group4.database.NotificationDatabase;
 
 public class Notification {
   private final int notificationId;

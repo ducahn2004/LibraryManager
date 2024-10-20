@@ -61,7 +61,7 @@ public class Book {
     System.out.println("Number of pages: " + getNumberOfPages());
     System.out.println("Authors: ");
     for (Author author : authors) {
-      System.out.println(author.getName());
+      System.out.println(author.name());
     }
   }
 

@@ -3,13 +3,15 @@ package org.group4.base.users;
 import java.util.List;
 import java.time.LocalDate;
 
-import org.group4.base.database.NotificationDatabase;
+import org.group4.database.NotificationDatabase;
+import org.group4.base.notifications.EmailNotification;
+import org.group4.base.notifications.PostalNotification;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import org.group4.base.database.BookLendingDatabase;
-import org.group4.base.database.BookReservationDatabase;
-import org.group4.base.database.MemberDatabase;
+import org.group4.database.BookLendingDatabase;
+import org.group4.database.BookReservationDatabase;
+import org.group4.database.MemberDatabase;
 
 import org.group4.base.enums.BookStatus;
 import org.group4.base.enums.RevervationStatus;
@@ -90,41 +92,25 @@ public class Member extends Account {
       }
     }
 
-    Notification.sendNotification(this, notificationMessage);
+    EmailNotification.sendEmailNotification(this, notificationMessage);
   }
 
   public void renewBookItem(@NotNull BookItem bookItem) {
-    String notificationMessage;
-
-    if (bookItem.getStatus() == BookStatus.LOANED) {
-      BookReservation reservation = BookReservation.fetchReservationDetails(bookItem.getBarcode());
-      if (reservation == null || reservation.getStatus() != RevervationStatus.WAITING) {
-        bookItem.setDueDate(bookItem.getDueDate().plusWeeks(2));
-        notificationMessage = "Book renewal successful. New due date: " + bookItem.getDueDate();
-      } else {
-        notificationMessage = "Book is reserved by another member. Cannot renew.";
-      }
+    BookLending lending = BookLending.fetchLendingDetails(bookItem.getBarcode());
+    if (lending != null ) {
+      Notification.sendNotification(this, lending.processRenew());
     } else {
-      notificationMessage = "Book is not currently loaned. Cannot renew.";
+      Notification.sendNotification(this, "Book renewal failed. No active lending found.");
     }
-
-    Notification.sendNotification(this, notificationMessage);
   }
 
   public void cancelReservation(@NotNull BookItem bookItem) {
-    String notificationMessage;
-
     BookReservation reservation = BookReservation.fetchReservationDetails(bookItem.getBarcode());
-    if (reservation != null && (reservation.getStatus() == RevervationStatus.WAITING ||
-        reservation.getStatus() == RevervationStatus.COMPLETED)) {
-      reservation.setStatus(RevervationStatus.CANCELED);
-      this.totalBooksCheckedOut--;
-      notificationMessage = "Reservation canceled successfully.";
+    if (reservation != null) {
+      Notification.sendNotification(this, reservation.processCancel());
     } else {
-      notificationMessage = "No active reservation found for this book.";
+      Notification.sendNotification(this, "No active reservation found for this book.");
     }
-
-    Notification.sendNotification(this, notificationMessage);
   }
 
   public void returnBookItem(@NotNull BookItem bookItem) {
@@ -192,7 +178,7 @@ public class Member extends Account {
       }
     }
 
-    Notification.sendNotification(this, notificationMessage);
+    PostalNotification.sendPostalNotification(this, notificationMessage);
   }
 
   public void viewLendingHistory() {

@@ -1,6 +1,6 @@
 package org.group4.base.users;
 
-import org.group4.base.database.AccountDatabase;
+import org.group4.database.AccountDatabase;
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 
@@ -42,6 +42,7 @@ public class Account {
   public void setPerson(Person person) {
     this.person.setName(person.getName());
     this.person.setEmail(person.getEmail());
+    this.person.setAddress(person.getAddress());
   }
 
   public Person getPerson() {
@@ -57,8 +58,9 @@ public class Account {
     AccountDatabase.getInstance().getItems().removeIf(acc -> acc.getId().equals(this.id));
   }
 
-  public boolean login(String id, String password) {
-    return this.id.equals(id) && getPassword().equals(password) && isActive();
+  public static boolean login(String id, String password) {
+    return AccountDatabase.getInstance().getItems().stream()
+        .anyMatch(acc -> acc.getId().equals(id) && acc.getPassword().equals(password));
   }
 
   public static boolean register(String id, String password, String rePassword, Person person) {

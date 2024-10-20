@@ -6,7 +6,7 @@ import org.group4.base.entities.Author;
 import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
-import org.group4.base.database.BookItemDatabase;
+import org.group4.database.BookItemDatabase;
 import org.jetbrains.annotations.Nullable;
 
 public class BookItem extends Book {
@@ -78,11 +78,20 @@ public class BookItem extends Book {
     this.dueDate = dueDate;
   }
 
-  // Method
+  /**
+   * Method check out a book item.
+   *
+   * @return true if the book item is available and not reference only, otherwise false
+   */
   public boolean checkOut() {
     return !this.isReferenceOnly && this.status == BookStatus.AVAILABLE;
   }
 
+  /**
+   * Method fetches the book item details by barcode.
+   *
+   * @return the book item if found, otherwise null
+   */
   @Nullable
   public static BookItem fetchBookItemDetails(String barcode) {
     List<BookItem> bookItems = BookItemDatabase.getInstance().getItems();
@@ -94,6 +103,7 @@ public class BookItem extends Book {
     return null;
   }
 
+  // Method prints the book item details.
   @Override
   public void printDetails() {
     super.printDetails();

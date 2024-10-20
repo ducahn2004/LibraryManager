@@ -45,8 +45,8 @@ public class Catalog {
       bookTitles.get(bookItem.getTitle()).add(bookItem);
 
       for (Author author : bookItem.getAuthors()) {
-        bookAuthors.putIfAbsent(author.getName(), new ArrayList<>());
-        bookAuthors.get(author.getName()).add(bookItem);
+        bookAuthors.putIfAbsent(author.name(), new ArrayList<>());
+        bookAuthors.get(author.name()).add(bookItem);
       }
 
       bookSubjects.putIfAbsent(bookItem.getSubject(), new ArrayList<>());

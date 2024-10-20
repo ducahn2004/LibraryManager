@@ -1,8 +1,9 @@
-package org.group4.base.test;
+package org.group4.test;
 
+import org.group4.base.entities.Address;
 import org.group4.base.entities.Person;
 import org.group4.base.users.Account;
-import org.group4.base.database.AccountDatabase;
+import org.group4.database.AccountDatabase;
 
 public class TestAccountFunction {
 
@@ -39,7 +40,8 @@ public class TestAccountFunction {
         String id = "22022189";
         String password = "123";
         String rePassword = "123";
-        Person person = new Person("Tran Dog Ahn", "22022189@vnu.edu.vn");
+        Address address = new Address("Hanoi", "Cau Giay", "Xuan Thuy", "Khuat Duy Tien", 123);
+        Person person = new Person("Tran Dog Ahn", "22022189@vnu.edu.vn", address);
 
         boolean registerSuccess = Account.register(id, password, rePassword, person);
 
@@ -54,7 +56,8 @@ public class TestAccountFunction {
         String id = "22022168";
         String password = "234";
         String rePassword = "234";
-        Person person = new Person("Nguyen Tuan Anh", "22022168@vnu.edu.vn");
+        Address address = new Address("Hanoi", "Cau Giay", "Xuan Thuy", "Khuat Duy Tien", 123);
+        Person person = new Person("Nguyen Tuan Anh", "22022168@vnu.edu.vn", address);
 
         boolean registerSuccess = Account.register(id, password, rePassword, person);
 

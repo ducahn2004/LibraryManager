@@ -1,4 +1,4 @@
-package org.group4.base.database;
+package org.group4.database;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

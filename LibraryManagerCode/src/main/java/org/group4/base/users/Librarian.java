@@ -1,15 +1,20 @@
 package org.group4.base.users;
 
 import java.util.List;
+import java.util.Scanner;
 
-import org.group4.base.database.BookDatabase;
-import org.group4.base.database.BookItemDatabase;
-import org.group4.base.database.AccountDatabase;
+import org.group4.database.BookDatabase;
+import org.group4.database.BookItemDatabase;
+import org.group4.database.AccountDatabase;
 
 import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
+
+import org.group4.base.exceptions.MissingInputException;
+import org.group4.base.exceptions.InvalidInputException;
+import org.group4.base.exceptions.InputFormatException;
 
 import org.jetbrains.annotations.NotNull;
 

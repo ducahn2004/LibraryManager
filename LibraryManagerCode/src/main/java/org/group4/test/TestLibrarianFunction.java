@@ -1,6 +1,7 @@
-package org.group4.base.test;
+package org.group4.test;
 
 import java.util.ArrayList;
+
 import org.group4.base.users.Librarian;
 import org.group4.base.entities.Person;
 import org.group4.base.entities.Book;
@@ -8,9 +9,10 @@ import org.group4.base.books.BookItem;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.base.users.Member;
-import org.group4.base.database.BookDatabase;
-import org.group4.base.database.BookItemDatabase;
-import org.group4.base.database.AccountDatabase;
+import org.group4.database.BookDatabase;
+import org.group4.database.BookItemDatabase;
+import org.group4.database.AccountDatabase;
+import org.group4.base.entities.Address;
 
 import java.time.LocalDate;
 
@@ -27,7 +29,8 @@ public class TestLibrarianFunction {
     }
 
     public static void testAddBook() {
-        Person librarianPerson = new Person("Librarian", "librarian@example.com");
+        Address address = new Address("Thai Binh", "Thai Thuy", "Thai Nam", "Chiu", 123);
+        Person librarianPerson = new Person("Librarian", "librarian@example.com", address);
         Librarian librarian = new Librarian("lib001", "password", librarianPerson);
 
         Book book = new Book("2222222222", "Book", "Author", "Publisher",
@@ -43,7 +46,8 @@ public class TestLibrarianFunction {
     }
 
     public static void testAddBookItem() {
-        Person librarianPerson = new Person("Librarian", "librarian@example.com");
+        Address address = new Address("Thai Binh", "Thai Thuy", "Thai Nam", "Chiu", 123);
+        Person librarianPerson = new Person("Librarian", "librarian@example.com", address);
         Librarian librarian = new Librarian("lib001", "password", librarianPerson);
 
         BookItem bookItem = new BookItem("2222222222", "Book", "Author", "Publisher",
@@ -61,7 +65,8 @@ public class TestLibrarianFunction {
     }
 
     public static void testRemoveBookItem() {
-        Person librarianPerson = new Person("Librarian", "librarian@example.com");
+        Address address = new Address("Thai Binh", "Thai Thuy", "Thai Nam", "Chiu", 123);
+        Person librarianPerson = new Person("Librarian", "librarian@example.com", address);
         Librarian librarian = new Librarian("lib001", "password", librarianPerson);
 
         BookItem bookItem = BookItemDatabase.getInstance().getItems().getFirst();
@@ -71,7 +76,8 @@ public class TestLibrarianFunction {
     }
 
     public static void testBlockMember() {
-        Person librarianPerson = new Person("Librarian", "librarian@example.com");
+        Address address = new Address("Thai Binh", "Thai Thuy", "Thai Nam", "Chiu", 123);
+        Person librarianPerson = new Person("Librarian", "librarian@example.com", address);
         Librarian librarian = new Librarian("lib001", "password", librarianPerson);
 
         boolean result = librarian.blockMember("22022171");
@@ -79,7 +85,8 @@ public class TestLibrarianFunction {
     }
 
     public static void testUnblockMember() {
-        Person librarianPerson = new Person("Librarian", "librarian@example.com");
+        Address address = new Address("Thai Binh", "Thai Thuy", "Thai Nam", "Chiu", 123);
+        Person librarianPerson = new Person("Librarian", "librarian@example.com", address);
         Librarian librarian = new Librarian("lib001", "password", librarianPerson);
 
         boolean result = librarian.unblockMember("22022171");

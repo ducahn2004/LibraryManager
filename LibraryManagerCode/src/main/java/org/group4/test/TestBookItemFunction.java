@@ -1,4 +1,4 @@
-package org.group4.base.test;
+package org.group4.test;
 
 import org.group4.base.books.BookItem;
 
