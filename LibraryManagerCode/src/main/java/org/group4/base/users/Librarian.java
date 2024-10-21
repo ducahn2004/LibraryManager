@@ -36,7 +36,7 @@ public class Librarian extends Account {
 
   public void removeBookItem(String barcode) {
     BookItemDatabase.getInstance().getItems().removeIf(bookItem -> bookItem.getBarcode().equals(barcode));
-}
+  }
 
   public static boolean blockMember(String id) {
     List<Account> accounts = AccountDatabase.getInstance().getItems();
