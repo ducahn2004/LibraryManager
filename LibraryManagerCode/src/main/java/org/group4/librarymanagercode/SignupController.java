@@ -21,10 +21,10 @@ import org.group4.base.enums.University;
 
 public class SignupController {
   @FXML
-  private TextField FirstNameField;
+  private TextField PhoneField;
 
   @FXML
-  private TextField LastNameField;
+  private TextField FullNameField;
 
   @FXML
   private TextField StudentIDField;
@@ -50,8 +50,8 @@ public class SignupController {
   @FXML
   private Button LoginButton;
 
-  private String firstName = "";
-  private String lastName  = "";
+  private String fullName = "";
+  private String phone  = "";
   private String email = "";
   private int studentID = 0;
   private String password = "";
@@ -67,8 +67,8 @@ public class SignupController {
 
   // Phương thức lấy thông tin từ các trường nhập
   private void registerUser() {
-    firstName = FirstNameField.getText();
-    lastName = LastNameField.getText();
+    fullName = FullNameField.getText();
+    phone = PhoneField.getText();
     email = EmailField.getText();
     password = PasswordField.getText();
     repeatedPassword = repeatedPasswordField.getText();
@@ -104,7 +104,7 @@ public class SignupController {
 
 
   private boolean isInputValid() {
-    if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || graduateYear.isEmpty()) {
+    if (fullName.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty() || graduateYear.isEmpty()) {
       showAlert(Alert.AlertType.ERROR, "Input Error", "All fields are required!");
       return false;
     }
