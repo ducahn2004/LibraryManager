@@ -1,17 +1,24 @@
 package org.group4.test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import org.group4.base.books.BookItem;
 import org.group4.base.entities.Author;
+import org.group4.base.entities.Book;
 import org.group4.base.entities.Person;
 import org.group4.base.entities.Address;
+import org.group4.base.enums.BookFormat;
+import org.group4.base.exceptions.BookNotAvailableException;
 import org.group4.base.exceptions.InputFormatException;
 import org.group4.base.exceptions.InvalidInputException;
 import org.group4.base.exceptions.MissingInputException;
 import org.group4.base.users.Librarian;
 import org.group4.base.users.Account;
 import org.group4.database.AccountDatabase;
+import org.group4.database.BookDatabase;
+import org.group4.database.BookItemDatabase;
 
 public class TestFunction {
 
@@ -83,7 +90,7 @@ public class TestFunction {
             System.out.println("Login successful!");
             try {
               afterLogin();
-            } catch (MissingInputException | InputFormatException | InvalidInputException e) {
+            } catch (MissingInputException | InputFormatException | InvalidInputException | BookNotAvailableException e) {
               System.err.println("Error: " + e.getMessage());
             }
           } else {
@@ -100,7 +107,7 @@ public class TestFunction {
     }
   }
 
-  public static void afterLogin() throws MissingInputException, InputFormatException, InvalidInputException {
+  public static void afterLogin() throws MissingInputException, InputFormatException, InvalidInputException, BookNotAvailableException {
     Scanner scanner = new Scanner(System.in);
     System.out.println("Choose an option:");
     System.out.println("1. Add book");
@@ -180,7 +187,6 @@ public class TestFunction {
         }
         break;
       case 2:
-        // Add book item logic
         System.out.print("Enter book ISBN: ");
         String isbn = scanner.nextLine();
         if (isbn.isEmpty()) {
@@ -189,8 +195,96 @@ public class TestFunction {
         if (!isbn.matches("\\d{13}")) {
           throw new InputFormatException("ISBN must be a 13-digit number.");
         }
+        BookDatabase.getInstance().getItems().forEach(book -> {
+          if (book.getISBN().equals(isbn)) {
+            System.out.println("Book found: " + book.getTitle());
+          } else {
+            try {
+              throw new BookNotAvailableException("Book not found!");
+            } catch (BookNotAvailableException e) {
+              throw new RuntimeException(e);
+            }
+          }
+        });
+
+        System.out.print("Enter Barcode: ");
+        String barcode = scanner.nextLine();
+        if (barcode.isEmpty()) {
+          throw new MissingInputException("Barcode is missing.");
+        }
+
+        System.out.print("Enter Reference Only: ");
+        String referenceOnlyStr = scanner.nextLine();
+        if (referenceOnlyStr.isEmpty()) {
+          throw new MissingInputException("Reference Only is missing.");
+        }
+        boolean referenceOnly;
+        try {
+          referenceOnly = Boolean.parseBoolean(referenceOnlyStr);
+        } catch (NumberFormatException e) {
+          throw new InputFormatException("Reference Only must be a valid boolean.");
+        }
+
+        System.out.print("Enter Price: ");
+        String priceStr = scanner.nextLine();
+        if (priceStr.isEmpty()) {
+          throw new MissingInputException("Price is missing.");
+        }
+        int price;
+        try {
+          price = Integer.parseInt(priceStr);
+        } catch (NumberFormatException e) {
+          throw new InputFormatException("Price must be a valid number.");
+        }
+
+        System.out.print("Enter Format: ");
+        String formatStr = scanner.nextLine();
+        if (formatStr.isEmpty()) {
+          throw new MissingInputException("Format is missing.");
+        }
+        BookFormat format;
+        try {
+          format = BookFormat.valueOf(formatStr);
+        } catch (IllegalArgumentException e) {
+          throw new InvalidInputException("Format must be a valid format.");
+        }
+
+        System.out.print("Enter Date of Purchase: ");
+        String dateOfPurchaseStr = scanner.nextLine();
+        if (dateOfPurchaseStr.isEmpty()) {
+          throw new MissingInputException("Date of Purchase is missing.");
+        }
+        LocalDate dateOfPurchase = LocalDate.parse(dateOfPurchaseStr);
+
+
+        System.out.print("Publication Date: ");
+        String publicationDateStr = scanner.nextLine();
+        if (publicationDateStr.isEmpty()) {
+          throw new MissingInputException("Publication Date is missing.");
+        }
+        LocalDate publicationDate = LocalDate.parse(publicationDateStr);
+
+        Book book1 = BookDatabase.getInstance().getItems().getFirst();
+        BookItem bookItem = new BookItem(book1.getISBN(), book1.getTitle(), book1.getSubject(),
+            book1.getPublisher(), book1.getLanguage(),
+            book1.getNumberOfPages(), book1.getAuthors(),
+            barcode,
+            referenceOnly, price,
+            format,
+            dateOfPurchase,
+            publicationDate);
+        BookItemDatabase.getInstance().getItems().add(bookItem);
         break;
       case 3:
+        System.out.println("Block member");
+        break;
+      case 4:
+        System.out.println("Unblock member");
+      case 5:
+        System.out.println("View member details");
+      case 6:
+        System.out.println("View book details");
+      case 7:
         System.out.println("Exiting...");
         scanner.close();
         break;
