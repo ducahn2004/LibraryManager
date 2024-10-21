@@ -11,6 +11,7 @@ module org.group4.librarymanagercode {
   requires com.almasb.fxgl.all;
   requires com.jfoenix;
   requires java.logging;
+  requires annotations;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;
