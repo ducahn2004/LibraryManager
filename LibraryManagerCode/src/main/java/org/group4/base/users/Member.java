@@ -74,29 +74,26 @@ public class Member extends Account {
     notification.printNotification();
   }
 
-  public void reserveBookItem(@NotNull BookItem bookItem) throws IllegalStateException {
+public void reserveBookItem(@NotNull BookItem bookItem) throws IllegalStateException {
     String notificationMessage;
 
     if (bookItem.checkOut()) {
-      BookReservation bookReservation = new BookReservation(bookItem, this);
-      notificationMessage = bookReservation.processReservation();
+        BookReservation bookReservation = new BookReservation(bookItem, this);
+        notificationMessage = bookReservation.processReservation();
     } else {
-      switch (bookItem.getStatus()) {
-        case LOST:
-          throw new IllegalStateException("Book is lost!");
-        case LOANED:
-          BookReservation bookReservation = new BookReservation(bookItem, this);
-          notificationMessage = bookReservation.processReservation();
-          break;
-        case RESERVED:
-          throw new IllegalStateException("Book is reserved!");
-        default:
-          throw new IllegalStateException("Book is reference only!");
-      }
+        notificationMessage = switch (bookItem.getStatus()) {
+            case LOST -> throw new IllegalStateException("Book is lost!");
+            case LOANED -> {
+                BookReservation bookReservation = new BookReservation(bookItem, this);
+                yield bookReservation.processReservation();
+            }
+            case RESERVED -> throw new IllegalStateException("Book is reserved!");
+            default -> throw new IllegalStateException("Book is reference only!");
+        };
     }
 
     EmailNotification.sendEmailNotification(this, notificationMessage);
-  }
+}
 
   public void renewBookItem(@NotNull BookItem bookItem) throws IllegalStateException {
     BookLending lending = BookLending.fetchLendingDetails(bookItem.getBarcode());
