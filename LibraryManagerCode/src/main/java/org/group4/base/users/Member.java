@@ -1,3 +1,4 @@
+// File: org/group4/base/users/Member.java
 package org.group4.base.users;
 
 import java.util.List;
@@ -5,7 +6,7 @@ import java.time.LocalDate;
 
 import org.group4.database.NotificationDatabase;
 import org.group4.base.notifications.EmailNotification;
-import org.group4.base.notifications.PostalNotification;
+import org.group4.base.notifications.PhoneNotification;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,47 +74,49 @@ public class Member extends Account {
     notification.printNotification();
   }
 
-  public void reserveBookItem(@NotNull BookItem bookItem) {
+  public void reserveBookItem(@NotNull BookItem bookItem) throws IllegalStateException {
     String notificationMessage;
 
     if (bookItem.checkOut()) {
       BookReservation bookReservation = new BookReservation(bookItem, this);
       notificationMessage = bookReservation.processReservation();
     } else {
-      if (bookItem.getStatus() == BookStatus.LOST) {
-        notificationMessage = "Book is lost!";
-      } else if (bookItem.getStatus() == BookStatus.LOANED) {
-        BookReservation bookReservation = new BookReservation(bookItem, this);
-        notificationMessage = bookReservation.processReservation();
-      } else if (bookItem.getStatus() == BookStatus.RESERVED) {
-        notificationMessage = "Book is reserved! ";
-      } else {
-        notificationMessage = "Book is reference only!";
+      switch (bookItem.getStatus()) {
+        case LOST:
+          throw new IllegalStateException("Book is lost!");
+        case LOANED:
+          BookReservation bookReservation = new BookReservation(bookItem, this);
+          notificationMessage = bookReservation.processReservation();
+          break;
+        case RESERVED:
+          throw new IllegalStateException("Book is reserved!");
+        default:
+          throw new IllegalStateException("Book is reference only!");
       }
     }
 
     EmailNotification.sendEmailNotification(this, notificationMessage);
   }
 
-  public void renewBookItem(@NotNull BookItem bookItem) {
+  public void renewBookItem(@NotNull BookItem bookItem) throws IllegalStateException {
     BookLending lending = BookLending.fetchLendingDetails(bookItem.getBarcode());
     if (lending != null ) {
       Notification.sendNotification(this, lending.processRenew());
     } else {
-      Notification.sendNotification(this, "Book renewal failed. No active lending found.");
+      throw new IllegalStateException("Book renewal failed. No active lending found.");
     }
   }
 
-  public void cancelReservation(@NotNull BookItem bookItem) {
+  public void cancelReservation(@NotNull BookItem bookItem) throws IllegalStateException {
     BookReservation reservation = BookReservation.fetchReservationDetails(bookItem.getBarcode());
     if (reservation != null) {
       Notification.sendNotification(this, reservation.processCancel());
     } else {
-      Notification.sendNotification(this, "No active reservation found for this book.");
+      throw new IllegalStateException("No active reservation found for this book.");
     }
   }
 
-  public void returnBookItem(@NotNull BookItem bookItem) {
+  public void returnBookItem(@NotNull BookItem bookItem) throws IllegalStateException {
     String notificationMessage;
 
     if (bookItem.getStatus() == BookStatus.LOANED) {
@@ -122,11 +125,8 @@ public class Member extends Account {
         FineTransaction fineTransaction = new FineTransaction(fine);
         fine.payFine(fineTransaction);
         if (!fineTransaction.processFinePayment()) {
-          notificationMessage = "Fine payment failed. Cannot return the book.";
-          Notification.sendNotification(this, notificationMessage);
-          return;
+          throw new IllegalStateException("Fine payment failed. Cannot return the book.");
         }
-
       }
 
       bookItem.setStatus(BookStatus.AVAILABLE);
@@ -135,7 +135,7 @@ public class Member extends Account {
 
       notificationMessage = "Book returned successfully.";
     } else {
-      notificationMessage = "Book is not currently loaned! Cannot return.";
+      throw new IllegalStateException("Book is not currently loaned! Cannot return.");
     }
 
     Notification.sendNotification(this, notificationMessage);
@@ -155,11 +155,11 @@ public class Member extends Account {
     return null;
   }
 
-  public void lendBookItem(@NotNull BookItem bookItem) {
+  public void lendBookItem(@NotNull BookItem bookItem) throws IllegalStateException {
     String notificationMessage;
 
     if (this.totalBooksCheckedOut >= MAX_BOOKS_ISSUED_TO_A_USER) {
-      notificationMessage = "Exceeded maximum books issue limit!";
+      throw new IllegalStateException("Exceeded maximum books issue limit!");
     } else {
       BookReservation reservation = BookReservation.fetchReservationDetails(bookItem.getBarcode());
       if (reservation != null && reservation.getStatus() == RevervationStatus.COMPLETED) {
@@ -168,17 +168,17 @@ public class Member extends Account {
           BookLending bookLending = new BookLending(bookItem, this);
           notificationMessage = bookLending.processLending();
         } else {
-          notificationMessage = "Book is reserved by another member.";
+          throw new IllegalStateException("Book is reserved by another member.");
         }
       } else if (bookItem.checkOut()) {
         BookLending bookLending = new BookLending(bookItem, this);
         notificationMessage = bookLending.processLending();
       } else {
-        notificationMessage = "Book is not available for lending.";
+        throw new IllegalStateException("Book is not available for lending.");
       }
     }
 
-    PostalNotification.sendPostalNotification(this, notificationMessage);
+    PhoneNotification.sendPhoneNotification(this, notificationMessage);
   }
 
   public void viewLendingHistory() {

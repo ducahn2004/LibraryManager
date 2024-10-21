@@ -1,7 +1,6 @@
 package org.group4.base.users;
 
 import java.util.List;
-import java.util.Scanner;
 
 import org.group4.database.BookDatabase;
 import org.group4.database.BookItemDatabase;
@@ -11,12 +10,6 @@ import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
-
-import org.group4.base.exceptions.MissingInputException;
-import org.group4.base.exceptions.InvalidInputException;
-import org.group4.base.exceptions.InputFormatException;
-
-import org.jetbrains.annotations.NotNull;
 
 public class Librarian extends Account {
 
@@ -29,7 +22,7 @@ public class Librarian extends Account {
     BookDatabase.getInstance().addItem(book);
   }
 
-  public void viewBookDetails(@NotNull Book book) {
+  public void viewBookDetails(Book book) {
     book.printDetails();
   }
 
@@ -37,7 +30,7 @@ public class Librarian extends Account {
     BookItemDatabase.getInstance().addItem(bookItem);
   }
 
-  public void viewBookItemDetails(@NotNull BookItem bookItem) {
+  public void viewBookItemDetails(BookItem bookItem) {
     bookItem.printDetails();
   }
 
@@ -45,7 +38,7 @@ public class Librarian extends Account {
     BookItemDatabase.getInstance().removeItem(bookItem);
   }
 
-  public boolean blockMember(String id) {
+  public static boolean blockMember(String id) {
     List<Account> accounts = AccountDatabase.getInstance().getItems();
     for (Account account : accounts) {
       if (account.getId().equals(id) && account instanceof Member) {
@@ -67,7 +60,7 @@ public class Librarian extends Account {
     return false;
   }
 
-  public void viewMemberDetails(@NotNull Member member) {
+  public void viewMemberDetails(Member member) {
     member.printDetails();
   }
 }
