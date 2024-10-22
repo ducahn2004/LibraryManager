@@ -66,4 +66,23 @@ public class Book {
   }
 
 
+  public void setIsbn(String text) {
+    //TODO: complete
+  }
+
+  public void setTitle(String text) {
+    //TODO: Complete
+  }
+
+  public void setPublisher(String text) {
+    //TODO: Complete
+  }
+
+  public void setSubject(String text) {
+    //TODO: Complete
+  }
+
+  public void setPages(int i) {
+    //TODO: Complete
+  }
 }
