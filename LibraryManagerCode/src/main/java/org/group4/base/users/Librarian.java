@@ -10,6 +10,7 @@ import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
+import org.jetbrains.annotations.NotNull;
 
 public class Librarian extends Account {
 
@@ -22,7 +23,7 @@ public class Librarian extends Account {
     BookDatabase.getInstance().addItem(book);
   }
 
-  public void viewBookDetails(Book book) {
+  public void viewBookDetails(@NotNull Book book) {
     book.printDetails();
   }
 
@@ -30,8 +31,14 @@ public class Librarian extends Account {
     BookItemDatabase.getInstance().addItem(bookItem);
   }
 
-  public void viewBookItemDetails(BookItem bookItem) {
-    bookItem.printDetails();
+  public void viewBookItemDetails(String ISBN) {
+    BookItem bookItem = BookItemDatabase.getInstance().getItems().stream()
+        .filter(item -> item.getISBN().equals(ISBN)).findFirst().orElse(null);
+    if (bookItem != null) {
+      bookItem.printDetails();
+    } else {
+      throw new IllegalArgumentException("Book item not found");
+    }
   }
 
   public void removeBookItem(String barcode) {
@@ -60,7 +67,13 @@ public class Librarian extends Account {
     return false;
   }
 
-  public void viewMemberDetails(Member member) {
-    member.printDetails();
+  public void viewMemberDetails(String id) {
+    Member member = (Member) AccountDatabase.getInstance().getItems().stream()
+        .filter(account -> account.getId().equals(id)).findFirst().orElse(null);
+    if (member != null) {
+      member.printDetails();
+    } else {
+      throw new IllegalArgumentException("Member not found");
+    }
   }
 }

@@ -21,8 +21,10 @@ public class BookItem extends Book {
   private final LocalDate publicationDate;
 
   // Constructor
-  public BookItem(@NotNull Book book, String barcode, boolean isReferenceOnly, double price, BookFormat format, LocalDate dateOfPurchase, LocalDate publicationDate) {
-    super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(), book.getLanguage(), book.getNumberOfPages(), book.getAuthors());
+  public BookItem(@NotNull Book book, String barcode, boolean isReferenceOnly, double price, BookFormat format,
+      LocalDate dateOfPurchase, LocalDate publicationDate) {
+    super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
+        book.getLanguage(), book.getNumberOfPages(), book.getAuthors());
     this.barcode = barcode;
     this.isReferenceOnly = isReferenceOnly;
     this.borrowed = null;
