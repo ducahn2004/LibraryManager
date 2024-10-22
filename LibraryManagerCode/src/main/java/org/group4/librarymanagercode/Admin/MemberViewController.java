@@ -6,7 +6,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
-public class StudentViewController {
+public class MemberViewController {
 
   public JFXButton homeButton;
   public JFXButton studentsButton;
