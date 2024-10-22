@@ -57,13 +57,13 @@
   <top>
     <Pane prefHeight="100.0" prefWidth="800.0" BorderPane.alignment="CENTER">
       <children>
-        <Pane prefHeight="112.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
+        <Pane prefHeight="101.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
         <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="136.0" layoutY="8.0" prefHeight="96.0" prefWidth="172.0" text="Dashboard" textFill="#2e069c">
           <font>
             <Font name=".VnArial Bold" size="30.0" />
           </font>
         </Label>
-        <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
           <font>
             <Font name="Segoe UI Semilight" size="23.0" />
           </font>
@@ -73,5 +73,6 @@
         </Label>
       </children>
     </Pane>
+
   </top>
 </BorderPane>
