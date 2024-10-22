@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.Admin.BookDetailsController">
+  <center>
+    <VBox alignment="CENTER" spacing="10">
+      <Label style="-fx-font-size: 24;" text="Book Details" />
+      <HBox>
+        <Label text="ISBN: " />
+        <Label fx:id="isbnLabel" />
+      </HBox>
+      <HBox>
+        <Label text="Title: " />
+        <Label fx:id="titleLabel" />
+      </HBox>
+      <HBox>
+        <Label text="Author: " />
+        <Label fx:id="authorLabel" />
+      </HBox>
+      <HBox>
+        <Label text="Publisher: " />
+        <Label fx:id="publisherLabel" />
+      </HBox>
+      <HBox>
+        <Label text="Subject: " />
+        <Label fx:id="subjectLabel" />
+      </HBox>
+      <HBox>
+        <Label text="Pages: " />
+        <Label fx:id="pagesLabel" />
+      </HBox>
+      <!-- Add other labels for details as needed -->
+    </VBox>
+  </center>
+  <bottom>
+    <HBox alignment="CENTER" prefWidth="154.0" spacing="10">
+      <Button onAction="#onEditBook" text="Edit" />
+      <Button onAction="#onDeleteBook" text="Delete" />
+      <Button onAction="#onClose" text="Close" />
+    </HBox>
+  </bottom>
+</BorderPane>

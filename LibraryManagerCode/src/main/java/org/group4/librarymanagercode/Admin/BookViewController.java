@@ -1,73 +1,53 @@
 package org.group4.librarymanagercode.Admin;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.event.ActionEvent;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
-import javafx.util.Callback;
-import org.group4.base.books.BookItem;
+import javafx.stage.Stage;
 import org.group4.base.entities.Book;
 import org.group4.base.entities.Author;
-import org.group4.base.books.BookInfor;
 
 public class BookViewController {
 
   @FXML
-  private TableView<BookInfor> tableView;
+  private TableView<Book> tableView;
 
   @FXML
-  private TableColumn<BookInfor, Boolean> Check;
+  private TableColumn<Book, Boolean> Check;
 
   @FXML
-  private TableColumn<BookInfor, String> ISBN;
+  private TableColumn<Book, String> ISBN;
 
   @FXML
-  private TableColumn<BookInfor, String> bookName;
+  private TableColumn<Book, String> bookName;
 
   @FXML
-  private TableColumn<BookInfor, String> bookSubject;
+  private TableColumn<Book, String> bookSubject;
 
   @FXML
-  private TableColumn<BookInfor, String> bookPublisher;
+  private TableColumn<Book, String> bookPublisher;
 
   @FXML
-  private TableColumn<BookInfor, String> bookLanguage;
+  private TableColumn<Book, String> bookLanguage;
 
   @FXML
-  private TableColumn<BookInfor, Integer> numberOfPages;
+  private TableColumn<Book, Integer> numberOfPages;
 
   @FXML
-  private TableColumn<BookInfor, String> bookAuthor;
-
-  @FXML
-  private TableColumn<BookInfor, String> bookBarcode;
-
-  @FXML
-  private TableColumn<BookInfor, Boolean> bookReferenceOnly;
-
-  @FXML
-  private TableColumn<BookInfor, Integer> bookTotal;
-
-  @FXML
-  private TableColumn<BookInfor, Integer> bookAvaiblability;
-
-  @FXML
-  private TableColumn<BookInfor, String> RackNumber;
-
-  @FXML
-  private TableColumn<BookInfor, String> bookCatalog;
+  private TableColumn<Book, String> bookAuthor;
 
   @FXML
   private ContextMenu contextMenu;
@@ -79,13 +59,12 @@ public class BookViewController {
   private TextField searchField;
 
 
-  private ObservableList<BookInfor> bookList = FXCollections.observableArrayList();
+  private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
   // This method is called by the FXMLLoader when initialization is complete
   @FXML
   public void initialize() {
     // Initialize columns
-    Check.setCellValueFactory(new PropertyValueFactory<>("checked"));
     ISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
     bookName.setCellValueFactory(new PropertyValueFactory<>("title"));
     bookSubject.setCellValueFactory(new PropertyValueFactory<>("subject"));
@@ -93,15 +72,17 @@ public class BookViewController {
     bookLanguage.setCellValueFactory(new PropertyValueFactory<>("language"));
     numberOfPages.setCellValueFactory(new PropertyValueFactory<>("pages"));
     bookAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
-    bookBarcode.setCellValueFactory(new PropertyValueFactory<>("barcode"));
-    bookReferenceOnly.setCellValueFactory(new PropertyValueFactory<>("referenceOnly"));
-    bookTotal.setCellValueFactory(new PropertyValueFactory<>("totalCopies"));
-    bookAvaiblability.setCellValueFactory(new PropertyValueFactory<>("availableCopies"));
-    RackNumber.setCellValueFactory(new PropertyValueFactory<>("rackNumber"));
-    bookCatalog.setCellValueFactory(new PropertyValueFactory<>("catalog"));
-
     // Add data to the table (sample data can be fetched from service or database)
     loadBookData();
+    // Add row click event listener
+    tableView.setOnMouseClicked(event -> {
+      if (event.getClickCount() == 2) { // Check for double-click
+        Book selectedBook = tableView.getSelectionModel().getSelectedItem();
+        if (selectedBook != null) {
+          openBookDetails(selectedBook);
+        }
+      }
+    });
   }
 
   private void loadBookData() {
@@ -109,27 +90,30 @@ public class BookViewController {
     List<Author> authors = new ArrayList<>();
     authors.add(new Author("Author Name","123", new ArrayList<>()));
     // This would normally be loaded from a database or some service
-    bookList.add(new BookInfor("123456789", "Book Title", "Subject", "Publisher", "English", 200, authors, "1231", 1, "West"));
+    bookList.add(new Book("123456789", "Book Title", "Subject", "Publisher", "English", 200, authors));
     tableView.setItems(bookList);
   }
 
+  private void openBookDetails(Book selectedBook) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      Parent root = loader.load();
 
+      // Get the controller and pass the selected book
+      BookDetailsController controller = loader.getController();
+      controller.setBookDetails(selectedBook);
 
-
-  public void onSearchBook(ActionEvent actionEvent) {
-    String searchText = searchField.getText().trim().toLowerCase();
-
-    if (searchText.isEmpty()) {
-      // Hiển thị tất cả sách nếu ô tìm kiếm trống
-      tableView.setItems(bookList);
-    } else {
-      // Tìm kiếm theo ISBN hoặc tên sách
-      ObservableList<BookInfor> filteredList = bookList.filtered(bookInfo ->
-          bookInfo.getTitle().toLowerCase().contains(searchText) ||
-              bookInfo.getISBN().toLowerCase().contains(searchText));
-      tableView.setItems(filteredList);
+      // Show the book details in a new window
+      Stage stage = new Stage();
+      stage.setTitle("Book Details");
+      stage.setScene(new Scene(root));
+      stage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
 
+  public void onSearchBook(ActionEvent actionEvent) {
+  }
 }
