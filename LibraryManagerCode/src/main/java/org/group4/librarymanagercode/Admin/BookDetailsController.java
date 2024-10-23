@@ -1,5 +1,6 @@
 package org.group4.librarymanagercode.Admin;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -94,23 +95,7 @@ public class BookDetailsController {
   }
 
   // Handler for the Save button (save changes to the book)
-  @FXML
-  private void onSaveChanges() {
-    // Save the edited details to the currentBook object
-    currentBook.setIsbn(isbnField.getText());
-    currentBook.setTitle(titleField.getText());
-    // Update other fields similarly...
-    currentBook.getAuthors().get(0).setName(authorField.getText());
-    currentBook.setPublisher(publisherField.getText());
-    currentBook.setSubject(subjectField.getText());
-    currentBook.setPages(Integer.parseInt(pagesField.getText()));
 
-    // Update the labels with the new values
-    setBookDetails(currentBook);
-
-    // Disable edit mode, switching back to Labels
-    setEditMode(false);
-  }
 
   // Handler for the Cancel button (discard changes)
   @FXML
@@ -118,5 +103,14 @@ public class BookDetailsController {
     // Discard changes and reset TextFields to original values
     setBookDetails(currentBook);
     setEditMode(false);
+  }
+
+  public void onDeleteBook(ActionEvent actionEvent) {
+  }
+
+  public void onClose(ActionEvent actionEvent) {
+  }
+
+  public void onSaveChanges(ActionEvent actionEvent) {
   }
 }

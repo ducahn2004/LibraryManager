@@ -12,21 +12,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.base.entities.Book;
 import org.group4.base.entities.Author;
+import org.group4.librarymanagercode.Admin.BookDetailsController;
 
 public class BookViewController {
 
   @FXML
   private TableView<Book> tableView;
-
-  @FXML
-  private TableColumn<Book, Boolean> Check;
 
   @FXML
   private TableColumn<Book, String> ISBN;
@@ -53,11 +51,7 @@ public class BookViewController {
   private ContextMenu contextMenu;
 
   @FXML
-  private TableColumn<Book, Void> actionsColumn;
-
-  @FXML
   private TextField searchField;
-
 
   private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
@@ -65,15 +59,17 @@ public class BookViewController {
   @FXML
   public void initialize() {
     // Initialize columns
-    ISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-    bookName.setCellValueFactory(new PropertyValueFactory<>("title"));
-    bookSubject.setCellValueFactory(new PropertyValueFactory<>("subject"));
-    bookPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
-    bookLanguage.setCellValueFactory(new PropertyValueFactory<>("language"));
-    numberOfPages.setCellValueFactory(new PropertyValueFactory<>("pages"));
-    bookAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
+    ISBN.setCellValueFactory(new PropertyValueFactory<>("ISBN"));
+    bookName.setCellValueFactory(new PropertyValueFactory<>("Title"));
+    bookSubject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
+    bookPublisher.setCellValueFactory(new PropertyValueFactory<>("Publisher"));
+    bookLanguage.setCellValueFactory(new PropertyValueFactory<>("Language"));
+    numberOfPages.setCellValueFactory(new PropertyValueFactory<>("Pages"));
+    bookAuthor.setCellValueFactory(new PropertyValueFactory<>("Author"));
+
     // Add data to the table (sample data can be fetched from service or database)
     loadBookData();
+
     // Add row click event listener
     tableView.setOnMouseClicked(event -> {
       if (event.getClickCount() == 2) { // Check for double-click
@@ -86,11 +82,20 @@ public class BookViewController {
   }
 
   private void loadBookData() {
+    List<Author> authors1 = new ArrayList<>();
+    authors1.add(new Author("Author One", "A1", new ArrayList<>()));
 
-    List<Author> authors = new ArrayList<>();
-    authors.add(new Author("Author Name","123", new ArrayList<>()));
+    List<Author> authors2 = new ArrayList<>();
+    authors2.add(new Author("Author Two", "A2", new ArrayList<>()));
+
+    List<Author> authors3 = new ArrayList<>();
+    authors3.add(new Author("Author Three", "A3", new ArrayList<>()));
+
     // This would normally be loaded from a database or some service
-    bookList.add(new Book("123456789", "Book Title", "Subject", "Publisher", "English", 200, authors));
+    bookList.add(new Book("510251", "Book Title 1", "Subject 1", "Publisher 1", "English", 200, authors1));
+    bookList.add(new Book("496717", "Book Title 2", "Subject 2", "Publisher 2", "English", 300, authors2));
+    bookList.add(new Book("111735", "Book Title 3", "Subject 3", "Publisher 3", "English", 150, authors3));
+
     tableView.setItems(bookList);
   }
 
@@ -113,7 +118,7 @@ public class BookViewController {
     }
   }
 
-
   public void onSearchBook(ActionEvent actionEvent) {
+    // Implement search functionality here
   }
 }
