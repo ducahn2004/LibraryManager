@@ -35,6 +35,7 @@ public class Member extends Account {
     this.dateOfMembership = LocalDate.now();
     this.totalBooksCheckedOut = 0;
   }
+  //TODO: WRITE A CONSTRUCTOR with 2 parameter: id, and person
 
   // Getter
   public String getId() {

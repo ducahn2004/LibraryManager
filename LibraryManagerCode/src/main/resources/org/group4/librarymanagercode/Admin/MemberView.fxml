@@ -29,6 +29,11 @@
             <Font size="16.0" />
           </font>
         </JFXButton>
+        <JFXButton fx:id="addStudent" alignment="TOP_LEFT" centerShape="false" prefHeight="46.0" prefWidth="133.0" text="Add Student" textFill="#fff8f8" textOverrun="CLIP">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </JFXButton>
         <JFXButton fx:id="bookButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
           <font>
             <Font size="16.0" />
@@ -150,7 +155,7 @@
         </Separator>
         <HBox alignment="CENTER" layoutX="10.0" layoutY="284.0" prefHeight="50.0" prefWidth="352.0" spacing="10.0">
           <children>
-            <JFXButton fx:id="delete" layoutX="10.0" layoutY="10.0" onAction="#deleteStudent" prefHeight="25.0" prefWidth="151.0" style="-fx-background-radius: 0;" text="Archieve" visible="false">
+            <JFXButton fx:id="delete" layoutX="10.0" layoutY="10.0" onAction="#deleteStudent" prefHeight="25.0" prefWidth="151.0" style="-fx-background-radius: 0;" text="Archive" visible="false">
               <HBox.margin>
                 <Insets right="4.0" />
               </HBox.margin></JFXButton>
