@@ -1,7 +1,6 @@
 package org.group4.base.users;
 
 import java.util.List;
-import java.util.Scanner;
 
 import org.group4.database.BookDatabase;
 import org.group4.database.BookItemDatabase;
@@ -11,11 +10,6 @@ import org.group4.base.entities.Person;
 import org.group4.base.enums.AccountStatus;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
-
-import org.group4.base.exceptions.MissingInputException;
-import org.group4.base.exceptions.InvalidInputException;
-import org.group4.base.exceptions.InputFormatException;
-
 import org.jetbrains.annotations.NotNull;
 
 public class Librarian extends Account {
@@ -37,15 +31,21 @@ public class Librarian extends Account {
     BookItemDatabase.getInstance().addItem(bookItem);
   }
 
-  public void viewBookItemDetails(@NotNull BookItem bookItem) {
-    bookItem.printDetails();
+  public void viewBookItemDetails(String ISBN) {
+    BookItem bookItem = BookItemDatabase.getInstance().getItems().stream()
+        .filter(item -> item.getISBN().equals(ISBN)).findFirst().orElse(null);
+    if (bookItem != null) {
+      bookItem.printDetails();
+    } else {
+      throw new IllegalArgumentException("Book item not found");
+    }
   }
 
-  public void removeBookItem(BookItem bookItem) {
-    BookItemDatabase.getInstance().removeItem(bookItem);
+  public void removeBookItem(String barcode) {
+    BookItemDatabase.getInstance().getItems().removeIf(bookItem -> bookItem.getBarcode().equals(barcode));
   }
 
-  public boolean blockMember(String id) {
+  public static boolean blockMember(String id) {
     List<Account> accounts = AccountDatabase.getInstance().getItems();
     for (Account account : accounts) {
       if (account.getId().equals(id) && account instanceof Member) {
@@ -67,7 +67,13 @@ public class Librarian extends Account {
     return false;
   }
 
-  public void viewMemberDetails(@NotNull Member member) {
-    member.printDetails();
+  public void viewMemberDetails(String id) {
+    Member member = (Member) AccountDatabase.getInstance().getItems().stream()
+        .filter(account -> account.getId().equals(id)).findFirst().orElse(null);
+    if (member != null) {
+      member.printDetails();
+    } else {
+      throw new IllegalArgumentException("Member not found");
+    }
   }
 }

@@ -61,28 +61,24 @@ public class Book {
     System.out.println("Number of pages: " + getNumberOfPages());
     System.out.println("Authors: ");
     for (Author author : authors) {
-      System.out.println(author.name());
+      System.out.println(author.getName());
     }
   }
 
-
-  public void setIsbn(String text) {
-    //TODO: complete
+  public String toString() {
+    StringBuilder result = new StringBuilder();
+    result.append("ISBN: ").append(getISBN()).append("\n");
+    result.append("Title: ").append(getTitle()).append("\n");
+    result.append("Subject: ").append(getSubject()).append("\n");
+    result.append("Publisher: ").append(getPublisher()).append("\n");
+    result.append("Language: ").append(getLanguage()).append("\n");
+    result.append("Number of pages: ").append(getNumberOfPages()).append("\n");
+    result.append("Authors: ").append("\n");
+    for (Author author : authors) {
+      result.append(author.getName()).append("\n");
+    }
+    return result.toString();
   }
 
-  public void setTitle(String text) {
-    //TODO: Complete
-  }
-
-  public void setPublisher(String text) {
-    //TODO: Complete
-  }
-
-  public void setSubject(String text) {
-    //TODO: Complete
-  }
-
-  public void setPages(int i) {
-    //TODO: Complete
-  }
+  // TODO: NOT UPDATE BOOK. THIS IS FINAL
 }

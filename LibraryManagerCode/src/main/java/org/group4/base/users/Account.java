@@ -42,7 +42,7 @@ public class Account {
   public void setPerson(Person person) {
     this.person.setName(person.getName());
     this.person.setEmail(person.getEmail());
-    this.person.setAddress(person.getAddress());
+    this.person.setPhoneNumber(person.getPhoneNumber());
   }
 
   public Person getPerson() {

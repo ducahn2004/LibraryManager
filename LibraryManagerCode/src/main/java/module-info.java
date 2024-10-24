@@ -12,6 +12,7 @@ module org.group4.librarymanagercode {
   requires com.jfoenix;
   requires java.logging;
   requires annotations;
+  requires java.desktop;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;

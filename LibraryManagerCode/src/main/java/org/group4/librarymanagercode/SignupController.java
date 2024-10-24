@@ -1,5 +1,6 @@
 package org.group4.librarymanagercode;
 
+import org.group4.base.enums.University;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +18,6 @@ import javafx.scene.control.TextField;
 
 
 import javafx.stage.Stage;
-import org.group4.base.enums.University;
 
 public class SignupController {
   @FXML

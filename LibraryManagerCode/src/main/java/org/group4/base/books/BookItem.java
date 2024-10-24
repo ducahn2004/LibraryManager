@@ -2,17 +2,17 @@ package org.group4.base.books;
 
 import java.time.LocalDate;
 import java.util.List;
-import org.group4.base.entities.Author;
 import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.database.BookItemDatabase;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BookItem extends Book {
   private final String barcode;
   private final boolean isReferenceOnly;
-  private final LocalDate borrowed;
+  private LocalDate borrowed;
   private LocalDate dueDate;
   private final double price;
   private final BookFormat format;
@@ -21,17 +21,17 @@ public class BookItem extends Book {
   private final LocalDate publicationDate;
 
   // Constructor
-  public BookItem(String ISBN, String title, String subject, String publisher, String language, int numberOfPages,
-      List<Author> authors, String barcode, boolean isReferenceOnly, LocalDate borrowed, LocalDate dueDate, double price,
-      BookFormat format, BookStatus status, LocalDate dateOfPurchase, LocalDate publicationDate) {
-    super(ISBN, title, subject, publisher, language, numberOfPages, authors);
+  public BookItem(@NotNull Book book, String barcode, boolean isReferenceOnly, double price, BookFormat format,
+      LocalDate dateOfPurchase, LocalDate publicationDate) {
+    super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
+        book.getLanguage(), book.getNumberOfPages(), book.getAuthors());
     this.barcode = barcode;
     this.isReferenceOnly = isReferenceOnly;
-    this.borrowed = borrowed;
-    this.dueDate = dueDate;
+    this.borrowed = null;
+    this.dueDate = null;
     this.price = price;
     this.format = format;
-    this.status = status;
+    this.status = BookStatus.AVAILABLE;
     this.dateOfPurchase = dateOfPurchase;
     this.publicationDate = publicationDate;
   }
@@ -76,6 +76,10 @@ public class BookItem extends Book {
 
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
+  }
+
+  public void setBorrowed(LocalDate borrowed) {
+    this.borrowed = borrowed;
   }
 
   /**

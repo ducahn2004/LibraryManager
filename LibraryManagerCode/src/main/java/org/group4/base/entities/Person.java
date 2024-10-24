@@ -3,13 +3,13 @@ package org.group4.base.entities;
 public class Person {
   private String name;
   private String email;
-  private Address address;
+  private String phoneNumber;
 
   // Constructor
-  public Person(String name, String email, Address address) {
+  public Person(String name, String email, String phoneNumber) {
     this.name = name;
     this.email = email;
-    this.address = address;
+    this.phoneNumber = phoneNumber;
   }
 
   // Getter
@@ -21,8 +21,8 @@ public class Person {
     return email;
   }
 
-  public Address getAddress() {
-    return address;
+  public String getPhoneNumber() {
+    return phoneNumber;
   }
 
   // Setter
@@ -34,8 +34,8 @@ public class Person {
     this.email = email;
   }
 
-  public void setAddress(Address address) {
-    this.address = address;
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 
 }
