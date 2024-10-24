@@ -362,7 +362,7 @@ public class TestRun {
             }
             System.out.print("Enter Author Description: ");
             String authorDescription = scanner.nextLine();
-            authors.add(new Author(authorName, authorDescription, new ArrayList<>()));
+            authors.add(new Author(authorName));
         }
         Book book = new Book(isbn, title, subject, publisher, language, numberOfPages, authors);
         loggedInLibrarian.addBook(book);

@@ -1,5 +1,6 @@
 package org.group4.librarymanagercode.Admin;
 
+import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.group4.librarymanagercode.Admin.BookDetailsController;
 
 public class BookViewController {
 
+  public JFXButton homeButton;
   @FXML
   private TableView<Book> tableView;
 
@@ -83,13 +85,13 @@ public class BookViewController {
 
   private void loadBookData() {
     List<Author> authors1 = new ArrayList<>();
-    authors1.add(new Author("Author One", "A1", new ArrayList<>()));
+    authors1.add(new Author("Author One"));
 
     List<Author> authors2 = new ArrayList<>();
-    authors2.add(new Author("Author Two", "A2", new ArrayList<>()));
+    authors2.add(new Author("Author Two"));
 
     List<Author> authors3 = new ArrayList<>();
-    authors3.add(new Author("Author Three", "A3", new ArrayList<>()));
+    authors3.add(new Author("Author Three"));
 
     // This would normally be loaded from a database or some service
     bookList.add(new Book("510251", "Book Title 1", "Subject 1", "Publisher 1", "English", 200, authors1));
@@ -101,7 +103,7 @@ public class BookViewController {
 
   private void openBookDetails(Book selectedBook) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("Admin/BookDetails.fxml"));
       Parent root = loader.load();
 
       // Get the controller and pass the selected book
