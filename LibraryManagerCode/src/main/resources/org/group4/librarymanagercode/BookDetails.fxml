@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.Admin.BookDetailsController">
+<BorderPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.BookDetailsController">
   <center>
     <VBox alignment="CENTER" prefHeight="203.0" prefWidth="54.0" spacing="10">
       <HBox>

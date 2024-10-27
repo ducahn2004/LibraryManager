@@ -1,4 +1,4 @@
-package org.group4.librarymanagercode.Admin;
+package org.group4.librarymanagercode;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

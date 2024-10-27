@@ -1,4 +1,4 @@
-package org.group4.librarymanagercode.Admin;
+package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
@@ -20,7 +20,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.base.entities.Book;
 import org.group4.base.entities.Author;
-import org.group4.librarymanagercode.Admin.BookDetailsController;
 
 public class BookViewController {
 

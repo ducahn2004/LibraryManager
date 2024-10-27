@@ -1,4 +1,4 @@
-package org.group4.librarymanagercode.Admin;
+package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
