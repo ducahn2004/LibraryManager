@@ -16,6 +16,5 @@ module org.group4.librarymanagercode {
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;
-  opens org.group4.librarymanagercode.Admin to javafx.fxml;
-  exports org.group4.librarymanagercode.Admin;
+  
 }

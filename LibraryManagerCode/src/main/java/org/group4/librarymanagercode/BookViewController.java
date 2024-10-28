@@ -93,9 +93,12 @@ public class BookViewController {
     authors3.add(new Author("Author Three"));
 
     // This would normally be loaded from a database or some service
-    bookList.add(new Book("510251", "Book Title 1", "Subject 1", "Publisher 1", "English", 200, authors1));
-    bookList.add(new Book("496717", "Book Title 2", "Subject 2", "Publisher 2", "English", 300, authors2));
-    bookList.add(new Book("111735", "Book Title 3", "Subject 3", "Publisher 3", "English", 150, authors3));
+    bookList.add(
+        new Book("510251", "Book Title 1", "Subject 1", "Publisher 1", "English", 200, authors1));
+    bookList.add(
+        new Book("496717", "Book Title 2", "Subject 2", "Publisher 2", "English", 300, authors2));
+    bookList.add(
+        new Book("111735", "Book Title 3", "Subject 3", "Publisher 3", "English", 150, authors3));
 
     tableView.setItems(bookList);
   }
@@ -119,7 +122,29 @@ public class BookViewController {
     }
   }
 
+  private void filterBookList(String searchText) {
+    ObservableList<Book> filteredList = FXCollections.observableArrayList();
+
+    if (searchText == null || searchText.isEmpty()) {
+      // Show the full list if no search text is provided
+      tableView.setItems(bookList);
+    } else {
+      // Convert search text to lowercase for case-insensitive matching
+      String lowerCaseFilter = searchText.toLowerCase();
+
+      for (Book book : bookList) {
+        // Match against title or ISBN
+        if (book.getTitle().toLowerCase().contains(lowerCaseFilter) ||
+            book.getISBN().toLowerCase().contains(lowerCaseFilter)) {
+          filteredList.add(book);
+        }
+      }
+      tableView.setItems(filteredList);
+    }
+  }
+
   public void onSearchBook(ActionEvent actionEvent) {
-    // Implement search functionality here
+    String searchText = searchField.getText();
+    filterBookList(searchText);
   }
 }
