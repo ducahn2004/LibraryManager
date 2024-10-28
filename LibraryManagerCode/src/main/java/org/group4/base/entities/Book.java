@@ -3,6 +3,7 @@ package org.group4.base.entities;
 import java.util.List;
 
 public class Book {
+
   private final String ISBN;
   private final String tittle;
   private final String subject;
@@ -12,7 +13,8 @@ public class Book {
   private final List<Author> authors;
 
   // Constructor
-  public Book(String ISBN, String title, String subject, String publisher, String language, int numberOfPages,
+  public Book(String ISBN, String title, String subject, String publisher, String language,
+      int numberOfPages,
       List<Author> authors) {
     this.ISBN = ISBN;
     this.tittle = title;
@@ -78,6 +80,13 @@ public class Book {
       result.append(author.getName()).append("\n");
     }
     return result.toString();
+  }
+
+  // New method to get authors as a concatenated string
+  public String getAuthorsAsString() {
+    return String.join(", ", this.getAuthors().stream()
+        .map(Author::getName)
+        .toArray(String[]::new));
   }
 
   // TODO: NOT UPDATE BOOK. THIS IS FINAL
