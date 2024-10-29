@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.MemberViewController">
+  <left>
+    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" BorderPane.alignment="CENTER">
+      <children>
+        <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </JFXButton>
+        <JFXButton fx:id="studentsButton" alignment="TOP_LEFT" centerShape="false" prefHeight="46.0" prefWidth="133.0" text="Member" textFill="#fff8f8" textOverrun="CLIP">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </JFXButton>
+        <JFXButton fx:id="addStudent" alignment="TOP_LEFT" centerShape="false" prefHeight="46.0" prefWidth="133.0" text="Add Member" textFill="#fff8f8" textOverrun="CLIP">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </JFXButton>
+        <JFXButton fx:id="bookButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </JFXButton>
+        <JFXButton fx:id="addBookButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="135.0" text="Add Book" textFill="#fff8f8" textOverrun="CLIP">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </JFXButton>
+        <JFXButton fx:id="returnBookButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="137.0" text="Return Book" textFill="#fff8f8" textOverrun="CLIP">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </JFXButton>
+        <JFXButton fx:id="settingButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </JFXButton>
+        <JFXButton fx:id="closeButton" alignment="TOP_LEFT" prefHeight="46.0" prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </JFXButton>
+      </children>
+    </VBox>
+  </left>
+  <top>
+    <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+      <children>
+        <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
+        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0" prefHeight="96.0" prefWidth="148.0" text="Member " textFill="#2e069c">
+          <font>
+            <Font name=".VnArial Bold" size="30.0" />
+          </font>
+        </Label>
+        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+          <font>
+            <Font name="Segoe UI Semilight" size="23.0" />
+          </font>
+          <BorderPane.margin>
+            <Insets top="2.0" />
+          </BorderPane.margin>
+        </Label>
+      </children>
+    </Pane>
+
+  </top>
+   <center>
+    <TableView fx:id="studentTable" onContextMenuRequested="#requestMenu" onKeyReleased="#fetchStudentWithKey" onMouseClicked="#fetchStudentFeesDetails" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+      <columns>
+        <TableColumn fx:id="check" maxWidth="900.0" minWidth="-Infinity" prefWidth="33.4842529296875" />
+        <TableColumn fx:id="stuID" prefWidth="179.19995880126953" text="Member ID" />
+        <TableColumn fx:id="stunNme" prefWidth="225.60003662109375" text="Member Name" />
+        <TableColumn fx:id="stuPhone" prefWidth="189.60006713867188" text="Phone  Number" />
+        <TableColumn fx:id="stuEmail" prefWidth="221.599853515625" text="Member Email Address" />
+      </columns>
+      <contextMenu>
+        <ContextMenu fx:id="selectStudentContext">
+          <items>
+            <MenuItem fx:id="selectMenu" mnemonicParsing="false" onAction="#deleteStudentRecord" text="Delete record" />
+          </items>
+        </ContextMenu>
+      </contextMenu>
+      <columnResizePolicy>
+        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+      </columnResizePolicy>
+    </TableView>
+   </center>
+</BorderPane>
