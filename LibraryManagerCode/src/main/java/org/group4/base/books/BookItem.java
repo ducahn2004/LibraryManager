@@ -1,6 +1,7 @@
 package org.group4.base.books;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BookItem extends Book {
+
   private final String barcode;
   private final boolean isReferenceOnly;
   private LocalDate borrowed;
@@ -21,7 +23,8 @@ public class BookItem extends Book {
   private final LocalDate publicationDate;
 
   // Constructor
-  public BookItem(@NotNull Book book, String barcode, boolean isReferenceOnly, double price, BookFormat format,
+  public BookItem(@NotNull Book book, String barcode, boolean isReferenceOnly, double price,
+      BookFormat format,
       LocalDate dateOfPurchase, LocalDate publicationDate) {
     super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
         book.getLanguage(), book.getNumberOfPages(), book.getAuthors());
@@ -68,6 +71,11 @@ public class BookItem extends Book {
   public LocalDate getPublicationDate() {
     return publicationDate;
   }
+
+  public String getReference() {
+    return (isReferenceOnly) ? "Yes" : "No";
+  }
+  
 
   // Setter
   public void setStatus(BookStatus status) {

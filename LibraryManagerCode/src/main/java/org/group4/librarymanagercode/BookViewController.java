@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -85,17 +86,35 @@ public class BookViewController {
     // Add data to the table (sample data can be fetched from service or database)
     loadBookData();
     // Add row click event listener
-    tableView.setOnMouseClicked(event -> {
-      if (event.getClickCount() == 2) { // Double Click
-        Book selectedBook = tableView.getSelectionModel().getSelectedItem();
-        if (selectedBook != null) {
-          openBookDetails(selectedBook);
+    tableView.setRowFactory(tv -> {
+      TableRow<Book> row = new TableRow<>();
+      row.setOnMouseClicked(event -> {
+        if (event.getClickCount() == 2 && (!row.isEmpty())) {
+          Book selectedItem = row.getItem();
+          showDetailPage(selectedItem);
         }
-      }
+      });
+      return row;
     });
     // Add a listener for the search field
     searchField.textProperty()
         .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+  }
+
+  private void showDetailPage(Book book) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      Stage detailStage = new Stage();
+      detailStage.setScene(new Scene(loader.load()));
+
+      BookDetailsController controller = loader.getController();
+      controller.setItemDetail(book);
+
+      detailStage.setTitle("Book Item Detail");
+      detailStage.show();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   private void loadBookData() {
@@ -123,24 +142,6 @@ public class BookViewController {
     tableView.setItems(bookList);
   }
 
-  private void openBookDetails(Book selectedBook) {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
-      Parent root = loader.load();
-
-      // Get the controller and pass the selected book
-      BookDetailsController controller = loader.getController();
-      controller.setBookDetails(selectedBook);
-
-      // Show the book details in a new window
-      Stage stage = new Stage();
-      stage.setTitle("Book Details");
-      stage.setScene(new Scene(root));
-      stage.show();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
 
   private void filterBookList(String searchText) {
     ObservableList<Book> filteredList = FXCollections.observableArrayList();

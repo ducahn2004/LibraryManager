@@ -1,50 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.BookDetailsController">
+<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="org.group4.librarymanagercode.BookDetailsController">
   <center>
-    <VBox alignment="CENTER" prefHeight="203.0" prefWidth="54.0" spacing="10">
-      <HBox>
-        <Label text="ISBN: " />
-        <Label fx:id="isbnLabel" />
+    <VBox prefHeight="311.0" prefWidth="532.0" spacing="10">
+      <HBox prefHeight="18.0" prefWidth="514.0">
+        <Label prefHeight="22.0" prefWidth="100.0" text="ISBN: ">
+          <font>
+            <Font name="System Bold" size="13.0"/>
+          </font>
+        </Label>
+        <Label fx:id="isbnLabel" prefHeight="22.0" prefWidth="451.0" text="Label">
+          <font>
+            <Font size="13.0"/>
+          </font>
+        </Label>
       </HBox>
       <HBox>
-        <Label text="Title: " />
-        <Label fx:id="titleLabel" />
+        <Label prefHeight="22.0" prefWidth="100.0" text="Title: ">
+          <font>
+            <Font name="System Bold" size="13.0"/>
+          </font>
+        </Label>
+        <Label fx:id="titleLabel" prefHeight="22.0" prefWidth="450.0" text="Label">
+          <font>
+            <Font size="13.0"/>
+          </font>
+        </Label>
       </HBox>
       <HBox>
-        <Label text="Author: " />
-        <Label fx:id="authorLabel" />
+        <Label prefHeight="22.0" prefWidth="100.0" text="Author: ">
+          <font>
+            <Font name="System Bold" size="13.0"/>
+          </font>
+        </Label>
+        <Label fx:id="authorLabel" prefHeight="22.0" prefWidth="450.0" text="Label">
+          <font>
+            <Font size="13.0"/>
+          </font>
+        </Label>
       </HBox>
       <HBox>
-        <Label text="Publisher: " />
-        <Label fx:id="publisherLabel" />
+        <Label prefHeight="22.0" prefWidth="100.0" text="Publisher: ">
+          <font>
+            <Font name="System Bold" size="13.0"/>
+          </font>
+        </Label>
+        <Label fx:id="publisherLabel" prefHeight="22.0" prefWidth="446.0" text="Label">
+          <font>
+            <Font size="13.0"/>
+          </font>
+        </Label>
       </HBox>
       <HBox>
-        <Label text="Subject: " />
-        <Label fx:id="subjectLabel" />
+        <Label prefHeight="22.0" prefWidth="100.0" text="Subject: ">
+          <font>
+            <Font name="System Bold" size="13.0"/>
+          </font>
+        </Label>
+        <Label fx:id="subjectLabel" prefHeight="22.0" prefWidth="451.0" text="Label">
+          <font>
+            <Font size="13.0"/>
+          </font>
+        </Label>
       </HBox>
       <HBox>
-        <Label text="Pages: " />
-        <Label fx:id="pagesLabel" />
+        <Label prefHeight="22.0" prefWidth="100.0" text="Pages: ">
+          <font>
+            <Font name="System Bold" size="13.0"/>
+          </font>
+        </Label>
+        <Label fx:id="pagesLabel" prefHeight="22.0" prefWidth="451.0" text="Label">
+          <font>
+            <Font size="13.0"/>
+          </font>
+        </Label>
       </HBox>
-      <!-- Add other labels for details as needed -->
+      <TableView fx:id="tableView" onMouseClicked="#initializeTable" editable="true"
+        prefHeight="222.0"
+        prefWidth="794.0">
+        <columnResizePolicy>
+          <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+        <columns>
+          <TableColumn fx:id="barCode" prefWidth="75.0" text="Barcode"/>
+          <TableColumn fx:id="referenceOnly" prefWidth="101.6" text="Reference Only"/>
+          <TableColumn fx:id="borrowedDate" prefWidth="108.0" text="Borrowed Date"/>
+          <TableColumn fx:id="dueDate" prefWidth="67.2" text="Due Date"/>
+          <TableColumn fx:id="price" prefWidth="66.4" text="Price"/>
+          <TableColumn fx:id="format" prefWidth="64.8" text="Format"/>
+          <TableColumn fx:id="dateOfPurchase" prefWidth="123.199951171875" text="Date of Purchase"/>
+          <TableColumn fx:id="publicationDate" minWidth="8.800048828125"
+            prefWidth="127.2000732421875"
+            text="Publication Date"/>s
+        </columns>
+      </TableView>
+
+
     </VBox>
   </center>
   <bottom>
-    <HBox alignment="CENTER" prefWidth="154.0" spacing="10">
-      <Button fx:id="saveButton" onAction="#onSaveChanges" text="Save" visible="false" />
-      <Button fx:id="cancelButton" onAction="#onCancelEdit" text="Cancel" visible="false" />
-      <Button fx:id="editButton" onAction="#onEditBook" text="Edit" />
-
-    </HBox>
+    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="700.0" spacing="10"/>
   </bottom>
-   <top>
-   <Label style="-fx-font-size: 24;" text="Book Details" BorderPane.alignment="CENTER" />
-   </top>
+  <left>
+    <Pane prefHeight="564.0" prefWidth="58.0" BorderPane.alignment="CENTER"/>
+  </left>
+  <right>
+    <Pane prefHeight="387.0" prefWidth="58.0" BorderPane.alignment="CENTER"/>
+  </right>
+  <top>
+    <Pane prefHeight="66.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+      <children>
+        <Label layoutX="259.0" layoutY="14.0" text="Book Detail">
+          <font>
+            <Font name="System Bold" size="27.0"/>
+          </font>
+        </Label>
+      </children>
+    </Pane>
+  </top>
 </BorderPane>

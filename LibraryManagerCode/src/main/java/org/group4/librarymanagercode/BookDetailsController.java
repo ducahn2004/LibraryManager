@@ -1,116 +1,112 @@
 package org.group4.librarymanagercode;
 
-import javafx.event.ActionEvent;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
+import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
+import org.group4.base.enums.BookFormat;
+import org.group4.base.enums.BookStatus;
 
 public class BookDetailsController {
 
-  @FXML
-  private Label isbnLabel;
-
-  @FXML
-  private Label titleLabel;
-
-  @FXML
-  private Label authorLabel;
-
-  @FXML
-  private Label publisherLabel;
-
-  @FXML
-  private Label subjectLabel;
-
-  @FXML
-  private Label pagesLabel;
-
-  @FXML
-  private TextField isbnField;
-
-  @FXML
-  private TextField titleField;
-
-  @FXML
-  private TextField authorField;
-
-  @FXML
-  private TextField publisherField;
-
-  @FXML
-  private TextField subjectField;
-
-  @FXML
-  private TextField pagesField;
-
   private Book currentBook;
+  private ObservableList<BookItem> bookItems = FXCollections.observableArrayList();
 
-  // Method to populate the view with the book details
-  public void setBookDetails(Book book) {
-    currentBook = book;
-
-    // Set text for labels
-    isbnLabel.setText(book.getISBN());
-    titleLabel.setText(book.getTitle());
-    authorLabel.setText(book.getAuthors().toString());  // Assuming one author for simplicity
-    publisherLabel.setText(book.getPublisher());
-    subjectLabel.setText(book.getSubject());
-    pagesLabel.setText(String.valueOf(book.getNumberOfPages()));
-
-    // Set text for text fields (for editing mode)
-    isbnField.setText(book.getISBN());
-    titleField.setText(book.getTitle());
-    authorField.setText(book.getAuthors().toString());  // Assuming one author for simplicity
-    publisherField.setText(book.getPublisher());
-    subjectField.setText(book.getSubject());
-    pagesField.setText(String.valueOf(book.getNumberOfPages()));
-
-    // Initially, only the labels are visible
-    setEditMode(false);
-  }
-
-  // Switch between display and edit mode
-  private void setEditMode(boolean editMode) {
-    isbnLabel.setVisible(!editMode);
-    titleLabel.setVisible(!editMode);
-    authorLabel.setVisible(!editMode);
-    publisherLabel.setVisible(!editMode);
-    subjectLabel.setVisible(!editMode);
-    pagesLabel.setVisible(!editMode);
-
-    isbnField.setVisible(editMode);
-    titleField.setVisible(editMode);
-    authorField.setVisible(editMode);
-    publisherField.setVisible(editMode);
-    subjectField.setVisible(editMode);
-    pagesField.setVisible(editMode);
-  }
-
-  // Handler for the Edit button
   @FXML
-  private void onEditBook() {
-    // Enable edit mode, switching to TextFields
-    setEditMode(true);
-  }
+  private Label isbnLabel, titleLabel, authorLabel, publisherLabel, subjectLabel, pagesLabel;
 
-  // Handler for the Save button (save changes to the book)
-
-
-  // Handler for the Cancel button (discard changes)
   @FXML
-  private void onCancelEdit() {
-    // Discard changes and reset TextFields to original values
-    setBookDetails(currentBook);
-    setEditMode(false);
+  private TableView<BookItem> tableView;
+
+  @FXML
+  private TableColumn<BookItem, String> barCode;
+  @FXML
+  private TableColumn<BookItem, String> referenceOnly;
+  @FXML
+  private TableColumn<BookItem, String> borrowedDate;
+  @FXML
+  private TableColumn<BookItem, String> dueDate;
+  @FXML
+  private TableColumn<BookItem, Double> price;
+  @FXML
+  private TableColumn<BookItem, String> format;
+  @FXML
+  private TableColumn<BookItem, String> dateOfPurchase;
+  @FXML
+  private TableColumn<BookItem, String> publicationDate;
+
+  public void setItemDetail(Book book) {
+    this.currentBook = book;
+    displayBookDetails();
+    loadData(); // Load data based on currentBook
   }
 
-  public void onDeleteBook(ActionEvent actionEvent) {
+  private void displayBookDetails() {
+    if (currentBook != null) {
+      isbnLabel.setText(currentBook.getISBN());
+      titleLabel.setText(currentBook.getTitle());
+      authorLabel.setText(currentBook.getAuthorsAsString());
+      publisherLabel.setText(currentBook.getPublisher());
+      subjectLabel.setText(currentBook.getSubject());
+      pagesLabel.setText(String.valueOf(currentBook.getNumberOfPages()));
+    }
   }
 
-  public void onClose(ActionEvent actionEvent) {
+  @FXML
+  public void initializeTable() {
+    // Set up each column with its cell value factory
+    barCode.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
+    referenceOnly.setCellValueFactory(cellData -> new SimpleStringProperty(
+        String.valueOf(cellData.getValue().getReference())));
+    borrowedDate.setCellValueFactory(
+        cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getBorrowed())));
+    dueDate.setCellValueFactory(
+        cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDueDate())));
+    price.setCellValueFactory(
+        cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
+    format.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getFormat().toString()));
+    dateOfPurchase.setCellValueFactory(cellData -> new SimpleStringProperty(
+        formatLocalDate(cellData.getValue().getDateOfPurchase())));
+    publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(
+        formatLocalDate(cellData.getValue().getPublicationDate())));
+
+    tableView.setItems(bookItems); // Bind the data list to the table
   }
 
-  public void onSaveChanges(ActionEvent actionEvent) {
+  private void loadData() {
+    if (currentBook != null) {
+      bookItems.clear();
+      bookItems.add(
+          new BookItem(currentBook, "845542", false, 12.0, BookFormat.EBOOK, LocalDate.now(),
+              LocalDate.now()));
+      bookItems.add(
+          new BookItem(currentBook, "270423", false, 16.0, BookFormat.AUDIOBOOK, LocalDate.now(),
+              LocalDate.now()));
+      bookItems.add(
+          new BookItem(currentBook, "318493", false, 15.0, BookFormat.MAGAZINE, LocalDate.now(),
+              LocalDate.now()));
+    }
   }
+
+  // Helper method to format LocalDate to String
+  private String formatLocalDate(LocalDate date) {
+    if (date != null) {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      return date.format(formatter);
+    }
+    return ""; // Return empty string if date is null
+  }
+
+
 }
