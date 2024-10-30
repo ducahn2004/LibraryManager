@@ -14,19 +14,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.group4.base.entities.Book;
 import org.group4.base.entities.Author;
 //import org.group4.base.books.Book;
 
 public class BookViewController {
-
+  @FXML
+  public Button searchButton;
   private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
   public JFXButton homeButton;
@@ -96,9 +99,19 @@ public class BookViewController {
       });
       return row;
     });
-    // Add a listener for the search field
-    searchField.textProperty()
-        .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+//    // Add a listener for the search field
+//    searchField.textProperty()
+//        .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+    searchField.textProperty().addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+
+
+    searchField.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        filterBookList(searchField.getText());
+      }
+    });
+
+    searchButton.setOnAction(this::onSearchBook);
   }
 
   private void showDetailPage(Book book) {
@@ -147,14 +160,14 @@ public class BookViewController {
     ObservableList<Book> filteredList = FXCollections.observableArrayList();
 
     if (searchText == null || searchText.isEmpty()) {
-      // Show the full list if no search text is provided
+
       tableView.setItems(bookList);
     } else {
-      // Convert search text to lowercase for case-insensitive matching
+
       String lowerCaseFilter = searchText.toLowerCase();
 
       for (Book book : bookList) {
-        // Match against title or ISBN
+
         if (book.getISBN().toLowerCase().contains(lowerCaseFilter) ||
             book.getTitle().toLowerCase().contains(lowerCaseFilter)) {
           filteredList.add(book);
