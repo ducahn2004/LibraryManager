@@ -61,28 +61,30 @@ public class BookDetailsController {
     }
   }
 
-  @FXML
-  public void initializeTable() {
-    // Set up each column with its cell value factory
-    barCode.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
-    referenceOnly.setCellValueFactory(cellData -> new SimpleStringProperty(
-        String.valueOf(cellData.getValue().getReference())));
-    borrowedDate.setCellValueFactory(
-        cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getBorrowed())));
-    dueDate.setCellValueFactory(
-        cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDueDate())));
-    price.setCellValueFactory(
-        cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
-    format.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getFormat().toString()));
-    dateOfPurchase.setCellValueFactory(cellData -> new SimpleStringProperty(
-        formatLocalDate(cellData.getValue().getDateOfPurchase())));
-    publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(
-        formatLocalDate(cellData.getValue().getPublicationDate())));
 
-    tableView.setItems(bookItems); // Bind the data list to the table
-  }
+@FXML
+public void initializeTable() {
+
+  barCode.setPrefWidth(150);
+  referenceOnly.setPrefWidth(120);
+  borrowedDate.setPrefWidth(150);
+  dueDate.setPrefWidth(150);
+  price.setPrefWidth(100);
+  format.setPrefWidth(150);
+  dateOfPurchase.setPrefWidth(150);
+  publicationDate.setPrefWidth(150);
+
+  barCode.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
+  referenceOnly.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReference())));
+  borrowedDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getBorrowed())));
+  dueDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDueDate())));
+  price.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
+  format.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormat().toString()));
+  dateOfPurchase.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDateOfPurchase())));
+  publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getPublicationDate())));
+
+  tableView.setItems(bookItems);
+}
 
   private void loadData() {
     if (currentBook != null) {
