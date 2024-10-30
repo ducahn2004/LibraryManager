@@ -10,6 +10,8 @@ public class AccountDatabase extends Database<Account> {
     private AccountDatabase() {
         Librarian admin = new Librarian("admin", "123456", new Person("Librarian", "Librarian@gmail.com", "012345689"));
         addItem(admin);
+
+
     }
 
     public static AccountDatabase getInstance() {

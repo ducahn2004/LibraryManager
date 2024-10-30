@@ -12,6 +12,12 @@ public class Account {
   private AccountStatus status;
 
   // Constructor
+  public Account() {
+    this.id = "";
+    this.password = "";
+    this.person = new Person();
+    this.status = AccountStatus.NONE;
+  }
   public Account(String id, String password, Person person) {
     this.id = id;
     this.password = password;

@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 public class Librarian extends Account {
 
   // Constructor
+  public Librarian() {
+  }
   public Librarian(String id, String password, Person person) {
     super(id, password, person);
   }

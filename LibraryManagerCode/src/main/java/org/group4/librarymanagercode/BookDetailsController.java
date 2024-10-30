@@ -13,6 +13,8 @@ import javafx.scene.control.TableView;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
+import org.group4.database.BookDatabase;
+import org.group4.database.BookItemDatabase;
 
 public class BookDetailsController {
 
@@ -85,8 +87,8 @@ public class BookDetailsController {
   private void loadData() {
     if (currentBook != null) {
       bookItems.clear();
-      bookItems.add(new BookItem(currentBook, "845542", false, 12.0, BookFormat.EBOOK, LocalDate.now(), LocalDate.now()));
-      bookItems.add(new BookItem(currentBook, "270423", false, 16.0, BookFormat.AUDIOBOOK, LocalDate.now(), LocalDate.now()));
+      bookItems.add(BookItemDatabase.getInstance().getItems().getFirst());
+      bookItems.add(BookItemDatabase.getInstance().getItems().get(1));
       bookItems.add(new BookItem(currentBook, "318493", false, 15.0, BookFormat.MAGAZINE, LocalDate.now(), LocalDate.now()));
 
       System.out.println("Data loaded: " + bookItems.size() + " items");

@@ -360,9 +360,6 @@ public class TestRun {
             if (authorName.equalsIgnoreCase("done")) {
                 break;
             }
-            System.out.print("Enter Author Description: ");
-            String authorDescription = scanner.nextLine();
-            authors.add(new Author(authorName));
         }
         Book book = new Book(isbn, title, subject, publisher, language, numberOfPages, authors);
         loggedInLibrarian.addBook(book);

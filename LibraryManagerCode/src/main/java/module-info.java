@@ -13,6 +13,9 @@ module org.group4.librarymanagercode {
   requires java.logging;
   requires annotations;
   requires java.desktop;
+  requires okhttp;
+  requires com.google.gson;
+  requires org.json;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;

@@ -6,6 +6,11 @@ public class Person {
   private String phoneNumber;
 
   // Constructor
+  public Person() {
+    this.name = "";
+    this.email = "";
+    this.phoneNumber = "";
+  }
   public Person(String name, String email, String phoneNumber) {
     this.name = name;
     this.email = email;

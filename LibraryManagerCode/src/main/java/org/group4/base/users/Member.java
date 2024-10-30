@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import org.group4.database.NotificationDatabase;
 import org.group4.base.notifications.EmailNotification;
 import org.group4.base.notifications.PhoneNotification;
+import org.group4.service.GoogleBooksService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +38,7 @@ public class Member extends Account {
     this.totalBooksCheckedOut = 0;
   }
   //TODO: WRITE A CONSTRUCTOR with 2 parameter: id, and person
-
+  //TODO: WRITE A CONSTRUCTOR with 2 parameter: id, and person -> Lam sao ma tao duoc constructor nay?
   // Getter
   public String getId() {
     return super.getId();
@@ -237,6 +238,18 @@ public void reserveBookItem(@NotNull BookItem bookItem) throws IllegalStateExcep
     String notificationMessage = "Account updated successfully. "
         + "Name: " + person.getName() + ", Email: " + person.getEmail();
     Notification.sendNotification(this, notificationMessage);
+  }
+
+  public void searchBook(String query) {
+    GoogleBooksService googleBooksService = new GoogleBooksService();
+    try {
+      List<String> bookTitles = googleBooksService.searchBooks(query);
+      for (String title : bookTitles) {
+        System.out.println(title);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }

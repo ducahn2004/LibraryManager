@@ -24,8 +24,7 @@ public class BookItem extends Book {
 
   // Constructor
   public BookItem(@NotNull Book book, String barcode, boolean isReferenceOnly, double price,
-      BookFormat format,
-      LocalDate dateOfPurchase, LocalDate publicationDate) {
+      BookFormat format, LocalDate dateOfPurchase, LocalDate publicationDate) {
     super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
         book.getLanguage(), book.getNumberOfPages(), book.getAuthors());
     this.barcode = barcode;
