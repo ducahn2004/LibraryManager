@@ -28,8 +28,6 @@ import org.group4.base.entities.Author;
 //import org.group4.base.books.Book;
 
 public class BookViewController {
-  @FXML
-  public Button searchButton;
   private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
   public JFXButton homeButton;
@@ -111,7 +109,6 @@ public class BookViewController {
       }
     });
 
-    searchButton.setOnAction(this::onSearchBook);
   }
 
   private void showDetailPage(Book book) {
