@@ -10,13 +10,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.input.MouseEvent;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
-import org.group4.base.enums.BookStatus;
 
 public class BookDetailsController {
+
 
   private Book currentBook;
   private ObservableList<BookItem> bookItems = FXCollections.observableArrayList();
@@ -32,6 +31,8 @@ public class BookDetailsController {
   @FXML
   private TableColumn<BookItem, String> referenceOnly;
   @FXML
+  private TableColumn<BookItem,String> status;
+  @FXML
   private TableColumn<BookItem, String> borrowedDate;
   @FXML
   private TableColumn<BookItem, String> dueDate;
@@ -43,6 +44,11 @@ public class BookDetailsController {
   private TableColumn<BookItem, String> dateOfPurchase;
   @FXML
   private TableColumn<BookItem, String> publicationDate;
+
+  @FXML
+  private void initialize() {
+    initializeTable();
+  }
 
   public void setItemDetail(Book book) {
     this.currentBook = book;
@@ -61,54 +67,37 @@ public class BookDetailsController {
     }
   }
 
+  private void initializeTable() {
+    // Set up each column with its cell value factory
+    barCode.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
+    referenceOnly.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReference())));
+    status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
+    borrowedDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getBorrowed())));
+    dueDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDueDate())));
+    price.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
+    format.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormat().toString()));
+    dateOfPurchase.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDateOfPurchase())));
+    publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getPublicationDate())));
 
-@FXML
-public void initializeTable() {
-
-  barCode.setPrefWidth(150);
-  referenceOnly.setPrefWidth(120);
-  borrowedDate.setPrefWidth(150);
-  dueDate.setPrefWidth(150);
-  price.setPrefWidth(100);
-  format.setPrefWidth(150);
-  dateOfPurchase.setPrefWidth(150);
-  publicationDate.setPrefWidth(150);
-
-  barCode.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
-  referenceOnly.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReference())));
-  borrowedDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getBorrowed())));
-  dueDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDueDate())));
-  price.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
-  format.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormat().toString()));
-  dateOfPurchase.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDateOfPurchase())));
-  publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getPublicationDate())));
-
-  tableView.setItems(bookItems);
-}
+    tableView.setItems(bookItems); // Bind the data list to the table
+  }
 
   private void loadData() {
     if (currentBook != null) {
       bookItems.clear();
-      bookItems.add(
-          new BookItem(currentBook, "845542", false, 12.0, BookFormat.EBOOK, LocalDate.now(),
-              LocalDate.now()));
-      bookItems.add(
-          new BookItem(currentBook, "270423", false, 16.0, BookFormat.AUDIOBOOK, LocalDate.now(),
-              LocalDate.now()));
-      bookItems.add(
-          new BookItem(currentBook, "318493", false, 15.0, BookFormat.MAGAZINE, LocalDate.now(),
-              LocalDate.now()));
+      bookItems.add(new BookItem(currentBook, "845542", false, 12.0, BookFormat.EBOOK, LocalDate.now(), LocalDate.now()));
+      bookItems.add(new BookItem(currentBook, "270423", false, 16.0, BookFormat.AUDIOBOOK, LocalDate.now(), LocalDate.now()));
+      bookItems.add(new BookItem(currentBook, "318493", false, 15.0, BookFormat.MAGAZINE, LocalDate.now(), LocalDate.now()));
+
+      System.out.println("Data loaded: " + bookItems.size() + " items");
     }
   }
 
-  // Helper method to format LocalDate to String
   private String formatLocalDate(LocalDate date) {
     if (date != null) {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
       return date.format(formatter);
     }
-    return ""; // Return empty string if date is null
+    return "";
   }
-
-
 }

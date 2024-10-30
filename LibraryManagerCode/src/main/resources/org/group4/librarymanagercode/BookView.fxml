@@ -113,7 +113,6 @@
         <TableColumn fx:id="bookLanguage" prefWidth="83.199951171875" text="Language"/>
         <TableColumn fx:id="numberOfPages" prefWidth="81.5999755859375" text="Pages"/>
         <TableColumn fx:id="bookAuthor" prefWidth="173.60003662109375" text="Author"/>
-
       </columns>
       <BorderPane.margin>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
