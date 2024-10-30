@@ -37,29 +37,27 @@ public class LoginController {
     String password = passwordField.getText();
 
     if (username.isEmpty() || password.isEmpty()) {
-      showAlert(Alert.AlertType.ERROR, "Lỗi Đăng Nhập", "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.");
+      showAlert(Alert.AlertType.ERROR, "Failing Login", "Retype Account and password!");
       return;
     }
 
-    // Xác thực người dùng từ UserStore
     if (authenticate(username,password)) {
-      // Đăng nhập thành công, chuyển sang giao diện chính
       try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FirstPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminPane.fxml"));
         Parent root = loader.load();
 
         Stage stage = (Stage) ((Node) loginButton).getScene().getWindow();
-        Scene scene = new Scene(root, 700, 550);
+        Scene scene = new Scene(root, 1000, 700);
         stage.setScene(scene);
         stage.setTitle("Library Manager");
         stage.show();
       } catch (IOException e) {
         e.printStackTrace();
-        showAlert(Alert.AlertType.ERROR, "Error", "Không thể tải giao diện chính.");
+        showAlert(Alert.AlertType.ERROR, "Error", "Cannot loading page...");
       }
     } else {
       // Đăng nhập thất bại, hiển thị cảnh báo
-      showAlert(Alert.AlertType.ERROR, "Lỗi Đăng Nhập", "Tên đăng nhập hoặc mật khẩu không chính xác!");
+      showAlert(Alert.AlertType.ERROR, "Failing Login", "Wrong Account or Password!");
     }
 
   }
@@ -76,19 +74,4 @@ public class LoginController {
     alert.showAndWait();
   }
 
-  @FXML
-  private void handleGoToSignUPAction(ActionEvent event) throws IOException {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("AddMember.fxml"));
-      Parent root = loader.load();
-      Scene scene = new Scene(root, 700, 550);
-      Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-      stage.setScene(scene);
-      stage.setTitle("Library Manager");
-      stage.show();
-    } catch (IOException e) {
-      e.printStackTrace();
-      showAlert(AlertType.ERROR, "Error", "Unable to load Sign Up page.");
-    }
-  }
 }
