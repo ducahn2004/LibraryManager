@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.SignupController">
    <children>
       <Label layoutX="287.0" layoutY="35.0" text="Sign Up">
          <font>
@@ -60,8 +61,12 @@
             </Label>
             <TextField fx:id="FirstNameField" layoutX="196.0" layoutY="28.0" prefHeight="25.0" prefWidth="223.0" promptText="David" />
             <TextField fx:id="LastNameField" layoutX="196.0" layoutY="70.0" prefHeight="25.0" prefWidth="223.0" promptText="Smith" />
+            <TextField fx:id="StudentIDField" layoutX="196.0" layoutY="110.0" prefHeight="25.0" prefWidth="223.0" promptText="22021234" />
             <TextField fx:id="EmailField" layoutX="196.0" layoutY="150.0" prefHeight="25.0" prefWidth="223.0" promptText="22021234@vnu.edu.vn" />
+            <PasswordField fx:id="PasswordField" layoutX="196.0" layoutY="188.0" prefHeight="25.0" prefWidth="223.0" />
+            <PasswordField fx:id="repeatedPasswordField" layoutX="196.0" layoutY="228.0" prefHeight="25.0" prefWidth="223.0" />
             <TextField fx:id="GraduateYearField" layoutX="196.0" layoutY="310.0" prefHeight="25.0" prefWidth="223.0" promptText="2026" />
+            <MenuButton fx:id="UniversityField" layoutX="196.0" layoutY="270.0" mnemonicParsing="false" onAction="#populateUniversityMenu" prefHeight="25.0" prefWidth="223.0" text="MenuButton">
               <items>
                 <MenuItem mnemonicParsing="false" text="Action 1" />
                 <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -69,9 +74,11 @@
             </MenuButton>
          </children>
       </Pane>
+      <Button fx:id="RegisterButton" layoutX="300.0" layoutY="485.0" mnemonicParsing="false" onAction="#initialize" text="Register">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
+      <Button fx:id="LoginButton" layoutX="21.0" layoutY="23.0" mnemonicParsing="false" onAction="#handleBackToLoginAction" text="Log In" />
    </children>
 </AnchorPane>
