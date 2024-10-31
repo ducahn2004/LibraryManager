@@ -6,22 +6,26 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.Videoio;
 import org.opencv.imgproc.Imgproc;
-import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.awt.image.DataBufferByte;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class QRCodeScanner {
+
+    private static final Logger logger = Logger.getLogger(QRCodeScanner.class.getName());
 
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     public static void main(String[] args) {
-        VideoCapture camera = new VideoCapture(0);
+        VideoCapture camera = new VideoCapture(0, Videoio.CAP_DSHOW);
         if (!camera.isOpened()) {
-            System.out.println("Error: Camera not accessible");
+            logger.severe("Error: Camera not accessible");
             return;
         }
 
@@ -29,24 +33,28 @@ public class QRCodeScanner {
         while (true) {
             if (camera.read(frame)) {
                 Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
-                byte[] data = new byte[(int) (frame.total() * frame.channels())];
-                frame.get(0, 0, data);
-
+                BufferedImage bufferedImage = matToBufferedImage(frame);
                 try {
-                    BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(data));
                     LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
                     BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
                     Result result = new MultiFormatReader().decode(bitmap);
 
                     if (result != null) {
-                        System.out.println("QR Code detected: " + result.getText());
+                        logger.info("QR Code detected: " + result.getText());
                         break;
                     }
-                } catch (IOException | NotFoundException e) {
-                    e.printStackTrace();
+                } catch (NotFoundException e) {
+                    logger.log(Level.WARNING, "QR Code not found", e);
                 }
             }
         }
         camera.release();
+    }
+
+    private static BufferedImage matToBufferedImage(Mat mat) {
+        int type = (mat.channels() == 1) ? BufferedImage.TYPE_BYTE_GRAY : BufferedImage.TYPE_3BYTE_BGR;
+        BufferedImage image = new BufferedImage(mat.cols(), mat.rows(), type);
+        mat.get(0, 0, ((DataBufferByte) image.getRaster().getDataBuffer()).getData());
+        return image;
     }
 }
