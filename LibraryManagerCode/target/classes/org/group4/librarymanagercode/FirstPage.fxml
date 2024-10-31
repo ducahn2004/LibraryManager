@@ -22,11 +22,6 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button fx:id="signUpButton" layoutX="525.0" layoutY="8.0" mnemonicParsing="false" onAction="#SignUPAction" text="Sign Up">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
          </children>
       </Pane>
       <Label layoutX="419.0" layoutY="308.0" text="SYSTEM">
