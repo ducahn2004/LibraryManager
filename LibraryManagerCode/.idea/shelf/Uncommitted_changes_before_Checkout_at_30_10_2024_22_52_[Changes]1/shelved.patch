@@ -1,0 +1,60 @@
+Index: src/main/resources/org/group4/librarymanagercode/Login.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.Label?>\r\n<?import javafx.scene.control.PasswordField?>\r\n<?import javafx.scene.control.TextField?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.AnchorPane?>\r\n<?import javafx.scene.layout.Pane?>\r\n<?import javafx.scene.text.Font?>\r\n\r\n<AnchorPane maxHeight=\"-Infinity\" maxWidth=\"-Infinity\" prefHeight=\"550.0\" prefWidth=\"700.0\" xmlns=\"http://javafx.com/javafx/23\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"org.group4.librarymanagercode.LoginController\">\r\n   <children>\r\n      <ImageView fitHeight=\"353.0\" fitWidth=\"368.0\" layoutX=\"56.0\" layoutY=\"99.0\">\r\n         <image>\r\n            <Image url=\"@Image/Library-rafiki.png\" />\r\n         </image>\r\n      </ImageView>\r\n      <Pane layoutX=\"424.0\" layoutY=\"185.0\" prefHeight=\"200.0\" prefWidth=\"200.0\">\r\n         <children>\r\n            <Label layoutX=\"66.0\" layoutY=\"14.0\" text=\"Login\" textAlignment=\"CENTER\" textFill=\"#403333\">\r\n               <font>\r\n                  <Font name=\".VnHelvetIns Medium\" size=\"30.0\" />\r\n               </font>\r\n            </Label>\r\n            <TextField layoutX=\"2.0\" layoutY=\"59.0\" prefHeight=\"26.0\" prefWidth=\"196.0\" promptText=\"Account \" />\r\n            <PasswordField layoutX=\"2.0\" layoutY=\"100.0\" prefHeight=\"26.0\" prefWidth=\"196.0\" promptText=\"Password\" />\r\n            <Button layoutX=\"57.0\" layoutY=\"146.0\" mnemonicParsing=\"false\" prefHeight=\"26.0\" prefWidth=\"86.0\" text=\"Login\" />\r\n         </children>\r\n      </Pane>\r\n      <Button fx:id=\"signUpButton\" layoutX=\"624.0\" layoutY=\"26.0\" mnemonicParsing=\"false\" onAction=\"#handleGoToSignUPAction\" text=\"Sign Up\" />\r\n   </children>\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/org/group4/librarymanagercode/Login.fxml b/src/main/resources/org/group4/librarymanagercode/Login.fxml
+--- a/src/main/resources/org/group4/librarymanagercode/Login.fxml	(revision 727db2d55abcbab1293371058798d8af6e29d376)
++++ b/src/main/resources/org/group4/librarymanagercode/Login.fxml	(date 1730302082103)
+@@ -10,25 +10,41 @@
+ <?import javafx.scene.layout.Pane?>
+ <?import javafx.scene.text.Font?>
+ 
+-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.LoginController">
++<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.LoginController">
+    <children>
+-      <ImageView fitHeight="353.0" fitWidth="368.0" layoutX="56.0" layoutY="99.0">
++      <AnchorPane prefHeight="125.0" prefWidth="700.0" style="-fx-background-color: #003399;">
++         <children>
++            <ImageView fitHeight="74.0" fitWidth="86.0" layoutX="39.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
++               <image>
++                  <Image url="@Image/logo.jpg.png" />
++               </image>
++            </ImageView>
++            <Label layoutX="124.0" layoutY="54.0" text="Library Management System" textFill="WHITE">
++               <font>
++                  <Font size="24.0" />
++               </font>
++            </Label>
++         </children>
++      </AnchorPane>
++      <ImageView fitHeight="353.0" fitWidth="368.0" layoutY="126.0">
+          <image>
+             <Image url="@Image/Library-rafiki.png" />
+          </image>
+       </ImageView>
+-      <Pane layoutX="424.0" layoutY="185.0" prefHeight="200.0" prefWidth="200.0">
++      <Pane layoutX="366.0" layoutY="151.0" prefHeight="262.0" prefWidth="302.0">
+          <children>
+-            <Label layoutX="66.0" layoutY="14.0" text="Login" textAlignment="CENTER" textFill="#403333">
++            <Label layoutX="114.0" layoutY="50.0" text="Login" textAlignment="CENTER" textFill="#201212">
+                <font>
+                   <Font name=".VnHelvetIns Medium" size="30.0" />
+                </font>
+             </Label>
+-            <TextField layoutX="2.0" layoutY="59.0" prefHeight="26.0" prefWidth="196.0" promptText="Account " />
+-            <PasswordField layoutX="2.0" layoutY="100.0" prefHeight="26.0" prefWidth="196.0" promptText="Password" />
+-            <Button layoutX="57.0" layoutY="146.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Login" />
++            <TextField layoutX="53.0" layoutY="105.0" prefHeight="26.0" prefWidth="196.0" promptText="Account " />
++            <PasswordField layoutX="53.0" layoutY="150.0" prefHeight="26.0" prefWidth="196.0" promptText="Password" />
++            <Button layoutX="108.0" layoutY="192.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" style="-fx-background-color: #0056b3;" text="Login" textFill="WHITE">
++               <font>
++                  <Font name="System Bold" size="12.0" />
++               </font></Button>
+          </children>
+       </Pane>
+-      <Button fx:id="signUpButton" layoutX="624.0" layoutY="26.0" mnemonicParsing="false" onAction="#handleGoToSignUPAction" text="Sign Up" />
+    </children>
+ </AnchorPane>
