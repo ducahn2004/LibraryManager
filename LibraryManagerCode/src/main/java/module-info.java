@@ -1,4 +1,4 @@
-module org.group4.librarymanagercode {
+module org.group.librarymanagercode {
   requires javafx.fxml;
   requires javafx.web;
 
@@ -16,6 +16,9 @@ module org.group4.librarymanagercode {
   requires okhttp;
   requires com.google.gson;
   requires org.json;
+  requires com.google.zxing;
+  requires com.google.zxing.javase;
+  requires opencv;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;
