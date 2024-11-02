@@ -29,6 +29,7 @@ public class AdminPaneController {
   public JFXButton settingButton;
   @FXML
   public JFXButton closeButton;
+  public JFXButton notificationButton;
 
   private Stage stage;
   private BorderPane rootLayout;
@@ -71,13 +72,9 @@ public class AdminPaneController {
   }
 
   private void loadPage(String fxmlFile) {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-      BorderPane pane = loader.load();
-      rootLayout.setCenter(pane);
-    } catch (IOException e) {
-      e.printStackTrace();
-      // Optionally, show an error alert dialog to the user here
-    }
+
+  }
+
+  public void notificationAction(ActionEvent actionEvent) {
   }
 }

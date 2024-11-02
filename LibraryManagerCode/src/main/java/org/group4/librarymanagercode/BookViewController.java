@@ -178,4 +178,25 @@ public class BookViewController {
     String searchText = searchField.getText();
     filterBookList(searchText);
   }
+
+  public void HomeAction(ActionEvent actionEvent) {
+  }
+
+  public void MemberAction(ActionEvent actionEvent) {
+  }
+
+  public void BookAction(ActionEvent actionEvent) {
+  }
+
+  public void ReturnBookAction(ActionEvent actionEvent) {
+  }
+
+  public void notificationAction(ActionEvent actionEvent) {
+  }
+
+  public void SettingAction(ActionEvent actionEvent) {
+  }
+
+  public void Close(ActionEvent actionEvent) {
+  }
 }
