@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.geometry.Insets?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.AdminPaneController">
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="org.group4.librarymanagercode.SettingController"
+  prefHeight="400.0" prefWidth="600.0">
   <left>
     <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" BorderPane.alignment="CENTER">
       <children>
@@ -52,25 +53,4 @@
       </children>
     </VBox>
   </left>
-  <top>
-    <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
-      <children>
-        <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
-        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0" prefHeight="96.0" prefWidth="172.0" text="Dashboard" textFill="#2e069c">
-          <font>
-            <Font name=".VnArial Bold" size="30.0" />
-          </font>
-        </Label>
-        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
-          <font>
-            <Font name="Segoe UI Semilight" size="23.0" />
-          </font>
-          <BorderPane.margin>
-            <Insets top="2.0" />
-          </BorderPane.margin>
-        </Label>
-      </children>
-    </Pane>
-
-  </top>
 </BorderPane>
