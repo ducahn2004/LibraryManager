@@ -30,6 +30,7 @@ import org.group4.base.entities.Author;
 public class BookViewController {
   private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
+  private Stage stage;
   public JFXButton homeButton;
   @FXML
   private TableView<Book> tableView = new TableView<>(bookList);
@@ -201,6 +202,11 @@ public class BookViewController {
 
   }
 
-  public void addBookAction(ActionEvent actionEvent) {
+  public void addBookAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AddBook.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000 , 700);
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
   }
 }
