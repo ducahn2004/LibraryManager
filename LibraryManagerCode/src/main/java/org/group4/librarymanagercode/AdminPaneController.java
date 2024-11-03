@@ -56,7 +56,7 @@ public class AdminPaneController {
   }
 
   public void AddMemberAction(ActionEvent actionEvent) {
-    loadPage("AddMember.fxml");
+    loadPage("");
   }
 
   public void ReturnBookAction(ActionEvent actionEvent) {

@@ -198,5 +198,6 @@ public class BookViewController {
   }
 
   public void Close(ActionEvent actionEvent) {
+    
   }
 }

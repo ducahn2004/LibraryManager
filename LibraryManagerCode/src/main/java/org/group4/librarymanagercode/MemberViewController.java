@@ -59,5 +59,6 @@ public class MemberViewController {
   }
 
   public void HomeAction(ActionEvent actionEvent) {
+    
   }
 }

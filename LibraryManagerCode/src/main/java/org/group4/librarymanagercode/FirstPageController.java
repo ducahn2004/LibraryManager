@@ -21,37 +21,9 @@ public class FirstPageController {
   @FXML
   private Button loginButton;
 
-  @FXML
-  private void LoginAction(ActionEvent event) throws IOException {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-      Parent root = loader.load();
-      Scene scene = new Scene(root, 700, 550);
-      Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-      stage.setScene(scene);
-      stage.setTitle("Library Manager");
-      stage.show();
-    } catch (IOException e) {
-      e.printStackTrace();
-      showAlert(AlertType.ERROR, "Error", "Unable to load login page.");
-    }
-  }
 
-  @FXML
-  private void SignUPAction(ActionEvent event) throws IOException {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("AddMember.fxml"));
-      Parent root = loader.load();
-      Scene scene = new Scene(root, 700, 550);
-      Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-      stage.setScene(scene);
-      stage.setTitle("Library Manager");
-      stage.show();
-    } catch (IOException e) {
-      e.printStackTrace();
-      showAlert(AlertType.ERROR, "Error", "Unable to load login page.");
-    }
-  }
+
+
 
   private void showAlert(Alert.AlertType alertType, String title, String message) {
     Alert alert = new Alert(alertType);
