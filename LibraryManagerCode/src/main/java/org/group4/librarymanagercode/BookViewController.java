@@ -198,6 +198,9 @@ public class BookViewController {
   }
 
   public void Close(ActionEvent actionEvent) {
-    
+
+  }
+
+  public void addBookAction(ActionEvent actionEvent) {
   }
 }
