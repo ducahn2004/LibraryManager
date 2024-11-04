@@ -13,14 +13,13 @@ import javafx.scene.control.TableView;
 import org.group4.base.books.BookItem;
 import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
-import org.group4.database.BookDatabase;
 import org.group4.database.BookItemDatabase;
 
 public class BookDetailsController {
 
 
   private Book currentBook;
-  private ObservableList<BookItem> bookItems = FXCollections.observableArrayList();
+  private final ObservableList<BookItem> bookItems = FXCollections.observableArrayList();
 
   @FXML
   private Label isbnLabel, titleLabel, authorLabel, publisherLabel, subjectLabel, pagesLabel;
@@ -62,7 +61,7 @@ public class BookDetailsController {
     if (currentBook != null) {
       isbnLabel.setText(currentBook.getISBN());
       titleLabel.setText(currentBook.getTitle());
-      authorLabel.setText(currentBook.getAuthorsAsString());
+      authorLabel.setText(currentBook.authorsToString());
       publisherLabel.setText(currentBook.getPublisher());
       subjectLabel.setText(currentBook.getSubject());
       pagesLabel.setText(String.valueOf(currentBook.getNumberOfPages()));

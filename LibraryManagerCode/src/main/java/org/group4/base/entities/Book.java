@@ -54,41 +54,12 @@ public class Book {
     return authors;
   }
 
-
-  public void printDetails() {
-    System.out.println("ISBN: " + getISBN());
-    System.out.println("Title: " + getTitle());
-    System.out.println("Subject: " + getSubject());
-    System.out.println("Publisher: " + getPublisher());
-    System.out.println("Language: " + getLanguage());
-    System.out.println("Number of pages: " + getNumberOfPages());
-    System.out.println("Authors: ");
+  public String authorsToString() {
+    StringBuilder authorsString = new StringBuilder();
     for (Author author : authors) {
-      System.out.println(author.getName());
+      authorsString.append(author.getName()).append(", ");
     }
+    return authorsString.toString();
   }
 
-  public String toString() {
-    StringBuilder result = new StringBuilder();
-    result.append("ISBN: ").append(getISBN()).append("\n");
-    result.append("Title: ").append(getTitle()).append("\n");
-    result.append("Subject: ").append(getSubject()).append("\n");
-    result.append("Publisher: ").append(getPublisher()).append("\n");
-    result.append("Language: ").append(getLanguage()).append("\n");
-    result.append("Number of pages: ").append(getNumberOfPages()).append("\n");
-    result.append("Authors: ").append("\n");
-    for (Author author : authors) {
-      result.append(author.getName()).append("\n");
-    }
-    return result.toString();
-  }
-
-  // New method to get authors as a concatenated string
-  public String getAuthorsAsString() {
-    return String.join(", ", this.getAuthors().stream()
-        .map(Author::getName)
-        .toArray(String[]::new));
-  }
-
-  // TODO: NOT UPDATE BOOK. THIS IS FINAL
 }

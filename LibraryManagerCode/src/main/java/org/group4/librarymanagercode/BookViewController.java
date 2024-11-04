@@ -1,7 +1,6 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,23 +11,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.group4.base.entities.Book;
 import org.group4.base.entities.Author;
+import org.group4.base.entities.Book;
 //import org.group4.base.books.Book;
 
 public class BookViewController {
-  private ObservableList<Book> bookList = FXCollections.observableArrayList();
+  private final ObservableList<Book> bookList = FXCollections.observableArrayList();
 
   public JFXButton homeButton;
   @FXML
@@ -80,7 +77,7 @@ public class BookViewController {
     numberOfPages.setCellValueFactory(cellData ->
         new SimpleObjectProperty<>(cellData.getValue().getNumberOfPages()));
     bookAuthor.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getAuthorsAsString()));
+        cellData -> new SimpleStringProperty(cellData.getValue().getAuthors().get(0).getName()));
     tableView.getColumns()
         .addAll(ISBN, bookName, bookSubject, bookPublisher, bookLanguage, numberOfPages,
             bookAuthor);

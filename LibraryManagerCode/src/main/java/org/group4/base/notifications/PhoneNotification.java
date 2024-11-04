@@ -24,12 +24,4 @@ public class PhoneNotification extends Notification {
     System.out.println("Phone number: " + phoneNumber);
   }
 
-  public static void sendPhoneNotification(Member member, String content) {
-    Random random = new Random();
-    int notificationId = random.nextInt(1000);
-    PhoneNotification phoneNotification = new PhoneNotification(notificationId, content,
-        member.getPerson().getPhoneNumber());
-    NotificationDatabase.addNotification(member, phoneNotification);
-    member.receiveNotification(phoneNotification);
-  }
 }

@@ -19,6 +19,15 @@ module org.group.librarymanagercode {
   requires com.google.zxing;
   requires com.google.zxing.javase;
   requires opencv;
+  requires com.google.api.client.auth;
+  requires com.google.api.client.extensions.java6.auth;
+  requires com.google.api.client;
+  requires com.google.api.client.json.gson;
+  requires jakarta.mail;
+  requires google.api.client;
+  requires com.google.api.client.extensions.jetty.auth;
+  requires jdk.httpserver;
+  requires com.google.api.services.gmail;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;

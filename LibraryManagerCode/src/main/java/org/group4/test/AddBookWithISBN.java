@@ -24,7 +24,7 @@ public class AddBookWithISBN {
         try {
             JSONObject bookDetails = googleBooksServiceByISBN.getBookDetails(isbn);
             String title = bookDetails.getString("title");
-            String subject = bookDetails.optString("subject", "Unknown");
+            String subject = bookDetails.optString("categories", "Unknown");
             String publisher = bookDetails.optString("publisher", "Unknown");
             String language = bookDetails.optString("language", "Unknown");
             int pageCount = bookDetails.optInt("pageCount", 0);
@@ -38,7 +38,6 @@ public class AddBookWithISBN {
 
             Book book = new Book(isbn, title, subject, publisher, language, pageCount, authors);
             loggedInLibrarian.addBook(book);
-            book.printDetails();
 
         } catch (IOException e) {
             e.printStackTrace();

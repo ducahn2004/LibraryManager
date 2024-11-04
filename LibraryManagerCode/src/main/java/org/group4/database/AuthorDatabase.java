@@ -1,7 +1,5 @@
 package org.group4.database;
 
-import java.util.ArrayList;
-
 import org.group4.base.entities.Author;
 
 public class AuthorDatabase extends Database<Author> {

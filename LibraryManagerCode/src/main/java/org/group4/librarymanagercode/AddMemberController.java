@@ -1,6 +1,5 @@
 package org.group4.librarymanagercode;
 
-import org.group4.base.enums.University;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,8 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -50,7 +47,6 @@ public class AddMemberController {
   private int studentID = 0;
   private String password = "";
   private String repeatedPassword = "";
-  private University university = null;
 
   @FXML
   public void initialize() {
@@ -67,8 +63,6 @@ public class AddMemberController {
     studentID = Integer.parseInt(StudentIDField.getText());
 
     if (isInputValid()) {
-
-      String universityName = (university != null) ? university.getDisplayName() : "";
 
       // Tạo đối tượng Member mới
       //Member newMember = new Member(firstName, lastName, studentID, email, password, universityName, graduateYear);

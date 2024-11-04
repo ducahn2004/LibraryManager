@@ -1,30 +1,27 @@
 package org.group4.base.books;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.time.LocalDate;
 import org.group4.base.entities.Book;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.database.BookItemDatabase;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class BookItem extends Book {
 
   private final String barcode;
-  private final boolean isReferenceOnly;
+  private boolean isReferenceOnly;
   private LocalDate borrowed;
   private LocalDate dueDate;
-  private final double price;
-  private final BookFormat format;
+  private double price;
+  private BookFormat format;
   private BookStatus status;
-  private final LocalDate dateOfPurchase;
-  private final LocalDate publicationDate;
+  private LocalDate dateOfPurchase;
+  private LocalDate publicationDate;
 
   // Constructor
-  public BookItem(@NotNull Book book, String barcode, boolean isReferenceOnly, double price,
-      BookFormat format, LocalDate dateOfPurchase, LocalDate publicationDate) {
+  public BookItem(Book book, String barcode, boolean isReferenceOnly, double price, BookFormat format,
+      LocalDate dateOfPurchase, LocalDate publicationDate) {
     super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
         book.getLanguage(), book.getNumberOfPages(), book.getAuthors());
     this.barcode = barcode;
@@ -41,6 +38,10 @@ public class BookItem extends Book {
   // Getter
   public String getBarcode() {
     return barcode;
+  }
+
+  public String getReference() {
+    return (isReferenceOnly) ? "Yes" : "No";
   }
 
   public LocalDate getBorrowed() {
@@ -71,39 +72,43 @@ public class BookItem extends Book {
     return publicationDate;
   }
 
-  public String getReference() {
-    return (isReferenceOnly) ? "Yes" : "No";
-  }
-  
-
   // Setter
-  public void setStatus(BookStatus status) {
-    this.status = status;
-  }
-
-  public void setDueDate(LocalDate dueDate) {
-    this.dueDate = dueDate;
+  public void setReferenceOnly(boolean referenceOnly) {
+    isReferenceOnly = referenceOnly;
   }
 
   public void setBorrowed(LocalDate borrowed) {
     this.borrowed = borrowed;
   }
 
-  /**
-   * Method check out a book item.
-   *
-   * @return true if the book item is available and not reference only, otherwise false
-   */
+  public void setDueDate(LocalDate dueDate) {
+    this.dueDate = dueDate;
+  }
+
+  public void setPrice(double price) {
+    this.price = price;
+  }
+
+  public void setFormat(BookFormat format) {
+    this.format = format;
+  }
+
+  public void setStatus(BookStatus status) {
+    this.status = status;
+  }
+
+  public void setDateOfPurchase(LocalDate dateOfPurchase) {
+    this.dateOfPurchase = dateOfPurchase;
+  }
+
+  public void setPublicationDate(LocalDate publicationDate) {
+    this.publicationDate = publicationDate;
+  }
+
   public boolean checkOut() {
     return !this.isReferenceOnly && this.status == BookStatus.AVAILABLE;
   }
 
-  /**
-   * Method fetches the book item details by barcode.
-   *
-   * @return the book item if found, otherwise null
-   */
-  @Nullable
   public static BookItem fetchBookItemDetails(String barcode) {
     List<BookItem> bookItems = BookItemDatabase.getInstance().getItems();
     for (BookItem bookItem : bookItems) {
@@ -114,18 +119,4 @@ public class BookItem extends Book {
     return null;
   }
 
-  // Method prints the book item details.
-  @Override
-  public void printDetails() {
-    super.printDetails();
-    System.out.println("Barcode: " + getBarcode());
-    System.out.println("Reference only: " + isReferenceOnly);
-    System.out.println("Borrowed: " + getBorrowed());
-    System.out.println("Due date: " + getDueDate());
-    System.out.println("Price: " + getPrice());
-    System.out.println("Format: " + getFormat());
-    System.out.println("Status: " + getStatus());
-    System.out.println("Date of purchase: " + getDateOfPurchase());
-    System.out.println("Publication date: " + getPublicationDate());
-  }
 }

@@ -1,14 +1,11 @@
 package org.group4.database;
 
-import java.util.ArrayList;
 import org.group4.base.entities.Book;
 
 public class BookDatabase extends Database<Book> {
     private static final BookDatabase instance = new BookDatabase();
 
     private BookDatabase() {
-        Book book1 = new Book("123456789", "Super Reg Flag", "Trap Girl", "DucAhn", "Vietnamese", 100, new ArrayList<>());
-        addItem(book1);
     }
 
     public static BookDatabase getInstance() {
