@@ -90,6 +90,6 @@
 
      <TextArea fx:id="authorsField" promptText="Authors (comma separated)"/>
 
-     <Button text="Add Book" onAction="#addBook"/>
+     <Button  text="Add Book" onAction="#addBook"/>
    </center>
 </BorderPane>

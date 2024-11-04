@@ -28,6 +28,8 @@ import org.group4.base.entities.Author;
 //import org.group4.base.books.Book;
 
 public class BookViewController {
+
+  public Button addBookButton;
   private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
   private Stage stage;
@@ -204,9 +206,13 @@ public class BookViewController {
 
   public void addBookAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AddBook.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000 , 700);
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+    if (stage != null) {
+      stage.setTitle("Library Manager");
+      stage.setScene(scene);
+      stage.show();
+    } else {
+      System.out.println("Stage is null!");
+    }
   }
 }
