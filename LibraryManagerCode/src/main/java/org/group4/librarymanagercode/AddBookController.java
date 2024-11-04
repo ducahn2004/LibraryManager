@@ -35,47 +35,6 @@ public class AddBookController {
   private final GoogleBooksService googleBooksService = new GoogleBooksService();
   private final GoogleBooksServiceByISBN googleBooksServiceByISBN = new GoogleBooksServiceByISBN();
   private static final Librarian loggedInLibrarian = new Librarian();
-  @FXML
-  private void searchByISBN() {
-    String isbn = isbnField.getText();
-    if (!isbn.isEmpty()) {
-      try {
-        // Call GoogleBooksServiceByISBN to get book details by ISBN
-        JSONObject bookDetails = googleBooksServiceByISBN.getBookDetails(isbn);
-
-        // Extract details from the JSON response
-        String title = bookDetails.optString("title", "Unknown");
-        String subject = bookDetails.optString("subject", "Unknown");
-        String publisher = bookDetails.optString("publisher", "Unknown");
-        String language = bookDetails.optString("language", "Unknown");
-        int pageCount = bookDetails.optInt("pageCount", 0);
-
-        List<Author> authors = new ArrayList<>();
-        JSONArray authorsArray = bookDetails.optJSONArray("authors");
-        if (authorsArray != null) {
-          for (int i = 0; i < authorsArray.length(); i++) {
-            authors.add(new Author(authorsArray.getString(i)));
-          }
-        }
-
-        // Create a Book object with the extracted details
-        Book book = new Book(isbn, title, subject, publisher, language, pageCount, authors);
-
-        // Populate fields with the retrieved book details
-        populateBookFields(book);
-
-        // Add the book to the librarian's collection
-        loggedInLibrarian.addBook(book);
-
-        // Print book details (assuming this method exists in the Book class)
-        book.printDetails();
-
-      } catch (IOException e) {
-        e.printStackTrace();
-        // Optionally, show an error dialog to the user
-      }
-    }
-  }
 
   @FXML
   private void searchByTitle() {
@@ -158,42 +117,42 @@ public class AddBookController {
   public void Close(ActionEvent actionEvent) {
   }
 
-  public void addBook(ActionEvent actionEvent) {
+  public void addBookAction(ActionEvent actionEvent) {
   }
 
 
-//  @FXML
-//  private void searchByISBN() {
-//    String isbn = isbnField.getText();
-//    if (!isbn.isEmpty()) {
-//      try {
-//        JSONObject bookDetails = googleBooksServiceByISBN.getBookDetails(isbn);
-//
-//        String title = bookDetails.optString("title", "Unknown");
-//        String subject = bookDetails.optString("subject", "Unknown");
-//        String publisher = bookDetails.optString("publisher", "Unknown");
-//        String language = bookDetails.optString("language", "Unknown");
-//        int pageCount = bookDetails.optInt("pageCount", 0);
-//
-//        List<Author> authors = new ArrayList<>();
-//        JSONArray authorsArray = bookDetails.optJSONArray("authors");
-//        if (authorsArray != null) {
-//          for (int i = 0; i < authorsArray.length(); i++) {
-//            authors.add(new Author(authorsArray.getString(i)));
-//          }
-//        }
-//
-//        Book book = new Book(isbn, title, subject, publisher, language, pageCount, authors);
-//        populateBookFields(book);
-//        loggedInLibrarian.addBook(book);
-//        book.printDetails(); // Assuming Book has a method to print details
-//
-//      } catch (IOException e) {
-//        e.printStackTrace();
-//        // Handle error, e.g., show an alert dialog
-//      }
-//    }
-//  }
+  @FXML
+  private void searchByISBN() {
+    String isbn = isbnField.getText();
+    if (!isbn.isEmpty()) {
+      try {
+        JSONObject bookDetails = googleBooksServiceByISBN.getBookDetails(isbn);
+
+        String title = bookDetails.optString("title", "Unknown");
+        String subject = bookDetails.optString("subject", "Unknown");
+        String publisher = bookDetails.optString("publisher", "Unknown");
+        String language = bookDetails.optString("language", "Unknown");
+        int pageCount = bookDetails.optInt("pageCount", 0);
+
+        List<Author> authors = new ArrayList<>();
+        JSONArray authorsArray = bookDetails.optJSONArray("authors");
+        if (authorsArray != null) {
+          for (int i = 0; i < authorsArray.length(); i++) {
+            authors.add(new Author(authorsArray.getString(i)));
+          }
+        }
+
+        Book book = new Book(isbn, title, subject, publisher, language, pageCount, authors);
+        populateBookFields(book);
+        loggedInLibrarian.addBook(book);
+        book.printDetails(); // Assuming Book has a method to print details
+
+      } catch (IOException e) {
+        e.printStackTrace();
+        // Handle error, e.g., show an alert dialog
+      }
+    }
+  }
 
 
 }

@@ -68,7 +68,9 @@ public class BookDetailsController {
   private TableColumn<BookItem, Void> actionColumn;
   @FXML
   private void initialize() {
+
     initializeTable();
+    tableView.setEditable(true);
   }
 
   public void setItemDetail(Book book) {
@@ -92,6 +94,7 @@ public class BookDetailsController {
     // Set up each column with its cell value factory
     barCode.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
     referenceOnly.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReference())));
+    //status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
     status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
     borrowedDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getBorrowed())));
     dueDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDueDate())));
@@ -99,6 +102,30 @@ public class BookDetailsController {
     format.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormat().toString()));
     dateOfPurchase.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDateOfPurchase())));
     publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getPublicationDate())));
+
+    // Set the cell factory to use a ComboBox for editing the status
+    status.setCellFactory(column -> new TableCell<>() {
+      private final ComboBox<BookStatus> comboBox = new ComboBox<>();
+      {
+        comboBox.setItems(FXCollections.observableArrayList(BookStatus.values())); // Populate with enum values
+        comboBox.setOnAction(event -> {
+          BookItem bookItem = getTableView().getItems().get(getIndex());
+          bookItem.setStatus(comboBox.getValue()); // Update the status of the book item
+        });
+      }
+      @Override
+      protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+
+        if (empty) {
+          setGraphic(null);
+        } else {
+          BookItem bookItem = getTableView().getItems().get(getIndex());
+          comboBox.setValue(bookItem.getStatus()); // Set the current status
+          setGraphic(comboBox);
+        }
+      }
+    });
 
     actionColumn.setCellFactory(param -> new TableCell<>() {
       private final Hyperlink editLink = new Hyperlink("Edit");

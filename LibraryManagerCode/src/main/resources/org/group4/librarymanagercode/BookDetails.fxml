@@ -88,7 +88,7 @@
         <columns>
           <TableColumn fx:id="barCode" text="Bar Code" />
           <TableColumn fx:id="referenceOnly" prefWidth="104.80005645751953" text="Reference Only" />
-          <TableColumn fx:id="status" prefWidth="104" text="Status" />
+          <TableColumn fx:id="status" prefWidth="110.0" text="Status" />
           <TableColumn fx:id="borrowedDate" text="Borrowed Date" visible="false" />
           <TableColumn fx:id="dueDate" text="Due Date" visible="false" />
           <TableColumn fx:id="price" text="Price" />

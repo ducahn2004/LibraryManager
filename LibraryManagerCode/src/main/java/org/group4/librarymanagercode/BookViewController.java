@@ -65,7 +65,9 @@ public class BookViewController {
   private TextField searchField;
 
   //  private ObservableList<Book> bookList = FXCollections.observableArrayList();
-
+  public void setStage(Stage stage) {
+    this.stage = stage;
+  }
   // This method is called by the FXMLLoader when initialization is complete
   @FXML
   public void initialize() {
@@ -205,14 +207,12 @@ public class BookViewController {
   }
 
   public void addBookAction(ActionEvent actionEvent) throws IOException {
+    Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AddBook.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-    if (stage != null) {
-      stage.setTitle("Library Manager");
-      stage.setScene(scene);
-      stage.show();
-    } else {
-      System.out.println("Stage is null!");
-    }
+
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
   }
 }
