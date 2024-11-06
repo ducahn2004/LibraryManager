@@ -1,33 +1,32 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDate;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import org.group4.base.entities.Book;
-import org.group4.base.entities.Person;
 import org.group4.base.users.Member;
+import org.group4.base.users.Person;
 import org.group4.database.MemberDatabase;
 
 public class MemberViewController {
 
+
+  public JFXButton MemberButton;
+  public JFXButton notificationButton;
   @FXML
   private TextField searchField;
-  private ObservableList<Member> memberList = FXCollections.observableArrayList();
+  private final ObservableList<Member> memberList = FXCollections.observableArrayList();
   @FXML
   private JFXButton homeButton;
   @FXML
@@ -39,13 +38,15 @@ public class MemberViewController {
   @FXML
   private JFXButton closeButton;
   @FXML
-  private ContextMenu selectMemberContext;
+  private ContextMenu selectPersonContext;
   @FXML
   private MenuItem selectMenu;
   @FXML
   private TableColumn<Member, String> memberTableID;
   @FXML
   private TableColumn<Member, String> memberTableName;
+  @FXML
+  private TableColumn<Member, String> memberTableBirth;
   @FXML
   private TableColumn<Member, String> memberTablePhone;
   @FXML
@@ -68,37 +69,44 @@ public class MemberViewController {
   private TextField memberName;
   @FXML
   private TextField memberID;
+  @FXML
+  private DatePicker memberBirth;
 
 
   @FXML
   public void initialize() {
     // Set up table columns
     memberTableID.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getId()));
+        cellData -> new SimpleStringProperty(cellData.getValue().getMemberId()));
     memberTableName.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getPerson().getName()));
+        cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+    memberTableBirth.setCellValueFactory(cellData -> new SimpleStringProperty(
+        cellData.getValue().getDateOfBirth().toString()));
     memberTablePhone.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getPerson().getPhoneNumber()));
+        cellData -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
     memberTableEmail.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getPerson().getEmail()));
+        cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
     // Load member data
-    loadMembers();
+    loadPersons();
     memberTable.setItems(memberList);
 
     // Set up row selection listener
     memberTable.getSelectionModel().selectedItemProperty()
         .addListener((observable, oldValue, newValue) -> {
           if (newValue != null) {
-            displayMemberDetails((Member) newValue);
+            displayPersonDetails((Member) newValue);
           }
         });
-    searchField.textProperty().addListener((observable, oldValue, newValue)->filterMemberList(newValue));
-    searchField.setOnKeyPressed(keyEvent -> {if(keyEvent.getCode() == KeyCode.ENTER){
-      filterMemberList(searchField.getText());}
+    searchField.textProperty()
+        .addListener((observable, oldValue, newValue) -> filterPersonList(newValue));
+    searchField.setOnKeyPressed(keyEvent -> {
+      if (keyEvent.getCode() == KeyCode.ENTER) {
+        filterPersonList(searchField.getText());
+      }
     });
   }
 
-  private void loadMembers() {
+  private void loadPersons() {
     // Load members from a data source (e.g., database or hardcoded list)
     // Example hardcoded members:
     memberList.clear();
@@ -106,13 +114,15 @@ public class MemberViewController {
     System.out.println("Loaded members Done ");
   }
 
-  private void displayMemberDetails(Member member) {
-    memberID.setText(String.valueOf(member.getId()));
-    memberName.setText(member.getPerson().getName());
-    memberPhone.setText(member.getPerson().getPhoneNumber());
-    memberEmail.setText(member.getPerson().getEmail());
+  private void displayPersonDetails(Member member) {
+    memberID.setText(String.valueOf(member.getMemberId()));
+    memberName.setText(member.getName());
+
+    memberPhone.setText(member.getPhoneNumber());
+    memberEmail.setText(member.getEmail());
   }
-  private void filterMemberList(String searchText){
+
+  private void filterPersonList(String searchText) {
     ObservableList<Member> filteredList = FXCollections.observableArrayList();
 
     if (searchText == null || searchText.isEmpty()) {
@@ -124,8 +134,8 @@ public class MemberViewController {
 
       for (Member member : memberList) {
 
-        if (member.getId().toLowerCase().contains(lowerCaseFilter) ||
-            member.getPerson().getName().toLowerCase().contains(lowerCaseFilter)) {
+        if (member.getMemberId().toLowerCase().contains(lowerCaseFilter) ||
+            member.getName().toLowerCase().contains(lowerCaseFilter)) {
           filteredList.add(member);
         }
       }
@@ -135,12 +145,6 @@ public class MemberViewController {
 
 
   public void requestMenu(ContextMenuEvent contextMenuEvent) {
-  }
-
-  public void fetchMemberWithKey(KeyEvent keyEvent) {
-  }
-
-  public void fetchMemberFeesDetails(MouseEvent mouseEvent) {
   }
 
   public void Close(ActionEvent actionEvent) {
@@ -158,9 +162,6 @@ public class MemberViewController {
   public void BookAction(ActionEvent actionEvent) {
   }
 
-  public void MemberAction(ActionEvent actionEvent) {
-  }
-
   public void HomeAction(ActionEvent actionEvent) {
 
   }
@@ -170,31 +171,29 @@ public class MemberViewController {
     memberName.clear();
     memberPhone.clear();
     memberEmail.clear();
-    memberTable.getSelectionModel().clearSelection(); // Bỏ chọn trong TableView
+    memberTable.getSelectionModel().clearSelection();
   }
 
   public void saveMember(ActionEvent actionEvent) {
-    // Lấy thông tin từ các TextField
     String name = memberName.getText();
     String phone = memberPhone.getText();
     String email = memberEmail.getText();
+    LocalDate birthDate = memberBirth.getValue();
 
-    // Kiểm tra xem có thành viên nào đang được chọn không
-    Member selectedMember = memberTable.getSelectionModel().getSelectedItem();
-    if (selectedMember != null) {
-      // Cập nhật thuộc tính của thành viên
-      selectedMember.getPerson().setName(name);
-      selectedMember.getPerson().setEmail(email);
-      selectedMember.getPerson().setPhoneNumber(phone);
+    Person selectedPerson = memberTable.getSelectionModel().getSelectedItem();
+    if (selectedPerson != null) {
+      selectedPerson.setName(name);
+      selectedPerson.setDateOfBirth(birthDate);
+      selectedPerson.setEmail(email);
+      selectedPerson.setPhoneNumber(phone);
 
-      // Lưu thay đổi vào database nếu cần
-      //MemberDatabase.updateMember(selectedMember);
-
-      // Làm mới TableView để hiển thị thay đổi
       memberTable.refresh();
 
-      // Xóa nội dung các TextField sau khi cập nhật
       cancel(null);
     }
+  }
+
+
+  public void MemberAction(ActionEvent actionEvent) {
   }
 }
