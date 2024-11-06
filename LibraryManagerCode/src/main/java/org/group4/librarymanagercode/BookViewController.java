@@ -131,4 +131,52 @@ public class BookViewController {
   public void onSearchBook(ActionEvent actionEvent) {
     filterBookList(searchField.getText());
   }
+
+  @FXML
+  private void HomeAction(ActionEvent event) {
+    // Implement the action to be performed when the home button is clicked
+    System.out.println("Home button clicked");
+  }
+
+  @FXML
+  private void MemberAction(ActionEvent event) {
+    // Implement the action to be performed when the member button is clicked
+    System.out.println("Member button clicked");
+  }
+
+  @FXML
+  private void BookAction(ActionEvent event) {
+    // Implement the action to be performed when the book button is clicked
+    System.out.println("Book button clicked");
+  }
+
+  @FXML
+  private void ReturnBookAction(ActionEvent event) {
+    // Implement the action to be performed when the return book button is clicked
+    System.out.println("Return book button clicked");
+  }
+
+  @FXML
+  private void notificationAction(ActionEvent event) {
+    // Implement the action to be performed when the notification button is clicked
+    System.out.println("Notification button clicked");
+  }
+
+  @FXML
+  private void SettingAction(ActionEvent event) {
+    // Implement the action to be performed when the setting button is clicked
+    System.out.println("Setting button clicked");
+  }
+
+  @FXML
+  private void Close(ActionEvent event) {
+    // Implement the action to be performed when the close button is clicked
+    System.out.println("Close button clicked");
+  }
+
+  @FXML
+  private void addBookAction(ActionEvent event) {
+    // Implement the action to be performed when the add book button is clicked
+    System.out.println("Add book button clicked");
+  }
 }
