@@ -17,4 +17,14 @@ public abstract class Database<T> {
     public void removeItem(T item) {
         items.remove(item);
     }
+
+    public void updateItem(T item) {
+        for (T i : items) {
+            if (i.equals(item)) {
+                items.remove(i);
+                items.add(item);
+                break;
+            }
+        }
+    }
 }

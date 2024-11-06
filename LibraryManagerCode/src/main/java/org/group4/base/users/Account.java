@@ -1,30 +1,19 @@
 package org.group4.base.users;
 
 import org.group4.database.AccountDatabase;
-import org.group4.base.entities.Person;
-import org.group4.base.enums.AccountStatus;
 
 public class Account {
 
   private final String id;
   private String password;
-  private final Person person;
-  private AccountStatus status;
 
   // Constructor
-  public Account() {
-    this.id = "";
-    this.password = "";
-    this.person = new Person();
-    this.status = AccountStatus.NONE;
-  }
-  public Account(String id, String password, Person person) {
+  public Account(String id, String password) {
     this.id = id;
     this.password = password;
-    this.person = person;
-    this.status = AccountStatus.NONE;
   }
 
+  // Getter
   public String getId() {
     return id;
   }
@@ -33,53 +22,30 @@ public class Account {
     return password;
   }
 
+  // Setter
   public void setPassword(String password) {
     this.password = password;
   }
 
-  public AccountStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(AccountStatus status) {
-    this.status = status;
-  }
-
-  public void setPerson(Person person) {
-    this.person.setName(person.getName());
-    this.person.setEmail(person.getEmail());
-    this.person.setPhoneNumber(person.getPhoneNumber());
-  }
-
-  public Person getPerson() {
-    return person;
-  }
-
-  public boolean isActive() {
-    return this.status == AccountStatus.ACTIVE;
-  }
-
-  public void closedAccount() {
-    setStatus(AccountStatus.CLOSED);
-    AccountDatabase.getInstance().getItems().removeIf(acc -> acc.getId().equals(this.id));
-  }
-
+  /**
+   * Method to login
+   * @param id The id of the account
+   * @param password The password of the account
+   * @return true if the login is successful, false otherwise
+   */
   public static boolean login(String id, String password) {
     return AccountDatabase.getInstance().getItems().stream()
         .anyMatch(acc -> acc.getId().equals(id) && acc.getPassword().equals(password));
   }
 
-  public static boolean register(String id, String password, String rePassword, Person person) {
-    if (AccountDatabase.getInstance().getItems().stream().anyMatch(acc -> acc.getId().equals(id)) || !password.equals(
-        rePassword)) {
-      return false;
-    }
-    Account newAccount = new Account(id, password, person);
-    newAccount.setStatus(AccountStatus.ACTIVE);
-    AccountDatabase.getInstance().getItems().add(newAccount);
-    return true;
-  }
-
+  /**
+   * Method to change password
+   *
+   * @param oldPassword The old password
+   * @param newPassword The new password
+   * @param reNewPassword The new password again
+   * @return true if the password is changed successfully, false otherwise
+   */
   public boolean changePassword(String oldPassword, String newPassword, String reNewPassword) {
     if (getPassword().equals(oldPassword) && newPassword.equals(reNewPassword)) {
       setPassword(newPassword);
@@ -88,16 +54,14 @@ public class Account {
     return false;
   }
 
+  /**
+   * Method to logout
+   *
+   * @return true if the logout is successful, false otherwise
+   */
   public boolean logout() {
     return true;
   }
 
-  public boolean resetPassword(String newPassword, String reNewPassword) {
-    if (!newPassword.equals(reNewPassword)) {
-      return false;
-    }
-    setPassword(newPassword);
-    return true;
-  }
 }
 

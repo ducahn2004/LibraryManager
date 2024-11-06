@@ -1,10 +1,8 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,108 +10,86 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.group4.base.entities.Book;
-import org.group4.base.entities.Author;
-//import org.group4.base.books.Book;
+import org.group4.base.books.Book;
+import org.group4.database.BookDatabase;
 
 public class BookViewController {
+  private final ObservableList<Book> bookList = FXCollections.observableArrayList();
 
-  public Button addBookButton;
-  private ObservableList<Book> bookList = FXCollections.observableArrayList();
-
-  private Stage stage;
   public JFXButton homeButton;
   @FXML
-  private TableView<Book> tableView = new TableView<>(bookList);
+  private TableView<Book> tableView;
 
   @FXML
-  private TableColumn<Book, String> ISBN = new TableColumn<>("ISBN");
+  private TableColumn<Book, String> ISBN;
 
   @FXML
-  private TableColumn<Book, String> bookName = new TableColumn<>("Name");
+  private TableColumn<Book, String> bookName;
 
   @FXML
-  private TableColumn<Book, String> bookSubject = new TableColumn<>("Subject");
+  private TableColumn<Book, String> bookSubject;
 
   @FXML
-  private TableColumn<Book, String> bookPublisher = new TableColumn<>("Publisher");
+  private TableColumn<Book, String> bookPublisher;
 
   @FXML
-  private TableColumn<Book, String> bookLanguage = new TableColumn<>("Language");
+  private TableColumn<Book, String> bookLanguage;
 
   @FXML
-  private TableColumn<Book, Integer> numberOfPages = new TableColumn<>("Pages");
+  private TableColumn<Book, Integer> numberOfPages;
 
   @FXML
-  private TableColumn<Book, String> bookAuthor = new TableColumn<>("Author");
-
-  @FXML
-  private ContextMenu contextMenu;
+  private TableColumn<Book, String> bookAuthor;
 
   @FXML
   private TextField searchField;
 
-  //  private ObservableList<Book> bookList = FXCollections.observableArrayList();
-  public void setStage(Stage stage) {
-    this.stage = stage;
-  }
-  // This method is called by the FXMLLoader when initialization is complete
   @FXML
   public void initialize() {
-
     // Initialize columns
-    ISBN.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getISBN()));
-    bookName.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-    bookSubject.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getSubject()));
-    bookPublisher.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getPublisher()));
-    bookLanguage.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getLanguage()));
+    ISBN.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getISBN()));
+    bookName.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getTitle()));
+    bookSubject.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getSubject()));
+    bookPublisher.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getPublisher()));
+    bookLanguage.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getLanguage()));
     numberOfPages.setCellValueFactory(cellData ->
         new SimpleObjectProperty<>(cellData.getValue().getNumberOfPages()));
-    bookAuthor.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getAuthorsAsString()));
-    tableView.getColumns()
-        .addAll(ISBN, bookName, bookSubject, bookPublisher, bookLanguage, numberOfPages,
-            bookAuthor);
-    // Add data to the table (sample data can be fetched from service or database)
+    bookAuthor.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getAuthors().iterator().next().getName()));
+
+    // Add data to the table
     loadBookData();
+
     // Add row click event listener
     tableView.setRowFactory(tv -> {
       TableRow<Book> row = new TableRow<>();
       row.setOnMouseClicked(event -> {
-        if (event.getClickCount() == 2 && (!row.isEmpty())) {
-          Book selectedItem = row.getItem();
-          showDetailPage(selectedItem);
+        if (event.getClickCount() == 2 && !row.isEmpty()) {
+          showDetailPage(row.getItem());
         }
       });
       return row;
     });
-//    // Add a listener for the search field
-//    searchField.textProperty()
-//        .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+
+    // Add a listener for the search field
     searchField.textProperty().addListener((observable, oldValue, newValue) -> filterBookList(newValue));
-
-
     searchField.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.ENTER) {
         filterBookList(searchField.getText());
       }
     });
-
   }
 
   private void showDetailPage(Book book) {
@@ -128,91 +104,79 @@ public class BookViewController {
       detailStage.setTitle("Book Item Detail");
       detailStage.show();
     } catch (Exception e) {
-      e.printStackTrace();
+      Logger.getLogger(BookViewController.class.getName()).log(Level.SEVERE, "Failed to load book details page", e);
     }
   }
 
   private void loadBookData() {
-    List<Author> authors1 = new ArrayList<>();
-    authors1.add(new Author("Author One"));
-
-    List<Author> authors2 = new ArrayList<>();
-    authors2.add(new Author("Author Two"));
-
-    List<Author> authors3 = new ArrayList<>();
-    authors3.add(new Author("Author Three"));
-
-    // This would normally be loaded from a database or some service
-    bookList.add(
-        new Book(
-            "510251", "Book Title 1", "Subject 1", "Publisher 1", "English", 200,
-            authors1));
-    bookList.add(
-        new Book(
-            "496717", "Book Title 2", "Subject 2", "Publisher 2", "English", 300,
-            authors2));
-    bookList.add(
-        new Book("111735", "Book Title 3", "Subject 3", "Publisher 3", "English", 150,
-            authors3));
-    tableView.setItems(bookList);
+    if (bookList.isEmpty()) {
+      bookList.addAll(BookDatabase.getInstance().getItems());
+      tableView.setItems(bookList);
+    }
   }
 
-
   private void filterBookList(String searchText) {
-    ObservableList<Book> filteredList = FXCollections.observableArrayList();
-
     if (searchText == null || searchText.isEmpty()) {
-
       tableView.setItems(bookList);
     } else {
-
       String lowerCaseFilter = searchText.toLowerCase();
-
-      for (Book book : bookList) {
-
-        if (book.getISBN().toLowerCase().contains(lowerCaseFilter) ||
-            book.getTitle().toLowerCase().contains(lowerCaseFilter)) {
-          filteredList.add(book);
-        }
-      }
+      ObservableList<Book> filteredList = bookList.filtered(book ->
+        book.getISBN().toLowerCase().contains(lowerCaseFilter) ||
+        book.getTitle().toLowerCase().contains(lowerCaseFilter)
+      );
       tableView.setItems(filteredList);
     }
   }
 
   public void onSearchBook(ActionEvent actionEvent) {
-    String searchText = searchField.getText();
-    filterBookList(searchText);
+    filterBookList(searchField.getText());
   }
 
-  public void HomeAction(ActionEvent actionEvent) {
+  @FXML
+  private void HomeAction(ActionEvent event) {
+    // Implement the action to be performed when the home button is clicked
+    System.out.println("Home button clicked");
   }
 
-  public void MemberAction(ActionEvent actionEvent) {
+  @FXML
+  private void MemberAction(ActionEvent event) {
+    // Implement the action to be performed when the member button is clicked
+    System.out.println("Member button clicked");
   }
 
-  public void BookAction(ActionEvent actionEvent) {
+  @FXML
+  private void BookAction(ActionEvent event) {
+    // Implement the action to be performed when the book button is clicked
+    System.out.println("Book button clicked");
   }
 
-  public void ReturnBookAction(ActionEvent actionEvent) {
+  @FXML
+  private void ReturnBookAction(ActionEvent event) {
+    // Implement the action to be performed when the return book button is clicked
+    System.out.println("Return book button clicked");
   }
 
-  public void notificationAction(ActionEvent actionEvent) {
+  @FXML
+  private void notificationAction(ActionEvent event) {
+    // Implement the action to be performed when the notification button is clicked
+    System.out.println("Notification button clicked");
   }
 
-  public void SettingAction(ActionEvent actionEvent) {
+  @FXML
+  private void SettingAction(ActionEvent event) {
+    // Implement the action to be performed when the setting button is clicked
+    System.out.println("Setting button clicked");
   }
 
-  public void Close(ActionEvent actionEvent) {
-
+  @FXML
+  private void Close(ActionEvent event) {
+    // Implement the action to be performed when the close button is clicked
+    System.out.println("Close button clicked");
   }
 
-  public void addBookAction(ActionEvent actionEvent) throws IOException {
-    Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AddBook.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
+  @FXML
+  private void addBookAction(ActionEvent event) {
+    // Implement the action to be performed when the add book button is clicked
+    System.out.println("Add book button clicked");
   }
 }

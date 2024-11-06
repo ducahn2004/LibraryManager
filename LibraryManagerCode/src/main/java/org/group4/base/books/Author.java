@@ -1,11 +1,11 @@
-package org.group4.base.entities;
+package org.group4.base.books;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Author {
     private String name;
-    private List<Book> books = new ArrayList<>();
+    private Set<Book> books = new HashSet<>();
 
     public Author(String name) {
         this.name = name;
@@ -19,11 +19,11 @@ public class Author {
         this.name = name;
     }
 
-    public List<Book> getBooks() {
+    public Set<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Set<Book> books) {
         this.books = books;
     }
 
@@ -35,9 +35,4 @@ public class Author {
         books.remove(book);
     }
 
-    public String toString() {
-        return name;
-    }
-
-    // TODO: DONE
 }

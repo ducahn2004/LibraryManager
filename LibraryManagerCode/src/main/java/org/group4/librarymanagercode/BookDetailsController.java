@@ -8,37 +8,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.group4.base.books.BookItem;
-import org.group4.base.entities.Book;
-import org.group4.base.enums.BookFormat;
+import org.group4.base.books.Book;
 import org.group4.base.enums.BookStatus;
-import org.group4.database.BookDatabase;
+import org.group4.base.manager.BookManager;
+import org.group4.base.users.Librarian;
 import org.group4.database.BookItemDatabase;
-import java.time.LocalDate;
+import org.group4.database.LibrarianDatabase;
+
 public class BookDetailsController {
 
-
+  Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
   private Book currentBook;
-  private ObservableList<BookItem> bookItems = FXCollections.observableArrayList();
+  private final ObservableList<BookItem> bookItems = FXCollections.observableArrayList();
 
   @FXML
   private Label isbnLabel, titleLabel, authorLabel, publisherLabel, subjectLabel, pagesLabel;
@@ -83,7 +75,7 @@ public class BookDetailsController {
     if (currentBook != null) {
       isbnLabel.setText(currentBook.getISBN());
       titleLabel.setText(currentBook.getTitle());
-      authorLabel.setText(currentBook.getAuthorsAsString());
+      authorLabel.setText(currentBook.getAuthors().toString());
       publisherLabel.setText(currentBook.getPublisher());
       subjectLabel.setText(currentBook.getSubject());
       pagesLabel.setText(String.valueOf(currentBook.getNumberOfPages()));
@@ -167,7 +159,9 @@ public class BookDetailsController {
   private void loadData() {
     if (currentBook != null) {
       bookItems.clear();
-      bookItems.addAll(BookItemDatabase.getInstance().getItems());
+      bookItems.addAll(BookItemDatabase.getInstance().getItems().stream()
+          .filter(item -> item.getISBN().equals(currentBook.getISBN()))
+          .toList());
       System.out.println("Data loaded: " + bookItems.size() + " items");
     }
   }
@@ -188,7 +182,10 @@ public class BookDetailsController {
 
     confirmAlert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
-        bookItems.remove(item);
+        if (librarian.removeBookItem(item)) {
+          bookItems.remove(item);
+          System.out.println("Item deleted: " + item);
+        }
       }
     });
   }

@@ -1,8 +1,6 @@
 package org.group4.database;
 
-import java.util.ArrayList;
-
-import org.group4.base.entities.Author;
+import org.group4.base.books.Author;
 
 public class AuthorDatabase extends Database<Author> {
     private static final AuthorDatabase instance = new AuthorDatabase();
