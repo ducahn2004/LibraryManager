@@ -8,6 +8,12 @@ import org.group4.base.users.Member;
 import org.group4.database.MemberDatabase;
 
 public class LendingManager {
+
+  private static final LendingManager instance = new LendingManager();
+
+  public static LendingManager getInstance() {
+    return instance;
+  }
   public BookLending borrowBook(BookItem bookItem, Member member) {
     if (bookItem.checkOut() && member.getBookLendings().size() < 5) {
       bookItem.setStatus(BookStatus.LOANED);

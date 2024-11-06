@@ -4,6 +4,12 @@ import org.group4.base.users.Member;
 import org.group4.database.MemberDatabase;
 
 public class MemberManager implements Manager<Member> {
+
+  private static final MemberManager instance = new MemberManager();
+
+  public static MemberManager getInstance() {
+    return instance;
+  }
   @Override
   public boolean add(Member member) {
     if (MemberDatabase.getInstance().getItems().stream()

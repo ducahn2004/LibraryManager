@@ -16,6 +16,7 @@ public class Librarian extends Person {
   private final LendingManager lendingManager;
 
   // Constructor
+
   public Librarian(String name, LocalDate dateOfBirth, Address address, String email, String phoneNumber,
       String id, String password, Manager<BookItem> bookManager, Manager<Member> memberManager,
       LendingManager lendingManager) {
