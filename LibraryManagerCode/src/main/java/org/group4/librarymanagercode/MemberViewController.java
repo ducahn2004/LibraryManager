@@ -15,8 +15,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import org.group4.base.entities.Book;
 import org.group4.base.entities.Person;
 import org.group4.base.users.Member;
 import org.group4.database.MemberDatabase;
@@ -90,6 +92,10 @@ public class MemberViewController {
             displayMemberDetails((Member) newValue);
           }
         });
+    searchField.textProperty().addListener((observable, oldValue, newValue)->filterMemberList(newValue));
+    searchField.setOnKeyPressed(keyEvent -> {if(keyEvent.getCode() == KeyCode.ENTER){
+      filterMemberList(searchField.getText());}
+    });
   }
 
   private void loadMembers() {
@@ -106,9 +112,27 @@ public class MemberViewController {
     memberPhone.setText(member.getPerson().getPhoneNumber());
     memberEmail.setText(member.getPerson().getEmail());
   }
+  private void filterMemberList(String searchText){
+    ObservableList<Member> filteredList = FXCollections.observableArrayList();
 
-  public void deleteMemberRecord(ActionEvent actionEvent) {
+    if (searchText == null || searchText.isEmpty()) {
+
+      memberTable.setItems(memberList);
+    } else {
+
+      String lowerCaseFilter = searchText.toLowerCase();
+
+      for (Member member : memberList) {
+
+        if (member.getId().toLowerCase().contains(lowerCaseFilter) ||
+            member.getPerson().getName().toLowerCase().contains(lowerCaseFilter)) {
+          filteredList.add(member);
+        }
+      }
+      memberTable.setItems(filteredList);
+    }
   }
+
 
   public void requestMenu(ContextMenuEvent contextMenuEvent) {
   }

@@ -3,7 +3,7 @@ package org.group4.librarymanagercode;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import java.io.IOException;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
-import javafx.scene.Node;
+
 
 public class LoginController {
 
@@ -25,49 +25,48 @@ public class LoginController {
   @FXML
   private Button loginButton;
 
-  @FXML
-  private Button signUpButton;
 
-  private final String UserName = "admin";
-  private final String Password = "password";
 
   @FXML
-  private void handleLoginButton(ActionEvent event) throws IOException {
+  private void handleLoginButton() {
     String username = usernameField.getText().trim();
     String password = passwordField.getText();
 
     if (username.isEmpty() || password.isEmpty()) {
-      showAlert(Alert.AlertType.ERROR, "Failing Login", "Retype Account and password!");
+      showAlert("Failing Login", "Retype Account and password!");
       return;
     }
 
-    if (authenticate(username,password)) {
+    if (authenticate(username, password)) {
       try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminPane.fxml"));
         Parent root = loader.load();
 
-        Stage stage = (Stage) ((Node) loginButton).getScene().getWindow();
+        Stage stage = (Stage) loginButton.getScene().getWindow();
         Scene scene = new Scene(root, 1000, 700);
         stage.setScene(scene);
         stage.setTitle("Library Manager");
         stage.show();
       } catch (IOException e) {
-        e.printStackTrace();
-        showAlert(Alert.AlertType.ERROR, "Error", "Cannot loading page...");
+        // Replace printStackTrace() with logging or user feedback.
+        showAlert("Error", "Cannot load page...");
+        // Example: log the error using a logger (e.g., java.util.logging.Logger)
+        // Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Page load error", e);
       }
     } else {
-      // Đăng nhập thất bại, hiển thị cảnh báo
-      showAlert(Alert.AlertType.ERROR, "Failing Login", "Wrong Account or Password!");
+      showAlert("Failing Login", "Wrong Account or Password!");
     }
-
   }
+
 
   private boolean authenticate(String userName, String password) {
-    return UserName.equals(userName) && Password.equals(password);
+    String userName1 = "admin";
+    String password1 = "password";
+    return userName1.equals(userName) && password1.equals(password);
   }
 
-  private void showAlert(Alert.AlertType alertType, String title, String message) {
-    Alert alert = new Alert(alertType);
+  private void showAlert(String title, String message) {
+    Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(message);
