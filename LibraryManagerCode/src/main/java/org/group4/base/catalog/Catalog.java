@@ -32,4 +32,5 @@ public class Catalog implements Search {
             .anyMatch(bookAuthor -> bookAuthor.getName().equals(author)))
         .collect(Collectors.toList());
   }
+
 }

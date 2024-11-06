@@ -45,6 +45,14 @@ public class Person {
     this.name = name;
   }
 
+  public void setDateOfBirth(LocalDate dateOfBirth) {
+    this.dateOfBirth = dateOfBirth;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
   public void setEmail(String email) {
     this.email = email;
   }
@@ -52,6 +60,7 @@ public class Person {
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
   }
+
 
 }
 

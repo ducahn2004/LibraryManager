@@ -34,5 +34,13 @@ module org.group.librarymanagercode {
 
   exports org.group4.base.books;
   opens org.group4.base.books to javafx.fxml;
-  
+
+  exports org.group4.base.enums;
+  opens org.group4.base.enums to javafx.fxml;
+
+  exports org.group4.base.users;
+  opens org.group4.base.users to javafx.fxml;
+
+  exports org.group4.base.manager;
+  opens org.group4.base.manager to javafx.fxml;
 }

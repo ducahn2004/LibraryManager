@@ -78,4 +78,5 @@ public class Librarian extends Person {
   public BookLending renewBookItem(BookItem bookItem, Member member) {
     return lendingManager.renewBook(bookItem, member);
   }
+
 }

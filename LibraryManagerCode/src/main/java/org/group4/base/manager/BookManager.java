@@ -25,4 +25,5 @@ public class BookManager implements Manager<BookItem> {
     BookItemDatabase.getInstance().updateItem(bookItem);
     return true;
   }
+
 }

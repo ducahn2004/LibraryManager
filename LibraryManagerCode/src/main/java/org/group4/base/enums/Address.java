@@ -59,4 +59,5 @@ public class Address {
     public String toString() {
         return houseNumber + " " + street + ", " + ward + ", " + district + ", " + provinceOrCity;
     }
+
 }

@@ -62,5 +62,6 @@ public class Account {
   public boolean logout() {
     return true;
   }
+
 }
 

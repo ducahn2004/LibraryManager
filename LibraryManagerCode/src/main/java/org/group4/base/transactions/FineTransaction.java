@@ -22,4 +22,5 @@ public class FineTransaction {
   public boolean processFinePayment() {
     return fine.getAmount() > 0;
   }
+
 }

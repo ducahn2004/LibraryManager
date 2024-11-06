@@ -25,4 +25,5 @@ public class MemberManager implements Manager<Member> {
     MemberDatabase.getInstance().updateItem(member);
     return true;
   }
+
 }

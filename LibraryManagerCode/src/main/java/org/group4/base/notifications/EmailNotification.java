@@ -84,4 +84,5 @@ public class EmailNotification {
     message.setRaw(encodedEmail);
     service.users().messages().send(userId, message).execute();
   }
+
 }
