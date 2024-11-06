@@ -11,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
@@ -26,31 +25,28 @@ public class BookViewController {
 
   public JFXButton homeButton;
   @FXML
-  private TableView<Book> tableView = new TableView<>(bookList);
+  private TableView<Book> tableView;
 
   @FXML
-  private TableColumn<Book, String> ISBN = new TableColumn<>("ISBN");
+  private TableColumn<Book, String> ISBN;
 
   @FXML
-  private TableColumn<Book, String> bookName = new TableColumn<>("Name");
+  private TableColumn<Book, String> bookName;
 
   @FXML
-  private TableColumn<Book, String> bookSubject = new TableColumn<>("Subject");
+  private TableColumn<Book, String> bookSubject;
 
   @FXML
-  private TableColumn<Book, String> bookPublisher = new TableColumn<>("Publisher");
+  private TableColumn<Book, String> bookPublisher;
 
   @FXML
-  private TableColumn<Book, String> bookLanguage = new TableColumn<>("Language");
+  private TableColumn<Book, String> bookLanguage;
 
   @FXML
-  private TableColumn<Book, Integer> numberOfPages = new TableColumn<>("Pages");
+  private TableColumn<Book, Integer> numberOfPages;
 
   @FXML
-  private TableColumn<Book, String> bookAuthor = new TableColumn<>("Author");
-
-  @FXML
-  private ContextMenu contextMenu;
+  private TableColumn<Book, String> bookAuthor;
 
   @FXML
   private TextField searchField;
@@ -71,9 +67,7 @@ public class BookViewController {
     numberOfPages.setCellValueFactory(cellData ->
         new SimpleObjectProperty<>(cellData.getValue().getNumberOfPages()));
     bookAuthor.setCellValueFactory(cellData ->
-        new SimpleStringProperty(cellData.getValue().getAuthors().getClass().getName()));
-
-    tableView.getColumns().addAll(ISBN, bookName, bookSubject, bookPublisher, bookLanguage, numberOfPages, bookAuthor);
+        new SimpleStringProperty(cellData.getValue().getAuthors().iterator().next().getName()));
 
     // Add data to the table
     loadBookData();
@@ -115,7 +109,10 @@ public class BookViewController {
   }
 
   private void loadBookData() {
-    bookList.addAll(BookDatabase.getInstance().getItems());
+    if (bookList.isEmpty()) {
+      bookList.addAll(BookDatabase.getInstance().getItems());
+      tableView.setItems(bookList);
+    }
   }
 
   private void filterBookList(String searchText) {

@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import java.io.IOException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,7 +27,7 @@ public class LoginController {
   private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
   @FXML
-  private void handleLoginButton(ActionEvent event) {
+  private void handleLoginButton() {
     String username = usernameField.getText().trim();
     String password = passwordField.getText();
 
