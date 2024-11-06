@@ -2,7 +2,7 @@ package org.group4.base.books;
 
 import java.util.List;
 import java.time.LocalDate;
-import org.group4.base.entities.Book;
+import java.util.UUID;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.database.BookItemDatabase;
@@ -20,11 +20,11 @@ public class BookItem extends Book {
   private LocalDate publicationDate;
 
   // Constructor
-  public BookItem(Book book, String barcode, boolean isReferenceOnly, double price, BookFormat format,
+  public BookItem(Book book, boolean isReferenceOnly, double price, BookFormat format,
       LocalDate dateOfPurchase, LocalDate publicationDate) {
-    super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
-        book.getLanguage(), book.getNumberOfPages(), book.getAuthors());
-    this.barcode = barcode;
+    super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(), book.getLanguage(),
+        book.getNumberOfPages(), book.getAuthors());
+    this.barcode = book.getISBN() + "-" + UUID.randomUUID();
     this.isReferenceOnly = isReferenceOnly;
     this.borrowed = null;
     this.dueDate = null;

@@ -1,44 +1,46 @@
 package org.group4.service;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.util.Scanner;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class GoogleBooksService {
 
-    private static final String API_KEY = "AIzaSyCuR8GXwJhZj52z8KIX7apBkVpUbtGCAzU";
-    private static final String BASE_URL = "https://www.googleapis.com/books/v1/volumes";
-    private final OkHttpClient client = new OkHttpClient();
+    private static final String API_URL = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
 
-    public List<String> searchBooks(String query) throws IOException {
-        List<String> bookTitles = new ArrayList<>();
-        String url = BASE_URL + "?q=" + query + "&key=" + API_KEY;
+    public JSONObject getBookDetails(String isbn) throws IOException {
+        JSONArray items = fetchItems(isbn);
+        if (!items.isEmpty()) {
+            return items.getJSONObject(0).getJSONObject("volumeInfo");
+        } else {
+            throw new IOException("No book found with the given ISBN");
+        }
+    }
 
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
+    private JSONArray fetchItems(String isbn) throws IOException {
+        URI uri = URI.create(API_URL + isbn);
+        URL url = uri.toURL();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.connect();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful() && response.body() != null) {
-                String jsonResponse = response.body().string();
-                JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
-                JsonArray items = jsonObject.getAsJsonArray("items");
-
-                for (JsonElement item : items) {
-                    JsonObject volumeInfo = item.getAsJsonObject().getAsJsonObject("volumeInfo");
-                    String title = volumeInfo.get("title").getAsString();
-                    bookTitles.add(title);
-                }
-            }
+        int responseCode = conn.getResponseCode();
+        if (responseCode != 200) {
+            throw new IOException("Failed to fetch book details");
         }
 
-        return bookTitles;
+        Scanner scanner = new Scanner(url.openStream());
+        StringBuilder inline = new StringBuilder();
+        while (scanner.hasNext()) {
+            inline.append(scanner.nextLine());
+        }
+        scanner.close();
+
+        JSONObject jsonResponse = new JSONObject(inline.toString());
+        return jsonResponse.getJSONArray("items");
     }
 }

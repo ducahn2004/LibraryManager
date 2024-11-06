@@ -30,11 +30,4 @@ public class Notification {
     this.content = content;
   }
 
-  public void printNotification() {
-    System.out.println("Notification ID: " + getNotificationId());
-    System.out.println("Created On: " + getCreatedOn());
-    System.out.println("Content: " + getContent());
-  }
-
-
 }

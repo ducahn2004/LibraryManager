@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import org.group4.database.BookBorrowDatabase;
 import org.group4.base.users.Member;
 
-public class BorrowBookItem {
+public class BookLending {
   private final BookItem bookItem;
   private final Member member;
   private final LocalDate creationDate;
@@ -12,7 +12,7 @@ public class BorrowBookItem {
   private LocalDate returnDate;
 
   // Constructor
-  public BorrowBookItem(BookItem bookItem, Member member) {
+  public BookLending(BookItem bookItem, Member member) {
     this.bookItem = bookItem;
     this.member = member;
     this.creationDate = LocalDate.now();
@@ -50,7 +50,7 @@ public class BorrowBookItem {
     this.returnDate = returnDate;
   }
 
-  public static BorrowBookItem fetchLendingDetails(String barcode) {
+  public static BookLending fetchLendingDetails(String barcode) {
     return BookBorrowDatabase.getInstance().getItems().stream()
         .filter(lending -> lending.getBookItem().getBarcode().equals(barcode))
         .findFirst()

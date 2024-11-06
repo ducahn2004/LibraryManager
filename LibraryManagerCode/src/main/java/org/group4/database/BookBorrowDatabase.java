@@ -1,8 +1,8 @@
 package org.group4.database;
 
-import org.group4.base.books.BorrowBookItem;
+import org.group4.base.books.BookLending;
 
-public class BookBorrowDatabase extends Database<BorrowBookItem> {
+public class BookBorrowDatabase extends Database<BookLending> {
     private static final BookBorrowDatabase instance = new BookBorrowDatabase();
 
     private BookBorrowDatabase() {

@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.group4.base.books.BookItem;
-import org.group4.base.entities.Book;
+import org.group4.base.books.Book;
 import org.group4.base.enums.BookFormat;
 import org.group4.database.BookItemDatabase;
 
@@ -88,7 +88,7 @@ public class BookDetailsController {
       bookItems.clear();
       bookItems.add(BookItemDatabase.getInstance().getItems().getFirst());
       bookItems.add(BookItemDatabase.getInstance().getItems().get(1));
-      bookItems.add(new BookItem(currentBook, "318493", false, 15.0, BookFormat.MAGAZINE, LocalDate.now(), LocalDate.now()));
+      bookItems.add(new BookItem(currentBook, false, 15.0, BookFormat.MAGAZINE, LocalDate.now(), LocalDate.now()));
 
       System.out.println("Data loaded: " + bookItems.size() + " items");
     }

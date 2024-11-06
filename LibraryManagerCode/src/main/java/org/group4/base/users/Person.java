@@ -1,19 +1,17 @@
-package org.group4.base.entities;
+package org.group4.base.users;
 
 import java.time.LocalDate;
+import org.group4.base.enums.Address;
 
 public class Person {
   private String name;
   private LocalDate dateOfBirth;
-  private String address;
+  private Address address;
   private String email;
   private String phoneNumber;
 
   // Constructor
-  public Person() {
-  }
-
-  public Person(String name, LocalDate dateOfBirth, String address, String email, String phoneNumber) {
+  public Person(String name, LocalDate dateOfBirth, Address address, String email, String phoneNumber) {
     this.name = name;
     this.dateOfBirth = dateOfBirth;
     this.address = address;
@@ -30,7 +28,7 @@ public class Person {
     return dateOfBirth;
   }
 
-  public String getAddress() {
+  public Address getAddress() {
     return address;
   }
 

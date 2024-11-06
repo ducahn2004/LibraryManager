@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Set;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -20,8 +20,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.group4.base.entities.Author;
-import org.group4.base.entities.Book;
+import org.group4.base.books.Author;
+import org.group4.base.books.Book;
 //import org.group4.base.books.Book;
 
 public class BookViewController {
@@ -77,7 +77,7 @@ public class BookViewController {
     numberOfPages.setCellValueFactory(cellData ->
         new SimpleObjectProperty<>(cellData.getValue().getNumberOfPages()));
     bookAuthor.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getAuthors().get(0).getName()));
+        cellData -> new SimpleStringProperty(cellData.getValue().getAuthors().getClass().getName()));
     tableView.getColumns()
         .addAll(ISBN, bookName, bookSubject, bookPublisher, bookLanguage, numberOfPages,
             bookAuthor);
@@ -138,14 +138,14 @@ public class BookViewController {
     bookList.add(
         new Book(
             "510251", "Book Title 1", "Subject 1", "Publisher 1", "English", 200,
-            authors1));
+            (Set<Author>) authors1));
     bookList.add(
         new Book(
             "496717", "Book Title 2", "Subject 2", "Publisher 2", "English", 300,
-            authors2));
+            (Set<Author>) authors2));
     bookList.add(
         new Book("111735", "Book Title 3", "Subject 3", "Publisher 3", "English", 150,
-            authors3));
+            (Set<Author>) authors3));
     tableView.setItems(bookList);
   }
 
