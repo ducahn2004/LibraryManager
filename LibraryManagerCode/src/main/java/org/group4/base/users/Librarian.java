@@ -26,7 +26,7 @@ public class Librarian extends Person {
     this.lendingManager = lendingManager;
   }
 
-  public boolean login(String id, String password) {
+  public static boolean login(String id, String password) {
     return Account.login(id, password);
   }
 

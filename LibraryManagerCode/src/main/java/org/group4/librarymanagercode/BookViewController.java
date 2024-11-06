@@ -1,10 +1,8 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,9 +18,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.group4.base.books.Author;
 import org.group4.base.books.Book;
-//import org.group4.base.books.Book;
+import org.group4.database.BookDatabase;
 
 public class BookViewController {
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();
@@ -58,54 +55,47 @@ public class BookViewController {
   @FXML
   private TextField searchField;
 
-  //  private ObservableList<Book> bookList = FXCollections.observableArrayList();
-
-  // This method is called by the FXMLLoader when initialization is complete
   @FXML
   public void initialize() {
-
     // Initialize columns
-    ISBN.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getISBN()));
-    bookName.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-    bookSubject.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getSubject()));
-    bookPublisher.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getPublisher()));
-    bookLanguage.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getLanguage()));
+    ISBN.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getISBN()));
+    bookName.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getTitle()));
+    bookSubject.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getSubject()));
+    bookPublisher.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getPublisher()));
+    bookLanguage.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getLanguage()));
     numberOfPages.setCellValueFactory(cellData ->
         new SimpleObjectProperty<>(cellData.getValue().getNumberOfPages()));
-    bookAuthor.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getAuthors().getClass().getName()));
-    tableView.getColumns()
-        .addAll(ISBN, bookName, bookSubject, bookPublisher, bookLanguage, numberOfPages,
-            bookAuthor);
-    // Add data to the table (sample data can be fetched from service or database)
+    bookAuthor.setCellValueFactory(cellData ->
+        new SimpleStringProperty(cellData.getValue().getAuthors().getClass().getName()));
+
+    tableView.getColumns().addAll(ISBN, bookName, bookSubject, bookPublisher, bookLanguage, numberOfPages, bookAuthor);
+
+    // Add data to the table
     loadBookData();
+
     // Add row click event listener
     tableView.setRowFactory(tv -> {
       TableRow<Book> row = new TableRow<>();
       row.setOnMouseClicked(event -> {
-        if (event.getClickCount() == 2 && (!row.isEmpty())) {
-          Book selectedItem = row.getItem();
-          showDetailPage(selectedItem);
+        if (event.getClickCount() == 2 && !row.isEmpty()) {
+          showDetailPage(row.getItem());
         }
       });
       return row;
     });
-//    // Add a listener for the search field
-//    searchField.textProperty()
-//        .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+
+    // Add a listener for the search field
     searchField.textProperty().addListener((observable, oldValue, newValue) -> filterBookList(newValue));
-
-
     searchField.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.ENTER) {
         filterBookList(searchField.getText());
       }
     });
-
   }
 
   private void showDetailPage(Book book) {
@@ -120,59 +110,28 @@ public class BookViewController {
       detailStage.setTitle("Book Item Detail");
       detailStage.show();
     } catch (Exception e) {
-      e.printStackTrace();
+      Logger.getLogger(BookViewController.class.getName()).log(Level.SEVERE, "Failed to load book details page", e);
     }
   }
 
   private void loadBookData() {
-    List<Author> authors1 = new ArrayList<>();
-    authors1.add(new Author("Author One"));
-
-    List<Author> authors2 = new ArrayList<>();
-    authors2.add(new Author("Author Two"));
-
-    List<Author> authors3 = new ArrayList<>();
-    authors3.add(new Author("Author Three"));
-
-    // This would normally be loaded from a database or some service
-    bookList.add(
-        new Book(
-            "510251", "Book Title 1", "Subject 1", "Publisher 1", "English", 200,
-            (Set<Author>) authors1));
-    bookList.add(
-        new Book(
-            "496717", "Book Title 2", "Subject 2", "Publisher 2", "English", 300,
-            (Set<Author>) authors2));
-    bookList.add(
-        new Book("111735", "Book Title 3", "Subject 3", "Publisher 3", "English", 150,
-            (Set<Author>) authors3));
-    tableView.setItems(bookList);
+    bookList.addAll(BookDatabase.getInstance().getItems());
   }
 
-
   private void filterBookList(String searchText) {
-    ObservableList<Book> filteredList = FXCollections.observableArrayList();
-
     if (searchText == null || searchText.isEmpty()) {
-
       tableView.setItems(bookList);
     } else {
-
       String lowerCaseFilter = searchText.toLowerCase();
-
-      for (Book book : bookList) {
-
-        if (book.getISBN().toLowerCase().contains(lowerCaseFilter) ||
-            book.getTitle().toLowerCase().contains(lowerCaseFilter)) {
-          filteredList.add(book);
-        }
-      }
+      ObservableList<Book> filteredList = bookList.filtered(book ->
+        book.getISBN().toLowerCase().contains(lowerCaseFilter) ||
+        book.getTitle().toLowerCase().contains(lowerCaseFilter)
+      );
       tableView.setItems(filteredList);
     }
   }
 
   public void onSearchBook(ActionEvent actionEvent) {
-    String searchText = searchField.getText();
-    filterBookList(searchText);
+    filterBookList(searchField.getText());
   }
 }

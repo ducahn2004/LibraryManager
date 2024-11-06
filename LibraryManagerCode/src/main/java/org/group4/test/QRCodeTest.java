@@ -1,6 +1,5 @@
 package org.group4.test;
 
-import org.group4.database.BookDatabase;
 import org.group4.qr.QRCodeGenerator;
 import org.group4.qr.QRCodeReader;
 import com.google.zxing.NotFoundException;
