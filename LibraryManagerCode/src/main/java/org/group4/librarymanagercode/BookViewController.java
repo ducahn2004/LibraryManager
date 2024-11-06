@@ -2,8 +2,6 @@ package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,51 +10,47 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.group4.base.entities.Book;
-import org.group4.base.entities.Author;
-//import org.group4.base.books.Book;
+import org.group4.database.BookDatabase;
 
 public class BookViewController {
 
   public Button addBookButton;
-  private ObservableList<Book> bookList = FXCollections.observableArrayList();
+  private final ObservableList<Book> bookList = FXCollections.observableArrayList();
 
-  private Stage stage;
   public JFXButton homeButton;
   @FXML
   private TableView<Book> tableView = new TableView<>(bookList);
 
   @FXML
-  private TableColumn<Book, String> ISBN = new TableColumn<>("ISBN");
+  private TableColumn<Book, String> ISBN;
 
   @FXML
-  private TableColumn<Book, String> bookName = new TableColumn<>("Name");
+  private TableColumn<Book, String> bookName;
 
   @FXML
-  private TableColumn<Book, String> bookSubject = new TableColumn<>("Subject");
+  private TableColumn<Book, String> bookSubject;
 
   @FXML
-  private TableColumn<Book, String> bookPublisher = new TableColumn<>("Publisher");
+  private TableColumn<Book, String> bookPublisher;
 
   @FXML
-  private TableColumn<Book, String> bookLanguage = new TableColumn<>("Language");
+  private TableColumn<Book, String> bookLanguage;
 
   @FXML
-  private TableColumn<Book, Integer> numberOfPages = new TableColumn<>("Pages");
+  private TableColumn<Book, Integer> numberOfPages;
 
   @FXML
-  private TableColumn<Book, String> bookAuthor = new TableColumn<>("Author");
+  private TableColumn<Book, String> bookAuthor;
 
   @FXML
   private ContextMenu contextMenu;
@@ -65,9 +59,6 @@ public class BookViewController {
   private TextField searchField;
 
   //  private ObservableList<Book> bookList = FXCollections.observableArrayList();
-  public void setStage(Stage stage) {
-    this.stage = stage;
-  }
   // This method is called by the FXMLLoader when initialization is complete
   @FXML
   public void initialize() {
@@ -102,9 +93,7 @@ public class BookViewController {
       });
       return row;
     });
-//    // Add a listener for the search field
-//    searchField.textProperty()
-//        .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+
     searchField.textProperty().addListener((observable, oldValue, newValue) -> filterBookList(newValue));
 
 
@@ -129,31 +118,11 @@ public class BookViewController {
       detailStage.show();
     } catch (Exception e) {
       e.printStackTrace();
-    }
+      }
   }
 
   private void loadBookData() {
-    List<Author> authors1 = new ArrayList<>();
-    authors1.add(new Author("Author One"));
-
-    List<Author> authors2 = new ArrayList<>();
-    authors2.add(new Author("Author Two"));
-
-    List<Author> authors3 = new ArrayList<>();
-    authors3.add(new Author("Author Three"));
-
-    // This would normally be loaded from a database or some service
-    bookList.add(
-        new Book(
-            "510251", "Book Title 1", "Subject 1", "Publisher 1", "English", 200,
-            authors1));
-    bookList.add(
-        new Book(
-            "496717", "Book Title 2", "Subject 2", "Publisher 2", "English", 300,
-            authors2));
-    bookList.add(
-        new Book("111735", "Book Title 3", "Subject 3", "Publisher 3", "English", 150,
-            authors3));
+    bookList.addAll(BookDatabase.getInstance().getItems());
     tableView.setItems(bookList);
   }
 
@@ -177,11 +146,6 @@ public class BookViewController {
       }
       tableView.setItems(filteredList);
     }
-  }
-
-  public void onSearchBook(ActionEvent actionEvent) {
-    String searchText = searchField.getText();
-    filterBookList(searchText);
   }
 
   public void HomeAction(ActionEvent actionEvent) {
