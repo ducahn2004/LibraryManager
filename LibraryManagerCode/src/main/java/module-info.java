@@ -31,5 +31,8 @@ module org.group.librarymanagercode {
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;
+
+  exports org.group4.base.books;
+  opens org.group4.base.books to javafx.fxml;
   
 }
