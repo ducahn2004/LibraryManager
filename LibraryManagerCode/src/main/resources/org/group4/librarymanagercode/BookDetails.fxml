@@ -87,14 +87,16 @@
       <TableView fx:id="tableView">
         <columns>
           <TableColumn fx:id="barCode" text="Bar Code" />
-          <TableColumn fx:id="referenceOnly" prefWidth="88.79999542236328" text="Reference Only" />
-          <TableColumn fx:id="status" prefWidth="72.00006103515625" text="Status" />
+          <TableColumn fx:id="referenceOnly" prefWidth="104.80005645751953" text="Reference Only" />
+          <TableColumn fx:id="status" prefWidth="110.0" text="Status" />
           <TableColumn fx:id="borrowedDate" text="Borrowed Date" visible="false" />
           <TableColumn fx:id="dueDate" text="Due Date" visible="false" />
           <TableColumn fx:id="price" text="Price" />
           <TableColumn fx:id="format" text="Format" />
           <TableColumn fx:id="dateOfPurchase" text="Date of Purchase" />
           <TableColumn fx:id="publicationDate" text="Publication Date" />
+
+          <TableColumn fx:id="actionColumn" prefWidth="104" text="Actions" />
         </columns>
       </TableView>
     </VBox>

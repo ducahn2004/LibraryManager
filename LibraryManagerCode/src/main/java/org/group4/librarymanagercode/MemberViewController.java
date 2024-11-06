@@ -40,4 +40,25 @@ public class MemberViewController {
   public void fetchStudentFeesDetails(MouseEvent mouseEvent) {
   }
 
+  public void Close(ActionEvent actionEvent) {
+  }
+
+  public void notificationAction(ActionEvent actionEvent) {
+  }
+
+  public void SettingAction(ActionEvent actionEvent) {
+  }
+
+  public void ReturnBookAction(ActionEvent actionEvent) {
+  }
+
+  public void BookAction(ActionEvent actionEvent) {
+  }
+
+  public void MemberAction(ActionEvent actionEvent) {
+  }
+
+  public void HomeAction(ActionEvent actionEvent) {
+    
+  }
 }

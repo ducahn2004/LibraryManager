@@ -1,43 +1,18 @@
 package org.group4.librarymanagercode;
 
-import javafx.application.Platform;
-import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.jetbrains.annotations.NotNull;
 
-public class AdminPaneController {
+public class SettingController {
 
-  @FXML
-  public JFXButton homeButton;
-  @FXML
-  public JFXButton MemberButton;
-  @FXML
-  public JFXButton addMemberButton;
-  @FXML
-  public JFXButton bookButton;
-  @FXML
-  public JFXButton addBookButton;
-  @FXML
-  public JFXButton returnBookButton;
-  @FXML
-  public JFXButton settingButton;
-  @FXML
-  public JFXButton closeButton;
-  public JFXButton notificationButton;
+
+
 
   private Stage stage;
-  private BorderPane rootLayout;
-
-  public void setStageAndSetupListeners(Stage stage, BorderPane rootLayout) {
-    this.stage = stage;
-    this.rootLayout = rootLayout;
-  }
 
   public void HomeAction(ActionEvent actionEvent) throws IOException {
     loadPage("AdminPane.fxml");
