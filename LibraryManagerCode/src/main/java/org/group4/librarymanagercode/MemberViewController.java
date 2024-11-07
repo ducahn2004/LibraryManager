@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import org.group4.base.users.Member;
-import org.group4.base.users.Person;
 import org.group4.database.MemberDatabase;
 
 public class MemberViewController {
@@ -180,7 +179,7 @@ public class MemberViewController {
     String email = memberEmail.getText();
     LocalDate birthDate = memberBirth.getValue();
 
-    Person selectedPerson = memberTable.getSelectionModel().getSelectedItem();
+    Member selectedPerson = memberTable.getSelectionModel().getSelectedItem();
     if (selectedPerson != null) {
       selectedPerson.setName(name);
       selectedPerson.setDateOfBirth(birthDate);
