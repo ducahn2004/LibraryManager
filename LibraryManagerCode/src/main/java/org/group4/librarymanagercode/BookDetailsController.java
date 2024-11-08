@@ -75,7 +75,7 @@ public class BookDetailsController {
     if (currentBook != null) {
       isbnLabel.setText(currentBook.getISBN());
       titleLabel.setText(currentBook.getTitle());
-      authorLabel.setText(currentBook.getAuthors().toString());
+      authorLabel.setText(currentBook.authorsToString());
       publisherLabel.setText(currentBook.getPublisher());
       subjectLabel.setText(currentBook.getSubject());
       pagesLabel.setText(String.valueOf(currentBook.getNumberOfPages()));
