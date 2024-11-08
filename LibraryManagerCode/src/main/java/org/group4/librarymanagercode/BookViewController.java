@@ -1,6 +1,7 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
@@ -10,7 +11,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
@@ -21,9 +25,14 @@ import org.group4.base.books.Book;
 import org.group4.database.BookDatabase;
 
 public class BookViewController {
+
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();
 
-  public JFXButton homeButton;
+  private Stage stage;
+
+  @FXML
+  private JFXButton homeButton;
+  public Button addBookButton;
   @FXML
   private TableView<Book> tableView;
 
@@ -84,7 +93,8 @@ public class BookViewController {
     });
 
     // Add a listener for the search field
-    searchField.textProperty().addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+    searchField.textProperty()
+        .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
     searchField.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.ENTER) {
         filterBookList(searchField.getText());
@@ -104,7 +114,8 @@ public class BookViewController {
       detailStage.setTitle("Book Item Detail");
       detailStage.show();
     } catch (Exception e) {
-      Logger.getLogger(BookViewController.class.getName()).log(Level.SEVERE, "Failed to load book details page", e);
+      Logger.getLogger(BookViewController.class.getName())
+          .log(Level.SEVERE, "Failed to load book details page", e);
     }
   }
 
@@ -121,8 +132,8 @@ public class BookViewController {
     } else {
       String lowerCaseFilter = searchText.toLowerCase();
       ObservableList<Book> filteredList = bookList.filtered(book ->
-        book.getISBN().toLowerCase().contains(lowerCaseFilter) ||
-        book.getTitle().toLowerCase().contains(lowerCaseFilter)
+          book.getISBN().toLowerCase().contains(lowerCaseFilter) ||
+              book.getTitle().toLowerCase().contains(lowerCaseFilter)
       );
       tableView.setItems(filteredList);
     }
@@ -174,9 +185,30 @@ public class BookViewController {
     System.out.println("Close button clicked");
   }
 
+  
   @FXML
   private void addBookAction(ActionEvent event) {
+    try {
+      // Load the AddBook.fxml file
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
+      Parent root = fxmlLoader.load();
+
+      // Get the current stage
+      Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+      // Set the new scene on the current stage
+      Scene scene = new Scene(root, 1000, 700);
+      currentStage.setScene(scene);
+      currentStage.setTitle("Add New Book");
+      currentStage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
+      // Add better error handling or logging here
+    }
+
     // Implement the action to be performed when the add book button is clicked
     System.out.println("Add book button clicked");
   }
+
+
 }
