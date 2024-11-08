@@ -28,14 +28,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Base64;
+import org.group4.base.enums.NotificationType;
 
-public class EmailNotification {
+public class EmailNotification extends Notification {
   private static final String APPLICATION_NAME = "Gmail API Java Quickstart";
   private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
   private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
   private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_SEND);
   private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+
+  public EmailNotification(NotificationType type, String content) {
+    super(type, content);
+  }
 
   private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
     InputStream in = EmailNotification.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
@@ -84,5 +89,4 @@ public class EmailNotification {
     message.setRaw(encodedEmail);
     service.users().messages().send(userId, message).execute();
   }
-
 }

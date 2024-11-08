@@ -21,7 +21,6 @@ import javafx.scene.layout.HBox;
 import org.group4.base.books.BookItem;
 import org.group4.base.books.Book;
 import org.group4.base.enums.BookStatus;
-import org.group4.base.manager.BookManager;
 import org.group4.base.users.Librarian;
 import org.group4.database.BookItemDatabase;
 import org.group4.database.LibrarianDatabase;

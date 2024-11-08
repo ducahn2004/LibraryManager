@@ -1,6 +1,7 @@
 module org.group.librarymanagercode {
   requires javafx.fxml;
   requires javafx.web;
+  requires junit;
 
   requires org.controlsfx.controls;
   requires com.dlsc.formsfx;
@@ -28,6 +29,7 @@ module org.group.librarymanagercode {
   requires com.google.api.client.extensions.jetty.auth;
   requires jdk.httpserver;
   requires com.google.api.services.gmail;
+  requires org.testng;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;
@@ -43,4 +45,16 @@ module org.group.librarymanagercode {
 
   exports org.group4.base.manager;
   opens org.group4.base.manager to javafx.fxml;
+
+  exports org.group4.base.catalog;
+  opens org.group4.base.catalog to javafx.fxml;
+
+  exports org.group4.base.notifications;
+  opens org.group4.base.notifications to javafx.fxml;
+
+  exports org.group4.database;
+  opens org.group4.database to javafx.fxml;
+
+  exports org.group4.test;
+  opens org.group4.test to junit;
 }

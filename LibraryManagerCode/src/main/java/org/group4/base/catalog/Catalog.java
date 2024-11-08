@@ -1,5 +1,6 @@
 package org.group4.base.catalog;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.group4.base.books.BookItem;
@@ -7,8 +8,20 @@ import org.group4.base.books.BookItem;
 public class Catalog implements Search {
   private final List<BookItem> bookItems;
 
+  public Catalog() {
+    this.bookItems = new ArrayList<>();
+  }
+
   public Catalog(List<BookItem> bookItems) {
-    this.bookItems = bookItems;
+    this.bookItems = new ArrayList<>(bookItems);
+  }
+
+  public void addBookItem(BookItem bookItem) {
+    bookItems.add(bookItem);
+  }
+
+  public void removeBookItem(BookItem bookItem) {
+    bookItems.remove(bookItem);
   }
 
   @Override
@@ -33,4 +46,7 @@ public class Catalog implements Search {
         .collect(Collectors.toList());
   }
 
+  public List<BookItem> getBookItems() {
+    return new ArrayList<>(bookItems);
+  }
 }
