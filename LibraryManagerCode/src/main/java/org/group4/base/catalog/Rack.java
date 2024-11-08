@@ -1,42 +1,16 @@
 package org.group4.base.catalog;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.group4.base.books.Book;
-
 public class Rack {
-  private int number;
-  private String locationIdentifier;
-  private final List<Book> bookItems;
+  private int numberRank;
+  private final String locationIdentifier;
 
-  public Rack(int number, String locationIdentifier) {
-    this.number = number;
+  public Rack(int numberRank, String locationIdentifier) {
+    this.numberRank = numberRank;
     this.locationIdentifier = locationIdentifier;
-    this.bookItems = new ArrayList<>();
-  }
-
-  public int getNumber() {
-    return number;
-  }
-
-  public void setNumber(int number) {
-    this.number = number;
   }
 
   public String getLocationIdentifier() {
     return locationIdentifier;
-  }
-
-  public void setLocationIdentifier(String locationIdentifier) {
-    this.locationIdentifier = locationIdentifier;
-  }
-
-  public List<Book> getBookItemsOnRack() {
-    return bookItems;
-  }
-
-  public void addBookItemToRack(Book bookItem) {
-    bookItems.add(bookItem);
   }
 
 }

@@ -1,0 +1,12 @@
+package org.group4.base.enums;
+
+public enum NotificationType {
+  DUE_DATE_REMINDER,
+  OVERDUE_NOTIFICATION,
+  FINE_NOTIFICATION,
+  PASSWORD_RESET,
+  NEW_BOOK_ARRIVAL,
+  BOOK_BORROW_SUCCESS,
+  BOOK_RETURN_SUCCESS,
+  INFO
+}

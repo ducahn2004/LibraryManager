@@ -3,6 +3,7 @@ package org.group4.base.books;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.UUID;
+import org.group4.base.catalog.Rack;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.database.BookItemDatabase;
@@ -18,10 +19,11 @@ public class BookItem extends Book {
   private BookStatus status;
   private LocalDate dateOfPurchase;
   private LocalDate publicationDate;
+  private Rack placedAt;
 
   // Constructor
   public BookItem(Book book, boolean isReferenceOnly, double price, BookFormat format,
-      LocalDate dateOfPurchase, LocalDate publicationDate) {
+      LocalDate dateOfPurchase, LocalDate publicationDate, Rack placedAt) {
     super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(), book.getLanguage(),
         book.getNumberOfPages(), book.getAuthors());
     this.barcode = book.getISBN() + "-" + UUID.randomUUID();
@@ -33,6 +35,7 @@ public class BookItem extends Book {
     this.status = BookStatus.AVAILABLE;
     this.dateOfPurchase = dateOfPurchase;
     this.publicationDate = publicationDate;
+    this.placedAt = placedAt;
   }
 
   // Getter
@@ -72,6 +75,10 @@ public class BookItem extends Book {
     return publicationDate;
   }
 
+  public Rack getPlacedAt() {
+    return placedAt;
+  }
+
   // Setter
   public void setReferenceOnly(boolean referenceOnly) {
     isReferenceOnly = referenceOnly;
@@ -103,6 +110,10 @@ public class BookItem extends Book {
 
   public void setPublicationDate(LocalDate publicationDate) {
     this.publicationDate = publicationDate;
+  }
+
+  public void setPlacedAt(Rack placedAt) {
+    this.placedAt = placedAt;
   }
 
   public boolean checkOut() {

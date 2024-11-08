@@ -4,14 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.group4.base.books.BookLending;
-import org.group4.base.enums.Address;
 
 public class Member extends Person {
   private final String memberId;
   private final List<BookLending> bookLendings = new ArrayList<>();
 
-  public Member(String name, LocalDate dateOfBirth, Address address, String email, String phoneNumber, String memberId) {
-    super(name, dateOfBirth, address, email, phoneNumber);
+  public Member(String name, LocalDate dateOfBirth, String email,
+      String phoneNumber, String memberId) {
+    super(name, dateOfBirth, email, phoneNumber);
     this.memberId = memberId;
   }
 

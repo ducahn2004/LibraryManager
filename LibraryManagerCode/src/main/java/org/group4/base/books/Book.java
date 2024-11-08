@@ -36,7 +36,12 @@ public class Book {
     try {
       JSONObject bookDetails = googleBooksService.getBookDetails(ISBN);
       this.tittle = bookDetails.getString("title");
-      this.subject = bookDetails.optString("categories", "Unknown");
+      JSONArray categoriesArray = bookDetails.optJSONArray("categories");
+      if (categoriesArray != null && !categoriesArray.isEmpty()) {
+        this.subject = categoriesArray.getString(0).replace("[", "").replace("]", "").replace("\"", "");
+      } else {
+        this.subject = "Unknown";
+      }
       this.publisher = bookDetails.optString("publisher", "Unknown");
       this.language = bookDetails.optString("language", "Unknown");
       this.numberOfPages = bookDetails.optInt("pageCount", 0);

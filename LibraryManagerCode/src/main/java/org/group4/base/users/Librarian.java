@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import org.group4.base.books.BookItem;
 import org.group4.base.books.BookLending;
-import org.group4.base.enums.Address;
 import org.group4.base.manager.LendingManager;
 import org.group4.base.manager.Manager;
 import org.group4.base.books.Book;
@@ -17,10 +16,10 @@ public class Librarian extends Person {
 
   // Constructor
 
-  public Librarian(String name, LocalDate dateOfBirth, Address address, String email, String phoneNumber,
+  public Librarian(String name, LocalDate dateOfBirth, String email, String phoneNumber,
       String id, String password, Manager<BookItem> bookManager, Manager<Member> memberManager,
       LendingManager lendingManager) {
-    super(name, dateOfBirth, address, email, phoneNumber);
+    super(name, dateOfBirth, email, phoneNumber);
     this.account = new Account(id, password);
     this.bookManager = bookManager;
     this.memberManager = memberManager;
@@ -68,8 +67,8 @@ public class Librarian extends Person {
     return memberManager.update(member);
   }
 
-  public BookLending borrowBookItem(BookItem bookItem, Member member) {
-    return lendingManager.borrowBook(bookItem, member);
+  public void borrowBookItem(BookItem bookItem, Member member) {
+    lendingManager.borrowBook(bookItem, member);
   }
 
   public BookLending returnBookItem(BookItem bookItem, Member member) {
