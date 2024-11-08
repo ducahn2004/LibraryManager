@@ -1,0 +1,47 @@
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="org.group4.librarymanagercode.BorrowingBookController"
+  prefHeight="400.0" prefWidth="600.0">
+  <center>
+    <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <center>
+        <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" style="-fx-font-size: 15;"
+          BorderPane.alignment="CENTER">
+          <BorderPane.margin>
+            <Insets left="10.0" right="10.0" top="5.0"/>
+          </BorderPane.margin>
+        </ListView>
+      </center>
+      <bottom>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0"
+          BorderPane.alignment="CENTER">
+          <JFXTextField fx:id="lateFee" editable="false" labelFloat="true" maxWidth="234.0"
+            minWidth="225.0" prefHeight="31.0" prefWidth="225.0" promptText="Late Fee">
+            <font>
+              <Font size="13.0"/>
+            </font>
+          </JFXTextField>
+          <JFXButton fx:id="submit" onAction="#submitBook" prefHeight="31.0" prefWidth="167.0"
+            text="Submit">
+            <font>
+              <Font name="Segoe UI Semilight" size="15.0"/>
+            </font>
+          </JFXButton>
+          <JFXButton fx:id="renew" disable="true"
+            onAction="#renewBook" prefHeight="31.0" prefWidth="167.0" text="Renew">
+            <font>
+              <Font name="Segoe UI Semilight" size="15.0"/>
+            </font>
+          </JFXButton>
+        </HBox>
+      </bottom>
+    </BorderPane>
+  </center>
+</BorderPane>
