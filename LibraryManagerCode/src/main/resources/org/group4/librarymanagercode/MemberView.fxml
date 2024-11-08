@@ -15,42 +15,56 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.MemberViewController">
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="org.group4.librarymanagercode.MemberViewController">
   <left>
-    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" BorderPane.alignment="CENTER">
-      <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#HomeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
+    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;"
+      BorderPane.alignment="CENTER">
+      <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#HomeAction"
+        prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
         <font>
-          <Font size="16.0" />
+          <Font size="16.0"/>
         </font>
       </JFXButton>
-      <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false" onAction="#MemberAction" prefHeight="46.0" prefWidth="133.0" text="Member" textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false"
+        onAction="#MemberAction" prefHeight="46.0" prefWidth="133.0" text="Member"
+        textFill="#fff8f8" textOverrun="CLIP">
         <font>
-          <Font size="16.0" />
+          <Font size="16.0"/>
         </font>
       </JFXButton>
-      <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#BookAction" prefHeight="46.0" prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#BookAction" prefHeight="46.0"
+        prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
         <font>
-          <Font size="16.0" />
+          <Font size="16.0"/>
         </font>
       </JFXButton>
-      <JFXButton fx:id="returnBookButton" alignment="TOP_LEFT" onAction="#ReturnBookAction" prefHeight="46.0" prefWidth="137.0" text="Return Book" textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="returnBookButton" alignment="TOP_LEFT" onAction="#ReturnBookAction"
+        prefHeight="46.0" prefWidth="137.0" text="Return Book" textFill="#fff8f8"
+        textOverrun="CLIP">
         <font>
-          <Font size="16.0" />
+          <Font size="16.0"/>
         </font>
       </JFXButton>
-      <JFXButton fx:id="notificationButton" alignment="TOP_LEFT" onAction="#notificationAction" prefHeight="46.0" prefWidth="137.0" text="Notification" textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="notificationButton" alignment="TOP_LEFT" onAction="#notificationAction"
+        prefHeight="46.0" prefWidth="137.0" text="Notification" textFill="#fff8f8"
+        textOverrun="CLIP">
         <font>
-          <Font size="16.0" />
+          <Font size="16.0"/>
         </font>
       </JFXButton>
-      <JFXButton fx:id="settingButton" alignment="TOP_LEFT" onAction="#SettingAction" prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="settingButton" alignment="TOP_LEFT" onAction="#SettingAction"
+        prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
         <font>
-          <Font size="16.0" />
+          <Font size="16.0"/>
         </font>
       </JFXButton>
-      <JFXButton fx:id="closeButton" alignment="TOP_LEFT" onAction="#Close" prefHeight="46.0" prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="closeButton" alignment="TOP_LEFT" onAction="#Close" prefHeight="46.0"
+        prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
         <font>
-          <Font size="16.0" />
+          <Font size="16.0"/>
         </font>
       </JFXButton>
     </VBox>
@@ -58,22 +72,26 @@
   <top>
     <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
       <children>
-        <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
-        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0" prefHeight="96.0" prefWidth="148.0" text="Member " textFill="#2e069c">
+        <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2e069c;"/>
+        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0"
+          prefHeight="96.0" prefWidth="148.0" text="Member " textFill="#2e069c">
           <font>
-            <Font name=".VnArial Bold" size="30.0" />
+            <Font name=".VnArial Bold" size="30.0"/>
           </font>
         </Label>
-        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#a1a1a1"
+          BorderPane.alignment="CENTER">
           <font>
-            <Font name="Segoe UI Semilight" size="23.0" />
+            <Font name="Segoe UI Semilight" size="23.0"/>
           </font>
           <BorderPane.margin>
-            <Insets top="2.0" />
+            <Insets top="2.0"/>
           </BorderPane.margin>
         </Label>
-        <TextField fx:id="searchField" layoutX="695.0" layoutY="92.0" prefHeight="25.0" prefWidth="300.0" promptText="Search by Name or ID" />
-        <Line endX="751.4000244140625" endY="7.62939453125E-6" layoutX="239.0" layoutY="127.0" startX="-100.0" stroke="#b7adad" strokeWidth="4.0" />
+        <TextField fx:id="searchField" layoutX="695.0" layoutY="92.0" prefHeight="25.0"
+          prefWidth="300.0" promptText="Search by Name or ID"/>
+        <Line endX="751.4000244140625" endY="7.62939453125E-6" layoutX="239.0" layoutY="127.0"
+          startX="-100.0" stroke="#b7adad" strokeWidth="4.0"/>
       </children>
     </Pane>
 
@@ -81,99 +99,32 @@
   <center>
     <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
       <children>
-        <TableView fx:id="memberTable" onContextMenuRequested="#requestMenu" prefHeight="570.0" prefWidth="572.0" tableMenuButtonVisible="true">
+        <TableView fx:id="memberTable" onContextMenuRequested="#requestMenu" prefHeight="570.0"
+          prefWidth="572.0" tableMenuButtonVisible="true">
           <columns>
-            <TableColumn fx:id="memberTableID" prefWidth="97.59997403621674" text="Member ID" />
-            <TableColumn fx:id="memberTableName" prefWidth="130.40003204345703" text="Name" />
-            <TableColumn fx:id="memberTableBirth" prefWidth="116.79998779296875" text="Date of Birth" />
-            <TableColumn fx:id="memberTablePhone" prefWidth="126.39996337890625" text="Phone  Number" />
-            <TableColumn fx:id="memberTableEmail" prefWidth="161.60000610351562" text="Email Address" />
+            <TableColumn fx:id="memberTableID" prefWidth="97.59997403621674" text="Member ID"/>
+            <TableColumn fx:id="memberTableName" prefWidth="130.40003204345703" text="Name"/>
+            <TableColumn fx:id="memberTableBirth" prefWidth="116.79998779296875"
+              text="Date of Birth"/>
+            <TableColumn fx:id="memberTablePhone" prefWidth="126.39996337890625"
+              text="Phone  Number"/>
+            <TableColumn fx:id="memberTableEmail" prefWidth="161.60000610351562"
+              text="Email Address"/>
+            <TableColumn fx:id="memberTableAction" prefWidth="150.0" text="Action">
+              <cellValueFactory>
+                <PropertyValueFactory property="action"/>
+              </cellValueFactory>
+            </TableColumn>
           </columns>
           <contextMenu>
             <ContextMenu>
             </ContextMenu>
           </contextMenu>
           <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
           </columnResizePolicy>
         </TableView>
       </children>
     </VBox>
   </center>
-  <right>
-    <VBox prefHeight="570.0" prefWidth="284.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-      <children>
-        <Label style="-fx-text-fill: #2b579a;" text="Member information">
-          <font>
-            <Font size="24.0" />
-          </font>
-          <padding>
-            <Insets left="17.0" top="5.0" />
-          </padding>
-        </Label>
-        <TextField fx:id="memberID" layoutX="30.0" layoutY="249.0" promptText="Member ID" style="-fx-background-radius: 0;">
-          <font>
-            <Font name="Segoe UI Semilight" size="13.0" />
-          </font>
-          <VBox.margin>
-            <Insets left="20.0" right="20.0" top="20.0" />
-          </VBox.margin>
-        </TextField>
-        <TextField fx:id="memberName" layoutX="30.0" layoutY="250.0" promptText="Member name" style="-fx-background-radius: 0;">
-          <font>
-            <Font name="Segoe UI Semilight" size="13.0" />
-          </font>
-          <VBox.margin>
-            <Insets left="20.0" right="20.0" top="15.0" />
-          </VBox.margin>
-        </TextField>
-        <DatePicker fx:id="memberBirth" layoutX="30.0" layoutY="250.0" prefHeight="26.0" prefWidth="246.0" promptText="Date of Birth" style="-fx-background-radius: 0;">
-          <VBox.margin>
-            <Insets left="20.0" right="20.0" top="15.0" />
-          </VBox.margin>
-        </DatePicker>
-        <TextField fx:id="memberEmail" layoutX="30.0" layoutY="162.0" promptText="Member email address" style="-fx-background-radius: 0;">
-          <font>
-            <Font name="Segoe UI Semilight" size="13.0" />
-          </font>
-          <VBox.margin>
-            <Insets left="20.0" right="20.0" top="15.0" />
-          </VBox.margin>
-        </TextField>
-        <TextField fx:id="memberPhone" promptText="Phone number" style="-fx-background-radius: 0;">
-          <VBox.margin>
-            <Insets left="20.0" right="20.0" top="15.0" />
-          </VBox.margin>
-          <font>
-            <Font name="Segoe UI Semilight" size="13.0" />
-          </font>
-        </TextField>
-        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="352.0" spacing="8.0">
-          <VBox.margin>
-            <Insets top="10.0" />
-          </VBox.margin>
-          <children>
-            <JFXButton fx:id="cancel" layoutX="10.0" layoutY="10.0" onAction="#cancel" prefHeight="26.0" prefWidth="112.0" style="-fx-background-color: #2e069c;" text="Cancel" textFill="#fffefe">
-              <HBox.margin>
-                <Insets right="4.0" />
-              </HBox.margin>
-              <font>
-                <Font name="Segoe UI Semilight" size="12.0" />
-              </font>
-            </JFXButton>
-            <JFXButton fx:id="save" onAction="#saveMember" prefHeight="26.0" prefWidth="112.0" style="-fx-background-color: #2e069c;" text="Save" textFill="#fcfafa">
-              <HBox.margin>
-                <Insets left="3.0" />
-              </HBox.margin>
-              <font>
-                <Font name="Segoe UI Semilight" size="12.0" />
-              </font>
-            </JFXButton>
-          </children>
-        </HBox>
-
-
-      </children>
-    </VBox>
-  </right>
 </BorderPane>

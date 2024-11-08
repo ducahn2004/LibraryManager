@@ -12,8 +12,8 @@ public class Main extends Application {
 
   @Override
   public void start(@NotNull Stage stage) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ReturnBook.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000 , 700);
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();

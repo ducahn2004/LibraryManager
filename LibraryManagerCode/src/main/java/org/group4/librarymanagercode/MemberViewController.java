@@ -1,45 +1,37 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
-import java.time.LocalDate;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.group4.base.users.Member;
 import org.group4.database.MemberDatabase;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class MemberViewController {
 
-
-  public JFXButton MemberButton;
-  public JFXButton notificationButton;
   @FXML
   private TextField searchField;
-  private final ObservableList<Member> memberList = FXCollections.observableArrayList();
   @FXML
-  private JFXButton homeButton;
-  @FXML
-  private JFXButton bookButton;
-  @FXML
-  private JFXButton returnBookButton;
-  @FXML
-  private JFXButton settingButton;
-  @FXML
-  private JFXButton closeButton;
-  @FXML
-  private ContextMenu selectPersonContext;
-  @FXML
-  private MenuItem selectMenu;
+  private TableView<Member> memberTable;
   @FXML
   private TableColumn<Member, String> memberTableID;
   @FXML
@@ -51,51 +43,55 @@ public class MemberViewController {
   @FXML
   private TableColumn<Member, String> memberTableEmail;
   @FXML
-  private TableView<Member> memberTable;
+  private TableColumn<Member, String> memberTableAction;
   @FXML
-  private JFXButton delete;
+  private JFXButton homeButton, bookButton, returnBookButton, settingButton, closeButton;
   @FXML
-  private JFXButton update;
-  @FXML
-  private JFXButton save;
-  @FXML
-  private JFXButton cancel;
-  @FXML
-  private TextField memberPhone;
-  @FXML
-  private TextField memberEmail;
-  @FXML
-  private TextField memberName;
-  @FXML
-  private TextField memberID;
+  private TextField memberPhone, memberEmail, memberName, memberID;
   @FXML
   private DatePicker memberBirth;
 
+  private final ObservableList<Member> memberList = FXCollections.observableArrayList();
 
   @FXML
   public void initialize() {
-    // Set up table columns
+    setUpTableColumns();
+    loadMembers();
+    setUpSearchListener();
+    setUpRowDoubleClick();
+    setUpActionColumn();
+  }
+
+  private void setUpTableColumns() {
     memberTableID.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getMemberId()));
     memberTableName.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-    memberTableBirth.setCellValueFactory(cellData -> new SimpleStringProperty(
-        cellData.getValue().getDateOfBirth().toString()));
+    memberTableBirth.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getDateOfBirth().toString()));
     memberTablePhone.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
     memberTableEmail.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
-    // Load member data
-    loadPersons();
     memberTable.setItems(memberList);
+  }
 
-    // Set up row selection listener
-    memberTable.getSelectionModel().selectedItemProperty()
-        .addListener((observable, oldValue, newValue) -> {
-          if (newValue != null) {
-            displayPersonDetails((Member) newValue);
-          }
-        });
+  private void loadMembers() {
+    memberList.clear();
+    Task<ObservableList<Member>> loadTask = new Task<>() {
+      @Override
+      protected ObservableList<Member> call() {
+        return FXCollections.observableArrayList(MemberDatabase.getInstance().getAllMembers());
+      }
+    };
+
+    loadTask.setOnSucceeded(event -> memberList.setAll(loadTask.getValue()));
+    loadTask.setOnFailed(event -> showAlert(AlertType.ERROR, "Error Loading Members",
+        "An error occurred while loading member data."));
+    new Thread(loadTask).start();
+  }
+
+  private void setUpSearchListener() {
     searchField.textProperty()
         .addListener((observable, oldValue, newValue) -> filterPersonList(newValue));
     searchField.setOnKeyPressed(keyEvent -> {
@@ -105,94 +101,168 @@ public class MemberViewController {
     });
   }
 
-  private void loadPersons() {
-    // Load members from a data source (e.g., database or hardcoded list)
-    // Example hardcoded members:
-    memberList.clear();
-    memberList.addAll(MemberDatabase.getInstance().getItems());
-    System.out.println("Loaded members Done ");
+  private void setUpRowDoubleClick() {
+    memberTable.setRowFactory(tv -> {
+      TableRow<Member> row = new TableRow<>();
+      row.setOnMouseClicked(event -> {
+        if (event.getClickCount() == 2 && !row.isEmpty()) {
+          showDetailPage(row.getItem());
+        }
+      });
+      return row;
+    });
   }
 
-  private void displayPersonDetails(Member member) {
-    memberID.setText(String.valueOf(member.getMemberId()));
-    memberName.setText(member.getName());
+  private void setUpActionColumn() {
+    memberTableAction.setCellFactory(new Callback<>() {
+      @Override
+      public TableCell<Member, String> call(TableColumn<Member, String> param) {
+        return new TableCell<>() {
+          final Hyperlink editLink = new Hyperlink("Edit");
+          final Hyperlink deleteLink = new Hyperlink("Delete");
 
-    memberPhone.setText(member.getPhoneNumber());
-    memberEmail.setText(member.getEmail());
+          {
+            editLink.setOnAction(event -> showEditForm(getTableView().getItems().get(getIndex())));
+            deleteLink.setOnAction(
+                event -> showDeleteConfirmation(getTableView().getItems().get(getIndex())));
+          }
+
+          @Override
+          protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty) {
+              setGraphic(null);
+            } else {
+              HBox hBox = new HBox(editLink, deleteLink);
+              hBox.setSpacing(10);
+              setGraphic(hBox);
+            }
+          }
+        };
+      }
+    });
   }
 
   private void filterPersonList(String searchText) {
-    ObservableList<Member> filteredList = FXCollections.observableArrayList();
-
     if (searchText == null || searchText.isEmpty()) {
-
       memberTable.setItems(memberList);
     } else {
-
-      String lowerCaseFilter = searchText.toLowerCase();
-
-      for (Member member : memberList) {
-
-        if (member.getMemberId().toLowerCase().contains(lowerCaseFilter) ||
-            member.getName().toLowerCase().contains(lowerCaseFilter)) {
-          filteredList.add(member);
-        }
-      }
+      ObservableList<Member> filteredList = memberList.filtered(member ->
+          member.getMemberId().toLowerCase().contains(searchText.toLowerCase()) ||
+              member.getName().toLowerCase().contains(searchText.toLowerCase())
+      );
       memberTable.setItems(filteredList);
     }
   }
 
-
-  public void requestMenu(ContextMenuEvent contextMenuEvent) {
+  private void showDetailPage(Member member) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
+      Stage detailStage = new Stage();
+      detailStage.setScene(new Scene(loader.load()));
+      MemberDetailsController controller = loader.getController();
+      controller.setItemDetail(member);
+      detailStage.setTitle("Member Detail");
+      detailStage.show();
+    } catch (IOException e) {
+      logAndShowError("Failed to load member details page", e);
+    }
   }
 
-  public void Close(ActionEvent actionEvent) {
+  private void showEditForm(Member member) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberEditForm.fxml"));
+      Stage detailStage = new Stage();
+      detailStage.setScene(new Scene(loader.load()));
+
+      MemberEditController controller = loader.getController();
+      controller.setMemberData(member);
+
+      detailStage.setTitle("Book Item Detail");
+      detailStage.show();
+    } catch (Exception e) {
+      Logger.getLogger(MemberViewController.class.getName())
+          .log(Level.SEVERE, "Failed to load book details page", e);
+    }
+  }
+
+  private void showDeleteConfirmation(Member member) {
+    Alert alert = createAlert(AlertType.CONFIRMATION, "Delete Confirmation",
+        "Are you sure you want to delete this member?",
+        "ID: " + member.getMemberId() + "\nName: " + member.getName());
+    alert.showAndWait().ifPresent(response -> {
+      if (response == ButtonType.OK) {
+        memberList.remove(member);
+      }
+    });
+  }
+
+  private Alert createAlert(AlertType type, String title, String header, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(header);
+    alert.setContentText(content);
+    return alert;
+  }
+
+  private void logAndShowError(String message, Exception e) {
+    Logger.getLogger(MemberViewController.class.getName()).log(Level.SEVERE, message, e);
+    showAlert(AlertType.ERROR, "Error", message);
+  }
+
+  private void showAlert(AlertType type, String title, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(content);
+    alert.showAndWait();
+  }
+
+  @FXML
+  public void cancel(ActionEvent actionEvent) {
+    memberID.clear();
+    memberName.clear();
+    memberPhone.clear();
+    memberEmail.clear();
+    memberBirth.setValue(null);
+    memberTable.getSelectionModel().clearSelection();
+  }
+
+  @FXML
+  public void saveMember(ActionEvent actionEvent) {
+    Member selectedMember = memberTable.getSelectionModel().getSelectedItem();
+    if (selectedMember != null) {
+      selectedMember.setName(memberName.getText());
+      selectedMember.setDateOfBirth(memberBirth.getValue());
+      selectedMember.setEmail(memberEmail.getText());
+      selectedMember.setPhoneNumber(memberPhone.getText());
+      memberTable.refresh();
+      cancel(null);
+    }
+  }
+
+  public void MemberAction(ActionEvent actionEvent) {
+  }
+
+  public void ReturnBookAction(ActionEvent actionEvent) {
   }
 
   public void notificationAction(ActionEvent actionEvent) {
   }
 
+  public void requestMenu(ContextMenuEvent contextMenuEvent) {
+  }
+
   public void SettingAction(ActionEvent actionEvent) {
   }
 
-  public void ReturnBookAction(ActionEvent actionEvent) {
+  public void Close(ActionEvent actionEvent) {
   }
 
   public void BookAction(ActionEvent actionEvent) {
   }
 
   public void HomeAction(ActionEvent actionEvent) {
-
   }
-
-  public void cancel(ActionEvent actionEvent) {
-    memberID.clear();
-    memberName.clear();
-    memberPhone.clear();
-    memberEmail.clear();
-    memberTable.getSelectionModel().clearSelection();
-  }
-
-  public void saveMember(ActionEvent actionEvent) {
-    String name = memberName.getText();
-    String phone = memberPhone.getText();
-    String email = memberEmail.getText();
-    LocalDate birthDate = memberBirth.getValue();
-
-    Member selectedPerson = memberTable.getSelectionModel().getSelectedItem();
-    if (selectedPerson != null) {
-      selectedPerson.setName(name);
-      selectedPerson.setDateOfBirth(birthDate);
-      selectedPerson.setEmail(email);
-      selectedPerson.setPhoneNumber(phone);
-
-      memberTable.refresh();
-
-      cancel(null);
-    }
-  }
-
-
-  public void MemberAction(ActionEvent actionEvent) {
-  }
+  // Additional actions methods: HomeAction, Close, etc.
 }
