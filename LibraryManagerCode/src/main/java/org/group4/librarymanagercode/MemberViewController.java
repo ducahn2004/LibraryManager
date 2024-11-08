@@ -154,7 +154,9 @@ public class MemberViewController {
       memberTable.setItems(filteredList);
     }
   }
-
+  public void refreshTable() {
+    memberTable.refresh();
+  }
   private void showDetailPage(Member member) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
@@ -172,19 +174,21 @@ public class MemberViewController {
   private void showEditForm(Member member) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberEditForm.fxml"));
-      Stage detailStage = new Stage();
-      detailStage.setScene(new Scene(loader.load()));
+      Stage editStage = new Stage();
+      editStage.setScene(new Scene(loader.load()));
 
+      // Lấy controller và truyền dữ liệu member vào
       MemberEditController controller = loader.getController();
       controller.setMemberData(member);
+      controller.setParentController(this);  // Truyền controller cha như một listener
 
-      detailStage.setTitle("Book Item Detail");
-      detailStage.show();
-    } catch (Exception e) {
-      Logger.getLogger(MemberViewController.class.getName())
-          .log(Level.SEVERE, "Failed to load book details page", e);
+      editStage.setTitle("Edit Member");
+      editStage.showAndWait();
+    } catch (IOException e) {
+      logAndShowError("Failed to load edit form page", e);
     }
   }
+
 
   private void showDeleteConfirmation(Member member) {
     Alert alert = createAlert(AlertType.CONFIRMATION, "Delete Confirmation",
