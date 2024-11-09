@@ -30,6 +30,7 @@ module org.group.librarymanagercode {
   requires jdk.httpserver;
   requires com.google.api.services.gmail;
   requires org.testng;
+  requires jbcrypt;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;

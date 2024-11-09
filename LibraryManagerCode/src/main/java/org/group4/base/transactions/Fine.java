@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import org.group4.base.books.BookLending;
 import org.group4.base.enums.BookStatus;
 
+/**
+ * The {@code Fine} class is responsible for calculating and storing the fine amount
+ * for overdue or lost books.
+ */
 public class Fine {
   private double amount;
 
@@ -15,50 +19,70 @@ public class Fine {
     return amount;
   }
 
-  private double calculateLostBookFine(double bookPrice, int numberOfPages) {
-    return bookPrice > 0 ? Math.min(bookPrice * 3, 300000) : numberOfPages * 500;
-  }
-
   /**
-   * Calculate fine amount based on the number of days overdue or if the book is lost.
-   * Overdue less than 1 week: fine 5,000 VND/1 book/1 student.
-   * Overdue from 1 week to 1 month: fine 15,000 VND/1 book/1 student.
-   * Overdue from 1 month to 6 months: fine 25,000 VND/1 book/1 student.
-   * Overdue from 6 months to 1 year: fine 50,000 VND/1 book/1 student.
-   * Overdue more than 1 year: treat as lost book.
-   * Lost book:
-   * - Pay 300% of the book price, up to a maximum of 300,000 VND/1 book/1 student.
-   * - If the book price is not listed, the fine is 500 VND per page.
-   *
-   * @param bookLending The book lending of member
-   * @return The fine amount
+   * Calculates the fine for a book lending based on overdue days or if the book is lost.
+   * @param bookLending The book lending information of a member.
+   * @return The calculated fine amount.
    */
   public double calculateFine(BookLending bookLending) {
     double bookPrice = bookLending.getBookItem().getPrice();
     int numberOfPages = bookLending.getBookItem().getNumberOfPages();
+
     if (bookLending.getBookItem().getStatus() == BookStatus.LOST) {
       amount = calculateLostBookFine(bookPrice, numberOfPages);
     } else {
-      LocalDate dueDate = bookLending.getDueDate();
-      LocalDate returnDate = bookLending.getReturnDate();
-      if (returnDate.isAfter(dueDate)) {
-        long daysOverdue = returnDate.toEpochDay() - dueDate.toEpochDay();
-        if (daysOverdue < 7) {
-          amount = 5000;
-        } else if (daysOverdue < 30) {
-          amount = 15000;
-        } else if (daysOverdue < 180) {
-          amount = 25000;
-        } else if (daysOverdue < 365) {
-          amount = 50000;
-        } else {
-          amount = calculateLostBookFine(bookPrice, numberOfPages);
-        }
-      }
+      amount = calculateOverdueFine(bookLending);
     }
+
     return amount;
   }
 
+  /**
+   * Calculates the fine for a lost book based on its price or page count.
+   * @param bookPrice The price of the book.
+   * @param numberOfPages The number of pages of the book.
+   * @return The calculated fine for the lost book.
+   */
+  private double calculateLostBookFine(double bookPrice, int numberOfPages) {
+    if (bookPrice > 0) {
+      return Math.min(bookPrice * 3, 300000);
+    } else {
+      return numberOfPages * 500;
+    }
+  }
+
+  /**
+   * Calculates the fine for overdue books based on the number of days overdue.
+   * @param bookLending The book lending information.
+   * @return The calculated overdue fine.
+   */
+  private double calculateOverdueFine(BookLending bookLending) {
+    LocalDate dueDate = bookLending.getDueDate();
+    LocalDate returnDate = bookLending.getReturnDate();
+    double fineAmount = 0;
+
+    if (returnDate.isAfter(dueDate)) {
+      long daysOverdue = returnDate.toEpochDay() - dueDate.toEpochDay();
+      if (daysOverdue < 7) {
+        fineAmount = 5000;
+      } else if (daysOverdue < 30) {
+        fineAmount = 15000;
+      } else if (daysOverdue < 180) {
+        fineAmount = 25000;
+      } else if (daysOverdue < 365) {
+        fineAmount = 50000;
+      } else {
+        fineAmount = calculateLostBookFine(bookLending.getBookItem().getPrice(), bookLending.getBookItem().getNumberOfPages());
+      }
+    }
+
+    return fineAmount;
+  }
+
+  /**
+   * Processes the fine payment for a transaction.
+   * @param transaction The fine transaction to process.
+   */
   public void payFine(FineTransaction transaction) {
     if (transaction.processFinePayment()) {
       System.out.println("Fine paid successfully.");

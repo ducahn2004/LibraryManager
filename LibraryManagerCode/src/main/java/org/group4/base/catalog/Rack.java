@@ -1,11 +1,11 @@
 package org.group4.base.catalog;
 
 public class Rack {
-  private int numberRank;
+  private int numberRack;
   private final String locationIdentifier;
 
-  public Rack(int numberRank, String locationIdentifier) {
-    this.numberRank = numberRank;
+  public Rack(int numberRack, String locationIdentifier) {
+    this.numberRack = numberRack;
     this.locationIdentifier = locationIdentifier;
   }
 

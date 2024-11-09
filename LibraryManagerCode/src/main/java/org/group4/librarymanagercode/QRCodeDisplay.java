@@ -1,5 +1,6 @@
 package org.group4.librarymanagercode;
 
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -21,7 +22,7 @@ public class QRCodeDisplay extends Application {
       Image image = new Image(new FileInputStream(filePath));
       imageView.setImage(image);
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      Logger.getLogger(QRCodeDisplay.class.getName()).warning("File not found");
     }
 
     StackPane root = new StackPane(imageView);

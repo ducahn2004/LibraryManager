@@ -2,13 +2,25 @@ package org.group4.base.users;
 
 import java.time.LocalDate;
 
+/**
+ * The {@code Person} class represents an individual with basic personal information,
+ * including name, date of birth, email, and phone number.
+ */
 public class Person {
+
   private String name;
   private LocalDate dateOfBirth;
   private String email;
   private String phoneNumber;
 
-  // Constructor
+  /**
+   * Constructs a {@code Person} object with the specified name, date of birth, email, and phone number.
+   *
+   * @param name the name of the person
+   * @param dateOfBirth the date of birth of the person
+   * @param email the email address of the person
+   * @param phoneNumber the phone number of the person
+   */
   public Person(String name, LocalDate dateOfBirth, String email, String phoneNumber) {
     this.name = name;
     this.dateOfBirth = dateOfBirth;
@@ -16,7 +28,7 @@ public class Person {
     this.phoneNumber = phoneNumber;
   }
 
-  // Getter
+  // Getter methods
   public String getName() {
     return name;
   }
@@ -33,7 +45,7 @@ public class Person {
     return phoneNumber;
   }
 
-  // Setter
+  // Setter methods
   public void setName(String name) {
     this.name = name;
   }
@@ -49,8 +61,4 @@ public class Person {
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
   }
-
-
 }
-
-

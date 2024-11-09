@@ -11,10 +11,9 @@ public class LibrarianDatabase extends Database<Librarian> {
     private static final LibrarianDatabase instance = new LibrarianDatabase();
 
     private LibrarianDatabase() {
-      Account account = new Account("admin", "123456");
-      BookManager bookManager = BookManager.getInstance();
-      MemberManager memberManager = MemberManager.getInstance();
-      LendingManager lendingManager = LendingManager.getInstance();
+      BookManager bookManager = new BookManager();
+      MemberManager memberManager = new MemberManager();
+      LendingManager lendingManager = new LendingManager();
       addItem(new Librarian("Librarian 1", LocalDate.now(), "admin@gmail.com",
           "0382825137", "admin", "123456", bookManager, memberManager, lendingManager));
     }

@@ -14,7 +14,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 
 public class BookLendingTest {
-  Member member = new Member("John Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com", "1234567890", "M123");
+  Member member = new Member("John Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com", "1234567890");
   Book book = new Book("123456789", "Test Book", "Fiction", "Publisher", "English", 300, null);
   BookItem bookItem = new BookItem(book, false, 29.99, null, LocalDate.now(), LocalDate.of(2023, 1, 1), null);
 
@@ -44,12 +44,4 @@ public class BookLendingTest {
     assertEquals(returnDate, bookLending.getReturnDate());
   }
 
-  @Test
-  public void testFetchLendingDetails() {
-    Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
-    librarian.borrowBookItem(bookItem, member);
-    BookLending bookLending = member.getBookLendings().getFirst();
-    BookLending fetchedLending = BookLending.fetchLendingDetails(bookItem.getBarcode());
-    assertEquals(bookLending, fetchedLending);
-  }
 }

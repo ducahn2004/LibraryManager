@@ -9,13 +9,7 @@ import org.group4.database.BookBorrowDatabase;
 import org.group4.database.MemberDatabase;
 
 public class LendingManager {
-
-  private static final LendingManager instance = new LendingManager();
-
-  public static LendingManager getInstance() {
-    return instance;
-  }
-  public void borrowBook(BookItem bookItem, Member member) {
+  public boolean borrowBook(BookItem bookItem, Member member) {
     if (bookItem.checkOut() && member.getBookLendings().size() < 5) {
       bookItem.setStatus(BookStatus.LOANED);
       bookItem.setBorrowed(LocalDate.now());
@@ -24,10 +18,12 @@ public class LendingManager {
       member.addBookLending(bookLending);
       MemberDatabase.getInstance().updateItem(member);
       BookBorrowDatabase.getInstance().addItem(bookLending);
+      return true;
     }
+    return false;
   }
 
-  public BookLending returnBook(BookItem bookItem, Member member) {
+  public boolean returnBook(BookItem bookItem, Member member) {
     BookLending bookLending = member.getBookLendings().stream()
         .filter(lending -> lending.getBookItem().getBarcode().equals(bookItem.getBarcode()))
         .findFirst()
@@ -38,12 +34,13 @@ public class LendingManager {
       bookItem.setDueDate(null);
       bookLending.setReturnDate(LocalDate.now());
       MemberDatabase.getInstance().updateItem(member);
-      return bookLending;
+      BookBorrowDatabase.getInstance().removeItem(bookLending);
+      return true;
     }
-    return null;
+    return false;
   }
 
-  public BookLending renewBook(BookItem bookItem, Member member) {
+  public boolean renewBook(BookItem bookItem, Member member) {
     BookLending bookLending = member.getBookLendings().stream()
         .filter(lending -> lending.getBookItem().getBarcode().equals(bookItem.getBarcode()))
         .findFirst()
@@ -53,9 +50,9 @@ public class LendingManager {
       bookItem.setDueDate(dueDate);
       bookLending.setDueDate(dueDate);
       MemberDatabase.getInstance().updateItem(member);
-      return bookLending;
+      return true;
     }
-    return null;
+    return false;
   }
 
 }

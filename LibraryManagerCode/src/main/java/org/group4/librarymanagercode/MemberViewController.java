@@ -18,7 +18,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.group4.base.users.Librarian;
 import org.group4.base.users.Member;
+import org.group4.database.LibrarianDatabase;
 import org.group4.database.MemberDatabase;
 
 import java.io.IOException;
@@ -53,6 +55,8 @@ public class MemberViewController {
 
   private final ObservableList<Member> memberList = FXCollections.observableArrayList();
 
+  private final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+
   @FXML
   public void initialize() {
     setUpTableColumns();
@@ -81,7 +85,7 @@ public class MemberViewController {
     Task<ObservableList<Member>> loadTask = new Task<>() {
       @Override
       protected ObservableList<Member> call() {
-        return FXCollections.observableArrayList(MemberDatabase.getInstance().getAllMembers());
+        return FXCollections.observableArrayList(MemberDatabase.getInstance().getItems());
       }
     };
 
@@ -197,6 +201,7 @@ public class MemberViewController {
     alert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
         memberList.remove(member);
+        librarian.removeMember(member);
       }
     });
   }
@@ -268,5 +273,6 @@ public class MemberViewController {
 
   public void HomeAction(ActionEvent actionEvent) {
   }
+
   // Additional actions methods: HomeAction, Close, etc.
 }

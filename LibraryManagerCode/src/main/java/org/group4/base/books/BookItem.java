@@ -1,13 +1,16 @@
 package org.group4.base.books;
 
-import java.util.List;
 import java.time.LocalDate;
 import java.util.UUID;
+import java.util.Optional;
 import org.group4.base.catalog.Rack;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.database.BookItemDatabase;
 
+/**
+ * Represents a BookItem, which is an instance of a Book that can be borrowed or referenced.
+ */
 public class BookItem extends Book {
 
   private final String barcode;
@@ -21,30 +24,41 @@ public class BookItem extends Book {
   private LocalDate publicationDate;
   private Rack placedAt;
 
-  // Constructor
+  /**
+   * Constructor to initialize a BookItem.
+   *
+   * @param book The base book information.
+   * @param isReferenceOnly Whether the book is for reference only.
+   * @param price The price of the book item.
+   * @param format The format of the book item.
+   * @param dateOfPurchase The purchase date of the book item.
+   * @param publicationDate The publication date of the book item.
+   * @param placedAt The rack where the book item is placed.
+   */
   public BookItem(Book book, boolean isReferenceOnly, double price, BookFormat format,
       LocalDate dateOfPurchase, LocalDate publicationDate, Rack placedAt) {
     super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(), book.getLanguage(),
         book.getNumberOfPages(), book.getAuthors());
-    this.barcode = book.getISBN() + "-" + UUID.randomUUID();
+    this.barcode = generateBarcode(book.getISBN());
     this.isReferenceOnly = isReferenceOnly;
-    this.borrowed = null;
-    this.dueDate = null;
-    this.price = price;
-    this.format = format;
     this.status = BookStatus.AVAILABLE;
     this.dateOfPurchase = dateOfPurchase;
     this.publicationDate = publicationDate;
     this.placedAt = placedAt;
   }
 
-  // Getter
+  // Private method to generate barcode
+  private String generateBarcode(String isbn) {
+    return isbn + "-" + UUID.randomUUID().toString();
+  }
+
+  // Getter methods
   public String getBarcode() {
     return barcode;
   }
 
   public String getReference() {
-    return (isReferenceOnly) ? "Yes" : "No";
+    return isReferenceOnly ? "Yes" : "No";
   }
 
   public LocalDate getBorrowed() {
@@ -79,7 +93,7 @@ public class BookItem extends Book {
     return placedAt;
   }
 
-  // Setter
+  // Setter methods
   public void setReferenceOnly(boolean referenceOnly) {
     isReferenceOnly = referenceOnly;
   }
@@ -116,17 +130,25 @@ public class BookItem extends Book {
     this.placedAt = placedAt;
   }
 
+  /**
+   * Checks whether the book can be checked out. A book can only be checked out if it is
+   * not for reference and is available.
+   *
+   * @return true if the book can be checked out, false otherwise.
+   */
   public boolean checkOut() {
-    return !this.isReferenceOnly && this.status == BookStatus.AVAILABLE;
+    return !isReferenceOnly && status == BookStatus.AVAILABLE;
   }
 
-  public static BookItem fetchBookItemDetails(String barcode) {
-    List<BookItem> bookItems = BookItemDatabase.getInstance().getItems();
-    for (BookItem bookItem : bookItems) {
-      if (bookItem.getBarcode().equals(barcode)) {
-        return bookItem;
-      }
-    }
-    return null;
+  /**
+   * Fetches BookItem details by barcode.
+   *
+   * @param barcode The barcode of the book item.
+   * @return An Optional containing the BookItem if found, or an empty Optional if not found.
+   */
+  public static Optional<BookItem> fetchBookItemDetails(String barcode) {
+    return BookItemDatabase.getInstance().getItems().stream()
+        .filter(bookItem -> bookItem.getBarcode().equals(barcode))
+        .findFirst();
   }
 }

@@ -14,11 +14,12 @@ public abstract class Database<T> {
         items.add(item);
     }
 
-    public void removeItem(T item) {
+    public boolean removeItem(T item) {
         items.remove(item);
+        return false;
     }
 
-    public void updateItem(T item) {
+    public boolean updateItem(T item) {
         for (T i : items) {
             if (i.equals(item)) {
                 items.remove(i);
@@ -26,5 +27,6 @@ public abstract class Database<T> {
                 break;
             }
         }
+        return false;
     }
 }

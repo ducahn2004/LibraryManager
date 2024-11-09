@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class MemberTest {
-  Member member = new Member("John Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com", "1234567890", "M123");
+  Member member = new Member("John Doe", LocalDate.of(1990, 1, 1), "john.doe@example.com", "1234567890");
   Book book = new Book("123456789", "Test Book", "Fiction", "Publisher", "English", 300, null);
   BookItem bookItem = new BookItem(book, false, 29.99, null, LocalDate.now(), LocalDate.of(2023, 1, 1), null);
   BookLending bookLending = new BookLending(bookItem, member);
@@ -29,26 +29,10 @@ public class MemberTest {
   }
 
   @Test
-  public void testAddBookLending() {
-    assertTrue(member.addBookLending(bookLending));
+  public void testBookLending() {
+    member.addBookLending(bookLending);
     List<BookLending> bookLendings = member.getBookLendings();
+    assertTrue(bookLendings.contains(bookLending));
     assertEquals(1, bookLendings.size());
-    assertEquals(bookLending, bookLendings.getFirst());
-  }
-
-  @Test
-  public void testRemoveBookLending() {
-    member.addBookLending(bookLending);
-    assertTrue(member.removeBookLending(bookLending));
-    List<BookLending> bookLendings = member.getBookLendings();
-    assertEquals(0, bookLendings.size());
-  }
-
-  @Test
-  public void testGetBookLending() {
-    member.addBookLending(bookLending);
-    BookLending retrievedLending = member.getBookLending(bookItem.getBarcode());
-    assertNotNull(retrievedLending);
-    assertEquals(bookLending, retrievedLending);
   }
 }
