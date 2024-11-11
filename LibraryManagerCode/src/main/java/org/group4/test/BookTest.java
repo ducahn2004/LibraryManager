@@ -28,20 +28,4 @@ public class BookTest {
     assertEquals("Author,", book.authorsToString().trim());
   }
 
-  @Test
-  public void testBookCreationWithGoogleBooksAPI() {
-    try {
-      Book book = new Book("9781451648546");
-      assertNotNull(book);
-      assertEquals("9781451648546", book.getISBN());
-      assertEquals("Steve Jobs", book.getTitle());
-      assertEquals("Biography & Autobiography", book.getSubject());
-      assertEquals("Simon and Schuster", book.getPublisher());
-      assertEquals("en", book.getLanguage());
-      assertEquals(656, book.getNumberOfPages());
-      assertEquals("Walter Isaacson,", book.authorsToString().trim());
-    } catch (Exception e) {
-      Logger.getLogger(BookTest.class.getName()).warning("No book found with the given ISBN");
-    }
-  }
 }

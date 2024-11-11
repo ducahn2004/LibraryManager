@@ -1,11 +1,10 @@
 package org.group4.base.users;
 
-import java.io.IOException;
 import java.time.LocalDate;
+import org.group4.base.books.Book;
 import org.group4.base.books.BookItem;
 import org.group4.base.manager.LendingManager;
 import org.group4.base.manager.Manager;
-import org.group4.base.books.Book;
 
 /**
  * The {@code Librarian} class represents a librarian with the ability to manage books,
@@ -13,17 +12,19 @@ import org.group4.base.books.Book;
  */
 public class Librarian extends Person {
   private final Account account;
-  private final Manager<BookItem> bookManager;
+  private final Manager<Book> bookManager;
+  private final Manager<BookItem> bookItemManager;
   private final Manager<Member> memberManager;
   private final LendingManager lendingManager;
 
   // Constructor
   public Librarian(String name, LocalDate dateOfBirth, String email, String phoneNumber,
-      String id, String password, Manager<BookItem> bookManager,
+      String id, String password, Manager<Book> bookManager, Manager<BookItem> bookItemManager,
       Manager<Member> memberManager, LendingManager lendingManager) {
     super(name, dateOfBirth, email, phoneNumber);
-    this.account = new Account(id, password);
     this.bookManager = bookManager;
+    this.bookItemManager = bookItemManager;
+    this.account = new Account(id, password);
     this.memberManager = memberManager;
     this.lendingManager = lendingManager;
   }
@@ -57,32 +58,29 @@ public class Librarian extends Person {
     return account.logout();
   }
 
-  /**
-   * Adds a book to the library using its ISBN.
-   * @param ISBN The ISBN of the book to add
-   * @return true if the book is successfully added, false otherwise
-   * @throws IOException if the book cannot be added
-   */
-  public boolean addBookByISBN(String ISBN) throws IOException {
-    try {
-      Book book = new Book(ISBN);
-      return true;
-    } catch (IOException e) {
-      throw new IOException("Failed to add book with ISBN: " + ISBN, e);
-    }
+  // Other methods for managing books, bookItems, members, and lending
+  public boolean addBook(Book book) {
+    return bookManager.add(book);
   }
 
-  // Other methods for managing books, members, and lending
+  public boolean removeBook(Book book) {
+    return bookManager.remove(book);
+  }
+
+  public boolean updateBook(Book book) {
+    return bookManager.update(book);
+  }
+
   public boolean addBookItem(BookItem bookItem) {
-    return bookManager.add(bookItem);
+    return bookItemManager.add(bookItem);
   }
 
   public boolean removeBookItem(BookItem bookItem) {
-    return bookManager.remove(bookItem);
+    return bookItemManager.remove(bookItem);
   }
 
   public boolean updateBookItem(BookItem bookItem) {
-    return bookManager.update(bookItem);
+    return bookItemManager.update(bookItem);
   }
 
   public boolean addMember(Member member) {

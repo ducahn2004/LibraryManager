@@ -42,33 +42,6 @@ public class Book {
     this.authors = new HashSet<>(authors); // Ensure immutability of the authors set
   }
 
-  // Constructor use Google Books API
-  public Book(String ISBN) throws IOException {
-    GoogleBooksService googleBooksService = new GoogleBooksService();
-    this.ISBN = ISBN;
-    try {
-      JSONObject bookDetails = googleBooksService.getBookDetails(ISBN);
-      this.tittle = bookDetails.getString("title");
-      JSONArray categoriesArray = bookDetails.optJSONArray("categories");
-      if (categoriesArray != null && !categoriesArray.isEmpty()) {
-        this.subject = categoriesArray.getString(0).replace("[", "").replace("]", "").replace("\"", "");
-      } else {
-        this.subject = "Unknown";
-      }
-      this.publisher = bookDetails.optString("publisher", "Unknown");
-      this.language = bookDetails.optString("language", "Unknown");
-      this.numberOfPages = bookDetails.optInt("pageCount", 0);
-      this.authors = new HashSet<>();
-      JSONArray authorsArray = bookDetails.optJSONArray("authors");
-      if (authorsArray != null) {
-        for (int i = 0; i < authorsArray.length(); i++) {
-          authors.add(new Author(authorsArray.getString(i)));
-        }
-      }
-    } catch (IOException e) {
-      throw new IOException("No book found with the given ISBN");
-    }
-  }
   // Getter methods
   public String getISBN() {
     return ISBN;
