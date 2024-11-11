@@ -1,12 +1,17 @@
 package org.group4.librarymanagercode;
 
+import java.io.IOException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import org.group4.base.books.BookLending;
 import org.group4.base.users.Member;
 import org.group4.database.BookBorrowDatabase;
@@ -72,6 +77,12 @@ public class MemberDetailsController {
 
     tableView.setItems(bookLendings);
 
+    tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+      if (newSelection != null) {
+        openBorrowBookWindow(newSelection);
+      }
+    });
+
   }
 
   private void loadData() {
@@ -93,6 +104,23 @@ public class MemberDetailsController {
       memberIDLabel.setText(currentMember.getMemberId());
     }
   }
+  private void openBorrowBookWindow(BookLending selectedBookLending) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
+      Parent root = loader.load();
 
+      // Pass the selected BookLending to BorrowBookController
+      BorrowingBookController controller = loader.getController();
+      controller.setBookLendingDetails(selectedBookLending);
+
+      // Display the new stage
+      Stage stage = new Stage();
+      stage.setTitle("Borrowed Book Details");
+      stage.setScene(new Scene(root));
+      stage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
 }
