@@ -7,6 +7,9 @@ import org.group4.service.GoogleBooksService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Represents a book with various details like ISBN, title, authors, publisher, etc.
+ */
 public class Book {
 
   private final String ISBN;
@@ -17,7 +20,17 @@ public class Book {
   private final int numberOfPages;
   private final Set<Author> authors;
 
-  // Constructor
+  /**
+   * Constructor for creating a Book instance with all details.
+   *
+   * @param ISBN ISBN of the book
+   * @param title Title of the book
+   * @param subject Subject of the book
+   * @param publisher Publisher of the book
+   * @param language Language of the book
+   * @param numberOfPages Number of pages of the book
+   * @param authors Set of authors of the book
+   */
   public Book(String ISBN, String title, String subject, String publisher, String language, int numberOfPages,
       Set<Author> authors) {
     this.ISBN = ISBN;
@@ -26,7 +39,7 @@ public class Book {
     this.publisher = publisher;
     this.language = language;
     this.numberOfPages = numberOfPages;
-    this.authors = authors;
+    this.authors = new HashSet<>(authors); // Ensure immutability of the authors set
   }
 
   // Constructor use Google Books API
@@ -56,7 +69,7 @@ public class Book {
       throw new IOException("No book found with the given ISBN");
     }
   }
-  // Getter
+  // Getter methods
   public String getISBN() {
     return ISBN;
   }
@@ -84,13 +97,14 @@ public class Book {
   public Set<Author> getAuthors() {
     return authors;
   }
-  
+
+  /**
+   * Converts authors' names into a comma-separated string.
+   *
+   * @return A string representation of authors
+   */
   public String authorsToString() {
-    StringBuilder authorsString = new StringBuilder();
-    for (Author author : authors) {
-      authorsString.append(author.getName()).append(", ");
-    }
-    return authorsString.toString();
+    return String.join(", ", authors.stream().map(Author::getName).toArray(String[]::new));
   }
 
 }
