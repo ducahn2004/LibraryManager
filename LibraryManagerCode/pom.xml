@@ -179,6 +179,11 @@
       <version>v1-rev20240520-2.0.0</version>
     </dependency>
     <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>javax.mail-api</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>32.0.1-jre</version>
@@ -211,7 +216,7 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>RELEASE</version>
+      <version>7.7.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
