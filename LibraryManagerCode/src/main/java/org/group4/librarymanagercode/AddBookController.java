@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import org.group4.base.books.Author;
 import org.group4.base.books.Book;
 import org.group4.base.users.Librarian;
+import org.group4.database.LibrarianDatabase;
 import org.group4.service.GoogleBooksService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,8 +38,7 @@ public class AddBookController {
   private TextArea authorsField;
 
   private final GoogleBooksService googleBooksService = new GoogleBooksService();
-  private static final Librarian loggedInLibrarian = new Librarian("Name", null, null, null, null,
-      null, null, null, null, null);
+  private final Librarian  librarian= LibrarianDatabase.getInstance().getItems().getFirst();
 
   @FXML
   private void searchByISBN() {
