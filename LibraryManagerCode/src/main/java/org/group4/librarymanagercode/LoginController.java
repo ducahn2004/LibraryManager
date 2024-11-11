@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import org.group4.base.users.Librarian;
+import org.group4.database.LibrarianDatabase;
 
 public class LoginController {
 
@@ -23,7 +24,7 @@ public class LoginController {
 
   @FXML
   private Button loginButton;
-
+  private Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
   private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
   @FXML
@@ -38,7 +39,7 @@ public class LoginController {
       return;
     }
 
-    if (Librarian.login(username, password)) {
+    if (librarian.login(username, password)) {
       try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminPane.fxml"));
         Parent root = loader.load();
