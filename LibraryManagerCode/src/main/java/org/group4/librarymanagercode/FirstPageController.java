@@ -21,15 +21,6 @@ public class FirstPageController {
   @FXML
   private Button loginButton;
 
-  @FXML
-  private void handleLoginAction(ActionEvent event) {
-    navigateToPage(event, "Login.fxml", "Unable to load login page.");
-  }
-
-  @FXML
-  private void handleSignUpAction(ActionEvent event) {
-    navigateToPage(event, "AddMember.fxml", "Unable to load sign-up page.");
-  }
 
   private void navigateToPage(ActionEvent event, String fxmlFile, String errorMessage) {
     try {
@@ -52,5 +43,9 @@ public class FirstPageController {
     alert.setHeaderText(null);
     alert.setContentText(message);
     alert.showAndWait();
+  }
+
+  public void LoginAction(ActionEvent actionEvent) {
+    navigateToPage(actionEvent, "AddMember.fxml", "Unable to load sign-up page.");
   }
 }
