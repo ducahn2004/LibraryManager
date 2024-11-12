@@ -35,6 +35,10 @@ public class MemberManagerSQL {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    finally {
+      // Closing the connection using your closeConnection method
+      DatabaseConector.closeConnection(connection);
+    }
   }
 
   //Phuong thuc add member vao bang Member
@@ -55,6 +59,10 @@ public class MemberManagerSQL {
       System.out.println("Member added successfully!");
     } catch (SQLException e) {
       e.printStackTrace();
+    }
+    finally {
+      // Closing the connection using your closeConnection method
+      DatabaseConector.closeConnection(connection);
     }
   }
 
@@ -113,6 +121,10 @@ public class MemberManagerSQL {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    finally {
+      // Closing the connection using your closeConnection method
+      DatabaseConector.closeConnection(connection);
+    }
   }
 
   // Phương thức nhập MemberId từ bàn phím và gọi searchMemberById
@@ -140,6 +152,10 @@ public class MemberManagerSQL {
       System.out.println("Member deleted successfully!");
     } catch (SQLException e) {
       e.printStackTrace();
+    }
+    finally {
+      // Closing the connection using your closeConnection method
+      DatabaseConector.closeConnection(connection);
     }
   }
 

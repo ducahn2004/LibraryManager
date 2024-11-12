@@ -65,6 +65,10 @@ public class BookControllerSQL {
       } catch (SQLException e) {
         e.printStackTrace();
       }
+      finally {
+        // Closing the connection using your closeConnection method
+        DatabaseConector.closeConnection(connection);
+      }
   }
 
   // Phương thức để nhập dữ liệu từ bàn phím và gọi addBook
@@ -116,6 +120,10 @@ public class BookControllerSQL {
       } catch (SQLException e) {
         e.printStackTrace();
       }
+      finally {
+        // Closing the connection using your closeConnection method
+        DatabaseConector.closeConnection(connection);
+      }
   }
 
   // Phương thức nhập dữ liệu từ bàn phím và gọi updateBook để cập nhật sách
@@ -164,6 +172,10 @@ public class BookControllerSQL {
 
       } catch (SQLException e) {
         e.printStackTrace();
+      }
+      finally {
+        // Closing the connection using your closeConnection method
+        DatabaseConector.closeConnection(connection);
       }
   }
 
@@ -221,6 +233,10 @@ public class BookControllerSQL {
 
     } catch (SQLException e) {
       e.printStackTrace();
+    }
+    finally {
+      // Closing the connection using your closeConnection method
+      DatabaseConector.closeConnection(connection);
     }
   }
 
