@@ -106,4 +106,5 @@ public class Librarian extends Person {
   public boolean renewBookItem(BookItem bookItem, Member member) {
     return lendingManager.renewBook(bookItem, member);
   }
+
 }

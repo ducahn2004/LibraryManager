@@ -140,4 +140,5 @@ public class EmailNotification extends Notification {
     message.setRaw(encodedEmail);
     service.users().messages().send(userId, message).execute();
   }
+
 }

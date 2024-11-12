@@ -51,4 +51,6 @@ public class MemberManager implements Manager<Member> {
     // Update member information in the database.
     return MemberDatabase.getInstance().updateItem(member);
   }
+
+
 }

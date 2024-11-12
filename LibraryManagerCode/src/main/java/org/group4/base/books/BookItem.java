@@ -269,4 +269,5 @@ public class BookItem extends Book {
         .filter(bookItem -> bookItem.getBarcode().equals(barcode))
         .findFirst();
   }
+  
 }

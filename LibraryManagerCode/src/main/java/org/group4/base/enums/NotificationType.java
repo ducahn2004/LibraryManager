@@ -29,4 +29,5 @@ public enum NotificationType {
 
   /** General information notification for various non-critical updates. */
   INFO
+
 }

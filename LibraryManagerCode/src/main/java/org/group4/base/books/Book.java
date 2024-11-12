@@ -188,5 +188,4 @@ public class Book {
   public String authorsToString() {
     return String.join(", ", authors.stream().map(Author::getName).toArray(String[]::new));
   }
-
 }
