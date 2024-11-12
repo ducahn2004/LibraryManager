@@ -8,6 +8,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -158,9 +159,11 @@ public class MemberViewController {
       memberTable.setItems(filteredList);
     }
   }
+
   public void refreshTable() {
     memberTable.refresh();
   }
+
   private void showDetailPage(Member member) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
@@ -219,7 +222,7 @@ public class MemberViewController {
     showAlert(AlertType.ERROR, "Error", message);
   }
 
-  private void showAlert(AlertType type, String title, String content) {
+  void showAlert(AlertType type, String title, String content) {
     Alert alert = new Alert(type);
     alert.setTitle(title);
     alert.setHeaderText(null);
@@ -248,6 +251,34 @@ public class MemberViewController {
       memberTable.refresh();
       cancel(null);
     }
+  }
+
+  public void addMemberAction(ActionEvent actionEvent) {
+    try {
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("AddMember.fxml"));
+      Parent root = loader.load();
+
+      AddMemberController controller = loader.getController();
+
+      Member newMember = new Member("", LocalDate.now(), "", "");
+      controller.setMember(newMember);
+      controller.setParentController(this);  // Set the parent controller
+
+      Stage stage = new Stage();
+      stage.setTitle("Add Member");
+      stage.setScene(new Scene(root));
+      stage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  // Add a member to the list and refresh the table
+  public void addMemberToList(Member newMember) {
+    memberList.add(newMember);
+    memberTable.setItems(memberList);  // Ensure the table is updated with the new member
+    memberTable.refresh();  // Refresh the table view
   }
 
   public void MemberAction(ActionEvent actionEvent) {
