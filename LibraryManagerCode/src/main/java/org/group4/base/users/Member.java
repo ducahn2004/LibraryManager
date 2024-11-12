@@ -92,4 +92,5 @@ public class Member extends Person {
   public void removeBookLending(BookLending bookLending) {
     bookLendings.remove(bookLending);
   }
+
 }

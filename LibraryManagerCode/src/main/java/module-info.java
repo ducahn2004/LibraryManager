@@ -24,13 +24,13 @@ module org.group.librarymanagercode {
   requires com.google.api.client.extensions.java6.auth;
   requires com.google.api.client;
   requires com.google.api.client.json.gson;
-  requires jakarta.mail;
   requires google.api.client;
   requires com.google.api.client.extensions.jetty.auth;
   requires jdk.httpserver;
   requires com.google.api.services.gmail;
   requires org.testng;
   requires jbcrypt;
+  requires javax.mail.api;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;

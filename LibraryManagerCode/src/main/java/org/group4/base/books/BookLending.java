@@ -70,4 +70,5 @@ public class BookLending {
         .filter(lending -> lending.getBookItem().getBarcode().equals(barcode))
         .findFirst();
   }
+
 }
