@@ -1,13 +1,18 @@
 package org.group4.librarymanagercode;
 
+import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.group4.base.books.Book;
 import org.group4.base.users.Member;
+import org.group4.base.users.Librarian;
+import org.group4.database.LibrarianDatabase;
 
 public class AddMemberController {
 
@@ -22,40 +27,29 @@ public class AddMemberController {
   @FXML
   private TextField memberPhone;
 
-  private Member currentMember;
-  private MemberViewController parentController;
 
-  public void setMember(Member member) {
-    this.currentMember = member;
-    memberID.setText(member.getMemberId());
-    memberName.setText(member.getName());
-    memberBirth.setValue(member.getDateOfBirth());
-    memberEmail.setText(member.getEmail());
-    memberPhone.setText(member.getPhoneNumber());
-  }
+  private MemberViewController parentController;
+  private static final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
 
   public void cancel(ActionEvent actionEvent) {
     closeForm();
   }
 
   public void saveMember(ActionEvent actionEvent) {
-    if (currentMember != null) {
-      currentMember.setName(memberName.getText());
-      currentMember.setDateOfBirth(memberBirth.getValue());
-      currentMember.setEmail(memberEmail.getText());
-      currentMember.setPhoneNumber(memberPhone.getText());
-
+    try {
+      addMemberToLibrary(); // Add the new member to the library (i.e., database)
+      // After the member is successfully added to the library, update the parent controller's table.
       if (parentController != null) {
-        parentController.addMemberToList(
-            currentMember);  // Update the table in MemberViewController
+        parentController.addMemberToList(new Member(memberName.getText(), memberBirth.getValue(), memberEmail.getText(), memberPhone.getText()));
       }
-
-      closeForm();
-    } else {
-      // Handle the case where currentMember is null, perhaps show an error message
-      parentController.showAlert(AlertType.ERROR, "Error", "Member object is not initialized.");
+      // Show success message
+      showAlert(Alert.AlertType.INFORMATION, "Add Member Successfully", "The member has been added to the library.");
+    } catch (IllegalArgumentException e) {
+      showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
     }
+    closeForm();
   }
+
 
   public void setParentController(MemberViewController parentController) {
     this.parentController = parentController;
@@ -64,5 +58,25 @@ public class AddMemberController {
   private void closeForm() {
     Stage stage = (Stage) memberID.getScene().getWindow();
     stage.close();
+  }
+  private void addMemberToLibrary(){
+    boolean added = librarian.addMember(new Member(memberName.getText(), memberBirth.getValue(), memberEmail.getText(), memberPhone.getText()));
+    if(!added){
+      throw new IllegalArgumentException("Could not add member to library");
+    }
+    //TODO: DECREASED ID MEMBER AFTER CREATE MEMBER DATA
+  }
+  /**
+   * Shows an alert dialog with specified type, title, and message.
+   *
+   * @param alertType Type of alert
+   * @param title     Title of the alert
+   * @param message   Message content of the alert
+   */
+  private void showAlert(Alert.AlertType alertType, String title, String message) {
+    Alert alert = new Alert(alertType);
+    alert.setTitle(title);
+    alert.setContentText(message);
+    alert.showAndWait();
   }
 }

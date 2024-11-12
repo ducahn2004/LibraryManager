@@ -258,11 +258,7 @@ public class MemberViewController {
       FXMLLoader loader = new FXMLLoader(
           getClass().getResource("AddMember.fxml"));
       Parent root = loader.load();
-
       AddMemberController controller = loader.getController();
-
-      Member newMember = new Member("", LocalDate.now(), "", "");
-      controller.setMember(newMember);
       controller.setParentController(this);  // Set the parent controller
 
       Stage stage = new Stage();
@@ -276,10 +272,11 @@ public class MemberViewController {
 
   // Add a member to the list and refresh the table
   public void addMemberToList(Member newMember) {
-    memberList.add(newMember);
-    memberTable.setItems(memberList);  // Ensure the table is updated with the new member
-    memberTable.refresh();  // Refresh the table view
+    memberList.add(newMember);  // Adds the new member to the ObservableList
+    memberTable.setItems(memberList);  // Updates the TableView to display the new member
+    memberTable.refresh();  // Refresh the table view to show the newly added member
   }
+
 
   public void MemberAction(ActionEvent actionEvent) {
   }
