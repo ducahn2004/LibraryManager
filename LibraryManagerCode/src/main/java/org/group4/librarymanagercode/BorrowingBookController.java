@@ -7,9 +7,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import org.group4.base.books.BookItem;
 import org.group4.base.books.BookLending;
 
 public class BorrowingBookController {
@@ -94,5 +96,8 @@ public class BorrowingBookController {
 
   @FXML
   private void BookAction(ActionEvent actionEvent) {
+  }
+
+  public void handleSubmit(ActionEvent actionEvent) {
   }
 }

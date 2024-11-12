@@ -19,18 +19,25 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Controller class for adding a new book to the library.
- * Handles interactions with GoogleBooksService and updates the UI.
+ * Controller class for adding a new book to the library. Handles interactions with
+ * GoogleBooksService and updates the UI.
  */
 public class AddBookController {
 
-  public JFXButton closeButton;
-  public JFXButton settingButton;
-  public JFXButton notificationButton;
-  public JFXButton returnBookButton;
-  public JFXButton bookButton;
-  public JFXButton memberButton;
-  public JFXButton homeButton;
+  @FXML
+  private JFXButton closeButton;
+  @FXML
+  private JFXButton settingButton;
+  @FXML
+  private JFXButton notificationButton;
+  @FXML
+  private JFXButton returnBookButton;
+  @FXML
+  private JFXButton bookButton;
+  @FXML
+  private JFXButton memberButton;
+  @FXML
+  private JFXButton homeButton;
   @FXML
   private TextField isbnField;
   @FXML
@@ -77,7 +84,8 @@ public class AddBookController {
     try {
       Book book = createBookFromFields();
       addBookToLibrary(book);
-      showAlert(Alert.AlertType.INFORMATION, "Book Added Successfully", "The book has been added to the library.");
+      showAlert(Alert.AlertType.INFORMATION, "Book Added Successfully",
+          "The book has been added to the library.");
     } catch (IllegalArgumentException e) {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
     }
@@ -170,8 +178,8 @@ public class AddBookController {
    * Shows an alert dialog with specified type, title, and message.
    *
    * @param alertType Type of alert
-   * @param title Title of the alert
-   * @param message Message content of the alert
+   * @param title     Title of the alert
+   * @param message   Message content of the alert
    */
   private void showAlert(Alert.AlertType alertType, String title, String message) {
     Alert alert = new Alert(alertType);
@@ -181,13 +189,30 @@ public class AddBookController {
   }
 
   // Navigation actions (empty methods)
-  public void homeAction(ActionEvent actionEvent) {}
-  public void memberAction(ActionEvent actionEvent) {}
-  public void bookAction(ActionEvent actionEvent) {}
-  public void returnBookAction(ActionEvent actionEvent) {}
-  public void notificationAction(ActionEvent actionEvent) {}
-  public void settingAction(ActionEvent actionEvent) {}
-  public void close(ActionEvent actionEvent) {}
-  public void searchByTitle(ActionEvent actionEvent) {}
-  public void addBookAction(ActionEvent actionEvent) {}
+  public void homeAction(ActionEvent actionEvent) {
+  }
+
+  public void memberAction(ActionEvent actionEvent) {
+  }
+
+  public void bookAction(ActionEvent actionEvent) {
+  }
+
+  public void returnBookAction(ActionEvent actionEvent) {
+  }
+
+  public void notificationAction(ActionEvent actionEvent) {
+  }
+
+  public void settingAction(ActionEvent actionEvent) {
+  }
+
+  public void close(ActionEvent actionEvent) {
+  }
+
+  public void searchByTitle(ActionEvent actionEvent) {
+  }
+
+  public void addBookAction(ActionEvent actionEvent) {
+  }
 }

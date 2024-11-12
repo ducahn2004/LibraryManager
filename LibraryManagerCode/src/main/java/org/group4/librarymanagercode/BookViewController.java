@@ -14,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
@@ -28,11 +27,7 @@ public class BookViewController {
 
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();
 
-  private Stage stage;
-
-  @FXML
-  private JFXButton homeButton;
-  public Button addBookButton;
+  public JFXButton homeButton;
   @FXML
   private TableView<Book> tableView;
 
@@ -185,30 +180,17 @@ public class BookViewController {
     System.out.println("Close button clicked");
   }
 
-  
   @FXML
-  private void addBookAction(ActionEvent event) {
-    try {
-      // Load the AddBook.fxml file
-      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
-      Parent root = fxmlLoader.load();
+  public void addBookAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AddBook.fxml"));
+    Parent root = fxmlLoader.load();
 
-      // Get the current stage
-      Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    // Lấy `Stage` hiện tại từ `actionEvent`
+    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-      // Set the new scene on the current stage
-      Scene scene = new Scene(root, 1000, 700);
-      currentStage.setScene(scene);
-      currentStage.setTitle("Add New Book");
-      currentStage.show();
-    } catch (IOException e) {
-      e.printStackTrace();
-      // Add better error handling or logging here
-    }
-
-    // Implement the action to be performed when the add book button is clicked
-    System.out.println("Add book button clicked");
+    // Cập nhật nội dung của `Scene` hiện tại mà không tạo ra cửa sổ mới
+    stage.getScene().setRoot(root);
+    stage.setTitle("Library Manager");
   }
-
 
 }

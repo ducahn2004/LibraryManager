@@ -26,7 +26,7 @@
       </Pane>
          <Pane prefHeight="43.0" prefWidth="300.0">
             <children>
-            <Label fx:id="memberID" layoutX="121.0" layoutY="2.0" prefHeight="35.0" prefWidth="59.0" style="-fx-background-radius: 0;">
+            <Label fx:id="memberID" layoutX="107.0" layoutY="2.0" prefHeight="35.0" prefWidth="141.0" style="-fx-background-radius: 0;">
               <font>
                 <Font name=".VnArial Bold" size="20.0" />
               </font>
