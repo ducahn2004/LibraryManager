@@ -1,5 +1,7 @@
 package org.group4.librarymanagercode;
 
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.beans.property.SimpleObjectProperty;
@@ -8,6 +10,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -18,6 +22,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import org.group4.base.books.BookItem;
 import org.group4.base.books.Book;
 import org.group4.base.enums.BookStatus;
@@ -42,7 +47,7 @@ public class BookDetailsController {
   @FXML
   private TableColumn<BookItem, String> referenceOnly;
   @FXML
-  private TableColumn<BookItem,String> status;
+  private TableColumn<BookItem, String> status;
   @FXML
   private TableColumn<BookItem, String> borrowedDate;
   @FXML
@@ -57,6 +62,7 @@ public class BookDetailsController {
   private TableColumn<BookItem, String> publicationDate;
   @FXML
   private TableColumn<BookItem, Void> actionColumn;
+
   @FXML
   private void initialize() {
 
@@ -68,6 +74,26 @@ public class BookDetailsController {
     this.currentBook = book;
     displayBookDetails();
     loadData(); // Load data based on currentBook
+
+    // Set up a listener for row clicks in the TableView
+    tableView.setOnMouseClicked(this::handleRowClick);
+  }
+
+  private void handleRowClick(javafx.scene.input.MouseEvent mouseEvent) {
+    if (mouseEvent.getClickCount() == 2) { // Double-click
+      BookItem selectedItem = tableView.getSelectionModel().getSelectedItem();
+      if (selectedItem != null) {
+        try {
+          if (selectedItem.getStatus() == BookStatus.AVAILABLE) {
+            openBorrowingBookPage();
+          } else if (selectedItem.getStatus() == BookStatus.LOANED) {
+            openBookLendingPage();
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
   }
 
   private void displayBookDetails() {
@@ -83,27 +109,39 @@ public class BookDetailsController {
 
   private void initializeTable() {
     // Set up each column with its cell value factory
-    barCode.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
-    referenceOnly.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReference())));
+    barCode.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
+    referenceOnly.setCellValueFactory(
+        cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReference())));
     //status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
-    status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
-    borrowedDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getBorrowed())));
-    dueDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDueDate())));
-    price.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
-    format.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormat().toString()));
-    dateOfPurchase.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDateOfPurchase())));
-    publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getPublicationDate())));
+    status.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
+    borrowedDate.setCellValueFactory(
+        cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getBorrowed())));
+    dueDate.setCellValueFactory(
+        cellData -> new SimpleStringProperty(formatLocalDate(cellData.getValue().getDueDate())));
+    price.setCellValueFactory(
+        cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
+    format.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getFormat().toString()));
+    dateOfPurchase.setCellValueFactory(cellData -> new SimpleStringProperty(
+        formatLocalDate(cellData.getValue().getDateOfPurchase())));
+    publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(
+        formatLocalDate(cellData.getValue().getPublicationDate())));
 
     // Set the cell factory to use a ComboBox for editing the status
     status.setCellFactory(column -> new TableCell<>() {
       private final ComboBox<BookStatus> comboBox = new ComboBox<>();
+
       {
-        comboBox.setItems(FXCollections.observableArrayList(BookStatus.values())); // Populate with enum values
+        comboBox.setItems(
+            FXCollections.observableArrayList(BookStatus.values())); // Populate with enum values
         comboBox.setOnAction(event -> {
           BookItem bookItem = getTableView().getItems().get(getIndex());
           bookItem.setStatus(comboBox.getValue()); // Update the status of the book item
         });
       }
+
       @Override
       protected void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
@@ -143,16 +181,15 @@ public class BookDetailsController {
         if (empty) {
           setGraphic(null);
         } else {
-          HBox hBox = new HBox(10, editLink, deleteLink); // Đặt khoảng cách giữa các liên kết là 10 (có thể điều chỉnh)
+          HBox hBox = new HBox(10, editLink,
+              deleteLink); // Đặt khoảng cách giữa các liên kết là 10 (có thể điều chỉnh)
           setGraphic(hBox);
         }
       }
     });
 
-
     tableView.setItems(bookItems); // Bind the data list to the table
   }
-
 
 
   private void loadData() {
@@ -163,6 +200,23 @@ public class BookDetailsController {
           .toList());
       System.out.println("Data loaded: " + bookItems.size() + " items");
     }
+  }
+
+
+  private void openBorrowingBookPage() throws IOException {
+    Stage stage = new Stage();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/path/to/BorrowingBook.fxml"));
+    stage.setScene(new Scene(loader.load()));
+    stage.setTitle("Borrowing Book");
+    stage.show();
+  }
+
+  private void openBookLendingPage() throws IOException {
+    Stage stage = new Stage();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/path/to/BookLending.fxml"));
+    stage.setScene(new Scene(loader.load()));
+    stage.setTitle("Book Lending");
+    stage.show();
   }
 
   private String formatLocalDate(LocalDate date) {
@@ -246,7 +300,6 @@ public class BookDetailsController {
 //    detailStage.initModality(Modality.APPLICATION_MODAL);
 //    detailStage.showAndWait();
 //  }
-
 
 
 }
