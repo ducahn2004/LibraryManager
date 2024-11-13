@@ -67,6 +67,8 @@ public class BookItem extends Book {
     this.barcode = generateBarcode(book.getISBN());
     this.isReferenceOnly = isReferenceOnly;
     this.status = BookStatus.AVAILABLE;
+    this.format = format;
+    this.price = price;
     this.dateOfPurchase = dateOfPurchase;
     this.publicationDate = publicationDate;
     this.placedAt = placedAt;
