@@ -240,18 +240,6 @@ public class MemberViewController {
     memberTable.getSelectionModel().clearSelection();
   }
 
-  @FXML
-  public void saveMember(ActionEvent actionEvent) {
-    Member selectedMember = memberTable.getSelectionModel().getSelectedItem();
-    if (selectedMember != null) {
-      selectedMember.setName(memberName.getText());
-      selectedMember.setDateOfBirth(memberBirth.getValue());
-      selectedMember.setEmail(memberEmail.getText());
-      selectedMember.setPhoneNumber(memberPhone.getText());
-      memberTable.refresh();
-      cancel(null);
-    }
-  }
 
   public void addMemberAction(ActionEvent actionEvent) {
     try {

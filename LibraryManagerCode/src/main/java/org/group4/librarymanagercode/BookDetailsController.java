@@ -1,5 +1,6 @@
 package org.group4.librarymanagercode;
 
+import com.jfoenix.controls.JFXButton;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -31,10 +33,12 @@ import org.group4.base.books.BookLending;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.base.users.Librarian;
+import org.group4.base.users.Member;
 import org.group4.database.BookItemDatabase;
 import org.group4.database.LibrarianDatabase;
 
 public class BookDetailsController {
+
 
   Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
   private Book currentBook;
@@ -67,7 +71,8 @@ public class BookDetailsController {
   private TableColumn<BookItem, String> publicationDate;
   @FXML
   private TableColumn<BookItem, Void> actionColumn;
-
+  @FXML
+  private JFXButton addItem;
 
   @FXML
   private void initialize() {
@@ -149,13 +154,13 @@ public class BookDetailsController {
         // Xử lý sự kiện cho liên kết Edit
         editLink.setOnAction((ActionEvent event) -> {
           BookItem item = getTableView().getItems().get(getIndex());
-            try {
-                openEditBookItemPage(item);
-            } catch (IOException e) {
-              System.out.println("Not show the edit page");
-              e.printStackTrace();
+          try {
+            openEditBookItemPage(item);
+          } catch (IOException e) {
+            System.out.println("Not show the edit page");
+            e.printStackTrace();
 
-            }
+          }
         });
 
         // Xử lý sự kiện cho liên kết Delete
@@ -190,6 +195,7 @@ public class BookDetailsController {
       System.out.println("Data loaded: " + bookItems.size() + " items");
     }
   }
+
   private void openEditBookItemPage(BookItem selectedItem) throws IOException {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("EditBookItem.fxml"));
     Stage editStage = new Stage();
@@ -207,18 +213,31 @@ public class BookDetailsController {
   }
 
 
-
   private void openBorrowingBookPage(BookItem bookItem) throws IOException {
     try {
+//      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
+//      Stage detailStage = new Stage();
+//      detailStage.setScene(new Scene(loader.load()));
+//
+//      BorrowingBookController controller = loader.getController();
+//      controller.setItemDetailBorrowing(bookItem);
+//
+//      detailStage.setTitle("Book Item Detail");
+//      detailStage.show();
+
       FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
-      Stage detailStage = new Stage();
-      detailStage.setScene(new Scene(loader.load()));
+
+      Scene borrowingBookScene = new Scene(loader.load());
+
+      Stage currentStage = (Stage) tableView.getScene().getWindow();
+
+      currentStage.setScene(borrowingBookScene);
 
       BorrowingBookController controller = loader.getController();
       controller.setItemDetailBorrowing(bookItem);
 
-      detailStage.setTitle("Book Item Detail");
-      detailStage.show();
+      // Cập nhật tiêu đề cho Stage
+      currentStage.setTitle("Book Item Detail");
     } catch (Exception e) {
       Logger.getLogger(BookViewController.class.getName())
           .log(Level.SEVERE, "Failed to load book details page", e);
@@ -262,4 +281,30 @@ public class BookDetailsController {
     });
   }
 
+  public void addItemButton(ActionEvent actionEvent) {
+    try {
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("AddBookItem.fxml"));
+      Parent root = loader.load();
+      AddBookItemController controller = loader.getController();
+      controller.setParentController(this);  // Set the parent controller
+
+      Stage stage = new Stage();
+      stage.setTitle("Add Book Item");
+      stage.setScene(new Scene(root));
+      stage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void addBookItemToList(BookItem newBookItem) {
+    bookItems.add(newBookItem);
+    tableView.setItems(bookItems);
+    tableView.refresh();
+  }
+
+  public Book returnCurrentBook() {
+    return currentBook;
+  }
 }

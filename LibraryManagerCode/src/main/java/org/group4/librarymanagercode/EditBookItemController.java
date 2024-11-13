@@ -11,10 +11,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.base.books.BookItem;
+import org.group4.base.catalog.Rack;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 
 public class EditBookItemController {
+
 
   @FXML
   private Label barCodeId;
@@ -32,6 +34,8 @@ public class EditBookItemController {
   private DatePicker dateOfPurchasePicker;
   @FXML
   private DatePicker publicationDatePicker;
+  @FXML
+  private TextField placeAtTextField;
   @FXML
   private JFXButton saveButton;
   @FXML
@@ -57,10 +61,10 @@ public class EditBookItemController {
 
     dateOfPurchasePicker.setValue(currentItem.getDateOfPurchase());
     publicationDatePicker.setValue(currentItem.getPublicationDate());
+
+    placeAtTextField.setText(currentItem.getPlacedAt().getLocationIdentifier());
   }
-
-
-  // Phương thức xử lý khi người dùng lưu lại thay đổi
+  
   @FXML
   private void saveChanges() {
     currentItem.setReferenceOnly(referenceOnlyCheckBox.isSelected());
@@ -69,7 +73,7 @@ public class EditBookItemController {
     currentItem.setFormat(formatComboBox.getValue());
     currentItem.setDateOfPurchase(dateOfPurchasePicker.getValue());
     currentItem.setPublicationDate(publicationDatePicker.getValue());
-
+    currentItem.setPlacedAt(new Rack(1, placeAtTextField.getText()));
     ((Stage) referenceOnlyCheckBox.getScene().getWindow()).close();
   }
 

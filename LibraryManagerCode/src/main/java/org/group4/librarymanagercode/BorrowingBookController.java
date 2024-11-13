@@ -1,7 +1,10 @@
 package org.group4.librarymanagercode;
 
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -121,7 +124,7 @@ public class BorrowingBookController {
     }
   }
 
-  public void handleSubmit(ActionEvent actionEvent) {
+  public void handleSubmit(ActionEvent actionEvent) throws IOException {
 
     if (memberNameField.getText().isEmpty() || memberIdField.getText().isEmpty() ||
         emailField.getText().isEmpty() || phoneField.getText().isEmpty()) {
@@ -141,19 +144,31 @@ public class BorrowingBookController {
         alert.setContentText("The book has been successfully borrowed.");
         alert.showAndWait();
 
-        Stage stage = (Stage) memberIdField.getScene().getWindow();
-        stage.close();
+//        Stage stage = (Stage) memberIdField.getScene().getWindow();
+//        stage.close();
+        loadBookDetail();
       }
     }
   }
 
 
-  public void handleCancel(ActionEvent actionEvent) {
-    Stage stage = (Stage) memberIdField.getScene().getWindow();
-    stage.close();
+  public void handleCancel(ActionEvent actionEvent) throws IOException {
+//    Stage stage = (Stage) memberIdField.getScene().getWindow();
+//    stage.close();
+    loadBookDetail();
   }
 
+  private void loadBookDetail() throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+    Scene bookDetailScene = new Scene(loader.load());
 
+    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+
+    currentStage.setScene(bookDetailScene);
+
+    BookDetailsController bookDetailsController = loader.getController();
+    bookDetailsController.setItemDetail(currentBookItem);
+  }
 }
 
 
