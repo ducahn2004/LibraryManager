@@ -4,6 +4,8 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -25,6 +27,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.group4.base.books.BookItem;
 import org.group4.base.books.Book;
+import org.group4.base.books.BookLending;
+import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.base.users.Librarian;
 import org.group4.database.BookItemDatabase;
@@ -38,6 +42,7 @@ public class BookDetailsController {
 
   @FXML
   private Label isbnLabel, titleLabel, authorLabel, publisherLabel, subjectLabel, pagesLabel;
+
 
   @FXML
   private TableView<BookItem> tableView;
@@ -63,11 +68,14 @@ public class BookDetailsController {
   @FXML
   private TableColumn<BookItem, Void> actionColumn;
 
+
   @FXML
   private void initialize() {
 
     initializeTable();
     tableView.setEditable(true);
+
+    tableView.setOnMouseClicked(this::handleRowClick);
   }
 
   public void setItemDetail(Book book) {
@@ -85,7 +93,7 @@ public class BookDetailsController {
       if (selectedItem != null) {
         try {
           if (selectedItem.getStatus() == BookStatus.AVAILABLE) {
-            openBorrowingBookPage();
+            openBorrowingBookPage(selectedItem);
           } else if (selectedItem.getStatus() == BookStatus.LOANED) {
             openBookLendingPage();
           }
@@ -113,7 +121,6 @@ public class BookDetailsController {
         cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
     referenceOnly.setCellValueFactory(
         cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReference())));
-    //status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
     status.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
     borrowedDate.setCellValueFactory(
@@ -123,38 +130,15 @@ public class BookDetailsController {
     price.setCellValueFactory(
         cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
     format.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getFormat().toString()));
+        cellData -> {
+          BookFormat format = cellData.getValue().getFormat();
+          return new SimpleStringProperty(format != null ? format.toString() : "Unknown");
+        }
+    );
     dateOfPurchase.setCellValueFactory(cellData -> new SimpleStringProperty(
         formatLocalDate(cellData.getValue().getDateOfPurchase())));
     publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(
         formatLocalDate(cellData.getValue().getPublicationDate())));
-
-    // Set the cell factory to use a ComboBox for editing the status
-    status.setCellFactory(column -> new TableCell<>() {
-      private final ComboBox<BookStatus> comboBox = new ComboBox<>();
-
-      {
-        comboBox.setItems(
-            FXCollections.observableArrayList(BookStatus.values())); // Populate with enum values
-        comboBox.setOnAction(event -> {
-          BookItem bookItem = getTableView().getItems().get(getIndex());
-          bookItem.setStatus(comboBox.getValue()); // Update the status of the book item
-        });
-      }
-
-      @Override
-      protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-
-        if (empty) {
-          setGraphic(null);
-        } else {
-          BookItem bookItem = getTableView().getItems().get(getIndex());
-          comboBox.setValue(bookItem.getStatus()); // Set the current status
-          setGraphic(comboBox);
-        }
-      }
-    });
 
     actionColumn.setCellFactory(param -> new TableCell<>() {
       private final Hyperlink editLink = new Hyperlink("Edit");
@@ -192,7 +176,7 @@ public class BookDetailsController {
   }
 
 
-  private void loadData() {
+  void loadData() {
     if (currentBook != null) {
       bookItems.clear();
       bookItems.addAll(BookItemDatabase.getInstance().getItems().stream()
@@ -203,17 +187,36 @@ public class BookDetailsController {
   }
 
 
-  private void openBorrowingBookPage() throws IOException {
-    Stage stage = new Stage();
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/path/to/BorrowingBook.fxml"));
-    stage.setScene(new Scene(loader.load()));
-    stage.setTitle("Borrowing Book");
-    stage.show();
+  private void openBorrowingBookPage(BookItem bookItem) throws IOException {
+//    Stage stage = new Stage();
+//    FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
+//    stage.setScene(new Scene(loader.load()));
+//    stage.setTitle("Borrowing Book");
+//    stage.show();
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
+      Stage detailStage = new Stage();
+      detailStage.setScene(new Scene(loader.load()));
+
+      BorrowingBookController controller = loader.getController();
+      controller.setItemDetailBorrowing(bookItem);
+
+      detailStage.setTitle("Book Item Detail");
+      detailStage.show();
+    } catch (Exception e) {
+      Logger.getLogger(BookViewController.class.getName())
+          .log(Level.SEVERE, "Failed to load book details page", e);
+    }
+  }
+
+  public void updateBookItemStatus(BookItem bookItem, BookStatus newStatus) {
+    bookItem.setStatus(newStatus);
+    tableView.refresh();
   }
 
   private void openBookLendingPage() throws IOException {
     Stage stage = new Stage();
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/path/to/BookLending.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("BookLending.fxml"));
     stage.setScene(new Scene(loader.load()));
     stage.setTitle("Book Lending");
     stage.show();
@@ -242,64 +245,5 @@ public class BookDetailsController {
       }
     });
   }
-//  public void showItemDetails(BookItem item) {
-//    // Tạo một cửa sổ mới
-//    Stage detailStage = new Stage();
-//    detailStage.setTitle("Edit Book Item");
-//
-//    // Tạo GridPane để sắp xếp các thành phần
-//    GridPane gridPane = new GridPane();
-//    gridPane.setHgap(10);
-//    gridPane.setVgap(10);
-//
-//    TextField priceField = new TextField(String.valueOf(item.getPrice()));
-//    ComboBox<BookFormat> formatComboBox = new ComboBox<>(FXCollections.observableArrayList(BookFormat.values()));
-//    formatComboBox.setValue(item.getFormat());
-//
-//    DatePicker dateOfPurchasePicker = new DatePicker(item.getDateOfPurchase());
-//    DatePicker publicationDatePicker = new DatePicker(item.getPublicationDate());
-//
-//    // Thêm các trường vào GridPane
-//    gridPane.add(new Label("Barcode:"), 0, 0);
-//    gridPane.add(barcodeField, 1, 0);
-//    gridPane.add(new Label("Reference Only:"), 0, 1);
-//    Node referenceOnlyComboBox = null;
-//    gridPane.add(referenceOnlyComboBox, 1, 1);
-//    gridPane.add(new Label("Price:"), 0, 2);
-//    gridPane.add(priceField, 1, 2);
-//    gridPane.add(new Label("Format:"), 0, 3);
-//    gridPane.add(formatComboBox, 1, 3);
-//    gridPane.add(new Label("Date of Purchase:"), 0, 4);
-//    gridPane.add(dateOfPurchasePicker, 1, 4);
-//    gridPane.add(new Label("Publication Date:"), 0, 5);
-//    gridPane.add(publicationDatePicker, 1, 5);
-//
-//    // Nút Save để lưu thay đổi
-//    Button saveButton = new Button("Save");
-//    saveButton.setOnAction(e -> {
-//      // Lưu các giá trị cập nhật vào BookItem
-//      item.setDateOfPurchase(dateOfPurchasePicker.getValue());
-//      item.setPublicationDate(publicationDatePicker.getValue());
-//
-//      // Đóng cửa sổ chi tiết
-//      detailStage.close();
-//      tableView.refresh(); // Cập nhật bảng TableView
-//    });
-//
-//    // Nút Cancel để hủy bỏ
-//    Button cancelButton = new Button("Cancel");
-//    cancelButton.setOnAction(e -> detailStage.close());
-//
-//    // Thêm nút vào GridPane
-//    gridPane.add(saveButton, 0, 6);
-//    gridPane.add(cancelButton, 1, 6);
-//
-//    // Cấu hình Scene và hiển thị cửa sổ
-//    Scene scene = new Scene(gridPane, 400, 300);
-//    detailStage.setScene(scene);
-//    detailStage.initModality(Modality.APPLICATION_MODAL);
-//    detailStage.showAndWait();
-//  }
-
 
 }

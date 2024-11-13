@@ -1,103 +1,159 @@
 package org.group4.librarymanagercode;
 
-import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.util.Callback;
+import javafx.stage.Stage;
 import org.group4.base.books.BookItem;
-import org.group4.base.books.BookLending;
+
+import org.group4.base.enums.BookStatus;
+import org.group4.base.users.Librarian;
+import org.group4.base.users.Member;
+import org.group4.database.LibrarianDatabase;
+import org.group4.database.MemberDatabase;
 
 public class BorrowingBookController {
 
+  private static final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+  public Button cancelButton;
   @FXML
-  private JFXButton homeButton;
+  private TextField memberIdField;
   @FXML
-  private Button submit;
+  private TextField memberNameField;
   @FXML
-  private TextField lateFee;
+  private DatePicker dobDatePicker;
   @FXML
-  private ListView<String> listView;
+  private TextField emailField;
   @FXML
-  private Button renew;
+  private TextField phoneField;
+  @FXML
+  private TextField barcodeField;
+  @FXML
+  private TextField placeField;
+  @FXML
+  private TextField subjectField;
+  @FXML
+  private TextField languageField;
+  @FXML
+  private TextField authorField;
+  @FXML
+  private TextField noPageField;
+  @FXML
+  private TextField isbnField;
+  @FXML
+  private TextField titleField;
+  @FXML
+  private CheckBox referenceOnlyCheck;
 
-  public void setBookLendingDetails(BookLending bookLending) {
-    if (bookLending != null) {
-      listView.getItems().addAll(
-          "ISBN: " + bookLending.getBookItem().getISBN(),
-          "Title: " + bookLending.getBookItem().getTitle(),
-          "Barcode: " + bookLending.getBookItem().getBarcode(),
-          "Creation Date: " + bookLending.getCreationDate().toString(),
-          "Due Date: " + bookLending.getDueDate().toString()
-      );
-    }
+  private BookItem currentBookItem;
 
-    // Set custom cell factory for horizontal layout
-    listView.setCellFactory(new Callback<>() {
-      @Override
-      public ListCell<String> call(ListView<String> listView) {
-        return new ListCell<>() {
-          @Override
-          protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item != null && !empty) {
-              HBox hbox = new HBox(10); // Spacing between elements
-              Label label = new Label(item);
-              hbox.getChildren().add(label);
-              setGraphic(hbox);
-            } else {
-              setGraphic(null);
-            }
-          }
-        };
+
+  @FXML
+  private void initialize() {
+    // Add a listener to the memberIdField to trigger search on input
+    memberIdField.textProperty().addListener((observable, oldValue, newValue) -> {
+      if (!newValue.isEmpty()) {
+        findMemberById(newValue);
       }
     });
   }
 
-  @FXML
-  private void submitBook(ActionEvent actionEvent) {
-    // Handle submit event
+  private void findMemberById(String memberId) {
+    Member foundMember = null;
+    for (Member member : MemberDatabase.getInstance().getItems()) {
+      if (member.getMemberId().equals(memberId)) {
+        foundMember = member;
+        break;
+      }
+    }
+    if (foundMember != null) {
+      memberNameField.setText(foundMember.getName());
+      dobDatePicker.setValue(foundMember.getDateOfBirth());
+      emailField.setText(foundMember.getEmail());
+      phoneField.setText(foundMember.getPhoneNumber());
+    } else {
+      // Clear fields if no member is found
+      memberNameField.clear();
+      emailField.clear();
+      phoneField.clear();
+    }
   }
 
-  @FXML
-  private void renewBook(ActionEvent actionEvent) {
-    // Handle renew event
+  private Member returnMember(String memberId) {
+    Member foundMember = null;
+    for (Member member : MemberDatabase.getInstance().getItems()) {
+      if (member.getMemberId().equals(memberId)) {
+        foundMember = member;
+        break;
+      }
+    }
+    return foundMember;
   }
 
-  @FXML
-  private void HomeAction(ActionEvent actionEvent) {
+  public void setItemDetailBorrowing(BookItem bookItem) {
+    this.currentBookItem = bookItem;
+    isbnField.setText(bookItem.getISBN());
+    titleField.setText(bookItem.getTitle());
+    subjectField.setText(bookItem.getSubject());
+    languageField.setText(bookItem.getLanguage());
+    authorField.setText(bookItem.authorsToString());
+    noPageField.setText(String.valueOf(bookItem.getNumberOfPages()));
+
+    barcodeField.setText(bookItem.getBarcode());
+    placeField.setText(bookItem.getPlacedAt().toString());
+    referenceOnlyCheck.setSelected(bookItem.getReference().equals(true));
   }
 
-  @FXML
-  private void MemberAction(ActionEvent actionEvent) {
-  }
-
-  @FXML
-  private void ReturnBookAction(ActionEvent actionEvent) {
-  }
-
-  @FXML
-  private void notificationAction(ActionEvent actionEvent) {
-  }
-
-  @FXML
-  private void Close(ActionEvent actionEvent) {
-  }
-
-  @FXML
-  private void SettingAction(ActionEvent actionEvent) {
-  }
-
-  @FXML
-  private void BookAction(ActionEvent actionEvent) {
+  private void borrowingBook(BookItem bookItem, Member member) {
+    boolean isBorrowed = librarian.borrowBookItem(bookItem, member);
+    if (!isBorrowed) {
+      Alert alert = new Alert(AlertType.WARNING);
+      alert.setTitle("Warning");
+      alert.setHeaderText("Borrowing Failed");
+      alert.setContentText(
+          "The book is not available or the member has reached the maximum number of books borrowed.");
+      alert.showAndWait();
+    }
   }
 
   public void handleSubmit(ActionEvent actionEvent) {
+
+    if (memberNameField.getText().isEmpty() || memberIdField.getText().isEmpty() ||
+        emailField.getText().isEmpty() || phoneField.getText().isEmpty()) {
+
+      Alert alert = new Alert(AlertType.WARNING);
+      alert.setTitle("Warning");
+      alert.setHeaderText("Incomplete Member Information");
+      alert.setContentText(
+          "Please enter the member information to proceed with borrowing the book.");
+      alert.showAndWait();
+    } else {
+      if (currentBookItem != null && currentBookItem.getStatus() == BookStatus.AVAILABLE) {
+        borrowingBook(currentBookItem, returnMember(memberIdField.getText()));
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("The book has been successfully borrowed.");
+        alert.showAndWait();
+
+        Stage stage = (Stage) memberIdField.getScene().getWindow();
+        stage.close();
+      }
+    }
   }
+
+
+  public void handleCancel(ActionEvent actionEvent) {
+    Stage stage = (Stage) memberIdField.getScene().getWindow();
+    stage.close();
+  }
+
+
 }
+
+

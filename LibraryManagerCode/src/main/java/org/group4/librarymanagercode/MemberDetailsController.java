@@ -77,11 +77,12 @@ public class MemberDetailsController {
 
     tableView.setItems(bookLendings);
 
-    tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-      if (newSelection != null) {
-        openBorrowBookWindow(newSelection);
-      }
-    });
+    tableView.getSelectionModel().selectedItemProperty()
+        .addListener((obs, oldSelection, newSelection) -> {
+          if (newSelection != null) {
+            //openBorrowBookWindow(newSelection);
+          }
+        });
 
   }
 
@@ -104,23 +105,23 @@ public class MemberDetailsController {
       memberIDLabel.setText(currentMember.getMemberId());
     }
   }
-  private void openBorrowBookWindow(BookLending selectedBookLending) {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
-      Parent root = loader.load();
-
-      // Pass the selected BookLending to BorrowBookController
-      BorrowingBookController controller = loader.getController();
-      controller.setBookLendingDetails(selectedBookLending);
-
-      // Display the new stage
-      Stage stage = new Stage();
-      stage.setTitle("Borrowed Book Details");
-      stage.setScene(new Scene(root));
-      stage.show();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
+//  private void openBorrowBookWindow(BookLending selectedBookLending) {
+//    try {
+//      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
+//      Parent root = loader.load();
+//
+//      // Pass the selected BookLending to BorrowBookController
+//      BorrowingBookController controller = loader.getController();
+//      controller.setBookLendingDetails(selectedBookLending);
+//
+//      // Display the new stage
+//      Stage stage = new Stage();
+//      stage.setTitle("Borrowed Book Details");
+//      stage.setScene(new Scene(root));
+//      stage.show();
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//  }
 
 }
