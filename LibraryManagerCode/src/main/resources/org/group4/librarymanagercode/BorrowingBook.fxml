@@ -15,35 +15,32 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23"
-  xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="org.group4.librarymanagercode.BorrowingBookController">
+<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.BorrowingBookController">
   <center>
     <!-- ScrollPane added here -->
-    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="570.0" prefWidth="700.0"
-      BorderPane.alignment="CENTER">
+    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="570.0" prefWidth="700.0" BorderPane.alignment="CENTER">
       <VBox>
 
         <!-- Book Item Information Section -->
         <TitledPane collapsible="false" text="Book Item Information">
           <GridPane hgap="10" vgap="10">
-            <Label text="Barcode: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="barcodeField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="Barcode: " GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="barcodeField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-            <Label text="Reference Only:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <CheckBox fx:id="referenceOnlyCheck" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label text="Reference Only:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <CheckBox fx:id="referenceOnlyCheck" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Label text="Place At:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="placeField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="Place At:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="placeField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
             <columnConstraints>
-              <ColumnConstraints/>
-              <ColumnConstraints/>
+              <ColumnConstraints />
+              <ColumnConstraints />
             </columnConstraints>
             <rowConstraints>
-              <RowConstraints/>
-              <RowConstraints/>
-              <RowConstraints/>
+              <RowConstraints />
+              <RowConstraints />
+              <RowConstraints />
             </rowConstraints>
           </GridPane>
         </TitledPane>
@@ -51,38 +48,35 @@
         <!-- Book Information Section -->
         <TitledPane collapsible="false" text="Book Information">
           <GridPane hgap="10" vgap="10">
-            <Label text="ISBN:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="isbnField" prefHeight="26.0" prefWidth="172.0"
-              GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="ISBN:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="isbnField" prefHeight="26.0" prefWidth="172.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-            <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="titleField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="titleField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Label text="Subject:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="subjectField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="Subject:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="subjectField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-            <Label text="Language:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <TextField fx:id="languageField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Label text="Language:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="languageField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-            <Label text="Author:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="authorField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label text="Author:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextField fx:id="authorField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-            <Label text="No Page:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-            <TextField fx:id="noPageField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <Label text="No Page:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <TextField fx:id="noPageField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
             <columnConstraints>
-              <ColumnConstraints maxWidth="88.00001831054688" minWidth="60.80000610351562"
-                prefWidth="82.39998168945313"/>
-              <ColumnConstraints maxWidth="167.19998168945312" minWidth="155.19998168945312"
-                prefWidth="160.80001831054688"/>
+              <ColumnConstraints maxWidth="88.00001831054688" minWidth="60.80000610351562" prefWidth="82.39998168945313" />
+              <ColumnConstraints maxWidth="167.19998168945312" minWidth="155.19998168945312" prefWidth="160.80001831054688" />
             </columnConstraints>
             <rowConstraints>
-              <RowConstraints/>
-              <RowConstraints/>
-              <RowConstraints/>
-              <RowConstraints/>
-              <RowConstraints/>
-              <RowConstraints/>
+              <RowConstraints />
+              <RowConstraints />
+              <RowConstraints />
+              <RowConstraints />
+              <RowConstraints />
+              <RowConstraints />
             </rowConstraints>
           </GridPane>
         </TitledPane>
@@ -90,35 +84,33 @@
         <!-- Member Information Section -->
         <TitledPane collapsible="false" text="Member Information">
           <GridPane hgap="10" vgap="10">
-            <Label text="Member ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label text="Member ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
-              <TextField fx:id="memberIdField" prefHeight="26.0" prefWidth="175.0"/>
+              <TextField fx:id="memberIdField" prefHeight="26.0" prefWidth="175.0" />
             </HBox>
 
-            <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="memberNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="memberNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <DatePicker fx:id="dobDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <DatePicker fx:id="dobDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-            <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-            <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
             <columnConstraints>
-              <ColumnConstraints maxWidth="84.00003662109376" minWidth="75.20001831054688"
-                prefWidth="80.8000244140625"/>
-              <ColumnConstraints maxWidth="170.39998168945314" minWidth="161.59996337890627"
-                prefWidth="164.79997558593752"/>
+              <ColumnConstraints maxWidth="84.00003662109376" minWidth="75.20001831054688" prefWidth="80.8000244140625" />
+              <ColumnConstraints maxWidth="170.39998168945314" minWidth="161.59996337890627" prefWidth="164.79997558593752" />
             </columnConstraints>
             <rowConstraints>
-              <RowConstraints/>
-              <RowConstraints/>
-              <RowConstraints/>
-              <RowConstraints/>
-              <RowConstraints/>
+              <RowConstraints />
+              <RowConstraints />
+              <RowConstraints />
+              <RowConstraints />
+              <RowConstraints />
             </rowConstraints>
           </GridPane>
         </TitledPane>
@@ -127,13 +119,11 @@
         <!-- Submit and Cancel Buttons -->
         <HBox prefHeight="100.0" prefWidth="200.0">
           <children>
-            <Pane prefHeight="100.0" prefWidth="537.0"/>
-            <Button onAction="#handleSubmit" style="-fx-font-size: 15;" text="Submit"/>
-            <Button fx:id="cancelButton" onAction="#handleCancel" style="-fx-font-size: 15;"
-              text="Cancel"/>
+            <Pane prefHeight="100.0" prefWidth="537.0" />
+            <Button onAction="#handleSubmit" style="-fx-font-size: 15;" text="Submit" />
+            <Button fx:id="cancelButton" onAction="#handleCancel" style="-fx-font-size: 15;" text="Cancel" />
           </children>
         </HBox>
-
       </VBox>
     </ScrollPane>
   </center>

@@ -4,17 +4,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.base.books.BookItem;
+
 import org.group4.base.enums.BookStatus;
+import org.group4.base.users.Librarian;
 import org.group4.base.users.Member;
+import org.group4.database.LibrarianDatabase;
 import org.group4.database.MemberDatabase;
 
 public class BorrowingBookController {
 
+  private static final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+  public Button cancelButton;
   @FXML
   private TextField memberIdField;
   @FXML
@@ -45,6 +51,7 @@ public class BorrowingBookController {
   private CheckBox referenceOnlyCheck;
 
   private BookItem currentBookItem;
+
 
   @FXML
   private void initialize() {
@@ -77,19 +84,41 @@ public class BorrowingBookController {
     }
   }
 
+  private Member returnMember(String memberId) {
+    Member foundMember = null;
+    for (Member member : MemberDatabase.getInstance().getItems()) {
+      if (member.getMemberId().equals(memberId)) {
+        foundMember = member;
+        break;
+      }
+    }
+    return foundMember;
+  }
+
   public void setItemDetailBorrowing(BookItem bookItem) {
     this.currentBookItem = bookItem;
     isbnField.setText(bookItem.getISBN());
     titleField.setText(bookItem.getTitle());
     subjectField.setText(bookItem.getSubject());
     languageField.setText(bookItem.getLanguage());
-    authorField.setText(bookItem.getAuthors().toString());
+    authorField.setText(bookItem.authorsToString());
     noPageField.setText(String.valueOf(bookItem.getNumberOfPages()));
 
     barcodeField.setText(bookItem.getBarcode());
     placeField.setText(bookItem.getPlacedAt().toString());
-    bookItem.getReference();
     referenceOnlyCheck.setSelected(bookItem.getReference().equals(true));
+  }
+
+  private void borrowingBook(BookItem bookItem, Member member) {
+    boolean isBorrowed = librarian.borrowBookItem(bookItem, member);
+    if (!isBorrowed) {
+      Alert alert = new Alert(AlertType.WARNING);
+      alert.setTitle("Warning");
+      alert.setHeaderText("Borrowing Failed");
+      alert.setContentText(
+          "The book is not available or the member has reached the maximum number of books borrowed.");
+      alert.showAndWait();
+    }
   }
 
   public void handleSubmit(ActionEvent actionEvent) {
@@ -105,9 +134,7 @@ public class BorrowingBookController {
       alert.showAndWait();
     } else {
       if (currentBookItem != null && currentBookItem.getStatus() == BookStatus.AVAILABLE) {
-        currentBookItem.setStatus(BookStatus.LOANED);
-        BookDetailsController bookDetailsController = new BookDetailsController();
-        bookDetailsController.loadData();
+        borrowingBook(currentBookItem, returnMember(memberIdField.getText()));
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Success");
         alert.setHeaderText(null);
@@ -122,10 +149,11 @@ public class BorrowingBookController {
 
 
   public void handleCancel(ActionEvent actionEvent) {
-    // Đóng cửa sổ hiện tại khi nhấn "Cancel"
     Stage stage = (Stage) memberIdField.getScene().getWindow();
     stage.close();
   }
+
+
 }
 
 

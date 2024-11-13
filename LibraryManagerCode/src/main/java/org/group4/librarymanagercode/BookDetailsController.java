@@ -27,6 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.group4.base.books.BookItem;
 import org.group4.base.books.Book;
+import org.group4.base.books.BookLending;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
 import org.group4.base.users.Librarian;
@@ -41,6 +42,7 @@ public class BookDetailsController {
 
   @FXML
   private Label isbnLabel, titleLabel, authorLabel, publisherLabel, subjectLabel, pagesLabel;
+
 
   @FXML
   private TableView<BookItem> tableView;
@@ -65,6 +67,7 @@ public class BookDetailsController {
   private TableColumn<BookItem, String> publicationDate;
   @FXML
   private TableColumn<BookItem, Void> actionColumn;
+
 
   @FXML
   private void initialize() {
@@ -118,7 +121,6 @@ public class BookDetailsController {
         cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
     referenceOnly.setCellValueFactory(
         cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReference())));
-    //status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
     status.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
     borrowedDate.setCellValueFactory(
@@ -137,33 +139,6 @@ public class BookDetailsController {
         formatLocalDate(cellData.getValue().getDateOfPurchase())));
     publicationDate.setCellValueFactory(cellData -> new SimpleStringProperty(
         formatLocalDate(cellData.getValue().getPublicationDate())));
-
-    // Set the cell factory to use a ComboBox for editing the status
-    status.setCellFactory(column -> new TableCell<>() {
-      private final ComboBox<BookStatus> comboBox = new ComboBox<>();
-
-      {
-        comboBox.setItems(
-            FXCollections.observableArrayList(BookStatus.values())); // Populate with enum values
-        comboBox.setOnAction(event -> {
-          BookItem bookItem = getTableView().getItems().get(getIndex());
-          bookItem.setStatus(comboBox.getValue()); // Update the status of the book item
-        });
-      }
-
-      @Override
-      protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-
-        if (empty) {
-          setGraphic(null);
-        } else {
-          BookItem bookItem = getTableView().getItems().get(getIndex());
-          comboBox.setValue(bookItem.getStatus()); // Set the current status
-          setGraphic(comboBox);
-        }
-      }
-    });
 
     actionColumn.setCellFactory(param -> new TableCell<>() {
       private final Hyperlink editLink = new Hyperlink("Edit");
@@ -232,6 +207,11 @@ public class BookDetailsController {
       Logger.getLogger(BookViewController.class.getName())
           .log(Level.SEVERE, "Failed to load book details page", e);
     }
+  }
+
+  public void updateBookItemStatus(BookItem bookItem, BookStatus newStatus) {
+    bookItem.setStatus(newStatus);
+    tableView.refresh();
   }
 
   private void openBookLendingPage() throws IOException {
