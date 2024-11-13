@@ -148,8 +148,14 @@ public class BookDetailsController {
         editLink.setUnderline(true);
         // Xử lý sự kiện cho liên kết Edit
         editLink.setOnAction((ActionEvent event) -> {
-//          BookItem item = getTableView().getItems().get(getIndex());
-//          showItemDetails(item);
+          BookItem item = getTableView().getItems().get(getIndex());
+            try {
+                openEditBookItemPage(item);
+            } catch (IOException e) {
+              System.out.println("Not show the edit page");
+              e.printStackTrace();
+
+            }
         });
 
         // Xử lý sự kiện cho liên kết Delete
@@ -165,8 +171,7 @@ public class BookDetailsController {
         if (empty) {
           setGraphic(null);
         } else {
-          HBox hBox = new HBox(10, editLink,
-              deleteLink); // Đặt khoảng cách giữa các liên kết là 10 (có thể điều chỉnh)
+          HBox hBox = new HBox(10, editLink, deleteLink);
           setGraphic(hBox);
         }
       }
@@ -185,14 +190,25 @@ public class BookDetailsController {
       System.out.println("Data loaded: " + bookItems.size() + " items");
     }
   }
+  private void openEditBookItemPage(BookItem selectedItem) throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("EditBookItem.fxml"));
+    Stage editStage = new Stage();
+    editStage.setScene(new Scene(loader.load()));
+
+    EditBookItemController controller = loader.getController();
+    controller.setBookItem(selectedItem);
+
+    editStage.setTitle("Edit Book Item");
+    editStage.show();
+
+    editStage.setOnHiding(event -> {
+      tableView.refresh();
+    });
+  }
+
 
 
   private void openBorrowingBookPage(BookItem bookItem) throws IOException {
-//    Stage stage = new Stage();
-//    FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
-//    stage.setScene(new Scene(loader.load()));
-//    stage.setTitle("Borrowing Book");
-//    stage.show();
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
       Stage detailStage = new Stage();
