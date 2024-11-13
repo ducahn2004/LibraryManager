@@ -3,18 +3,17 @@ package org.group4.MySQL;
 public class main {
   public static void main(String[] args) {
 
-//    BookControllerSQL bookDatabase = new BookControllerSQL(); // Tạo đối tượng BookDatabase
+    BookControllerSQL bookDatabase = new BookControllerSQL(); // Tạo đối tượng BookDatabase
 //    bookDatabase.getAllBooks(); // Gọi phương thức để in ra danh sách sách
 //
 //    System.out.println("--------------------------------------------------------------------------------------------------------------------");
 //
 //    memberDatabase.getAllMembers(); // Gọi phương thức để in ra danh sách thành viên
 
-    BookControllerSQL bookDatabase = new BookControllerSQL();
+//    BookControllerSQL bookDatabase = new BookControllerSQL();
 ////    bookDatabase.addBookFromInput(); // Gọi phương thức để thêm sách từ bàn phím
 //    bookDatabase.updateBookFromInput(); // Gọi phương thức để nhập dữ liệu từ bàn phím và cập nhật sách
-//    deleteBookFromInput();
-    bookDatabase.searchBookFromInput(); // Gọi phương thức để nhập dữ liệu từ bàn phím và tìm kiếm sách
+   bookDatabase.searchBookFromInput(); // Gọi phương thức để nhập dữ liệu từ bàn phím và tìm kiếm sách
 
 
 
