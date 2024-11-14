@@ -31,6 +31,7 @@ module org.group.librarymanagercode {
   requires org.testng;
   requires jbcrypt;
   requires javax.mail.api;
+  requires jfxtras.labs.samples;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;

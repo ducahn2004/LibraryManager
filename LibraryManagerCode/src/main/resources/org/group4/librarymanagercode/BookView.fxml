@@ -94,6 +94,7 @@
             <TableColumn fx:id="bookLanguage" prefWidth="83.199951171875" text="Language"/>
             <TableColumn fx:id="numberOfPages" prefWidth="81.5999755859375" text="Pages"/>
             <TableColumn fx:id="bookAuthor" prefWidth="173.60003662109375" text="Author"/>
+            <TableColumn fx:id="actionColumn" prefWidth="104" text="Actions" />
           </columns>
           <columnResizePolicy>
             <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY"/>
