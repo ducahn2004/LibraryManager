@@ -100,7 +100,7 @@ public class BookDetailsController {
           if (selectedItem.getStatus() == BookStatus.AVAILABLE) {
             openBorrowingBookPage(selectedItem);
           } else if (selectedItem.getStatus() == BookStatus.LOANED) {
-            openBookLendingPage();
+            openReturningBookPage(selectedItem);
           }
         } catch (IOException e) {
           e.printStackTrace();
@@ -235,11 +235,40 @@ public class BookDetailsController {
 
       BorrowingBookController controller = loader.getController();
       controller.setItemDetailBorrowing(bookItem);
-
       // Cập nhật tiêu đề cho Stage
       currentStage.setTitle("Book Item Detail");
     } catch (Exception e) {
       Logger.getLogger(BookViewController.class.getName())
+          .log(Level.SEVERE, "Failed to load book details page", e);
+    }
+  }
+
+  private void openReturningBookPage(BookItem bookItem) throws IOException {
+    try {
+//      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
+//      Stage detailStage = new Stage();
+//      detailStage.setScene(new Scene(loader.load()));
+//
+//      BorrowingBookController controller = loader.getController();
+//      controller.setItemDetailBorrowing(bookItem);
+//
+//      detailStage.setTitle("Book Item Detail");
+//      detailStage.show();
+
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
+
+      Scene returningBookScene = new Scene(loader.load());
+
+      Stage currentStage = (Stage) tableView.getScene().getWindow();
+
+      currentStage.setScene(returningBookScene);
+
+      ReturningBookController controller = loader.getController();
+      controller.setItemDetailReturning(bookItem);
+
+      currentStage.setTitle("Book Item Detail");
+    } catch (Exception e) {
+      Logger.getLogger(BookDetailsController.class.getName())
           .log(Level.SEVERE, "Failed to load book details page", e);
     }
   }
@@ -249,13 +278,6 @@ public class BookDetailsController {
     tableView.refresh();
   }
 
-  private void openBookLendingPage() throws IOException {
-    Stage stage = new Stage();
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("BookLending.fxml"));
-    stage.setScene(new Scene(loader.load()));
-    stage.setTitle("Book Lending");
-    stage.show();
-  }
 
   private String formatLocalDate(LocalDate date) {
     if (date != null) {
@@ -307,4 +329,5 @@ public class BookDetailsController {
   public Book returnCurrentBook() {
     return currentBook;
   }
+
 }

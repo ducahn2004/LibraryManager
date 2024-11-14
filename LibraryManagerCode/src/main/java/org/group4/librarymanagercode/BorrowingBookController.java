@@ -10,10 +10,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.base.books.BookItem;
 
+import org.group4.base.books.BookLending;
 import org.group4.base.enums.BookStatus;
 import org.group4.base.users.Librarian;
 import org.group4.base.users.Member;
@@ -23,7 +25,10 @@ import org.group4.database.MemberDatabase;
 public class BorrowingBookController {
 
   private static final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
-  public Button cancelButton;
+  @FXML
+  private Button cancelButton;
+  @FXML
+  private Label priceField;
   @FXML
   private TextField memberIdField;
   @FXML
@@ -35,26 +40,30 @@ public class BorrowingBookController {
   @FXML
   private TextField phoneField;
   @FXML
-  private TextField barcodeField;
+  private Label barcodeField;
   @FXML
-  private TextField placeField;
+  private Label placeField;
   @FXML
-  private TextField subjectField;
+  private Label subjectField;
   @FXML
-  private TextField languageField;
+  private Label languageField;
   @FXML
-  private TextField authorField;
+  private Label authorField;
   @FXML
-  private TextField noPageField;
+  private Label noPageField;
   @FXML
-  private TextField isbnField;
+  private Label isbnField;
   @FXML
-  private TextField titleField;
+  private Label titleField;
   @FXML
-  private CheckBox referenceOnlyCheck;
+  private Label referenceOnlyCheck;
 
   private BookItem currentBookItem;
+  private BookLending currentBookLending;
 
+  public BookLending returnBookLending() {
+    return this.currentBookLending;
+  }
 
   @FXML
   private void initialize() {
@@ -108,8 +117,9 @@ public class BorrowingBookController {
     noPageField.setText(String.valueOf(bookItem.getNumberOfPages()));
 
     barcodeField.setText(bookItem.getBarcode());
-    placeField.setText(bookItem.getPlacedAt().toString());
-    referenceOnlyCheck.setSelected(bookItem.getReference().equals(true));
+    placeField.setText(bookItem.getPlacedAt().getLocationIdentifier());
+    priceField.setText(Double.toString(bookItem.getPrice()));
+    referenceOnlyCheck.setText(bookItem.getReference());
   }
 
   private void borrowingBook(BookItem bookItem, Member member) {
@@ -138,6 +148,11 @@ public class BorrowingBookController {
     } else {
       if (currentBookItem != null && currentBookItem.getStatus() == BookStatus.AVAILABLE) {
         borrowingBook(currentBookItem, returnMember(memberIdField.getText()));
+        currentBookLending = new BookLending(currentBookItem,
+            returnMember(memberIdField.getText()));
+        System.out.println("ISBN: " + currentBookLending.getBookItem().getISBN() + " BORROWED");
+        System.out.println("MEMBER ID: " + currentBookLending.getMember().getName() + " BORROWED");
+        System.out.println("BarCode" + currentBookLending.getBookItem().getBarcode() + " BORROWED");
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Success");
         alert.setHeaderText(null);
@@ -169,6 +184,8 @@ public class BorrowingBookController {
     BookDetailsController bookDetailsController = loader.getController();
     bookDetailsController.setItemDetail(currentBookItem);
   }
+
+
 }
 
 
