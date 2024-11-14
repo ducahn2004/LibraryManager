@@ -7,46 +7,57 @@ import org.group4.base.enums.NotificationType;
 
 /**
  * Represents a notification with a unique ID, creation date, type, and content.
- * This class is designed to serve as a base for various types of notifications.
+ * This abstract class serves as a base for various types of notifications, each
+ * capable of being sent and customized based on its type and content.
  */
-public class Notification {
-  // Unique ID for the notification
+public abstract class Notification {
+
+  /** Unique identifier for the notification, generated from type and timestamp. */
   private final String notificationId;
-  // Date when the notification was created
+
+  /** Date when the notification was created. */
   private final LocalDate createdOn;
-  // Type of notification, defined by NotificationType enum
+
+  /** Type of the notification as defined by the NotificationType enum. */
   private final NotificationType type;
-  // Content of the notification message
+
+  /** Content or message of the notification. */
   private String content;
 
   /**
-   * Constructs a new Notification with the specified type and content.
-   * The notification ID is generated based on type and timestamp.
+   * Constructs a new Notification with a specified type and content.
+   * <p>The notification ID is generated using the type and the current timestamp.</p>
    *
-   * @param type    The type of notification, specified by NotificationType enum.
-   * @param content The content or message of the notification.
+   * @param type    The type of notification, as defined by NotificationType
+   * @param content The message or content of the notification
    */
   public Notification(NotificationType type, String content) {
-    this.notificationId = generateNotificationId(type);
+    this.notificationId = type.toString() + LocalDateTime.now()
+        .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     this.createdOn = LocalDate.now();
     this.type = type;
     this.content = content;
   }
 
   /**
-   * Generates a unique notification ID by combining the type and a timestamp.
+   * Constructs a new Notification with specified ID, type, content, and creation date.
    *
-   * @param type The type of notification.
-   * @return A unique notification ID as a String.
+   * @param notificationId The unique ID for the notification
+   * @param type           The type of notification, as defined by NotificationType
+   * @param content        The message or content of the notification
+   * @param createdOn      The date when the notification was created
    */
-  private String generateNotificationId(NotificationType type) {
-    return type.toString() + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+  public Notification(String notificationId, NotificationType type, String content, LocalDate createdOn) {
+    this.notificationId = notificationId;
+    this.createdOn = createdOn;
+    this.type = type;
+    this.content = content;
   }
 
   /**
    * Returns the unique ID of the notification.
    *
-   * @return The notification ID as a String.
+   * @return A String representing the notification ID
    */
   public String getNotificationId() {
     return notificationId;
@@ -55,7 +66,7 @@ public class Notification {
   /**
    * Returns the date the notification was created.
    *
-   * @return The creation date of the notification.
+   * @return The creation date as a LocalDate object
    */
   public LocalDate getCreatedOn() {
     return createdOn;
@@ -64,7 +75,7 @@ public class Notification {
   /**
    * Returns the content of the notification.
    *
-   * @return The notification content as a String.
+   * @return The notification content as a String
    */
   public String getContent() {
     return content;
@@ -73,19 +84,28 @@ public class Notification {
   /**
    * Returns the type of the notification.
    *
-   * @return The NotificationType enum representing the type.
+   * @return The NotificationType enum value representing the notification type
    */
   public NotificationType getType() {
     return type;
   }
 
   /**
-   * Updates the content of the notification.
+   * Updates the content of the notification with new information.
    *
-   * @param content The new content for the notification.
+   * @param content The new content to set for the notification
    */
   public void setContent(String content) {
     this.content = content;
   }
+
+  /**
+   * Abstract method to send the notification.
+   * <p>Implementations of this method should handle the specific logic for
+   * sending the notification based on the notification type and other properties.</p>
+   *
+   * @throws Exception if an error occurs during notification sending
+   */
+  public abstract void sendNotification() throws Exception;
 
 }

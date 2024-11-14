@@ -1,62 +1,65 @@
 package org.group4.base.books;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * Represents a book with various details like ISBN, title, authors, publisher, etc.
- * This class encapsulates information about a book, including ISBN, title, subject,
- * publisher, language, number of pages, and authors.
+ * Represents a book with details including ISBN, title, subject, publisher,
+ * language, number of pages, and associated authors.
+ * <p>This class encapsulates all attributes related to a book entity, enabling
+ * easy access and modification of details about a book.</p>
  */
 public class Book {
 
-  // ISBN of the book, unique identifier
+  /** ISBN of the book, serving as a unique identifier. */
   private String ISBN;
 
-  // Title of the book
-  private String tittle;
+  /** Title of the book. */
+  private String title;
 
-  // Subject of the book
+  /** Subject or genre of the book. */
   private String subject;
 
-  // Publisher of the book
+  /** Publisher of the book. */
   private String publisher;
 
-  // Language of the book
+  /** Language in which the book is written. */
   private String language;
 
-  // Number of pages in the book
+  /** Number of pages contained in the book. */
   private int numberOfPages;
 
-  // Set of authors who have written the book
+  /** Set of authors who contributed to the book. */
   private Set<Author> authors;
 
   /**
-   * Constructor for creating a Book instance with all details.
+   * Constructs a {@code Book} instance with all specified details.
    *
-   * @param ISBN ISBN of the book
-   * @param title Title of the book
-   * @param subject Subject of the book
-   * @param publisher Publisher of the book
-   * @param language Language of the book
-   * @param numberOfPages Number of pages in the book
-   * @param authors Set of authors of the book
+   * @param ISBN the ISBN of the book
+   * @param title the title of the book
+   * @param subject the subject or genre of the book
+   * @param publisher the publisher of the book
+   * @param language the language of the book
+   * @param numberOfPages the number of pages in the book
+   * @param authors the set of authors who contributed to the book; if null, an empty set is used
    */
-  public Book(String ISBN, String title, String subject, String publisher, String language, int numberOfPages,
-      Set<Author> authors) {
+  public Book(String ISBN, String title, String subject, String publisher, String language,
+      int numberOfPages, Set<Author> authors) {
     this.ISBN = ISBN;
-    this.tittle = title;
+    this.title = title;
     this.subject = subject;
     this.publisher = publisher;
     this.language = language;
     this.numberOfPages = numberOfPages;
-    this.authors = new HashSet<>(authors); // Ensure immutability of the authors set
+    this.authors = Objects.requireNonNullElse(authors, new HashSet<>());
   }
 
   /**
    * Returns the ISBN of the book.
    *
-   * @return ISBN as a String
+   * @return the ISBN as a {@code String}
    */
   public String getISBN() {
     return ISBN;
@@ -65,16 +68,16 @@ public class Book {
   /**
    * Returns the title of the book.
    *
-   * @return Title as a String
+   * @return the title as a {@code String}
    */
   public String getTitle() {
-    return tittle;
+    return title;
   }
 
   /**
-   * Returns the subject of the book.
+   * Returns the subject or genre of the book.
    *
-   * @return Subject as a String
+   * @return the subject as a {@code String}
    */
   public String getSubject() {
     return subject;
@@ -83,7 +86,7 @@ public class Book {
   /**
    * Returns the publisher of the book.
    *
-   * @return Publisher as a String
+   * @return the publisher as a {@code String}
    */
   public String getPublisher() {
     return publisher;
@@ -92,7 +95,7 @@ public class Book {
   /**
    * Returns the language in which the book is written.
    *
-   * @return Language as a String
+   * @return the language as a {@code String}
    */
   public String getLanguage() {
     return language;
@@ -101,25 +104,25 @@ public class Book {
   /**
    * Returns the number of pages in the book.
    *
-   * @return Number of pages as an integer
+   * @return the number of pages as an {@code int}
    */
   public int getNumberOfPages() {
     return numberOfPages;
   }
 
   /**
-   * Returns the set of authors who wrote the book.
+   * Returns the set of authors who contributed to the book.
    *
-   * @return Set of authors (Author objects)
+   * @return a {@code Set} of {@code Author} objects
    */
   public Set<Author> getAuthors() {
     return authors;
   }
-  
+
   /**
    * Sets the ISBN of the book.
    *
-   * @param ISBN The new ISBN to set
+   * @param ISBN the new ISBN to set
    */
   public void setISBN(String ISBN) {
     this.ISBN = ISBN;
@@ -128,16 +131,16 @@ public class Book {
   /**
    * Sets the title of the book.
    *
-   * @param title The new title to set
+   * @param title the new title to set
    */
   public void setTitle(String title) {
-    this.tittle = title;
+    this.title = title;
   }
 
   /**
-   * Sets the subject of the book.
+   * Sets the subject or genre of the book.
    *
-   * @param subject The new subject to set
+   * @param subject the new subject to set
    */
   public void setSubject(String subject) {
     this.subject = subject;
@@ -146,25 +149,25 @@ public class Book {
   /**
    * Sets the publisher of the book.
    *
-   * @param publisher The new publisher to set
+   * @param publisher the new publisher to set
    */
   public void setPublisher(String publisher) {
     this.publisher = publisher;
   }
 
   /**
-   * Sets the language of the book.
+   * Sets the language in which the book is written.
    *
-   * @param language The new language to set
+   * @param language the new language to set
    */
   public void setLanguage(String language) {
     this.language = language;
   }
 
   /**
-   * Sets the number of pages of the book.
+   * Sets the number of pages in the book.
    *
-   * @param numberOfPages The new number of pages to set
+   * @param numberOfPages the new number of pages to set
    */
   public void setNumberOfPages(int numberOfPages) {
     this.numberOfPages = numberOfPages;
@@ -173,19 +176,20 @@ public class Book {
   /**
    * Sets the authors of the book.
    *
-   * @param authors The new set of authors to set
+   * @param authors the new set of authors; if null, an empty set is used
    */
   public void setAuthors(Set<Author> authors) {
-    this.authors = authors;
+    this.authors = Objects.requireNonNullElse(authors, new HashSet<>());
   }
 
   /**
-   * Converts authors' names into a comma-separated string.
-   * This method is useful for displaying a simple string representation of the authors.
+   * Returns a comma-separated string of the authors' names for display purposes.
    *
-   * @return A string representation of authors' names, separated by commas
+   * @return a {@code String} containing the names of the authors, separated by commas
    */
   public String authorsToString() {
-    return String.join(", ", authors.stream().map(Author::getName).toArray(String[]::new));
+    return authors.stream()
+        .map(Author::getName)
+        .collect(Collectors.joining(", "));
   }
 }

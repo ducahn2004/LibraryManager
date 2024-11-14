@@ -1,32 +1,60 @@
 package org.group4.base.books;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
- * Represents an author who can write multiple books.
- * This class manages the author's name and their associated books.
- * It provides methods to add or remove books from the author's list.
+ * Represents an author with an identifier and a name.
+ * <p>This class provides basic information about an author, such as a unique ID
+ * and name, along with methods to retrieve and set these details.</p>
  */
 public class Author {
-    // Name of the author
+
+    /** Unique identifier for the author. */
+    private String authorId;
+
+    /** Name of the author. */
     private String name;
-    // A set of books written by the author
-    private Set<Book> books = new HashSet<>();
 
     /**
-     * Constructs an Author instance with the specified name.
+     * Constructs an {@code Author} with only a name.
      *
-     * @param name The name of the author.
+     * @param name the name of the author
      */
     public Author(String name) {
         this.name = name;
     }
 
     /**
-     * Returns the name of the author.
+     * Constructs an {@code Author} with an ID and a name.
      *
-     * @return The author's name as a String.
+     * @param authorId the unique ID of the author
+     * @param name     the name of the author
+     */
+    public Author(String authorId, String name) {
+        this.authorId = authorId;
+        this.name = name;
+    }
+
+    /**
+     * Retrieves the unique identifier of the author.
+     *
+     * @return the author's unique ID
+     */
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    /**
+     * Sets the unique identifier of the author.
+     *
+     * @param authorId the new ID to assign to the author
+     */
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
+    /**
+     * Retrieves the name of the author.
+     *
+     * @return the author's name
      */
     public String getName() {
         return name;
@@ -35,46 +63,9 @@ public class Author {
     /**
      * Sets the name of the author.
      *
-     * @param name The new name of the author.
+     * @param name the new name to assign to the author
      */
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     * Returns the set of books associated with this author.
-     *
-     * @return A Set of Book objects written by the author.
-     */
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    /**
-     * Sets the set of books associated with this author.
-     *
-     * @param books A Set of Book objects to be associated with the author.
-     */
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
-
-    /**
-     * Adds a book to the author's list of books.
-     *
-     * @param book The book to be added to the author's list.
-     */
-    public void addBook(Book book) {
-        books.add(book);
-    }
-
-    /**
-     * Removes a book from the author's list of books.
-     *
-     * @param book The book to be removed from the author's list.
-     */
-    public void removeBook(Book book) {
-        books.remove(book);
-    }
-
 }

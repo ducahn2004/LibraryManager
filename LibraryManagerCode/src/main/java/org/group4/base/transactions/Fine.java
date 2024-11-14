@@ -1,8 +1,10 @@
 package org.group4.base.transactions;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
-import org.group4.base.books.BookLending;
+import org.group4.base.books.BookItem;
 import org.group4.base.enums.BookStatus;
+import org.group4.dao.FactoryDAO;
 
 /**
  * The {@code Fine} class is responsible for calculating and storing the fine amount
@@ -11,27 +13,39 @@ import org.group4.base.enums.BookStatus;
 public class Fine {
   private double amount;
 
+  /**
+   * Constructs a new {@code Fine} object with a default fine amount of 0.
+   */
   public Fine() {
     this.amount = 0;
   }
 
+  /**
+   * Returns the amount of the fine.
+   *
+   * @return the fine amount.
+   */
   public double getAmount() {
     return amount;
   }
 
   /**
    * Calculates the fine for a book lending based on overdue days or if the book is lost.
+   *
    * @param bookLending The book lending information of a member.
    * @return The calculated fine amount.
+   * @throws SQLException If there is an issue accessing the book data.
    */
-  public double calculateFine(BookLending bookLending) {
-    double bookPrice = bookLending.getBookItem().getPrice();
-    int numberOfPages = bookLending.getBookItem().getNumberOfPages();
+  public double calculateFine(BookLending bookLending) throws SQLException {
+    BookItem bookItem = FactoryDAO.getBookItemDAO().getById(bookLending.getBarcode())
+        .orElseThrow(() -> new SQLException("Book item not found."));
+    double bookPrice = bookItem.getPrice();
+    int numberOfPages = bookItem.getNumberOfPages();
 
-    if (bookLending.getBookItem().getStatus() == BookStatus.LOST) {
+    if (bookItem.getStatus() == BookStatus.LOST) {
       amount = calculateLostBookFine(bookPrice, numberOfPages);
     } else {
-      amount = calculateOverdueFine(bookLending);
+      amount = calculateOverdueFine(bookLending, bookItem);
     }
 
     return amount;
@@ -39,6 +53,7 @@ public class Fine {
 
   /**
    * Calculates the fine for a lost book based on its price or page count.
+   *
    * @param bookPrice The price of the book.
    * @param numberOfPages The number of pages of the book.
    * @return The calculated fine for the lost book.
@@ -53,42 +68,45 @@ public class Fine {
 
   /**
    * Calculates the fine for overdue books based on the number of days overdue.
+   *
    * @param bookLending The book lending information.
+   * @param bookItem The book item information.
    * @return The calculated overdue fine.
+   * @throws SQLException If there is an issue accessing the book data.
    */
-  private double calculateOverdueFine(BookLending bookLending) {
+  private double calculateOverdueFine(BookLending bookLending, BookItem bookItem)
+      throws SQLException {
     LocalDate dueDate = bookLending.getDueDate();
-    LocalDate returnDate = bookLending.getReturnDate();
-    double fineAmount = 0;
+    LocalDate returnDate = bookLending.getReturnDate().orElseThrow(
+        () -> new SQLException("Return date is missing."));
 
+    double fineAmount = 0;
     if (returnDate.isAfter(dueDate)) {
       long daysOverdue = returnDate.toEpochDay() - dueDate.toEpochDay();
-      if (daysOverdue < 7) {
-        fineAmount = 5000;
-      } else if (daysOverdue < 30) {
-        fineAmount = 15000;
-      } else if (daysOverdue < 180) {
-        fineAmount = 25000;
-      } else if (daysOverdue < 365) {
-        fineAmount = 50000;
-      } else {
-        fineAmount = calculateLostBookFine(bookLending.getBookItem().getPrice(), bookLending.getBookItem().getNumberOfPages());
-      }
+      fineAmount = determineFineAmount(daysOverdue, bookItem);
     }
 
     return fineAmount;
   }
 
   /**
-   * Processes the fine payment for a transaction.
-   * @param transaction The fine transaction to process.
+   * Determines the fine amount based on the days overdue.
+   *
+   * @param daysOverdue The number of days the book is overdue.
+   * @param bookItem The book item information.
+   * @return The fine amount based on overdue days.
    */
-  public void payFine(FineTransaction transaction) {
-    if (transaction.processFinePayment()) {
-      System.out.println("Fine paid successfully.");
+  private double determineFineAmount(long daysOverdue, BookItem bookItem) {
+    if (daysOverdue < 7) {
+      return 5000;
+    } else if (daysOverdue < 30) {
+      return 15000;
+    } else if (daysOverdue < 180) {
+      return 25000;
+    } else if (daysOverdue < 365) {
+      return 50000;
     } else {
-      System.out.println("Fine payment failed.");
+      return calculateLostBookFine(bookItem.getPrice(), bookItem.getNumberOfPages());
     }
   }
-
 }

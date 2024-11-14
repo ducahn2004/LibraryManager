@@ -1,198 +1,197 @@
 package org.group4.base.books;
 
 import java.time.LocalDate;
-import java.util.UUID;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-import org.group4.base.catalog.Rack;
+import java.util.Set;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
-import org.group4.database.BookItemDatabase;
 
 /**
- * Represents a BookItem, which is an instance of a Book that can be borrowed or referenced.
- * A BookItem contains specific details such as barcode, status, price, and more, in addition to
- * the book's general information.
+ * Represents an instance of a Book that can be borrowed or referenced.
+ * <p>This class encapsulates details specific to a particular book item, such as barcode, status,
+ * price, and additional metadata beyond the general book information.</p>
  */
 public class BookItem extends Book {
 
-  // Atomic integer to generate unique barcode
-  private static final AtomicInteger barcodeCounter = new AtomicInteger(1);
-
-  // Barcode uniquely identifying the book item
+  /** Barcode of the book item, unique identifier for each instance */
   private final String barcode;
 
-  // Whether the book is for reference only (cannot be borrowed)
+  /** Indicates if the book is for reference only (cannot be borrowed) */
   private boolean isReferenceOnly;
 
-  // The date the book was borrowed
+  /** Date when the book item was borrowed */
   private LocalDate borrowed;
 
-  // The due date for returning the book
+  /** Due date for returning the book item */
   private LocalDate dueDate;
 
-  // Price of the book item
+  /** Price of the book item */
   private double price;
 
-  // Format of the book (e.g., hardcover, paperback)
+  /** Format of the book item (e.g., HARDCOVER, PAPERBACK) */
   private BookFormat format;
 
-  // Current status of the book (e.g., available, loaned, lost)
+  /** Current status of the book item (e.g., AVAILABLE, LOST) */
   private BookStatus status;
 
-  // Date when the book item was purchased
+  /** Date when the book item was purchased */
   private LocalDate dateOfPurchase;
 
-  // Publication date of the book item
+  /** Publication date of the book item */
   private LocalDate publicationDate;
 
-  // The rack where the book item is placed
+  /** Rack location where the book item is placed */
   private Rack placedAt;
 
   /**
-   * Constructor to initialize a BookItem.
+   * Constructs a {@code BookItem} instance with specific details.
    *
-   * @param book The base book information.
-   * @param isReferenceOnly Whether the book is for reference only (cannot be borrowed).
-   * @param price The price of the book item.
-   * @param format The format of the book item (e.g., hardcover, ebook).
-   * @param dateOfPurchase The purchase date of the book item.
-   * @param publicationDate The publication date of the book item.
-   * @param placedAt The rack where the book item is placed.
+   * @param ISBN the ISBN of the book
+   * @param title the title of the book
+   * @param subject the subject of the book
+   * @param publisher the publisher of the book
+   * @param language the language of the book
+   * @param numberOfPages the number of pages in the book
+   * @param authors the set of authors for the book
+   * @param barcode the unique barcode for this book item
+   * @param isReferenceOnly whether the book is for reference only
+   * @param borrowed the date the book was borrowed
+   * @param dueDate the due date for returning the book
+   * @param price the price of the book item
+   * @param format the format of the book item
+   * @param status the status of the book item
+   * @param dateOfPurchase the date the book item was purchased
+   * @param publicationDate the publication date of the book item
+   * @param placedAt the rack location of the book item
    */
-  public BookItem(Book book, boolean isReferenceOnly, double price, BookFormat format,
+  public BookItem(String ISBN, String title, String subject, String publisher, String language,
+      int numberOfPages, Set<Author> authors, String barcode, boolean isReferenceOnly,
+      LocalDate borrowed, LocalDate dueDate, double price, BookFormat format, BookStatus status,
       LocalDate dateOfPurchase, LocalDate publicationDate, Rack placedAt) {
-    super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(), book.getLanguage(),
-        book.getNumberOfPages(), book.getAuthors());
-    this.barcode = generateBarcode(book.getISBN());
+    super(ISBN, title, subject, publisher, language, numberOfPages, authors);
+    this.barcode = barcode;
     this.isReferenceOnly = isReferenceOnly;
-    this.status = BookStatus.AVAILABLE;
+    this.borrowed = borrowed;
+    this.dueDate = dueDate;
+    this.price = price;
+    this.format = format;
+    this.status = status;
     this.dateOfPurchase = dateOfPurchase;
     this.publicationDate = publicationDate;
     this.placedAt = placedAt;
   }
 
-  // Private method to generate a unique barcode based on the ISBN
-  private String generateBarcode(String isbn) {
-    return isbn + "-" + String.format("%04d", barcodeCounter.getAndIncrement());
-  }
-
-  // Getter methods
-
   /**
-   * Returns the barcode of the book item.
+   * Retrieves the barcode of the book item.
    *
-   * @return Barcode as a String
+   * @return the barcode as a String
    */
   public String getBarcode() {
     return barcode;
   }
 
   /**
-   * Returns whether the book is for reference only.
+   * Checks if the book item is for reference only.
    *
-   * @return "Yes" if the book is for reference only, "No" otherwise
+   * @return true if the book is reference-only, false otherwise
    */
-  public String getReference() {
-    return isReferenceOnly ? "Yes" : "No";
+  public boolean getIsReferenceOnly() {
+    return isReferenceOnly;
   }
 
   /**
-   * Returns the date when the book was borrowed.
+   * Retrieves the date when the book item was borrowed.
    *
-   * @return The borrowed date as LocalDate
+   * @return the borrowed date as LocalDate
    */
   public LocalDate getBorrowed() {
     return borrowed;
   }
 
   /**
-   * Returns the due date for returning the book.
+   * Retrieves the due date for returning the book item.
    *
-   * @return The due date as LocalDate
+   * @return the due date as LocalDate
    */
   public LocalDate getDueDate() {
     return dueDate;
   }
 
   /**
-   * Returns the price of the book item.
+   * Retrieves the price of the book item.
    *
-   * @return Price as a double
+   * @return the price as a double
    */
   public double getPrice() {
     return price;
   }
 
   /**
-   * Returns the format of the book item.
+   * Retrieves the format of the book item.
    *
-   * @return The format as BookFormat
+   * @return the format as BookFormat
    */
   public BookFormat getFormat() {
     return format;
   }
 
   /**
-   * Returns the current status of the book item.
+   * Retrieves the current status of the book item.
    *
-   * @return The status as BookStatus
+   * @return the status as BookStatus
    */
   public BookStatus getStatus() {
     return status;
   }
 
   /**
-   * Returns the date of purchase of the book item.
+   * Retrieves the date of purchase of the book item.
    *
-   * @return The date of purchase as LocalDate
+   * @return the date of purchase as LocalDate
    */
   public LocalDate getDateOfPurchase() {
     return dateOfPurchase;
   }
 
   /**
-   * Returns the publication date of the book item.
+   * Retrieves the publication date of the book item.
    *
-   * @return The publication date as LocalDate
+   * @return the publication date as LocalDate
    */
   public LocalDate getPublicationDate() {
     return publicationDate;
   }
 
   /**
-   * Returns the rack where the book item is placed.
+   * Retrieves the rack location where the book item is placed.
    *
-   * @return The rack where the book item is placed
+   * @return the rack where the book item is placed
    */
   public Rack getPlacedAt() {
     return placedAt;
   }
 
-  // Setter methods
-
   /**
-   * Sets whether the book is for reference only.
+   * Sets whether the book item is for reference only.
    *
-   * @param referenceOnly Whether the book is for reference only
+   * @param referenceOnly true if the book is for reference only, false otherwise
    */
   public void setReferenceOnly(boolean referenceOnly) {
     isReferenceOnly = referenceOnly;
   }
 
   /**
-   * Sets the date when the book was borrowed.
+   * Sets the date when the book item was borrowed.
    *
-   * @param borrowed The borrowed date
+   * @param borrowed the new borrowed date
    */
   public void setBorrowed(LocalDate borrowed) {
     this.borrowed = borrowed;
   }
 
   /**
-   * Sets the due date for returning the book.
+   * Sets the due date for returning the book item.
    *
-   * @param dueDate The due date
+   * @param dueDate the new due date
    */
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
@@ -201,7 +200,7 @@ public class BookItem extends Book {
   /**
    * Sets the price of the book item.
    *
-   * @param price The price to set
+   * @param price the new price
    */
   public void setPrice(double price) {
     this.price = price;
@@ -210,16 +209,16 @@ public class BookItem extends Book {
   /**
    * Sets the format of the book item.
    *
-   * @param format The format to set
+   * @param format the new format
    */
   public void setFormat(BookFormat format) {
     this.format = format;
   }
 
   /**
-   * Sets the status of the book item.
+   * Sets the current status of the book item.
    *
-   * @param status The status to set
+   * @param status the new status
    */
   public void setStatus(BookStatus status) {
     this.status = status;
@@ -228,7 +227,7 @@ public class BookItem extends Book {
   /**
    * Sets the date of purchase of the book item.
    *
-   * @param dateOfPurchase The date of purchase to set
+   * @param dateOfPurchase the new date of purchase
    */
   public void setDateOfPurchase(LocalDate dateOfPurchase) {
     this.dateOfPurchase = dateOfPurchase;
@@ -237,7 +236,7 @@ public class BookItem extends Book {
   /**
    * Sets the publication date of the book item.
    *
-   * @param publicationDate The publication date to set
+   * @param publicationDate the new publication date
    */
   public void setPublicationDate(LocalDate publicationDate) {
     this.publicationDate = publicationDate;
@@ -246,32 +245,19 @@ public class BookItem extends Book {
   /**
    * Sets the rack where the book item is placed.
    *
-   * @param placedAt The rack to set
+   * @param placedAt the new rack location
    */
   public void setPlacedAt(Rack placedAt) {
     this.placedAt = placedAt;
   }
 
   /**
-   * Checks whether the book item can be checked out.
-   * A book item can be checked out only if it is not for reference and is currently available.
+   * Checks if the book item can be checked out.
+   * <p>A book item can be checked out only if it is not for reference and is currently available.</p>
    *
-   * @return true if the book can be checked out, false otherwise
+   * @return true if the book item can be checked out, false otherwise
    */
   public boolean checkOut() {
     return !isReferenceOnly && status == BookStatus.AVAILABLE;
   }
-
-  /**
-   * Fetches BookItem details by barcode.
-   *
-   * @param barcode The barcode of the book item
-   * @return An Optional containing the BookItem if found, or an empty Optional if not found
-   */
-  public static Optional<BookItem> fetchBookItemDetails(String barcode) {
-    return BookItemDatabase.getInstance().getItems().stream()
-        .filter(bookItem -> bookItem.getBarcode().equals(barcode))
-        .findFirst();
-  }
-  
 }

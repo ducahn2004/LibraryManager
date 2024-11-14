@@ -27,7 +27,7 @@ public enum NotificationType {
   /** Notification for confirming a successful book return transaction. */
   BOOK_RETURN_SUCCESS,
 
-  /** General information notification for various non-critical updates. */
-  INFO
+  /** Notification for informing the Librarian about a system update or change. */
+  SYSTEM
 
 }

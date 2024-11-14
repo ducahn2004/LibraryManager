@@ -8,13 +8,21 @@ import java.time.LocalDate;
  */
 public class Person {
 
+  /** The name of the person. */
   private String name;
+
+  /** The date of birth of the person. */
   private LocalDate dateOfBirth;
+
+  /** The email address of the person. */
   private String email;
+
+  /** The phone number of the person. */
   private String phoneNumber;
 
   /**
-   * Constructs a {@code Person} object with the specified name, date of birth, email, and phone number.
+   * Constructs a {@code Person} object with the specified name, date of birth, email,
+   * and phone number.
    *
    * @param name the name of the person
    * @param dateOfBirth the date of birth of the person
@@ -28,36 +36,74 @@ public class Person {
     this.phoneNumber = phoneNumber;
   }
 
-  // Getter methods
+  /**
+   * Returns the name of the person.
+   *
+   * @return the name
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Returns the date of birth of the person.
+   *
+   * @return the date of birth
+   */
   public LocalDate getDateOfBirth() {
     return dateOfBirth;
   }
 
+  /**
+   * Returns the email address of the person.
+   *
+   * @return the email
+   */
   public String getEmail() {
     return email;
   }
 
+  /**
+   * Returns the phone number of the person.
+   *
+   * @return the phone number
+   */
   public String getPhoneNumber() {
     return phoneNumber;
   }
 
-  // Setter methods
+  /**
+   * Sets the name of the person.
+   *
+   * @param name the new name
+   */
   public void setName(String name) {
     this.name = name;
   }
 
+  /**
+   * Sets the date of birth of the person.
+   *
+   * @param dateOfBirth the new date of birth
+   */
   public void setDateOfBirth(LocalDate dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
   }
 
+  /**
+   * Sets the email address of the person.
+   *
+   * @param email the new email address
+   */
   public void setEmail(String email) {
     this.email = email;
   }
 
+  /**
+   * Sets the phone number of the person.
+   *
+   * @param phoneNumber the new phone number
+   */
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
   }
