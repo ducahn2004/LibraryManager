@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -25,9 +26,23 @@ import org.group4.database.BookDatabase;
 
 public class BookViewController {
 
+  private Stage stage;
+
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();
 
-  public JFXButton homeButton;
+  @FXML
+  private JFXButton homeButton;
+  @FXML
+  private JFXButton MemberButton;
+  @FXML
+  private JFXButton bookButton;
+  @FXML
+  private JFXButton settingButton;
+  @FXML
+  private JFXButton notificationButton;
+  @FXML
+  private JFXButton closeButton;
+
   @FXML
   private TableView<Book> tableView;
 
@@ -138,47 +153,6 @@ public class BookViewController {
     filterBookList(searchField.getText());
   }
 
-  @FXML
-  private void HomeAction(ActionEvent event) {
-    // Implement the action to be performed when the home button is clicked
-    System.out.println("Home button clicked");
-  }
-
-  @FXML
-  private void MemberAction(ActionEvent event) {
-    // Implement the action to be performed when the member button is clicked
-    System.out.println("Member button clicked");
-  }
-
-  @FXML
-  private void BookAction(ActionEvent event) {
-    // Implement the action to be performed when the book button is clicked
-    System.out.println("Book button clicked");
-  }
-
-  @FXML
-  private void ReturnBookAction(ActionEvent event) {
-    // Implement the action to be performed when the return book button is clicked
-    System.out.println("Return book button clicked");
-  }
-
-  @FXML
-  private void notificationAction(ActionEvent event) {
-    // Implement the action to be performed when the notification button is clicked
-    System.out.println("Notification button clicked");
-  }
-
-  @FXML
-  private void SettingAction(ActionEvent event) {
-    // Implement the action to be performed when the setting button is clicked
-    System.out.println("Setting button clicked");
-  }
-
-  @FXML
-  private void Close(ActionEvent event) {
-    // Implement the action to be performed when the close button is clicked
-    System.out.println("Close button clicked");
-  }
 
   @FXML
   public void addBookAction(ActionEvent actionEvent) throws IOException {
@@ -191,6 +165,66 @@ public class BookViewController {
     // Cập nhật nội dung của `Scene` hiện tại mà không tạo ra cửa sổ mới
     stage.getScene().setRoot(root);
     stage.setTitle("Library Manager");
+  }
+
+  public void HomeAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) homeButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Home button clicked");
+  }
+  public void MemberAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) MemberButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Member button clicked");
+  }
+  public void BookAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) bookButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Book button clicked");
+  }
+  public void notificationAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) notificationButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Notification button clicked");
+  }
+  public void SettingAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) settingButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Setting button clicked");
+  }
+
+  public void Close(ActionEvent actionEvent) {
+    Platform.exit();
   }
 
 }
