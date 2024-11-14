@@ -265,6 +265,7 @@ public class BookDetailsController {
 
       ReturningBookController controller = loader.getController();
       controller.setItemDetailReturning(bookItem);
+      controller.setPreviousPage("bookDetails");
 
       currentStage.setTitle("Book Item Detail");
     } catch (Exception e) {

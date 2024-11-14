@@ -67,6 +67,11 @@ public class ReturningBookController {
 
   private BookItem currentBookItem;
 
+  private String previousPage;
+
+  public void setPreviousPage(String previousPage) {
+    this.previousPage = previousPage;
+  }
 
   public void setItemDetailReturning(BookItem bookItem) {
     this.currentBookItem = bookItem;
@@ -130,11 +135,19 @@ public class ReturningBookController {
     alert.setContentText("The book has been successfully borrowed.");
     alert.showAndWait();
 
-    loadBookDetail();
+    if ("memberDetails".equals(previousPage)) {
+      loadMemberDetail();
+    } else {
+      loadBookDetail();
+    }
   }
 
   public void handleCancel(ActionEvent actionEvent) throws IOException {
-    loadBookDetail();
+    if ("memberDetails".equals(previousPage)) {
+      loadMemberDetail();
+    } else {
+      loadBookDetail();
+    }
   }
 
   private void loadBookDetail() throws IOException {
@@ -144,6 +157,17 @@ public class ReturningBookController {
     Stage currentStage = (Stage) memberIdField.getScene().getWindow();
 
     currentStage.setScene(bookDetailScene);
+
+    BookDetailsController bookDetailsController = loader.getController();
+    bookDetailsController.setItemDetail(currentBookItem);
+  }
+  private void loadMemberDetail() throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
+    Scene memberDetailScene = new Scene(loader.load());
+
+    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+
+    currentStage.setScene(memberDetailScene);
 
     BookDetailsController bookDetailsController = loader.getController();
     bookDetailsController.setItemDetail(currentBookItem);
