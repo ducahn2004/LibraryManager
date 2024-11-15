@@ -27,11 +27,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.group4.base.books.Book;
-import org.group4.base.users.Librarian;
-import org.group4.base.users.Member;
-import org.group4.database.BookDatabase;
-import org.group4.database.LibrarianDatabase;
+import org.group4.module.books.Book;
+import org.group4.module.users.Librarian;
+import org.group4.module.users.Member;
+
 
 public class BookViewController {
 
