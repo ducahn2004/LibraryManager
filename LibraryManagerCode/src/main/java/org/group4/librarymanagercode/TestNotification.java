@@ -1,6 +1,6 @@
 package org.group4.librarymanagercode;
 
-import org.group4.base.notifications.EmailNotification;
+import org.group4.module.notifications.EmailNotification;
 
 public class TestNotification {
   public static void main(String[] args) throws Exception {

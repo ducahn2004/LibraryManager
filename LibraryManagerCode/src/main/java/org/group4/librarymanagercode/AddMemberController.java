@@ -9,9 +9,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.base.books.Book;
-import org.group4.base.users.Member;
-import org.group4.base.users.Librarian;
+import org.group4.module.books.Book;
+import org.group4.module.users.Member;
+import org.group4.module.users.Librarian;
 import org.group4.database.LibrarianDatabase;
 
 public class AddMemberController {

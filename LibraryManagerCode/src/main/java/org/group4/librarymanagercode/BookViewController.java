@@ -34,7 +34,6 @@ import org.group4.module.users.Member;
 
 public class BookViewController {
 
-
   private Stage stage;
 
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();

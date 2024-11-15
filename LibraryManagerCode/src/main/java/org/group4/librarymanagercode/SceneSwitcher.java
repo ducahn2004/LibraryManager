@@ -14,4 +14,5 @@ public class SceneSwitcher {
     stage.show();
     System.out.println(title + " scene switched");
   }
+
 }

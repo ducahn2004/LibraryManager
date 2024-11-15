@@ -14,9 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import org.group4.base.books.BookItem;
-import org.group4.base.books.BookLending;
-import org.group4.base.users.Member;
+import org.group4.module.books.BookItem;
+import org.group4.module.books.BookLending;
+import org.group4.module.users.Member;
 import org.group4.database.BookBorrowDatabase;
 
 public class MemberDetailsController {
