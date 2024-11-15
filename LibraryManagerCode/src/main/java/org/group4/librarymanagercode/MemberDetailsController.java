@@ -8,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -71,7 +70,7 @@ public class MemberDetailsController {
     dueDateTable.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getDueDate().toString()));
     creationDateTable.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getCreationDate().toString()));
+        cellData -> new SimpleStringProperty(cellData.getValue().getLendingDate().toString()));
     dueDateTable.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getDueDate().toString()));
 
@@ -93,9 +92,8 @@ public class MemberDetailsController {
   private void loadData() {
     if (currentMember != null) {
       bookLendings.clear();
-      bookLendings.addAll(BookBorrowDatabase.getInstance().getItems().stream()
-          .filter(item -> item.getMember().getMemberId().equals(currentMember.getMemberId()))
-          .toList());
+      // TODO Uncomment after have a method to collect all the bookItems from member
+      //bookLendings.addAll(FactoryDAO.getBookDAO().getAllBookItems(currentBook.getISBN()));
       System.out.println("Data loaded: " + bookLendings.size() + " items");
     }
   }
@@ -112,15 +110,6 @@ public class MemberDetailsController {
 
   private void openReturningBookPage(BookItem bookItem) throws IOException {
     try {
-//      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
-//      Stage detailStage = new Stage();
-//      detailStage.setScene(new Scene(loader.load()));
-//
-//      BorrowingBookController controller = loader.getController();
-//      controller.setItemDetailBorrowing(bookItem);
-//
-//      detailStage.setTitle("Book Item Detail");
-//      detailStage.show();
 
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
 
