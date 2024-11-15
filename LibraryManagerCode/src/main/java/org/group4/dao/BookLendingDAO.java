@@ -12,8 +12,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import org.group4.module.books.BookItem;
 import org.group4.module.transactions.BookLending;
 
+import org.group4.module.users.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,8 +73,8 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   public boolean delete(BookLending bookLending) {
     try (Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(DELETE_BOOK_LENDING_SQL)) {
-      stmt.setString(1, bookLending.getBarcode());
-      stmt.setString(2, bookLending.getMemberId());
+      stmt.setString(1, bookLending.getBookItem().getBarcode());
+      stmt.setString(2, bookLending.getMember().getMemberId());
       return stmt.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error deleting book lending: {}", bookLending, e);
@@ -84,8 +86,8 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   public Optional<BookLending> getById(BookLending bookLending) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(GET_BOOK_LENDING_BY_ID_SQL)) {
-      stmt.setString(1, bookLending.getBarcode());
-      stmt.setString(2, bookLending.getMemberId());
+      stmt.setString(1, bookLending.getBookItem().getBarcode());
+      stmt.setString(2, bookLending.getMember().getMemberId());
       try (ResultSet rs = stmt.executeQuery()) {
         if (rs.next()) {
           return Optional.of(mapRowToBookLending(rs));
@@ -113,19 +115,28 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   }
 
   /**
-   * Maps the current row in the ResultSet to a BookLending object.
+   * Maps a row in a ResultSet to a BookLending object.
    *
-   * @param resultSet the ResultSet containing book lending data
-   * @return a new BookLending populated with data from the ResultSet
-   * @throws SQLException if any database access error occurs
+   * @param resultSet the ResultSet to map
+   * @return the BookLending object mapped from the ResultSet
+   * @throws SQLException if an SQL error occurs during mapping
    */
   private BookLending mapRowToBookLending(ResultSet resultSet) throws SQLException {
-    String barcode = resultSet.getString("barcode");
-    String memberId = resultSet.getString("memberId");
-    LocalDate lendingDate = resultSet.getDate("lendingDate").toLocalDate();
-    LocalDate dueDate = resultSet.getDate("dueDate").toLocalDate();
-    LocalDate returnDate = resultSet.getDate("returnDate").toLocalDate();
-    return new BookLending(barcode, memberId, lendingDate, dueDate, returnDate);
+    Optional<BookItem> bookItemOpt =
+        FactoryDAO.getBookItemDAO().getById(resultSet.getString("barcode"));
+    Optional<Member> memberOpt =
+        FactoryDAO.getMemberDAO().getById(resultSet.getString("memberId"));
+
+    if (bookItemOpt.isPresent() && memberOpt.isPresent()) {
+        BookItem bookItem = bookItemOpt.get();
+        Member member = memberOpt.get();
+        LocalDate lendingDate = resultSet.getDate("lendingDate").toLocalDate();
+        LocalDate dueDate = resultSet.getDate("dueDate").toLocalDate();
+        LocalDate returnDate = resultSet.getDate("returnDate") != null ? resultSet.getDate("returnDate").toLocalDate() : null;
+        return new BookLending(bookItem, member, lendingDate, dueDate, returnDate);
+    } else {
+        throw new SQLException("BookItem or Member not found for the given IDs.");
+    }
   }
 
   /**
@@ -142,8 +153,8 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
     int index = 1;
 
     if (!isUpdate) {
-      preparedStatement.setString(index++, bookLending.getBarcode());
-      preparedStatement.setString(index++, bookLending.getMemberId());
+      preparedStatement.setString(index++, bookLending.getBookItem().getBarcode());
+      preparedStatement.setString(index++, bookLending.getMember().getMemberId());
     }
     preparedStatement.setDate(index++, Date.valueOf(bookLending.getLendingDate()));
     preparedStatement.setDate(index++, Date.valueOf(bookLending.getDueDate()));
@@ -157,8 +168,8 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
 
     // Set remaining fields for update if necessary
     if (isUpdate) {
-      preparedStatement.setString(index++, bookLending.getBarcode());
-      preparedStatement.setString(index, bookLending.getMemberId());
+      preparedStatement.setString(index++, bookLending.getBookItem().getBarcode());
+      preparedStatement.setString(index, bookLending.getMember().getMemberId());
     }
   }
 }

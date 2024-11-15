@@ -2,6 +2,8 @@ package org.group4.module.transactions;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import org.group4.module.books.BookItem;
+import org.group4.module.users.Member;
 
 /**
  * Represents a book lending transaction, where a member borrows a book item for a specific period.
@@ -10,10 +12,10 @@ import java.util.Optional;
 public class BookLending {
 
   /** The barcode of the book item being lent. */
-  private final String barcode;
+  private final BookItem bookItem;
 
   /** The ID of the member borrowing the book item. */
-  private final String memberId;
+  private final Member member;
 
   /** The date when the book item was lent. */
   private final LocalDate lendingDate;
@@ -25,53 +27,54 @@ public class BookLending {
   private LocalDate returnDate;
 
   /**
-   * Creates a new BookLending instance with the current date as the lending date.
-   * The due date is set to 14 days after the lending date.
-   *
-   * @param barcode The barcode of the book item.
-   * @param memberId The ID of the member borrowing the book.
+   * Constructs a new {@code BookLending} instance with the specified book item and member.
+   * The lending date is set to the current date,
+   * and the due date is set to 14 days from the lending date.
+   * The return date is initially null, indicating that the book has not yet been returned.
+   * @param bookItem the book item being lent
+   * @param member   the member borrowing the book item
    */
-  public BookLending(String barcode, String memberId) {
-    this.barcode = barcode;
-    this.memberId = memberId;
+  public BookLending(BookItem bookItem, Member member) {
+    this.bookItem = bookItem;
+    this.member = member;
     this.lendingDate = LocalDate.now();
     this.dueDate = lendingDate.plusDays(14); // Default 14-day lending period
     this.returnDate = null; // Not returned yet
   }
 
   /**
-   * Creates a new BookLending instance with specified lending, due, and return dates.
-   *
-   * @param barcode The barcode of the book item.
-   * @param memberId The ID of the member borrowing the book.
-   * @param lendingDate The date the book was lent.
-   * @param dueDate The date the book is due for return.
-   * @param returnDate The date the book was returned, or null if not yet returned.
+   * Constructs a new {@code BookLending} instance with the specified book item, member, and dates.
+   * @param bookItem    the book item being lent
+   * @param member      the member borrowing the book item
+   * @param lendingDate the date when the book item was lent
+   * @param dueDate     the date when the book item is due for return
+   * @param returnDate  the date when the book item was returned
    */
-  public BookLending(String barcode, String memberId, LocalDate lendingDate, LocalDate dueDate, LocalDate returnDate) {
-    this.barcode = barcode;
-    this.memberId = memberId;
+  public BookLending(BookItem bookItem, Member member, LocalDate lendingDate, LocalDate dueDate,
+      LocalDate returnDate) {
+    this.bookItem = bookItem;
+    this.member = member;
     this.lendingDate = lendingDate;
     this.dueDate = dueDate;
     this.returnDate = returnDate;
   }
 
   /**
-   * Returns the barcode of the book item being lent.
+   * Returns the book item being lent.
    *
-   * @return The barcode of the book item.
+   * @return The book item being lent.
    */
-  public String getBarcode() {
-    return barcode;
+  public BookItem getBookItem() {
+    return bookItem;
   }
 
   /**
-   * Returns the ID of the member borrowing the book item.
+   * Returns the member borrowing the book item.
    *
-   * @return The member ID.
+   * @return The member borrowing the book item.
    */
-  public String getMemberId() {
-    return memberId;
+  public Member getMember() {
+    return member;
   }
 
   /**
