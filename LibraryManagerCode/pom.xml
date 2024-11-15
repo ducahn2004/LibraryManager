@@ -84,6 +84,9 @@
       <artifactId>ikonli-javafx</artifactId>
       <version>12.3.1</version>
     </dependency>
+
+
+
     <dependency>
       <groupId>org.kordamp.bootstrapfx</groupId>
       <artifactId>bootstrapfx-core</artifactId>
@@ -230,6 +233,13 @@
       <artifactId>jbcrypt</artifactId>
       <version>0.4</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.33</version>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>

@@ -54,7 +54,7 @@ public class LoginController {
         Parent root = loader.load();
 
         Stage stage = (Stage) loginButton.getScene().getWindow();
-        Scene scene = new Scene(root, 1000, 700);
+        Scene scene = new Scene(root, 700, 550);
         stage.setScene(scene);
         stage.setTitle("Library Manager");
         stage.show();
