@@ -7,12 +7,14 @@ import org.group4.module.enums.BookStatus;
 import org.group4.dao.FactoryDAO;
 
 /**
- * The {@code Fine} class is responsible for calculating and storing the fine amount
- * for overdue or lost books.
+ * The {@code Fine} class is responsible for calculating and storing the fine amount for overdue or
+ * lost books.
  */
 public class Fine {
 
-  /** The amount of the fine. */
+  /**
+   * The amount of the fine.
+   */
   private double amount;
 
   /**
@@ -39,7 +41,7 @@ public class Fine {
    * @throws SQLException If there is an issue accessing the book data.
    */
   public double calculateFine(BookLending bookLending) throws SQLException {
-    BookItem bookItem = FactoryDAO.getBookItemDAO().getById(bookLending.getBarcode())
+    BookItem bookItem = FactoryDAO.getBookItemDAO().getById(bookLending.getBookItem().getBarcode())
         .orElseThrow(() -> new SQLException("Book item not found."));
     double bookPrice = bookItem.getPrice();
     int numberOfPages = bookItem.getNumberOfPages();
@@ -56,7 +58,7 @@ public class Fine {
   /**
    * Calculates the fine for a lost book based on its price or page count.
    *
-   * @param bookPrice The price of the book.
+   * @param bookPrice     The price of the book.
    * @param numberOfPages The number of pages of the book.
    * @return The calculated fine for the lost book.
    */
@@ -72,7 +74,7 @@ public class Fine {
    * Calculates the fine for overdue books based on the number of days overdue.
    *
    * @param bookLending The book lending information.
-   * @param bookItem The book item information.
+   * @param bookItem    The book item information.
    * @return The calculated overdue fine.
    * @throws SQLException If there is an issue accessing the book data.
    */
@@ -95,7 +97,7 @@ public class Fine {
    * Determines the fine amount based on the days overdue.
    *
    * @param daysOverdue The number of days the book is overdue.
-   * @param bookItem The book item information.
+   * @param bookItem    The book item information.
    * @return The fine amount based on overdue days.
    */
   private double determineFineAmount(long daysOverdue, BookItem bookItem) {
