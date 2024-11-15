@@ -13,7 +13,7 @@ import org.group4.module.enums.BookStatus;
 public class BookItem extends Book {
 
   /** Barcode of the book item, unique identifier for each instance */
-  private final String barcode;
+  private String barcode;
 
   /** Indicates if the book is for reference only (cannot be borrowed) */
   private boolean isReferenceOnly;
@@ -41,6 +41,36 @@ public class BookItem extends Book {
 
   /** Rack location where the book item is placed */
   private Rack placedAt;
+
+  /**
+   * Constructs a {@code BookItem} instance with specific details.
+   *
+   * @param book the book to create an item for
+   * @param isReferenceOnly whether the book is for reference only
+   * @param borrowed the date the book was borrowed
+   * @param dueDate the due date for returning the book
+   * @param price the price of the book item
+   * @param format the format of the book item
+   * @param status the status of the book item
+   * @param dateOfPurchase the date the book item was purchased
+   * @param publicationDate the publication date of the book item
+   * @param placedAt the rack location of the book item
+   */
+  public BookItem(Book book, boolean isReferenceOnly, LocalDate borrowed,
+      LocalDate dueDate, double price, BookFormat format, BookStatus status,
+      LocalDate dateOfPurchase, LocalDate publicationDate, Rack placedAt) {
+    super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
+        book.getLanguage(), book.getNumberOfPages(), book.getAuthors());
+    this.isReferenceOnly = isReferenceOnly;
+    this.borrowed = borrowed;
+    this.dueDate = dueDate;
+    this.price = price;
+    this.format = format;
+    this.status = status;
+    this.dateOfPurchase = dateOfPurchase;
+    this.publicationDate = publicationDate;
+    this.placedAt = placedAt;
+  }
 
   /**
    * Constructs a {@code BookItem} instance with specific details.
@@ -168,6 +198,15 @@ public class BookItem extends Book {
    */
   public Rack getPlacedAt() {
     return placedAt;
+  }
+
+  /**
+   * Sets the barcode of the book item.
+   *
+   * @param barcode the new barcode
+   */
+  public void setBarcode(String barcode) {
+    this.barcode = barcode;
   }
 
   /**

@@ -13,6 +13,9 @@ import java.util.Set;
 import org.group4.module.books.Author;
 import org.group4.module.books.Book;
 
+import org.group4.module.books.BookItem;
+import org.group4.module.enums.BookFormat;
+import org.group4.module.enums.BookStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -202,4 +205,17 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
     }
     return authors;
   }
+
+  /**
+   * Retrieves all BookItems for a given book using its ISBN.
+   *
+   * @param isbn the ISBN of the book.
+   * @return a list of BookItems associated with the given ISBN.
+   * @throws SQLException if a database access error occurs.
+   */
+  public List<BookItem> getAllBookItems(String isbn) throws SQLException {
+    BookItemDAO bookItemDAO = new BookItemDAO();
+    return bookItemDAO.getAllByIsbn(isbn);
+  }
+
 }
