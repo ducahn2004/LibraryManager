@@ -30,31 +30,10 @@ module org.group.librarymanagercode {
   requires org.testng;
   requires jbcrypt;
   requires javax.mail.api;
+  requires com.zaxxer.hikari;
   requires java.sql;
-
-  opens org.group4.librarymanagercode to javafx.fxml;
-  exports org.group4.librarymanagercode;
-
-  exports org.group4.base.books;
-  opens org.group4.base.books to javafx.fxml;
-
-  exports org.group4.base.enums;
-  opens org.group4.base.enums to javafx.fxml;
-
-  exports org.group4.base.users;
-  opens org.group4.base.users to javafx.fxml;
-
-  exports org.group4.base.manager;
-  opens org.group4.base.manager to javafx.fxml;
-
-  exports org.group4.base.catalog;
-  opens org.group4.base.catalog to javafx.fxml;
-
-  exports org.group4.base.notifications;
-  opens org.group4.base.notifications to javafx.fxml;
-
-  exports org.group4.database;
-  opens org.group4.database to javafx.fxml;
+  requires org.slf4j;
+  requires mysql.connector.j;
 
   exports org.group4.test;
   opens org.group4.test to junit;
