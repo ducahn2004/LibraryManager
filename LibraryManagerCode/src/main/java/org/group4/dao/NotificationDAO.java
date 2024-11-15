@@ -1,37 +1,38 @@
 package org.group4.dao;
 
+import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
-import org.group4.base.notifications.Notification;
+import java.util.Optional;
+import org.group4.module.notifications.Notification;
 
-public class NotificationDAO implements GenericDAO<Notification> {
+public class NotificationDAO implements GenericDAO<Notification, String> {
 
-  private NotificationDAO() {
+  NotificationDAO() {
   }
 
   @Override
-  public void add(Notification item) {
-    // TODO: Implement this method
+  public boolean add(Notification entity) {
+    return false;
   }
 
   @Override
-  public void remove(Notification item) {
-    // TODO: Implement this method
+  public boolean update(Notification entity) {
+    return false;
   }
 
   @Override
-  public void update(Notification item) {
-    // TODO: Implement this method
+  public boolean delete(Notification entity) {
+    return false;
   }
 
   @Override
-  public Notification get(Notification item) {
-    // TODO: Implement this method
-    return null;
+  public Optional<Notification> getById(String s) throws SQLException {
+    return Optional.empty();
   }
 
   @Override
-  public List<Notification> getAll() {
-    // TODO: Implement this method
+  public Collection<Notification> getAll() {
     return List.of();
   }
 }
