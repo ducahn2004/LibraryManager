@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * Data Access Object for CRUD operations on {@link Librarian} entities in the database.
  * Implements {@link GenericDAO} to standardize database operations for Librarians.
  */
-public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Integer> {
+public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, String> {
 
   /** Logger for LibrarianDAO class. */
   private static final Logger logger = LoggerFactory.getLogger(LibrarianDAO.class);
@@ -66,22 +66,22 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Integ
   }
 
   @Override
-  public boolean delete(Librarian librarian) {
+  public boolean delete(String id) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_LIBRARIAN_SQL)) {
-      preparedStatement.setString(1, librarian.getLibrarianId());
+      preparedStatement.setString(1, id);
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error deleting librarian: {}", librarian, e);
+      logger.error("Error deleting librarian with ID: {}", id, e);
       return false;
     }
   }
 
   @Override
-  public Optional<Librarian> getById(Integer id) throws SQLException {
+  public Optional<Librarian> getById(String id) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_LIBRARIAN_BY_ID_SQL)) {
-      preparedStatement.setInt(1, id);
+      preparedStatement.setString(1, id);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
           return Optional.of(mapRowToLibrarian(resultSet));

@@ -44,12 +44,6 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   /** SQL query to find a book item by barcode. */
   private static final String GET_ALL_BOOK_ITEMS_SQL = "SELECT * FROM book_items";
 
-  /**
-   * Adds a new {@link BookItem} to the database.
-   *
-   * @param bookItem the BookItem object to be added.
-   * @return true if the book item was successfully added, false otherwise.
-   */
   @Override
   public boolean add(BookItem bookItem) {
     try (Connection connection = getConnection();
@@ -63,12 +57,6 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
     }
   }
 
-  /**
-   * Updates an existing {@link BookItem} in the database.
-   *
-   * @param bookItem the BookItem object to be updated.
-   * @return true if the book item was successfully updated, false otherwise.
-   */
   @Override
   public boolean update(BookItem bookItem) {
     try (Connection connection = getConnection();
@@ -83,32 +71,19 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
     }
   }
 
-  /**
-   * Deletes a {@link BookItem} from the database by barcode.
-   *
-   * @param bookItem the BookItem to be deleted.
-   * @return true if the book item was successfully deleted, false otherwise.
-   */
   @Override
-  public boolean delete(BookItem bookItem) {
+  public boolean delete(String barcode) {
     try (Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement(DELETE_BOOK_ITEM_SQL)) {
 
-      stmt.setString(1, bookItem.getBarcode());
+      stmt.setString(1, barcode);
       return stmt.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error deleting book item: {}", bookItem, e);
+      logger.error("Error deleting book item with barcode: {}", barcode, e);
       return false;
     }
   }
 
-  /**
-   * Retrieves a {@link BookItem} from the database by barcode.
-   *
-   * @param barcode the barcode of the book item to retrieve.
-   * @return an Optional containing the found BookItem, or empty if not found.
-   * @throws SQLException if an SQL error occurs during retrieval.
-   */
   @Override
   public Optional<BookItem> getById(String barcode) throws SQLException {
     try (Connection connection = getConnection();
@@ -124,11 +99,6 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
     return Optional.empty();
   }
 
-  /**
-   * Retrieves all {@link BookItem}s from the database.
-   *
-   * @return a list of all BookItems.
-   */
   @Override
   public List<BookItem> getAll() {
     List<BookItem> bookItems = new ArrayList<>();

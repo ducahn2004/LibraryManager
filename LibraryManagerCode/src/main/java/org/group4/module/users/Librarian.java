@@ -102,11 +102,11 @@ public class Librarian extends Person {
   /**
    * Deletes a book from the library system.
    *
-   * @param book the {@code Book} object to delete
+   * @param isbn the ISBN of the book to delete
    * @return {@code true} if the book was deleted successfully, {@code false} otherwise
    */
-  public boolean deleteBook(Book book) {
-    return bookDAO.delete(book);
+  public boolean deleteBook(String isbn) {
+    return bookDAO.delete(isbn);
   }
 
   /**
@@ -134,11 +134,11 @@ public class Librarian extends Person {
   /**
    * Deletes a book item from the library.
    *
-   * @param bookItem the {@code BookItem} object to delete
+   * @param barcode the barcode of the book item to delete
    * @return {@code true} if the book item was deleted successfully, {@code false} otherwise
    */
-  public boolean deleteBookItem(BookItem bookItem) {
-    return bookItemDAO.delete(bookItem);
+  public boolean deleteBookItem(String barcode) {
+    return bookItemDAO.delete(barcode);
   }
 
   /**
@@ -166,11 +166,11 @@ public class Librarian extends Person {
   /**
    * Deletes a member from the library system.
    *
-   * @param member the {@code Member} object to delete
+   * @param memberId the ID of the member to delete
    * @return {@code true} if the member was deleted successfully, {@code false} otherwise
    */
-  public boolean deleteMember(Member member) {
-    return memberDAO.delete(member);
+  public boolean deleteMember(String memberId) {
+    return memberDAO.delete(memberId);
   }
 
   /**

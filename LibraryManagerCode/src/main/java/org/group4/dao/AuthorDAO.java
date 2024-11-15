@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -39,23 +38,21 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   /** SQL query to find all authors in the database. */
   private static final String GET_ALL_AUTHORS_SQL = "SELECT * FROM authors";
 
+  /** SQL query to find the maximum author_id in the database. */
+  private static final String GET_MAX_AUTHOR_ID_SQL = "SELECT MAX(author_id) AS max_id FROM authors";
+
   @Override
   public boolean add(Author author) {
-    try (Connection connection = getConnection();
-        PreparedStatement preparedStatement =
-            connection.prepareStatement(ADD_AUTHOR_SQL, Statement.RETURN_GENERATED_KEYS)) {
-      preparedStatement.setString(1, author.getAuthorId()); // Set authorId parameter
-      preparedStatement.setString(2, author.getName()); // Set author name
-      int rowsAffected = preparedStatement.executeUpdate();
+    try (Connection connection = getConnection()) {
+      // Generate new Author ID
+      String newAuthorId = generateAuthorId(connection);
+      author.setAuthorId(newAuthorId);
 
-      if (rowsAffected > 0) {
-        try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-          if (resultSet.next()) {
-            int generatedId = resultSet.getInt(1);
-            author.setAuthorId(formatAuthorId(generatedId)); // Format and set authorId
-          }
-        }
-        return true;
+      // Prepare and execute the SQL INSERT statement
+      try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_AUTHOR_SQL)) {
+        preparedStatement.setString(1, author.getAuthorId());
+        preparedStatement.setString(2, author.getName());
+        return preparedStatement.executeUpdate() > 0;
       }
     } catch (SQLException e) {
       logger.error("Error adding author: {}", author.getAuthorId(), e);
@@ -77,13 +74,13 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   }
 
   @Override
-  public boolean delete(Author author) {
+  public boolean delete(String authorId) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_AUTHOR_SQL)) {
-      preparedStatement.setString(1, author.getAuthorId());
+      preparedStatement.setString(1, authorId);
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error deleting author with ID {}: {}", author.getAuthorId(), e.getMessage());
+      logger.error("Error deleting author with ID {}: {}", authorId, e.getMessage());
     }
     return false;
   }
@@ -142,4 +139,26 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   private String formatAuthorId(int id) {
     return "AUTHOR-" + String.format("%03d", id);
   }
+
+  /**
+   * Generates a new Author ID by finding the current maximum ID and incrementing it.
+   * @param connection The database connection.
+   * @return A new unique Author ID in the format AUTHOR-XXX.
+   * @throws SQLException If a database access error occurs.
+   */
+  private String generateAuthorId(Connection connection) throws SQLException {
+    try (PreparedStatement statement = connection.prepareStatement(GET_MAX_AUTHOR_ID_SQL);
+        ResultSet resultSet = statement.executeQuery()) {
+      if (resultSet.next()) {
+        String maxId = resultSet.getString("max_id");
+        if (maxId != null) {
+          // Extract the numeric part, increment it, and format the new ID
+          int nextId = Integer.parseInt(maxId.replace("AUTHOR-", "")) + 1;
+          return formatAuthorId(nextId); // Reuse the formatAuthorId method
+        }
+      }
+    }
+    return formatAuthorId(1); // Default ID if no records exist
+  }
+
 }

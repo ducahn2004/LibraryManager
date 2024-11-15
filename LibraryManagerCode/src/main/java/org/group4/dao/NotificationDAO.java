@@ -22,7 +22,7 @@ public class NotificationDAO implements GenericDAO<Notification, String> {
   }
 
   @Override
-  public boolean delete(Notification entity) {
+  public boolean delete(String s) throws SQLException {
     return false;
   }
 

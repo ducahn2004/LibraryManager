@@ -99,14 +99,14 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
   }
 
   @Override
-  public boolean delete(Member member) {
+  public boolean delete(String memberId) {
     // Deletes a member from the database by ID
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MEMBER_SQL)) {
-      preparedStatement.setString(1, member.getMemberId());
+      preparedStatement.setString(1, memberId); // Set member ID in query
       return preparedStatement.executeUpdate() > 0; // Return true if deletion successful
     } catch (SQLException e) {
-      logger.error("Error deleting member: {}", member, e);
+      logger.error("Error deleting member with ID: {}", memberId, e);
       return false;
     }
   }

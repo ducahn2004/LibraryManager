@@ -55,13 +55,13 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   }
 
   @Override
-  public boolean delete(Rack rack) {
+  public boolean delete(Integer numberRack) {
     try (Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement(DELETE_RACK_SQL)) {
-      stmt.setInt(1, rack.getNumberRack());
+      stmt.setInt(1, numberRack);
       return stmt.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error deleting rack: {}", rack, e);
+      logger.error("Error deleting rack: {}", numberRack, e);
       return false;
     }
   }

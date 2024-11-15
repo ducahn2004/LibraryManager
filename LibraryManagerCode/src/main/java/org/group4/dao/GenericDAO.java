@@ -31,12 +31,12 @@ public interface GenericDAO<T, ID> {
     boolean update(T entity);
 
     /**
-     * Deletes an existing entity from the data source.
+     * Deletes an entity from the data source.
      *
-     * @param entity the entity to be deleted
+     * @param id the unique identifier of the entity to be deleted
      * @return true if the entity was successfully deleted, false otherwise
      */
-    boolean delete(T entity);
+    boolean delete(ID id) throws SQLException;
 
     Optional<T> getById(ID id) throws SQLException;
 

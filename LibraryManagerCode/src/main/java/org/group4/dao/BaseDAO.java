@@ -30,7 +30,7 @@ public abstract class BaseDAO {
   // Static block to initialize HikariCP configuration and set up the connection pool
   static {
     HikariConfig config = new HikariConfig();
-    config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/library_db");
+    config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/mysql");
     config.setUsername("root");
     config.setPassword("Thaonguyen0@");
     config.setMaximumPoolSize(10);

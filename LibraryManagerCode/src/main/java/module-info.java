@@ -33,12 +33,7 @@ module org.group.librarymanagercode {
   requires com.zaxxer.hikari;
   requires java.sql;
   requires org.slf4j;
-
-  opens org.group4.librarymanagercode to javafx.fxml;
-  exports org.group4.librarymanagercode;
-
-  exports org.group4.database;
-  opens org.group4.database to javafx.fxml;
+  requires mysql.connector.j;
 
   exports org.group4.test;
   opens org.group4.test to junit;

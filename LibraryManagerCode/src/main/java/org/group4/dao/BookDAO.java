@@ -78,14 +78,14 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   }
 
   @Override
-  public boolean delete(Book book) {
+  public boolean delete(String isbn) {
     // Deletes a book by its ISBN.
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BOOK_SQL)) {
-      preparedStatement.setString(1, book.getISBN());
+      preparedStatement.setString(1, isbn);
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error deleting book: {}", book, e);
+      logger.error("Error deleting book with ID: {}", isbn, e);
       return false;
     }
   }
