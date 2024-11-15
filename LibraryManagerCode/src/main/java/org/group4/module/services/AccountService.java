@@ -23,12 +23,9 @@ public class AccountService {
    * @param password the plain text password
    * @return the corresponding {@code Account} if login is successful, or {@code null} otherwise
    */
-  public Account login(String id, String password) {
+  public boolean login(String id, String password) {
     Account account = accountDAO.getById(id).orElse(null);
-    if (account != null && BCrypt.checkpw(password, account.getPassword())) {
-      return account;
-    }
-    return null;
+    return account != null && BCrypt.checkpw(password, account.getPassword());
   }
 
   /**

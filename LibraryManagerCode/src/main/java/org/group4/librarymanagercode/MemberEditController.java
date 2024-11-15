@@ -11,6 +11,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.group4.module.sessions.SessionManager;
 import org.group4.module.users.Librarian;
 import org.group4.module.users.Member;
 
@@ -33,8 +34,8 @@ public class MemberEditController {
 
   private Member currentMember; // The member being edited
   private MemberViewController parentController; // Reference to the parent controller
-  private final Librarian librarian = LibrarianDatabase.getInstance().getItems()
-      .getFirst(); // Default librarian instance
+  private final Librarian librarian = SessionManager.getInstance()
+      .getCurrentLibrarian(); // Default librarian instance
 
   /**
    * Sets the parent controller to enable refreshing the member table after updates.
@@ -79,11 +80,26 @@ public class MemberEditController {
     currentMember.setEmail(memberEmail.getText());
     currentMember.setPhoneNumber(memberPhone.getText());
 
+    returnCheckEditMember();
     // Refresh the table and close the form if all validations pass
     if (parentController != null) {
       parentController.refreshTable();
     }
     closeForm();
+  }
+
+  private void returnCheckEditMember() {
+    boolean successEdit = librarian.updateMember(currentMember);
+    if (successEdit) {
+      // TODO Uncomment after notification complete
+      //SystemNotification.sendNotification(String type, String content);
+      System.out.println(
+          "Book with ISBN: " + currentMember.getMemberId() + " has been edited successfully.");
+    } else {
+
+      System.out.println("Failed to edit book with ISBN: " + currentMember.getMemberId());
+      throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
+    }
   }
 
   /**

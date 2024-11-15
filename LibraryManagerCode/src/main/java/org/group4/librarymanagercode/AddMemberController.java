@@ -10,9 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.module.books.Book;
+import org.group4.module.sessions.SessionManager;
 import org.group4.module.users.Member;
 import org.group4.module.users.Librarian;
-import org.group4.database.LibrarianDatabase;
 
 public class AddMemberController {
 
@@ -29,21 +29,31 @@ public class AddMemberController {
 
 
   private MemberViewController parentController;
-  private static final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  Member currentMember;
 
   public void cancel(ActionEvent actionEvent) {
     closeForm();
   }
 
   public void saveMember(ActionEvent actionEvent) {
+    if (memberName.getText().isEmpty() || memberEmail.getText().isEmpty() ||
+        memberPhone.getText().isEmpty() || memberBirth.getValue() == null) {
+      showAlert(AlertType.WARNING, "Incomplete Information",
+          "Please fill in all required information.");
+      return; // Stop execution to allow user to correct input
+    }
+    returnCheckAddMember();
+
     try {
-      addMemberToLibrary(); // Add the new member to the library (i.e., database)
+      // Add the new member to the library (i.e., database)
       // After the member is successfully added to the library, update the parent controller's table.
       if (parentController != null) {
-        parentController.addMemberToList(new Member(memberName.getText(), memberBirth.getValue(), memberEmail.getText(), memberPhone.getText()));
+        parentController.addMemberToList(currentMember);
       }
       // Show success message
-      showAlert(Alert.AlertType.INFORMATION, "Add Member Successfully", "The member has been added to the library.");
+      showAlert(Alert.AlertType.INFORMATION, "Add Member Successfully",
+          "The member has been added to the library.");
     } catch (IllegalArgumentException e) {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
     }
@@ -59,13 +69,24 @@ public class AddMemberController {
     Stage stage = (Stage) memberID.getScene().getWindow();
     stage.close();
   }
-  private void addMemberToLibrary(){
-    boolean added = librarian.addMember(new Member(memberName.getText(), memberBirth.getValue(), memberEmail.getText(), memberPhone.getText()));
-    if(!added){
-      throw new IllegalArgumentException("Could not add member to library");
+
+  private void returnCheckAddMember() {
+    currentMember = new Member(memberName.getText(), memberBirth.getValue(),
+        memberEmail.getText(),
+        memberPhone.getText());
+    boolean successEdit = librarian.addMember(currentMember);
+    if (successEdit) {
+      // TODO Uncomment after notification complete
+      //SystemNotification.sendNotification(String type, String content);
+      System.out.println(
+          "Book with ISBN: " + currentMember.getMemberId() + " has been edited successfully.");
+    } else {
+
+      System.out.println("Failed to edit book with ISBN: " + currentMember.getMemberId());
+      throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
     }
-    //TODO: DECREASED ID MEMBER AFTER CREATE MEMBER DATA
   }
+
   /**
    * Shows an alert dialog with specified type, title, and message.
    *

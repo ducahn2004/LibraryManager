@@ -3,6 +3,7 @@ package org.group4.librarymanagercode;
 import com.jfoenix.controls.JFXButton;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
@@ -19,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -27,20 +27,18 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.group4.dao.FactoryDAO;
 import org.group4.module.books.BookItem;
 import org.group4.module.books.Book;
-import org.group4.module.transactions.BookLending;
+import org.group4.module.sessions.SessionManager;
 import org.group4.module.enums.BookFormat;
 import org.group4.module.enums.BookStatus;
 import org.group4.module.users.Librarian;
-import org.group4.module.users.Member;
-import org.group4.database.BookItemDatabase;
-import org.group4.database.LibrarianDatabase;
 
 public class BookDetailsController {
 
 
-  Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
   private Book currentBook;
   private final ObservableList<BookItem> bookItems = FXCollections.observableArrayList();
 
@@ -83,7 +81,7 @@ public class BookDetailsController {
     tableView.setOnMouseClicked(this::handleRowClick);
   }
 
-  public void setItemDetail(Book book) {
+  public void setItemDetail(Book book) throws SQLException {
     this.currentBook = book;
     displayBookDetails();
     loadData(); // Load data based on currentBook
@@ -125,7 +123,8 @@ public class BookDetailsController {
     barCode.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getBarcode()));
     referenceOnly.setCellValueFactory(
-        cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getReference())));
+        cellData -> new SimpleStringProperty(
+            String.valueOf(cellData.getValue().getIsReferenceOnly())));
     status.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
     borrowedDate.setCellValueFactory(
@@ -186,12 +185,10 @@ public class BookDetailsController {
   }
 
 
-  void loadData() {
+  void loadData() throws SQLException {
     if (currentBook != null) {
       bookItems.clear();
-      bookItems.addAll(BookItemDatabase.getInstance().getItems().stream()
-          .filter(item -> item.getISBN().equals(currentBook.getISBN()))
-          .toList());
+      bookItems.addAll(FactoryDAO.getBookDAO().getAllBookItems(currentBook.getISBN()));
       System.out.println("Data loaded: " + bookItems.size() + " items");
     }
   }
@@ -296,7 +293,7 @@ public class BookDetailsController {
 
     confirmAlert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
-        if (librarian.removeBookItem(item)) {
+        if (librarian.deleteBookItem(item.getBarcode())) {
           bookItems.remove(item);
           System.out.println("Item deleted: " + item);
         }

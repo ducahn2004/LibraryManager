@@ -10,14 +10,17 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
 import org.group4.module.books.Author;
 import org.group4.module.books.Book;
+import org.group4.module.notifications.SystemNotification;
+import org.group4.module.sessions.SessionManager;
 import org.group4.module.users.Librarian;
-import org.group4.service.GoogleBooksService;
+import org.group4.module.services.GoogleBooksService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -57,7 +60,8 @@ public class AddBookController {
   private TextArea authorsField;
 
   private final GoogleBooksService googleBooksService = new GoogleBooksService();
-  private static final Librarian librarian = new Librarian();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private Book book;
 
   /**
    * Searches for a book by ISBN using Google Books API and populates fields.
@@ -83,7 +87,14 @@ public class AddBookController {
    * Adds a new book to the library by collecting data from fields and validating inputs.
    */
   @FXML
-  private void addBook() {
+  private void addBook(ActionEvent actionEvent) {
+    if (isbnField.getText().isEmpty() || titleField.getText().isEmpty()
+        || subjectField.getText().isEmpty() || languageField.getText().isEmpty()
+        || numberOfPagesField.getText().isEmpty() || authorsField.getText().isEmpty()) {
+      showAlert(AlertType.WARNING, "Incomplete Information",
+          "Please fill in all required information.");
+      return;
+    }
     try {
       Book book = createBookFromFields();
       addBookToLibrary(book);
@@ -170,11 +181,15 @@ public class AddBookController {
    */
   private void addBookToLibrary(Book book) {
     // Add the logic to store the book in the library's database
-    boolean added = librarian.addBook(book);
-    if (!added) {
+    boolean successAdded = librarian.addBook(book);
+    if (!successAdded) {
+      System.out.println("Failed to edit book with ISBN: " + book.getISBN());
       throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
     }
-
+    // TODO Uncomment after notification complete
+    //SystemNotification.sendNotification(String type, String content);
+    System.out.println(
+        "Book with ISBN: " + book.getISBN() + " has been edited successfully.");
   }
 
   /**
@@ -189,13 +204,6 @@ public class AddBookController {
     alert.setTitle(title);
     alert.setContentText(message);
     alert.showAndWait();
-  }
-
-  private void loadNotificationData() {
-    if (notificationObservableList.isEmpty()) {
-      //notificationObservableList.addAll(NotificationDatabase.getInstance());
-      systemTable.setItems(notificationObservableList);
-    }
   }
 
   private Stage getStage() {

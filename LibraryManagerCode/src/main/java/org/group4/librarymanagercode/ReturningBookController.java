@@ -1,6 +1,7 @@
 package org.group4.librarymanagercode;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,17 +14,19 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import org.group4.dao.FactoryDAO;
+import org.group4.module.books.Book;
 import org.group4.module.books.BookItem;
+import org.group4.module.sessions.SessionManager;
 import org.group4.module.transactions.BookLending;
 import org.group4.module.enums.BookStatus;
 import org.group4.module.transactions.Fine;
 import org.group4.module.users.Librarian;
-import org.group4.database.BookBorrowDatabase;
-import org.group4.database.LibrarianDatabase;
+
 
 public class ReturningBookController {
 
-  private static final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
   @FXML
   private Button cancelButton;
   @FXML
@@ -73,7 +76,7 @@ public class ReturningBookController {
     this.previousPage = previousPage;
   }
 
-  public void setItemDetailReturning(BookItem bookItem) {
+  public void setItemDetailReturning(BookItem bookItem) throws SQLException {
     this.currentBookItem = bookItem;
     BookLending currentBookLending = findBookLendingById(bookItem.getBarcode());
     Fine amountFine = new Fine();
@@ -90,7 +93,7 @@ public class ReturningBookController {
 
     barcodeField.setText(bookItem.getBarcode());
     placeField.setText(bookItem.getPlacedAt().getLocationIdentifier());
-    referenceOnlyCheck.setText(bookItem.getReference());
+    referenceOnlyCheck.setText(bookItem.getIsReferenceOnly() ? "Yes" : "No");
 
     memberIdField.setText(currentBookLending.getMember().getMemberId());
     memberNameField.setText(currentBookLending.getMember().getName());
@@ -98,7 +101,7 @@ public class ReturningBookController {
     emailField.setText(currentBookLending.getMember().getEmail());
     phoneField.setText(currentBookLending.getMember().getPhoneNumber());
 
-    creationDatePicker.setValue(currentBookLending.getCreationDate());
+    creationDatePicker.setValue(currentBookLending.getLendingDate());
     dueDatePicker.setValue(currentBookLending.getDueDate());
     returnDatePicker.setValue(LocalDate.now());
     currentBookLending.setReturnDate(LocalDate.now());
@@ -112,7 +115,7 @@ public class ReturningBookController {
 
   private BookLending findBookLendingById(String bookItemBarCode) {
     BookLending foundBookItem = null;
-    for (BookLending bookLending : BookBorrowDatabase.getInstance().getItems()) {
+    for (BookLending bookLending : FactoryDAO.getBookLendingDAO().getAll()) {
       if (bookLending.getBookItem().getBarcode().equals(bookItemBarCode)) {
         foundBookItem = bookLending;
         break;
@@ -128,7 +131,8 @@ public class ReturningBookController {
   }
 
 
-  public void handleSubmit(ActionEvent actionEvent) throws IOException {
+  public void handleSubmit(ActionEvent actionEvent) throws IOException, SQLException {
+    returningBookToLibrary(findBookLendingById(currentBookItem.getBarcode()));
     Alert alert = new Alert(AlertType.INFORMATION);
     alert.setTitle("Success");
     alert.setHeaderText(null);
@@ -142,7 +146,7 @@ public class ReturningBookController {
     }
   }
 
-  public void handleCancel(ActionEvent actionEvent) throws IOException {
+  public void handleCancel(ActionEvent actionEvent) throws IOException, SQLException {
     if ("memberDetails".equals(previousPage)) {
       loadMemberDetail();
     } else {
@@ -150,7 +154,7 @@ public class ReturningBookController {
     }
   }
 
-  private void loadBookDetail() throws IOException {
+  private void loadBookDetail() throws IOException, SQLException {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
     Scene bookDetailScene = new Scene(loader.load());
 
@@ -161,7 +165,8 @@ public class ReturningBookController {
     BookDetailsController bookDetailsController = loader.getController();
     bookDetailsController.setItemDetail(currentBookItem);
   }
-  private void loadMemberDetail() throws IOException {
+
+  private void loadMemberDetail() throws IOException, SQLException {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
     Scene memberDetailScene = new Scene(loader.load());
 
@@ -173,7 +178,7 @@ public class ReturningBookController {
     bookDetailsController.setItemDetail(currentBookItem);
   }
 
-  public void handleUserAction(ActionEvent actionEvent) {
+  public void handleUserAction(ActionEvent actionEvent) throws SQLException {
     boolean isChecked = statusCheckBox.isSelected();
 
     // Cập nhật trạng thái và tính toán lại phí phạt
@@ -187,6 +192,20 @@ public class ReturningBookController {
     } else {
       System.out.println("User has not ticked the Status checkbox.");
     }
+  }
+
+  private void returningBookToLibrary(BookLending bookLending) {
+    // Add the logic to store the book in the library's database
+    boolean successAdded = librarian.returnBookItem(bookLending);
+    if (!successAdded) {
+      System.out.println("Failed to edit book with ISBN: " + bookLending.getBookItem().getISBN());
+      throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
+    }
+    // TODO Uncomment after notification complete
+    //SystemNotification.sendNotification(String type, String content);
+    System.out.println(
+        "Book with ISBN: " + bookLending.getBookItem().getISBN()
+            + " has been edited successfully.");
   }
 
 }

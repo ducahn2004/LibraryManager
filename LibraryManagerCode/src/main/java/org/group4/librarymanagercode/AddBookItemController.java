@@ -1,13 +1,13 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
+import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.module.books.Book;
@@ -15,8 +15,8 @@ import org.group4.module.books.BookItem;
 import org.group4.module.books.Rack;
 import org.group4.module.enums.BookFormat;
 import org.group4.module.enums.BookStatus;
+import org.group4.module.sessions.SessionManager;
 import org.group4.module.users.Librarian;
-import org.group4.database.LibrarianDatabase;
 
 public class AddBookItemController {
 
@@ -40,8 +40,10 @@ public class AddBookItemController {
   private JFXButton cancelButton;
 
   private BookDetailsController parentController;
-  private static final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
   private Book currentBook;
+
+  private BookItem bookItem;
 
   public void initialize() {
     // Khởi tạo formatComboBox với các giá trị từ enum BookFormat
@@ -58,11 +60,7 @@ public class AddBookItemController {
       addBookItemToLibrary(); // Add the new member to the library (i.e., database)
       // After the member is successfully added to the library, update the parent controller's table.
       if (parentController != null) {
-        parentController.addBookItemToList(
-            new BookItem(currentBook,
-                referenceOnlyCheckBox.isSelected(), Double.parseDouble(priceTextField.getText()),
-                formatComboBox.getValue(), dateOfPurchasePicker.getValue(),
-                publicationDatePicker.getValue(), new Rack(1, placeAtTextField.getText())));
+        parentController.addBookItemToList(bookItem);
       }
       // Show success message
       showAlert(Alert.AlertType.INFORMATION, "Add Book Item Successfully",
@@ -85,10 +83,12 @@ public class AddBookItemController {
   }
 
   private void addBookItemToLibrary() {
-    boolean added = librarian.addBookItem(new BookItem(currentBook,
-        referenceOnlyCheckBox.isSelected(), Double.parseDouble(priceTextField.getText()),
-        formatComboBox.getValue(), dateOfPurchasePicker.getValue(),
-        publicationDatePicker.getValue(), new Rack(1, placeAtTextField.getText())));
+    bookItem = new BookItem(currentBook,
+        referenceOnlyCheckBox.isSelected(), null, null,
+        Double.parseDouble(priceTextField.getText()),
+        formatComboBox.getValue(), BookStatus.AVAILABLE, dateOfPurchasePicker.getValue(),
+        publicationDatePicker.getValue(), new Rack(1, placeAtTextField.getText()));
+    boolean added = librarian.addBookItem(bookItem);
     if (!added) {
       System.out.println("ISBN Current Book is: " + currentBook.getISBN());
       throw new IllegalArgumentException("Could not add book Item to library");

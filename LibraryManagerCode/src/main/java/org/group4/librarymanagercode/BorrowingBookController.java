@@ -13,18 +13,18 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.base.books.BookItem;
+import org.group4.dao.FactoryDAO;
+import org.group4.module.books.BookItem;
 
-import org.group4.base.books.BookLending;
-import org.group4.base.enums.BookStatus;
-import org.group4.base.users.Librarian;
-import org.group4.base.users.Member;
-import org.group4.database.LibrarianDatabase;
-import org.group4.database.MemberDatabase;
+import org.group4.module.sessions.SessionManager;
+import org.group4.module.transactions.BookLending;
+import org.group4.module.enums.BookStatus;
+import org.group4.module.users.Librarian;
+import org.group4.module.users.Member;
 
 public class BorrowingBookController {
 
-  private static final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
   @FXML
   private Button cancelButton;
   @FXML
@@ -77,7 +77,7 @@ public class BorrowingBookController {
 
   private void findMemberById(String memberId) {
     Member foundMember = null;
-    for (Member member : MemberDatabase.getInstance().getItems()) {
+    for (Member member : FactoryDAO.getMemberDAO().getAll()) {
       if (member.getMemberId().equals(memberId)) {
         foundMember = member;
         break;
@@ -98,7 +98,7 @@ public class BorrowingBookController {
 
   private Member returnMember(String memberId) {
     Member foundMember = null;
-    for (Member member : MemberDatabase.getInstance().getItems()) {
+    for (Member member : FactoryDAO.getMemberDAO().getAll()) {
       if (member.getMemberId().equals(memberId)) {
         foundMember = member;
         break;
@@ -119,11 +119,12 @@ public class BorrowingBookController {
     barcodeField.setText(bookItem.getBarcode());
     placeField.setText(bookItem.getPlacedAt().getLocationIdentifier());
     priceField.setText(Double.toString(bookItem.getPrice()));
-    referenceOnlyCheck.setText(bookItem.getReference());
+    referenceOnlyCheck.setText((bookItem.getIsReferenceOnly()) ? "Yes" : "No");
   }
 
   private void borrowingBook(BookItem bookItem, Member member) {
-    boolean isBorrowed = librarian.borrowBookItem(bookItem, member);
+    boolean isBorrowed = librarian.borrowBookItem(
+        new BookLending(bookItem.getBarcode(), member.getMemberId()));
     if (!isBorrowed) {
       Alert alert = new Alert(AlertType.WARNING);
       alert.setTitle("Warning");
@@ -148,27 +149,22 @@ public class BorrowingBookController {
     } else {
       if (currentBookItem != null && currentBookItem.getStatus() == BookStatus.AVAILABLE) {
         borrowingBook(currentBookItem, returnMember(memberIdField.getText()));
-        currentBookLending = new BookLending(currentBookItem,
-            returnMember(memberIdField.getText()));
-        System.out.println("ISBN: " + currentBookLending.getBookItem().getISBN() + " BORROWED");
-        System.out.println("MEMBER ID: " + currentBookLending.getMember().getName() + " BORROWED");
-        System.out.println("BarCode" + currentBookLending.getBookItem().getBarcode() + " BORROWED");
+        currentBookLending = new BookLending(currentBookItem.getBarcode(),
+            returnMember(memberIdField.getText()).getMemberId());
+        System.out.println("MEMBER ID: " + currentBookLending.getMemberId() + " BORROWED");
+        System.out.println("BarCode" + currentBookLending.getBarcode() + " BORROWED");
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Success");
         alert.setHeaderText(null);
         alert.setContentText("The book has been successfully borrowed.");
         alert.showAndWait();
-
-//        Stage stage = (Stage) memberIdField.getScene().getWindow();
-//        stage.close();
+        
         loadBookDetail();
       }
     }
   }
 
   public void handleCancel(ActionEvent actionEvent) throws IOException {
-//    Stage stage = (Stage) memberIdField.getScene().getWindow();
-//    stage.close();
     loadBookDetail();
   }
 

@@ -27,9 +27,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.group4.dao.FactoryDAO;
 import org.group4.module.books.Book;
+import org.group4.module.sessions.SessionManager;
 import org.group4.module.users.Librarian;
-import org.group4.module.users.Member;
 
 
 public class BookViewController {
@@ -38,7 +39,8 @@ public class BookViewController {
 
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();
 
-  private final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+
   @FXML
   private JFXButton homeButton;
   @FXML
@@ -179,7 +181,7 @@ public class BookViewController {
     alert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
         bookList.remove(book);
-        librarian.removeBook(book);
+        librarian.deleteBook(book.getISBN());
       }
     });
   }
@@ -210,7 +212,7 @@ public class BookViewController {
   }
 
   private void logAndShowError(String message, Exception e) {
-    Logger.getLogger(MemberViewController.class.getName()).log(Level.SEVERE, message, e);
+    Logger.getLogger(BookViewController.class.getName()).log(Level.SEVERE, message, e);
     showAlert(AlertType.ERROR, "Error", message);
   }
 
@@ -224,7 +226,7 @@ public class BookViewController {
 
   private void loadBookData() {
     if (bookList.isEmpty()) {
-      bookList.addAll(BookDatabase.getInstance().getItems());
+      bookList.addAll(FactoryDAO.getBookDAO().getAll());
       tableView.setItems(bookList);
     }
   }
@@ -264,73 +266,33 @@ public class BookViewController {
     stage.setTitle("Library Manager");
   }
 
-  public void HomeAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+  private Stage getStage() {
+    return (Stage) homeButton.getScene().getWindow(); // Có thể sử dụng bất kỳ button nào
+  }
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) homeButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Home button clicked");
+  public void HomeAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
   }
 
   public void MemberAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) MemberButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Member button clicked");
+    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
   }
 
   public void BookAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) bookButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Book button clicked");
+    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
 
   public void notificationAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) notificationButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Notification button clicked");
+    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
   }
 
   public void SettingAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) settingButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Setting button clicked");
+    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
+  
 
 }

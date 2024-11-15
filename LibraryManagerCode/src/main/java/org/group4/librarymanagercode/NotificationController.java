@@ -17,9 +17,6 @@ import javafx.stage.Stage;
 import org.group4.module.books.BookItem;
 import org.group4.module.notifications.EmailNotification;
 import org.group4.module.notifications.Notification;
-import org.group4.database.BookDatabase;
-import org.group4.database.BookItemDatabase;
-import org.group4.database.NotificationDatabase;
 
 public class NotificationController {
 
@@ -58,45 +55,6 @@ public class NotificationController {
   @FXML
   private JFXButton closeButton;
 
-  private void initialize() {
-    initializeSystemTable();
-    initializeEmailTable();
-  }
-
-  public void initializeSystemTable() {
-    systemDate.setCellValueFactory(
-        cellData -> new SimpleStringProperty(
-            cellData.getValue().getCreatedOn().toLocalDate().toString()));
-    systemTime.setCellValueFactory(
-        cellData -> new SimpleStringProperty(
-            cellData.getValue().getCreatedOn().toLocalTime().toString()));
-    systemType.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
-    systemContent.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
-    loadNotificationData();
-  }
-
-  public void initializeEmailTable() {
-    emailDate.setCellValueFactory(
-        cellData -> new SimpleStringProperty(
-            cellData.getValue().getCreatedOn().toLocalDate().toString()));
-    emailTime.setCellValueFactory(
-        cellData -> new SimpleStringProperty(
-            cellData.getValue().getCreatedOn().toLocalTime().toString()));
-    emailType.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
-    emailContent.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
-    loadNotificationData();
-  }
-
-  private void loadNotificationData() {
-    if (notificationObservableList.isEmpty()) {
-      //notificationObservableList.addAll(NotificationDatabase.getInstance());
-      systemTable.setItems(notificationObservableList);
-    }
-  }
 
   private Stage getStage() {
     return (Stage) homeButton.getScene().getWindow(); // Có thể sử dụng bất kỳ button nào
@@ -114,7 +72,7 @@ public class NotificationController {
     SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
 
-  public void NotificationAction(ActionEvent actionEvent) throws IOException {
+  public void notificationAction(ActionEvent actionEvent) throws IOException {
     SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
   }
 
@@ -125,7 +83,5 @@ public class NotificationController {
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
-
-  public void notificationAction(ActionEvent actionEvent) {
-  }
+  
 }

@@ -50,12 +50,12 @@ public class EditBookItemController {
 
   private void populateFields() {
     barCodeId.setText(currentItem.getBarcode());
-    referenceOnlyCheckBox.setSelected(Boolean.parseBoolean(currentItem.getReference()));
+    referenceOnlyCheckBox.setSelected(
+        Boolean.parseBoolean((currentItem.getIsReferenceOnly() ? "Yes" : "No")));
     statusComboBox.setItems(FXCollections.observableArrayList(BookStatus.values()));
     statusComboBox.setValue(currentItem.getStatus()); // Đặt giá trị mặc định
 
     priceTextField.setText(String.valueOf(currentItem.getPrice()));
-
     formatComboBox.setItems(FXCollections.observableArrayList(BookFormat.values()));
     formatComboBox.setValue(currentItem.getFormat()); // Đặt giá trị mặc định
 
@@ -64,7 +64,7 @@ public class EditBookItemController {
 
     placeAtTextField.setText(currentItem.getPlacedAt().getLocationIdentifier());
   }
-  
+
   @FXML
   private void saveChanges() {
     currentItem.setReferenceOnly(referenceOnlyCheckBox.isSelected());

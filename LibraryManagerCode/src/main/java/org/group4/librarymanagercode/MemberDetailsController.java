@@ -15,9 +15,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.group4.module.books.BookItem;
-import org.group4.module.books.BookLending;
+import org.group4.module.transactions.BookLending;
 import org.group4.module.users.Member;
-import org.group4.database.BookBorrowDatabase;
 
 public class MemberDetailsController {
 
@@ -110,6 +109,7 @@ public class MemberDetailsController {
       memberIDLabel.setText(currentMember.getMemberId());
     }
   }
+
   private void openReturningBookPage(BookItem bookItem) throws IOException {
     try {
 //      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
