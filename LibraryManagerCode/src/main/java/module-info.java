@@ -35,6 +35,9 @@ module org.group.librarymanagercode {
   requires org.slf4j;
   requires mysql.connector.j;
 
+  exports org.group4.librarymanagercode;
+  opens org.group4.librarymanagercode to javafx.fxml;
+
   exports org.group4.test;
   opens org.group4.test to junit;
 }
