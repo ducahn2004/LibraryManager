@@ -11,10 +11,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.MemberEditController">
+<BorderPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.AddMemberController">
   <center>
     <VBox prefHeight="570.0" prefWidth="284.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-      <Pane prefHeight="40.0" prefWidth="600.0">
+      <Pane prefHeight="54.0" prefWidth="300.0">
         <Label layoutX="32.0" layoutY="-2.0" style="-fx-text-fill: #2b579a;" text="Member information">
           <font>
             <Font size="24.0" />
@@ -24,15 +24,6 @@
           </padding>
         </Label>
       </Pane>
-         <Pane prefHeight="43.0" prefWidth="300.0">
-            <children>
-            <Label fx:id="memberID" layoutX="107.0" layoutY="2.0" prefHeight="35.0" prefWidth="141.0" style="-fx-background-radius: 0;">
-              <font>
-                <Font name=".VnArial Bold" size="20.0" />
-              </font>
-            </Label>
-            </children>
-         </Pane>
       <TextField fx:id="memberName" layoutX="30.0" layoutY="250.0" promptText="Member name" style="-fx-background-radius: 0;">
         <font>
           <Font name="Segoe UI Semilight" size="13.0" />
@@ -62,7 +53,7 @@
           <Font name="Segoe UI Semilight" size="13.0" />
         </font>
       </TextField>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="352.0" spacing="8.0">
+      <HBox alignment="CENTER" prefHeight="48.0" prefWidth="300.0" spacing="8.0">
         <VBox.margin>
           <Insets top="10.0" />
         </VBox.margin>

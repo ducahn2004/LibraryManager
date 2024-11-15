@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.group4.base.users.Librarian;
 import org.group4.database.LibrarianDatabase;
@@ -26,7 +27,15 @@ public class LoginController {
   private Button loginButton;
   private Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
   private static final Logger logger = Logger.getLogger(LoginController.class.getName());
-
+  @FXML
+  private void initialize() {
+    // Set an event handler on the password field to listen for the Enter key
+    passwordField.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        handleLoginButton();  // Call the login method
+      }
+    });
+  }
   @FXML
   private void handleLoginButton() {
     String username = usernameField.getText().trim();

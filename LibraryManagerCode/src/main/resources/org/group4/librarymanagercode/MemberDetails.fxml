@@ -74,12 +74,11 @@
       </HBox>
       <TableView fx:id="tableView">
         <columns>
-          <TableColumn fx:id="isbnTable" text="ISBN" />
-          <TableColumn fx:id="bookTitleTable" prefWidth="104.80005645751953" text="Book Title" />
-          <TableColumn fx:id="bookItemIDTable" prefWidth="110.0" text="BarCode" />
-          <TableColumn fx:id="creationDateTable" prefWidth="100.0" text="Creation Date" />
-          <TableColumn fx:id="dueDateTable" prefWidth="76.79995727539062" text="Due Date" />
-          <TableColumn fx:id="returnDateTable" prefWidth="102.39987182617188" text="Return Date" />
+          <TableColumn fx:id="isbnTable" prefWidth="119.99997556209564" text="ISBN" />
+          <TableColumn fx:id="bookTitleTable" prefWidth="119.20001983642578" text="Book Title" />
+          <TableColumn fx:id="bookItemIDTable" prefWidth="111.2000732421875" text="BarCode" />
+          <TableColumn fx:id="creationDateTable" prefWidth="88.79998779296875" text="Creation Date" />
+          <TableColumn fx:id="dueDateTable" prefWidth="125.599853515625" text="Due Date" />
         </columns>
       </TableView>
     </VBox>

@@ -1,6 +1,7 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,28 +9,25 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import org.group4.base.users.Librarian;
 import org.group4.base.users.Member;
 import org.group4.database.LibrarianDatabase;
 import org.group4.database.MemberDatabase;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MemberViewController {
 
+  public JFXButton closeButton;
   @FXML
   private TextField searchField;
   @FXML
@@ -45,9 +43,9 @@ public class MemberViewController {
   @FXML
   private TableColumn<Member, String> memberTableEmail;
   @FXML
-  private TableColumn<Member, String> memberTableAction;
+  private TableColumn<Member, Void> memberTableAction;
   @FXML
-  private JFXButton homeButton, bookButton, returnBookButton, settingButton, closeButton;
+  private JFXButton homeButton, bookButton, settingButton, notificationButton,MemberButton ;
   @FXML
   private TextField memberPhone, memberEmail, memberName, memberID;
   @FXML
@@ -63,7 +61,7 @@ public class MemberViewController {
     loadMembers();
     setUpSearchListener();
     setUpRowDoubleClick();
-    setUpActionColumn();
+    //setUpActionColumn();
   }
 
   private void setUpTableColumns() {
@@ -77,6 +75,36 @@ public class MemberViewController {
         cellData -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
     memberTableEmail.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+    memberTableAction.setCellFactory(param -> new TableCell<>() {
+      private final Hyperlink editLink = new Hyperlink("Edit");
+      private final Hyperlink deleteLink = new Hyperlink("Delete");
+
+      {
+        editLink.setUnderline(true);
+        // Xử lý sự kiện cho liên kết Edit
+        editLink.setOnAction((ActionEvent event) -> {
+          Member item = getTableView().getItems().get(getIndex());
+          showEditForm(item);
+        });
+
+        // Xử lý sự kiện cho liên kết Delete
+        deleteLink.setOnAction((ActionEvent event) -> {
+          Member item = getTableView().getItems().get(getIndex());
+          showDeleteConfirmation(item);
+        });
+      }
+
+      @Override
+      protected void updateItem(Void item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setGraphic(null);
+        } else {
+          HBox hBox = new HBox(10, editLink, deleteLink);
+          setGraphic(hBox);
+        }
+      }
+    });
     memberTable.setItems(memberList);
   }
 
@@ -117,35 +145,6 @@ public class MemberViewController {
     });
   }
 
-  private void setUpActionColumn() {
-    memberTableAction.setCellFactory(new Callback<>() {
-      @Override
-      public TableCell<Member, String> call(TableColumn<Member, String> param) {
-        return new TableCell<>() {
-          final Hyperlink editLink = new Hyperlink("Edit");
-          final Hyperlink deleteLink = new Hyperlink("Delete");
-
-          {
-            editLink.setOnAction(event -> showEditForm(getTableView().getItems().get(getIndex())));
-            deleteLink.setOnAction(
-                event -> showDeleteConfirmation(getTableView().getItems().get(getIndex())));
-          }
-
-          @Override
-          protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-            if (empty) {
-              setGraphic(null);
-            } else {
-              HBox hBox = new HBox(editLink, deleteLink);
-              hBox.setSpacing(10);
-              setGraphic(hBox);
-            }
-          }
-        };
-      }
-    });
-  }
 
   private void filterPersonList(String searchText) {
     if (searchText == null || searchText.isEmpty()) {
@@ -158,9 +157,11 @@ public class MemberViewController {
       memberTable.setItems(filteredList);
     }
   }
+
   public void refreshTable() {
     memberTable.refresh();
   }
+
   private void showDetailPage(Member member) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
@@ -219,7 +220,7 @@ public class MemberViewController {
     showAlert(AlertType.ERROR, "Error", message);
   }
 
-  private void showAlert(AlertType type, String title, String content) {
+  void showAlert(AlertType type, String title, String content) {
     Alert alert = new Alert(type);
     alert.setTitle(title);
     alert.setHeaderText(null);
@@ -237,42 +238,89 @@ public class MemberViewController {
     memberTable.getSelectionModel().clearSelection();
   }
 
-  @FXML
-  public void saveMember(ActionEvent actionEvent) {
-    Member selectedMember = memberTable.getSelectionModel().getSelectedItem();
-    if (selectedMember != null) {
-      selectedMember.setName(memberName.getText());
-      selectedMember.setDateOfBirth(memberBirth.getValue());
-      selectedMember.setEmail(memberEmail.getText());
-      selectedMember.setPhoneNumber(memberPhone.getText());
-      memberTable.refresh();
-      cancel(null);
+
+  public void addMemberAction(ActionEvent actionEvent) {
+    try {
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("AddMember.fxml"));
+      Parent root = loader.load();
+      AddMemberController controller = loader.getController();
+      controller.setParentController(this);  // Set the parent controller
+
+      Stage stage = new Stage();
+      stage.setTitle("Add Member");
+      stage.setScene(new Scene(root));
+      stage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
-  public void MemberAction(ActionEvent actionEvent) {
+  // Add a member to the list and refresh the table
+  public void addMemberToList(Member newMember) {
+    memberList.add(newMember);  // Adds the new member to the ObservableList
+    memberTable.setItems(memberList);  // Updates the TableView to display the new member
+    memberTable.refresh();  // Refresh the table view to show the newly added member
   }
 
-  public void ReturnBookAction(ActionEvent actionEvent) {
-  }
 
-  public void notificationAction(ActionEvent actionEvent) {
-  }
+  public void HomeAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-  public void requestMenu(ContextMenuEvent contextMenuEvent) {
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) homeButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Home button clicked");
   }
+  public void MemberAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-  public void SettingAction(ActionEvent actionEvent) {
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) MemberButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Member button clicked");
+  }
+  public void BookAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) bookButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Book button clicked");
+  }
+  public void notificationAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) notificationButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Notification button clicked");
+  }
+  public void SettingAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) settingButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Setting button clicked");
   }
 
   public void Close(ActionEvent actionEvent) {
+    Platform.exit();
   }
-
-  public void BookAction(ActionEvent actionEvent) {
-  }
-
-  public void HomeAction(ActionEvent actionEvent) {
-  }
-
-  // Additional actions methods: HomeAction, Close, etc.
 }

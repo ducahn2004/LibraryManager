@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -86,24 +87,21 @@
       </HBox>
       <TableView fx:id="tableView">
         <columns>
-          <TableColumn fx:id="barCode" text="Bar Code" />
-          <TableColumn fx:id="referenceOnly" prefWidth="104.80005645751953" text="Reference Only" />
-          <TableColumn fx:id="status" prefWidth="110.0" text="Status" />
+          <TableColumn fx:id="barCode" prefWidth="127.99998319149017" text="Bar Code" />
+          <TableColumn fx:id="referenceOnly" prefWidth="95.20001220703125" text="Reference Only" />
+          <TableColumn fx:id="status" prefWidth="75.20001220703125" text="Status" />
           <TableColumn fx:id="borrowedDate" text="Borrowed Date" visible="false" />
           <TableColumn fx:id="dueDate" text="Due Date" visible="false" />
           <TableColumn fx:id="price" text="Price" />
-          <TableColumn fx:id="format" text="Format" />
-          <TableColumn fx:id="dateOfPurchase" text="Date of Purchase" />
-          <TableColumn fx:id="publicationDate" text="Publication Date" />
+          <TableColumn fx:id="format" prefWidth="95.99996948242188" text="Format" />
+          <TableColumn fx:id="dateOfPurchase" prefWidth="80.80001831054688" text="Date of Purchase" />
+          <TableColumn fx:id="publicationDate" prefWidth="63.199951171875" text="Publication Date" />
 
           <TableColumn fx:id="actionColumn" prefWidth="104" text="Actions" />
         </columns>
       </TableView>
     </VBox>
   </center>
-  <bottom>
-    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="700.0" spacing="10" />
-  </bottom>
   <left>
     <Pane prefHeight="564.0" prefWidth="58.0" BorderPane.alignment="CENTER" />
   </left>
@@ -121,4 +119,11 @@
       </children>
     </Pane>
   </top>
+   <bottom>
+      <Pane prefHeight="49.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="addItem" layoutX="58.0" layoutY="8.0" onAction="#addItemButton" prefHeight="34.0" prefWidth="584.0" text="+ Add Item" />
+         </children>
+      </Pane>
+   </bottom>
 </BorderPane>

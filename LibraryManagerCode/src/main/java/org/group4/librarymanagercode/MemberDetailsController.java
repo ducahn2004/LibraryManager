@@ -1,6 +1,8 @@
 package org.group4.librarymanagercode;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import org.group4.base.books.BookItem;
 import org.group4.base.books.BookLending;
 import org.group4.base.users.Member;
 import org.group4.database.BookBorrowDatabase;
@@ -72,16 +75,19 @@ public class MemberDetailsController {
         cellData -> new SimpleStringProperty(cellData.getValue().getCreationDate().toString()));
     dueDateTable.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getDueDate().toString()));
-    returnDateTable.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getReturnDate().toString()));
 
     tableView.setItems(bookLendings);
 
-    tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-      if (newSelection != null) {
-        openBorrowBookWindow(newSelection);
-      }
-    });
+    tableView.getSelectionModel().selectedItemProperty()
+        .addListener((obs, oldSelection, newSelection) -> {
+          if (newSelection != null) {
+            try {
+              openReturningBookPage(newSelection.getBookItem());
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+          }
+        });
 
   }
 
@@ -104,22 +110,34 @@ public class MemberDetailsController {
       memberIDLabel.setText(currentMember.getMemberId());
     }
   }
-  private void openBorrowBookWindow(BookLending selectedBookLending) {
+  private void openReturningBookPage(BookItem bookItem) throws IOException {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
-      Parent root = loader.load();
+//      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
+//      Stage detailStage = new Stage();
+//      detailStage.setScene(new Scene(loader.load()));
+//
+//      BorrowingBookController controller = loader.getController();
+//      controller.setItemDetailBorrowing(bookItem);
+//
+//      detailStage.setTitle("Book Item Detail");
+//      detailStage.show();
 
-      // Pass the selected BookLending to BorrowBookController
-      BorrowingBookController controller = loader.getController();
-      controller.setBookLendingDetails(selectedBookLending);
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
 
-      // Display the new stage
-      Stage stage = new Stage();
-      stage.setTitle("Borrowed Book Details");
-      stage.setScene(new Scene(root));
-      stage.show();
-    } catch (IOException e) {
-      e.printStackTrace();
+      Scene returningBookScene = new Scene(loader.load());
+
+      Stage currentStage = (Stage) tableView.getScene().getWindow();
+
+      currentStage.setScene(returningBookScene);
+
+      ReturningBookController controller = loader.getController();
+      controller.setItemDetailReturning(bookItem);
+      controller.setPreviousPage("memberDetails");
+
+      currentStage.setTitle("Book Item Detail");
+    } catch (Exception e) {
+      Logger.getLogger(MemberDetailsController.class.getName())
+          .log(Level.SEVERE, "Failed to load book details page", e);
     }
   }
 

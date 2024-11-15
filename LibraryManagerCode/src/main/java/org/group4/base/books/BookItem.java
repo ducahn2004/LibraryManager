@@ -3,6 +3,7 @@ package org.group4.base.books;
 import java.time.LocalDate;
 import java.util.UUID;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.group4.base.catalog.Rack;
 import org.group4.base.enums.BookFormat;
 import org.group4.base.enums.BookStatus;
@@ -14,6 +15,9 @@ import org.group4.database.BookItemDatabase;
  * the book's general information.
  */
 public class BookItem extends Book {
+
+  // Atomic integer to generate unique barcode
+  private static final AtomicInteger barcodeCounter = new AtomicInteger(1);
 
   // Barcode uniquely identifying the book item
   private final String barcode;
@@ -63,6 +67,8 @@ public class BookItem extends Book {
     this.barcode = generateBarcode(book.getISBN());
     this.isReferenceOnly = isReferenceOnly;
     this.status = BookStatus.AVAILABLE;
+    this.format = format;
+    this.price = price;
     this.dateOfPurchase = dateOfPurchase;
     this.publicationDate = publicationDate;
     this.placedAt = placedAt;
@@ -70,7 +76,7 @@ public class BookItem extends Book {
 
   // Private method to generate a unique barcode based on the ISBN
   private String generateBarcode(String isbn) {
-    return isbn + "-" + UUID.randomUUID().toString();
+    return isbn + "-" + String.format("%04d", barcodeCounter.getAndIncrement());
   }
 
   // Getter methods

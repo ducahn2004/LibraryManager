@@ -4,8 +4,8 @@ import org.group4.base.books.BookItem;
 import org.group4.database.BookItemDatabase;
 
 /**
- * Manages operations related to BookItem entities. Implements the Manager interface
- * to perform CRUD operations on the BookItem database.
+ * Manages operations related to BookItem entities. Implements the Manager interface to perform CRUD
+ * operations on the BookItem database.
  */
 public class BookItemManager implements Manager<BookItem> {
 
@@ -21,7 +21,7 @@ public class BookItemManager implements Manager<BookItem> {
     boolean exists = BookItemDatabase.getInstance().getItems().stream()
         .anyMatch(existingItem -> existingItem.getISBN().equals(bookItem.getISBN()));
 
-    if (!exists) {
+    if (exists) {
       BookItemDatabase.getInstance().addItem(bookItem);
       return true;
     }
