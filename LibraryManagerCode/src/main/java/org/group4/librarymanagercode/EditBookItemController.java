@@ -10,10 +10,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.base.books.BookItem;
-import org.group4.base.catalog.Rack;
-import org.group4.base.enums.BookFormat;
-import org.group4.base.enums.BookStatus;
+import org.group4.module.books.BookItem;
+import org.group4.module.books.Rack;
+import org.group4.module.enums.BookFormat;
+import org.group4.module.enums.BookStatus;
 
 public class EditBookItemController {
 

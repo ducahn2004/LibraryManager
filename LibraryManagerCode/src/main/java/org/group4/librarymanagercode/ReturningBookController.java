@@ -13,11 +13,11 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.group4.base.books.BookItem;
-import org.group4.base.books.BookLending;
-import org.group4.base.enums.BookStatus;
-import org.group4.base.transactions.Fine;
-import org.group4.base.users.Librarian;
+import org.group4.module.books.BookItem;
+import org.group4.module.transactions.BookLending;
+import org.group4.module.enums.BookStatus;
+import org.group4.module.transactions.Fine;
+import org.group4.module.users.Librarian;
 import org.group4.database.BookBorrowDatabase;
 import org.group4.database.LibrarianDatabase;
 

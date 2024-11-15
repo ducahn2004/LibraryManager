@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import org.group4.base.books.BookLending;
+import org.group4.module.books.BookLending;
 import javafx.scene.control.ListView;
 
 public class ReturnBookController {

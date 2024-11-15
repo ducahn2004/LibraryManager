@@ -83,6 +83,7 @@ public class SettingController {
     System.out.println("Setting button clicked");
   }
 
+
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }

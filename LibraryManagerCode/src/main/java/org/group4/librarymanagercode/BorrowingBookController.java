@@ -166,7 +166,6 @@ public class BorrowingBookController {
     }
   }
 
-
   public void handleCancel(ActionEvent actionEvent) throws IOException {
 //    Stage stage = (Stage) memberIdField.getScene().getWindow();
 //    stage.close();

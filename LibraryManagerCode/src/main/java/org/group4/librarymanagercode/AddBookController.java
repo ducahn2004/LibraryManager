@@ -1,19 +1,22 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import org.group4.base.books.Author;
-import org.group4.base.books.Book;
-import org.group4.base.users.Librarian;
-import org.group4.database.LibrarianDatabase;
+import javafx.stage.Stage;
+import org.group4.dao.FactoryDAO;
+import org.group4.module.books.Author;
+import org.group4.module.books.Book;
+import org.group4.module.users.Librarian;
 import org.group4.service.GoogleBooksService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,7 +57,7 @@ public class AddBookController {
   private TextArea authorsField;
 
   private final GoogleBooksService googleBooksService = new GoogleBooksService();
-  private static final Librarian librarian = LibrarianDatabase.getInstance().getItems().getFirst();
+  private static final Librarian librarian = new Librarian();
 
   /**
    * Searches for a book by ISBN using Google Books API and populates fields.
@@ -188,31 +191,42 @@ public class AddBookController {
     alert.showAndWait();
   }
 
-  // Navigation actions (empty methods)
-  public void homeAction(ActionEvent actionEvent) {
+  private void loadNotificationData() {
+    if (notificationObservableList.isEmpty()) {
+      //notificationObservableList.addAll(NotificationDatabase.getInstance());
+      systemTable.setItems(notificationObservableList);
+    }
   }
 
-  public void memberAction(ActionEvent actionEvent) {
+  private Stage getStage() {
+    return (Stage) homeButton.getScene().getWindow(); // Có thể sử dụng bất kỳ button nào
   }
 
-  public void bookAction(ActionEvent actionEvent) {
+  public void HomeAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
   }
 
-  public void returnBookAction(ActionEvent actionEvent) {
+  public void MemberAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
+  }
+
+  public void BookAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
+  }
+
+  public void NotificationAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
+  }
+
+  public void SettingAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
+  }
+
+  public void Close(ActionEvent actionEvent) {
+    Platform.exit();
   }
 
   public void notificationAction(ActionEvent actionEvent) {
   }
 
-  public void settingAction(ActionEvent actionEvent) {
-  }
-
-  public void close(ActionEvent actionEvent) {
-  }
-
-  public void searchByTitle(ActionEvent actionEvent) {
-  }
-
-  public void addBookAction(ActionEvent actionEvent) {
-  }
 }

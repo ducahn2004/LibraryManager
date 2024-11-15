@@ -320,6 +320,7 @@ public class MemberViewController {
     System.out.println("Setting button clicked");
   }
 
+
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
