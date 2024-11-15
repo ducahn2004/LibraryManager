@@ -1,6 +1,7 @@
 package org.group4.librarymanagercode;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
 import org.group4.module.books.BookItem;
 
+import org.group4.module.books.Rack;
 import org.group4.module.sessions.SessionManager;
 import org.group4.module.transactions.BookLending;
 import org.group4.module.enums.BookStatus;
@@ -124,7 +125,7 @@ public class BorrowingBookController {
 
   private void borrowingBook(BookItem bookItem, Member member) {
     boolean isBorrowed = librarian.borrowBookItem(
-        new BookLending(bookItem.getBarcode(), member.getMemberId()));
+        new BookLending(bookItem, member));
     if (!isBorrowed) {
       Alert alert = new Alert(AlertType.WARNING);
       alert.setTitle("Warning");
@@ -135,7 +136,7 @@ public class BorrowingBookController {
     }
   }
 
-  public void handleSubmit(ActionEvent actionEvent) throws IOException {
+  public void handleSubmit(ActionEvent actionEvent) throws IOException, SQLException {
 
     if (memberNameField.getText().isEmpty() || memberIdField.getText().isEmpty() ||
         emailField.getText().isEmpty() || phoneField.getText().isEmpty()) {
@@ -149,26 +150,27 @@ public class BorrowingBookController {
     } else {
       if (currentBookItem != null && currentBookItem.getStatus() == BookStatus.AVAILABLE) {
         borrowingBook(currentBookItem, returnMember(memberIdField.getText()));
-        currentBookLending = new BookLending(currentBookItem.getBarcode(),
-            returnMember(memberIdField.getText()).getMemberId());
-        System.out.println("MEMBER ID: " + currentBookLending.getMemberId() + " BORROWED");
-        System.out.println("BarCode" + currentBookLending.getBarcode() + " BORROWED");
+        currentBookLending = new BookLending(currentBookItem,
+            returnMember(memberIdField.getText()));
+        System.out.println(
+            "MEMBER ID: " + currentBookLending.getMember().getMemberId() + " BORROWED");
+        System.out.println("BarCode" + currentBookLending.getBookItem().getBarcode() + " BORROWED");
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Success");
         alert.setHeaderText(null);
         alert.setContentText("The book has been successfully borrowed.");
         alert.showAndWait();
-        
+
         loadBookDetail();
       }
     }
   }
 
-  public void handleCancel(ActionEvent actionEvent) throws IOException {
+  public void handleCancel(ActionEvent actionEvent) throws IOException, SQLException {
     loadBookDetail();
   }
 
-  private void loadBookDetail() throws IOException {
+  private void loadBookDetail() throws IOException, SQLException {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
     Scene bookDetailScene = new Scene(loader.load());
 
