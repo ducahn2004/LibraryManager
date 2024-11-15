@@ -23,13 +23,22 @@
                </font>
             </Label>
             <TextField fx:id="usernameField" layoutX="32.0" layoutY="59.0" prefHeight="30.0" prefWidth="220.0" promptText="Account " style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;" />
-            <PasswordField fx:id="passwordField" layoutX="33.0" layoutY="99.0" prefHeight="30.0" prefWidth="220.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;" />
+            <PasswordField fx:id="passwordField" accessibleRole="TEXT_FIELD" layoutX="33.0" layoutY="99.0" onKeyReleased="#HidePasswordonAction" prefHeight="30.0" prefWidth="220.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;" />
             <Button fx:id="loginButton" layoutX="33.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="30.0" prefWidth="220.0" text="Login" textFill="#0b3984" />
             <Hyperlink layoutX="32.0" layoutY="136.0" text="Forgot password" />
             <FontAwesomeIconView fill="#294084" glyphName="USER" layoutX="15.0" layoutY="81.0" size="20" />
             <FontAwesomeIconView fill="#294084" glyphName="LOCK" layoutX="16.0" layoutY="121.0" size="20" />
-            <Button fx:id="eyeButton" layoutX="231.0" layoutY="101.0" mnemonicParsing="false" style="-fx-background-color: transparent;" />
-            <FontAwesomeIconView glyphName="EYE" layoutX="233.0" layoutY="117.0" text="" />
+            <TextField fx:id="textShowpassword" layoutX="33.0" layoutY="99.0" onKeyReleased="#ShowPasswordonAction" prefHeight="30.0" prefWidth="220.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent;" />
+            <ImageView fx:id="iconClose_eye" fitHeight="20.0" fitWidth="25.0" layoutX="253.0" layoutY="104.0" onMouseClicked="#Close_clicked_OnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Image/closeeye.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iconOpen_eye" fitHeight="20.0" fitWidth="25.0" layoutX="253.0" layoutY="104.0" onMouseClicked="#Open_clicked_OnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Image/open_eye.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <AnchorPane layoutY="-2.0" prefHeight="550.0" prefWidth="351.0">
@@ -57,5 +66,10 @@
             </Text>
          </children>
       </AnchorPane>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="450.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Image/pageIcon.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
