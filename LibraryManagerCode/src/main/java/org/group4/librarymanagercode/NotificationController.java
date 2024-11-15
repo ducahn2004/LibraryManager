@@ -2,15 +2,51 @@ package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import org.group4.base.books.BookItem;
+import org.group4.base.notifications.EmailNotification;
+import org.group4.base.notifications.Notification;
+import org.group4.database.BookDatabase;
+import org.group4.database.BookItemDatabase;
+import org.group4.database.NotificationDatabase;
 
 public class NotificationController {
-  private Stage stage;
+
+  private final ObservableList<Notification> notificationObservableList = FXCollections.observableArrayList();
+
+  @FXML
+  private TableView<Notification> systemTable;
+  @FXML
+  private TableColumn<Notification, String> systemDate;
+  @FXML
+  private TableColumn<Notification, String> systemTime;
+  @FXML
+  private TableColumn<Notification, String> systemType;
+  @FXML
+  private TableColumn<Notification, String> systemContent;
+  @FXML
+  private TableView<EmailNotification> emailTable;
+  @FXML
+  private TableColumn<EmailNotification, String> emailDate;
+  @FXML
+  private TableColumn<EmailNotification, String> emailTime;
+  @FXML
+  private TableColumn<EmailNotification, String> emailType;
+  @FXML
+  private TableColumn<EmailNotification, String> emailContent;
   @FXML
   private JFXButton homeButton;
   @FXML
@@ -24,63 +60,74 @@ public class NotificationController {
   @FXML
   private JFXButton closeButton;
 
+  private void initialize() {
+    initializeSystemTable();
+    initializeEmailTable();
+  }
+
+  public void initializeSystemTable() {
+    systemDate.setCellValueFactory(
+        cellData -> new SimpleStringProperty(
+            cellData.getValue().getCreatedOn().toLocalDate().toString()));
+    systemTime.setCellValueFactory(
+        cellData -> new SimpleStringProperty(
+            cellData.getValue().getCreatedOn().toLocalTime().toString()));
+    systemType.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
+    systemContent.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
+    loadNotificationData();
+  }
+
+  public void initializeEmailTable() {
+    emailDate.setCellValueFactory(
+        cellData -> new SimpleStringProperty(
+            cellData.getValue().getCreatedOn().toLocalDate().toString()));
+    emailTime.setCellValueFactory(
+        cellData -> new SimpleStringProperty(
+            cellData.getValue().getCreatedOn().toLocalTime().toString()));
+    emailType.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
+    emailContent.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
+    loadNotificationData();
+  }
+
+  private void loadNotificationData() {
+    if (notificationObservableList.isEmpty()) {
+      //notificationObservableList.addAll(NotificationDatabase.getInstance());
+      systemTable.setItems(notificationObservableList);
+    }
+  }
+
+  private Stage getStage() {
+    return (Stage) homeButton.getScene().getWindow(); // Có thể sử dụng bất kỳ button nào
+  }
+
   public void HomeAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) homeButton.getScene().getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Home button clicked");
+    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
   }
+
   public void MemberAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) MemberButton.getScene().getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Member button clicked");
+    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
   }
+
   public void BookAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) bookButton.getScene().getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Book button clicked");
+    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
-  public void notificationAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) notificationButton.getScene().getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Notification button clicked");
+  public void NotificationAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
   }
+
   public void SettingAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) settingButton.getScene().getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Setting button clicked");
+    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
+  }
+
+  public void notificationAction(ActionEvent actionEvent) {
   }
 }
