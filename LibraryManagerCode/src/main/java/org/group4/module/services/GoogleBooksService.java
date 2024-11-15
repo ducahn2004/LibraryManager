@@ -1,4 +1,4 @@
-package org.group4.service;
+package org.group4.module.services;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

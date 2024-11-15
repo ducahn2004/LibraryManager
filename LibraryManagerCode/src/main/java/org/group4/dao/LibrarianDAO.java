@@ -115,12 +115,12 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
    */
   public Librarian mapRowToLibrarian(ResultSet resultSet) throws SQLException {
     return new Librarian(
+        resultSet.getString("id"),
         resultSet.getString("name"),
         resultSet.getDate("date_of_birth").toLocalDate(),
         resultSet.getString("email"),
-        resultSet.getString("phone"),
-        resultSet.getString("id"),
-        resultSet.getString("password"));
+        resultSet.getString("phone")
+    );
   }
 
   /**

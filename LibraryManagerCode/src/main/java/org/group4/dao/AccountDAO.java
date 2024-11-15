@@ -18,10 +18,41 @@ import org.slf4j.LoggerFactory;
  */
 public class AccountDAO extends BaseDAO {
 
+  /** Logger for the AccountDAO class. */
   private static final Logger logger = LoggerFactory.getLogger(AccountDAO.class);
 
+  /** SQL query to retrieve an account by its ID from the database. */
+  private static final String GET_ACCOUNT_BY_ID_SQL = "SELECT * FROM account WHERE id = ?";
+
+  /** SQL query to update an account's password in the database. */
   private static final String UPDATE_ACCOUNT_SQL = "UPDATE account SET password = ? WHERE id = ?";
+
+  /** SQL query to retrieve an account's password from the database. */
   private static final String GET_ACCOUNT_PASSWORD_SQL = "SELECT password FROM account WHERE id = ?";
+
+  /**
+   * Retrieves an account by its ID from the database.
+   *
+   * @param id the account ID
+   * @return an {@code Optional} containing the account if found,
+   *         or an empty {@code Optional} otherwise
+   */
+  public Optional<Account> getById(String id) {
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_ACCOUNT_BY_ID_SQL)) {
+      preparedStatement.setString(1, id);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        if (resultSet.next()) {
+          return Optional.of(new Account(resultSet.getString("id"),
+              resultSet.getString("password")));
+        }
+      }
+    } catch (SQLException e) {
+      logger.error("Error retrieving account by ID: {}", id, e);
+    }
+    return Optional.empty();
+  }
+
 
   /**
    * Updates the account's password in the database.

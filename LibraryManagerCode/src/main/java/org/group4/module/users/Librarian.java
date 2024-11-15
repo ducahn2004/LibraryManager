@@ -3,6 +3,7 @@ package org.group4.module.users;
 import java.time.LocalDate;
 import org.group4.module.books.Book;
 import org.group4.module.books.BookItem;
+import org.group4.module.services.AccountService;
 import org.group4.module.transactions.BookLending;
 import org.group4.dao.BookDAO;
 import org.group4.dao.BookItemDAO;
@@ -16,8 +17,7 @@ import org.group4.dao.FactoryDAO;
  */
 public class Librarian extends Person {
 
-  /** The account credentials for the librarian. */
-  private final Account account;
+  String librarianId;
 
   /** The data access object for books. */
   private final BookDAO bookDAO = FactoryDAO.getBookDAO();
@@ -34,57 +34,25 @@ public class Librarian extends Person {
   /**
    * Constructs a {@code Librarian} object with the specified details and account credentials.
    *
+   * @param librarianId the ID of the librarian
    * @param name the name of the librarian
    * @param dateOfBirth the date of birth of the librarian
    * @param email the email address of the librarian
    * @param phoneNumber the phone number of the librarian
-   * @param id the unique identifier for the librarian's account
-   * @param password the password for the librarian's account
    */
-  public Librarian(String name, LocalDate dateOfBirth, String email, String phoneNumber,
-      String id, String password) {
+  public Librarian(String librarianId, String name, LocalDate dateOfBirth, String email,
+      String phoneNumber) {
     super(name, dateOfBirth, email, phoneNumber);
-    this.account = new Account(id, password);
+    this.librarianId = librarianId;
   }
 
   /**
-   * Returns the librarian's ID.
+   * Returns the ID of the librarian.
    *
-   * @return the librarian's account ID
+   * @return the librarian ID
    */
   public String getLibrarianId() {
-    return account.getId();
-  }
-
-  /**
-   * Attempts to log in with the given credentials.
-   *
-   * @param id the librarian's ID
-   * @param password the librarian's password
-   * @return {@code true} if login is successful, {@code false} otherwise
-   */
-  public boolean login(String id, String password) {
-    return account.login(id, password);
-  }
-
-  /**
-   * Changes the librarian's password if the old password matches.
-   *
-   * @param oldPassword the old password
-   * @param newPassword the new password
-   * @return {@code true} if password is successfully changed, {@code false} otherwise
-   */
-  public boolean changePassword(String oldPassword, String newPassword) {
-    return account.changePassword(oldPassword, newPassword);
-  }
-
-  /**
-   * Logs the librarian out of the system.
-   *
-   * @return {@code true} if logout is successful, {@code false} otherwise
-   */
-  public boolean logout() {
-    return account.logout();
+    return librarianId;
   }
 
   // Book Management Methods

@@ -21,6 +21,11 @@ public class Person {
   private String phoneNumber;
 
   /**
+   * Constructs a {@code Person} object with default values.
+   */
+  public Person() {}
+
+  /**
    * Constructs a {@code Person} object with the specified name, date of birth, email,
    * and phone number.
    *
