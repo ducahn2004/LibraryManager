@@ -1,9 +1,9 @@
-package org.group4.base.transactions;
+package org.group4.module.transactions;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import org.group4.base.books.BookItem;
-import org.group4.base.enums.BookStatus;
+import org.group4.module.books.BookItem;
+import org.group4.module.enums.BookStatus;
 import org.group4.dao.FactoryDAO;
 
 /**
@@ -11,6 +11,8 @@ import org.group4.dao.FactoryDAO;
  * for overdue or lost books.
  */
 public class Fine {
+
+  /** The amount of the fine. */
   private double amount;
 
   /**

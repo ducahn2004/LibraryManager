@@ -1,4 +1,4 @@
-package org.group4.base.books;
+package org.group4.module.books;
 
 import java.util.HashSet;
 import java.util.Objects;

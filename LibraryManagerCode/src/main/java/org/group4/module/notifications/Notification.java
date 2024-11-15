@@ -1,9 +1,9 @@
-package org.group4.base.notifications;
+package org.group4.module.notifications;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import org.group4.base.enums.NotificationType;
+import org.group4.module.enums.NotificationType;
 
 /**
  * Represents a notification with a unique ID, creation date, type, and content.
@@ -103,8 +103,6 @@ public abstract class Notification {
    * Abstract method to send the notification.
    * <p>Implementations of this method should handle the specific logic for
    * sending the notification based on the notification type and other properties.</p>
-   *
-   * @throws Exception if an error occurs during notification sending
    */
   public abstract void sendNotification() throws Exception;
 

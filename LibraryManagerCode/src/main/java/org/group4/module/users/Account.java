@@ -1,4 +1,4 @@
-package org.group4.base.users;
+package org.group4.module.users;
 
 import org.group4.dao.AccountDAO;
 import org.group4.dao.FactoryDAO;
@@ -10,7 +10,10 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class Account {
 
+  /** The unique identifier for the account */
   private final String id;
+
+  /** The hashed password for the account */
   private String password;
 
   /**

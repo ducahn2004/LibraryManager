@@ -1,4 +1,4 @@
-package org.group4.base.books;
+package org.group4.module.books;
 
 /**
  * Represents a rack where books are stored in a library.
@@ -10,7 +10,7 @@ public class Rack {
   private final int numberRack;
 
   /** Identifier for the location of the rack within the library */
-  private final String locationIdentifier;
+  private String locationIdentifier;
 
   /**
    * Constructs a {@code Rack} instance with a rack number and location identifier.
@@ -41,4 +41,12 @@ public class Rack {
     return locationIdentifier;
   }
 
+  /**
+   * Sets the location identifier for the rack.
+   *
+   * @param locationIdentifier the new location identifier for the rack
+   */
+  public void setLocationIdentifier(String locationIdentifier) {
+    this.locationIdentifier = locationIdentifier;
+  }
 }

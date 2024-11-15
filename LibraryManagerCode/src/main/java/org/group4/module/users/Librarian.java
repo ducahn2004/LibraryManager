@@ -1,9 +1,9 @@
-package org.group4.base.users;
+package org.group4.module.users;
 
 import java.time.LocalDate;
-import org.group4.base.books.Book;
-import org.group4.base.books.BookItem;
-import org.group4.base.transactions.BookLending;
+import org.group4.module.books.Book;
+import org.group4.module.books.BookItem;
+import org.group4.module.transactions.BookLending;
 import org.group4.dao.BookDAO;
 import org.group4.dao.BookItemDAO;
 import org.group4.dao.BookLendingDAO;

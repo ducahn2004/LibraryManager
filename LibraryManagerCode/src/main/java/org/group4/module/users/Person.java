@@ -1,4 +1,4 @@
-package org.group4.base.users;
+package org.group4.module.users;
 
 import java.time.LocalDate;
 

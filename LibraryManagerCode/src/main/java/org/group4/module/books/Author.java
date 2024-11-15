@@ -1,4 +1,4 @@
-package org.group4.base.books;
+package org.group4.module.books;
 
 /**
  * Represents an author with an identifier and a name.

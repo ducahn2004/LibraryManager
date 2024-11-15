@@ -1,4 +1,4 @@
-package org.group4.base.enums;
+package org.group4.module.enums;
 
 /**
  * Represents the possible statuses of a book in a library or catalog system.

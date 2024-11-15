@@ -1,4 +1,4 @@
-package org.group4.base.notifications;
+package org.group4.module.notifications;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -28,7 +28,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Base64;
-import org.group4.base.enums.NotificationType;
+import org.group4.module.enums.NotificationType;
+
+import java.time.LocalDate;
 
 /**
  * Class to handle sending email notifications using the Gmail API.
@@ -64,6 +66,12 @@ public class EmailNotification extends Notification {
    */
   public EmailNotification(NotificationType type, String content, String email) {
     super(type, content);
+    this.email = email;
+  }
+
+  public EmailNotification(String notificationId, NotificationType type, String content,
+      String email, LocalDate createdOn) {
+    super(notificationId, type, content, createdOn);
     this.email = email;
   }
 
