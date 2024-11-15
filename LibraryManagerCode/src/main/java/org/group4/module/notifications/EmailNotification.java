@@ -1,4 +1,4 @@
-package org.group4.module.notifications;
+package org.group4.base.notifications;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -28,80 +28,48 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Base64;
-import org.group4.module.enums.NotificationType;
-
-import java.time.LocalDate;
+import org.group4.base.enums.NotificationType;
 
 /**
- * Class to handle sending email notifications using the Gmail API.
- * <p>This class provides functionality to create and send email notifications through a
- * Gmail account using OAuth2 for authorization.</p>
+ * Class to handle sending email notifications using Gmail API.
  */
 public class EmailNotification extends Notification {
-
-  /** Application name for identifying API usage. */
+  // Application name for the Gmail API.
   private static final String APPLICATION_NAME = "Gmail API Java Quickstart";
-
-  /** JSON factory used for parsing JSON data. */
+  // JSON factory used for processing API responses.
   private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-
-  /** Directory to store OAuth2 tokens for this application. */
+  // Path where the OAuth2 tokens are stored.
   private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
-  /** Gmail API scope for sending emails. */
+  // List of Gmail API scopes required for sending email.
   private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_SEND);
-
-  /** Path to the client credentials JSON file. */
+  // Path to the credentials JSON file.
   private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
-  /** Recipient's email address for sending the notification. */
-  private final String email;
-
   /**
-   * Constructs an {@code EmailNotification} instance with specified type, content, and recipient email.
+   * Constructs an EmailNotification instance.
    *
-   * @param type    The type of notification (e.g., ALERT, REMINDER)
-   * @param content The content or message body of the notification
-   * @param email   The email address to which the notification is sent
+   * @param type    The type of notification.
+   * @param content The content of the notification.
    */
-  public EmailNotification(NotificationType type, String content, String email) {
+  public EmailNotification(NotificationType type, String content) {
     super(type, content);
-    this.email = email;
-  }
-
-  public EmailNotification(String notificationId, NotificationType type, String content,
-      String email, LocalDate createdOn) {
-    super(notificationId, type, content, createdOn);
-    this.email = email;
   }
 
   /**
-   * Sends the notification by calling the Gmail API to send an email.
+   * Returns the OAuth2 credentials for accessing Gmail API.
    *
-   * @throws Exception If an error occurs during email sending.
+   * @param HTTP_TRANSPORT The HTTP transport used for communication.
+   * @return The OAuth2 credentials.
+   * @throws IOException If an error occurs during credentials retrieval.
    */
-  @Override
-  public void sendNotification() throws Exception {
-    String subject = "Library Notification: " + getType();
-    sendEmail("me", "me", email, subject, getContent());
-  }
-
-  /**
-   * Retrieves OAuth2 credentials required for accessing the Gmail API.
-   *
-   * @param HTTP_TRANSPORT The HTTP transport used for API communication.
-   * @return The OAuth2 {@code Credential} object.
-   * @throws IOException If an error occurs while retrieving or loading credentials.
-   */
-  private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
-      throws IOException {
+  private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
     InputStream in = EmailNotification.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
     if (in == null) {
       throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
     }
 
-    GoogleClientSecrets clientSecrets = GoogleClientSecrets
-        .load(JSON_FACTORY, new InputStreamReader(in));
+    GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
         HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
@@ -113,17 +81,16 @@ public class EmailNotification extends Notification {
   }
 
   /**
-   * Sends an email message using the Gmail API.
+   * Sends an email message using Gmail API.
    *
-   * @param userId The user ID (email address of the sender).
+   * @param userId The user ID (email address).
    * @param from   The sender's email address.
    * @param to     The recipient's email address.
-   * @param subject The subject line of the email.
-   * @param bodyText The body content of the email.
+   * @param subject The subject of the email.
+   * @param bodyText The body of the email.
    * @throws Exception If an error occurs while sending the email.
    */
-  public static void sendEmail(String userId, String from, String to, String subject,
-      String bodyText) throws Exception {
+  public static void sendEmail(String userId, String from, String to, String subject, String bodyText) throws Exception {
     final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
     Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
         .setApplicationName(APPLICATION_NAME)
@@ -134,17 +101,16 @@ public class EmailNotification extends Notification {
   }
 
   /**
-   * Creates a {@code MimeMessage} object with the provided details.
+   * Creates a MimeMessage object from the provided email details.
    *
    * @param to       The recipient's email address.
    * @param from     The sender's email address.
-   * @param subject  The subject line of the email.
+   * @param subject  The subject of the email.
    * @param bodyText The body content of the email.
-   * @return A {@code MimeMessage} representing the email.
+   * @return A MimeMessage object.
    * @throws MessagingException If an error occurs while creating the message.
    */
-  private static MimeMessage createEmail(String to, String from, String subject, String bodyText)
-      throws MessagingException {
+  private static MimeMessage createEmail(String to, String from, String subject, String bodyText) throws MessagingException {
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props, null);
 
@@ -157,16 +123,15 @@ public class EmailNotification extends Notification {
   }
 
   /**
-   * Sends the specified email message through the Gmail API.
+   * Sends the email message through Gmail API.
    *
    * @param service The Gmail service instance.
-   * @param userId  The user ID (email address of the sender).
-   * @param email   The {@code MimeMessage} to send.
+   * @param userId  The user ID (email address).
+   * @param email   The MimeMessage object to send.
    * @throws MessagingException If an error occurs while sending the message.
    * @throws IOException        If an I/O error occurs.
    */
-  private static void sendMessage(Gmail service, String userId, MimeMessage email)
-      throws MessagingException, IOException {
+  private static void sendMessage(Gmail service, String userId, MimeMessage email) throws MessagingException, IOException {
     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     email.writeTo(buffer);
     byte[] rawMessageBytes = buffer.toByteArray();
