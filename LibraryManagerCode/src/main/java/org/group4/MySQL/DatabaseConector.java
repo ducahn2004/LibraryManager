@@ -10,7 +10,7 @@ public class DatabaseConector {
   public static Connection getConnection() {
     if (connection == null) {
       try {
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/book",
+        connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/book",
             "root",
             "Tranducanh2004@");
       } catch (SQLException e) {
