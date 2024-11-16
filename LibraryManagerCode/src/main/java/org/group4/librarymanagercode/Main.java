@@ -12,7 +12,7 @@ public class Main extends Application {
 
   @Override
   public void start(@NotNull Stage stage) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Login.fxml"));
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 700, 550);
     stage.setTitle("Library Manager");
     stage.setScene(scene);
