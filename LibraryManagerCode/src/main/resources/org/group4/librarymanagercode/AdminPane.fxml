@@ -2,54 +2,22 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.AdminPaneController">
-  <left>
-    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" BorderPane.alignment="CENTER">
-      <children>
-        <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#HomeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
-          <font>
-            <Font size="16.0" />
-          </font>
-        </JFXButton>
-        <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false" onAction="#MemberAction" prefHeight="46.0" prefWidth="133.0" text="Member" textFill="#fff8f8" textOverrun="CLIP">
-          <font>
-            <Font size="16.0" />
-          </font>
-        </JFXButton>
-        <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#BookAction" prefHeight="46.0" prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
-          <font>
-            <Font size="16.0" />
-          </font>
-        </JFXButton>
-            <JFXButton fx:id="notificationButton" alignment="TOP_LEFT" onAction="#notificationAction" prefHeight="46.0" prefWidth="137.0" text="Notification" textFill="#fff8f8" textOverrun="CLIP">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
-        <JFXButton fx:id="settingButton" alignment="TOP_LEFT" onAction="#SettingAction" prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
-          <font>
-            <Font size="16.0" />
-          </font>
-        </JFXButton>
-        <JFXButton fx:id="closeButton" alignment="TOP_LEFT" onAction="#Close" prefHeight="46.0" prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
-          <font>
-            <Font size="16.0" />
-          </font>
-        </JFXButton>
-      </children>
-    </VBox>
-  </left>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.AdminPaneController">
   <top>
-    <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+    <Pane prefHeight="94.0" prefWidth="925.0" BorderPane.alignment="CENTER">
       <children>
-        <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
-        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0" prefHeight="96.0" prefWidth="172.0" text="Dashboard" textFill="#2e069c">
+        <Pane prefHeight="93.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" />
+        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0" prefHeight="55.0" prefWidth="172.0" text="Dashboard" textFill="#2e069c">
           <font>
             <Font name=".VnArial Bold" size="30.0" />
           </font>
@@ -62,6 +30,112 @@
             <Insets top="2.0" />
           </BorderPane.margin>
         </Label>
+            <AnchorPane layoutX="139.0" layoutY="96.0" prefHeight="604.0" prefWidth="850.0" style="-fx-border-radius: 20; -fx-border-color: #CCCCCC;">
+               <children>
+                  <AnchorPane layoutX="1.6" layoutY="1.6" prefHeight="174.0" prefWidth="851.0" style="-fx-border-color: #CCCCCC; -fx-border-width: 2; -fx-border-radius: 20;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <AnchorPane layoutX="14.0" prefHeight="158.0" prefWidth="170.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <Label layoutX="48.0" layoutY="103.0" text="All Book" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="48.0" layoutY="14.0" prefHeight="30.0" prefWidth="114.0" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="24.0" layoutY="10.0" prefHeight="158.0" prefWidth="170.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="234.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <Label layoutX="48.0" layoutY="103.0" text="All Book" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="60.0" layoutY="14.0" prefHeight="30.0" prefWidth="102.0" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="224.0" layoutY="10.0" prefHeight="158.0" prefWidth="170.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="454.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <Label layoutX="48.0" layoutY="103.0" text="All Book" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="48.0" layoutY="14.0" prefHeight="30.0" prefWidth="114.0" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="424.0" layoutY="10.0" prefHeight="158.0" prefWidth="170.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="674.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <Label layoutX="48.0" layoutY="103.0" text="All Book" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="48.0" layoutY="14.0" prefHeight="30.0" prefWidth="114.0" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+                  <BarChart layoutX="76.0" layoutY="206.0" prefHeight="350.0" prefWidth="670.0" title="Books and Members">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+               </children>
+            </AnchorPane>
+          <VBox layoutY="95.0" prefHeight="605.0" prefWidth="130.0" style="-fx-background-color: #2B579A;">
+            <children>
+              <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#HomeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
+                <font>
+                  <Font size="16.0" />
+                </font>
+              </JFXButton>
+              <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false" onAction="#MemberAction" prefHeight="46.0" prefWidth="133.0" text="Member" textFill="#fff8f8" textOverrun="CLIP">
+                <font>
+                  <Font size="16.0" />
+                </font>
+              </JFXButton>
+              <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#BookAction" prefHeight="46.0" prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
+                <font>
+                  <Font size="16.0" />
+                </font>
+              </JFXButton>
+                  <JFXButton fx:id="notificationButton" alignment="TOP_LEFT" onAction="#notificationAction" prefHeight="46.0" prefWidth="137.0" text="Notification" textFill="#fff8f8" textOverrun="CLIP">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </JFXButton>
+              <JFXButton fx:id="settingButton" alignment="TOP_LEFT" onAction="#SettingAction" prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
+                <font>
+                  <Font size="16.0" />
+                </font>
+              </JFXButton>
+              <JFXButton fx:id="closeButton" alignment="TOP_LEFT" onAction="#Close" prefHeight="46.0" prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
+                <font>
+                  <Font size="16.0" />
+                </font>
+              </JFXButton>
+            </children>
+          </VBox>
       </children>
     </Pane>
 
