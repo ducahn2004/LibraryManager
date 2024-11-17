@@ -3,6 +3,7 @@ package org.group4.module.services;
 import org.group4.module.users.Account;
 import org.group4.dao.AccountDAO;
 import org.group4.dao.FactoryDAO;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -21,26 +22,31 @@ public class AccountService {
    *
    * @param id       the account ID
    * @param password the plain text password
-   * @return the corresponding {@code Account} if login is successful, or {@code null} otherwise
+   * @return {@code true} if login is successful, {@code false} otherwise
    */
   public boolean login(String id, String password) {
-    Account account = accountDAO.getById(id).orElse(null);
-    return account != null && BCrypt.checkpw(password, account.getPassword());
+    return accountDAO
+        .getById(id)
+        .map(account -> BCrypt.checkpw(password, account.getPassword()))
+        .orElse(false);
   }
 
   /**
    * Changes the account's password if the old password is correct.
    *
-   * @param account      the account to update
-   * @param oldPassword  the current password for verification
-   * @param newPassword  the new plain text password
+   * @param id          the account ID
+   * @param oldPassword the current password for verification
+   * @param newPassword the new plain text password
    * @return {@code true} if the password change is successful, {@code false} otherwise
    */
-  public boolean changePassword(Account account, String oldPassword, String newPassword) {
-    if (BCrypt.checkpw(oldPassword, account.getPassword())) {
-      account.setPassword(Account.hashPassword(newPassword));
-      return accountDAO.update(account);
-    }
-    return false;
+  public boolean changePassword(String id, String oldPassword, String newPassword) {
+    return accountDAO
+        .getById(id)
+        .filter(account -> BCrypt.checkpw(oldPassword, account.getPassword()))
+        .map(account -> {
+          account.setPassword(Account.hashPassword(newPassword));
+          return accountDAO.update(account);
+        })
+        .orElse(false);
   }
 }
