@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
@@ -8,16 +9,16 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.MemberViewController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.MemberViewController">
   <left>
-    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" BorderPane.alignment="CENTER">
+    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" BorderPane.alignment="CENTER">
       <children>
         <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#HomeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
           <font>
@@ -55,13 +56,18 @@
   <top>
     <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
       <children>
-        <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
-        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0" prefHeight="96.0" prefWidth="148.0" text="Member " textFill="#2e069c">
+        <AnchorPane layoutX="666.0" layoutY="90.0" prefHeight="28.0" prefWidth="324.0" style="-fx-border-color: BLACK; -fx-border-radius: 20;">
+          <children>
+            <TextField fx:id="searchField" layoutX="36.0" layoutY="1.0" prefHeight="25.0" prefWidth="280.0" promptText="Search by Name or ID" style="-fx-background-color: transparent;" />
+          </children>
+        </AnchorPane>
+        <Pane prefHeight="128.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" />
+        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0" prefHeight="96.0" prefWidth="148.0" text="Member " textFill="#2b579a">
           <font>
             <Font name=".VnArial Bold" size="30.0" />
           </font>
         </Label>
-        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#2b579a" BorderPane.alignment="CENTER">
           <font>
             <Font name="Segoe UI Semilight" size="23.0" />
           </font>
@@ -69,8 +75,8 @@
             <Insets top="2.0" />
           </BorderPane.margin>
         </Label>
-        <TextField fx:id="searchField" layoutX="695.0" layoutY="92.0" prefHeight="25.0" prefWidth="300.0" promptText="Search by Name or ID" />
         <Line endX="751.4000244140625" endY="7.62939453125E-6" layoutX="239.0" layoutY="127.0" startX="-100.0" stroke="#b7adad" strokeWidth="4.0" />
+        <FontAwesomeIconView glyphName="SEARCH" layoutX="680.0" layoutY="111.0" size="20" />
       </children>
     </Pane>
 
@@ -78,7 +84,7 @@
   <center>
     <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
       <children>
-        <TableView fx:id="memberTable"  prefHeight="570.0" prefWidth="572.0" tableMenuButtonVisible="true">
+        <TableView fx:id="memberTable" prefHeight="570.0" prefWidth="572.0" tableMenuButtonVisible="true">
           <columns>
             <TableColumn fx:id="memberTableID" prefWidth="97.59997403621674" text="Member ID" />
             <TableColumn fx:id="memberTableName" prefWidth="130.40003204345703" text="Name" />
@@ -95,11 +101,11 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
           </columnResizePolicy>
         </TableView>
-            <Pane prefHeight="78.0" prefWidth="870.0">
-               <children>
-                  <Button fx:id="addMemberButton" layoutX="777.0" layoutY="7.0" mnemonicParsing="false" onAction="#addMemberAction" text="AddMember" />
-               </children>
-            </Pane>
+        <Pane prefHeight="78.0" prefWidth="870.0">
+          <children>
+            <Button fx:id="addMemberButton" layoutX="777.0" layoutY="7.0" mnemonicParsing="false" onAction="#addMemberAction" text="AddMember" />
+          </children>
+        </Pane>
       </children>
     </VBox>
   </center>
