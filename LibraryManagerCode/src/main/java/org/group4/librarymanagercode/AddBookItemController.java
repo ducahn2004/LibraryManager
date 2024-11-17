@@ -15,7 +15,7 @@ import org.group4.module.books.BookItem;
 import org.group4.module.books.Rack;
 import org.group4.module.enums.BookFormat;
 import org.group4.module.enums.BookStatus;
-import org.group4.module.sessions.SessionManager;
+import org.group4.module.manager.SessionManager;
 import org.group4.module.users.Librarian;
 
 public class AddBookItemController {

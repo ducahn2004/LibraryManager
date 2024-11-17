@@ -54,7 +54,12 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
         PreparedStatement preparedStatement = connection.prepareStatement(ADD_MEMBER_SQL)) {
       String memberId = generateMemberId(connection); // Generate a unique ID
       member.setMemberId(memberId); // Set generated ID to the member
-      setMemberData(preparedStatement, member); // Set data from member object
+      preparedStatement.setString(1, memberId); // Set member ID in query
+      preparedStatement.setString(2, member.getName());
+      preparedStatement.setDate(3, Date.valueOf(member.getDateOfBirth()));
+      preparedStatement.setString(4, member.getEmail());
+      preparedStatement.setString(5, member.getPhoneNumber());
+      preparedStatement.setInt(6, member.getTotalBooksCheckedOut());
       return preparedStatement.executeUpdate() > 0; // Return true if addition successful
     } catch (SQLException e) {
       logger.error("Error adding member: {}", member, e);
@@ -91,7 +96,11 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
     // Updates information for an existing member
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEMBER_SQL)) {
-      setMemberData(preparedStatement, member); // Set data from member object
+      preparedStatement.setString(1, member.getName());
+      preparedStatement.setDate(2, Date.valueOf(member.getDateOfBirth()));
+      preparedStatement.setString(3, member.getEmail());
+      preparedStatement.setString(4, member.getPhoneNumber());
+      preparedStatement.setInt(5, member.getTotalBooksCheckedOut());
       preparedStatement.setString(6, member.getMemberId());
       return preparedStatement.executeUpdate() > 0; // Return true if update successful
     } catch (SQLException e) {
@@ -160,21 +169,5 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
         resultSet.getString("email"),
         resultSet.getString("phoneNumber"),
         resultSet.getInt("total_book_checked_out"));
-  }
-
-  /**
-   * Populates a PreparedStatement with Member data.
-   * Used to avoid redundant data-setting code.
-   *
-   * @param preparedStatement the PreparedStatement to populate
-   * @param member the Member object providing data
-   * @throws SQLException if a database access error occurs
-   */
-  private void setMemberData(PreparedStatement preparedStatement, Member member) throws SQLException {
-    preparedStatement.setString(1, member.getName());
-    preparedStatement.setDate(2, Date.valueOf(member.getDateOfBirth()));
-    preparedStatement.setString(3, member.getEmail());
-    preparedStatement.setString(4, member.getPhoneNumber());
-    preparedStatement.setInt(5, member.getTotalBooksCheckedOut());
   }
 }

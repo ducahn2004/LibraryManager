@@ -193,7 +193,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
     preparedStatement.setString(index++, bookItem.getStatus().name());
     preparedStatement.setDate(index++, Date.valueOf(bookItem.getDateOfPurchase()));
     preparedStatement.setDate(index++, Date.valueOf(bookItem.getPublicationDate()));
-    preparedStatement.setInt(index, bookItem.getPlacedAt().getNumberRack());
+    preparedStatement.setInt(index++, bookItem.getPlacedAt().getNumberRack());
 
     if (isUpdate) {
       preparedStatement.setString(index, bookItem.getBarcode());

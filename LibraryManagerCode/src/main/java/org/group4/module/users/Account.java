@@ -14,7 +14,7 @@ public class Account {
   private String password;
 
   /**
-   * Constructs an {@code Account} object with the given ID and password.
+   * Constructs an {@code Account} object with the given ID and hashed password.
    *
    * @param id       the unique identifier for the account
    * @param password the hashed password
@@ -43,21 +43,22 @@ public class Account {
   }
 
   /**
-   * Sets a new hashed password for the account.
+   * Sets the password of the account.
    *
-   * @param password the hashed password to set
+   * @param plainTextPassword the plain text password to set
    */
-  public void setPassword(String password) {
-    this.password = password;
+  public void setPassword(String plainTextPassword) {
+    this.password = hashPassword(plainTextPassword);
   }
 
   /**
-   * Hashes the provided password using BCrypt.
+   * Hashes the given plain text password using BCrypt.
    *
-   * @param password the plain text password to hash
+   * @param plainTextPassword the plain text password to hash
    * @return the hashed password
    */
-  public static String hashPassword(String password) {
-    return BCrypt.hashpw(password, BCrypt.gensalt());
+  public static String hashPassword(String plainTextPassword) {
+    return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
   }
+
 }

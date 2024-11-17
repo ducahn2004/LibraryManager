@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
 import org.group4.module.books.Book;
 import org.group4.module.books.BookItem;
-import org.group4.module.sessions.SessionManager;
+import org.group4.module.manager.SessionManager;
 import org.group4.module.transactions.BookLending;
 import org.group4.module.enums.BookStatus;
 import org.group4.module.transactions.Fine;
@@ -194,9 +194,10 @@ public class ReturningBookController {
     }
   }
 
-  private void returningBookToLibrary(BookLending bookLending) {
+  private void returningBookToLibrary(BookLending bookLending) throws SQLException {
     // Add the logic to store the book in the library's database
-    boolean successAdded = librarian.returnBookItem(bookLending);
+    boolean successAdded = librarian.returnBookItem(bookLending.getBookItem(),
+        bookLending.getMember(), BookStatus.AVAILABLE);
     if (!successAdded) {
       System.out.println("Failed to edit book with ISBN: " + bookLending.getBookItem().getISBN());
       throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
