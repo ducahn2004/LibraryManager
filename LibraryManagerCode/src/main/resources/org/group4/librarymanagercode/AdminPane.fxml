@@ -14,10 +14,10 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.AdminPaneController">
   <top>
-    <Pane prefHeight="94.0" prefWidth="925.0" BorderPane.alignment="CENTER">
+    <Pane prefHeight="129.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
       <children>
-        <Pane prefHeight="93.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" />
-        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0" prefHeight="55.0" prefWidth="172.0" text="Dashboard" textFill="#2b579a">
+        <Pane prefHeight="128.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" />
+        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="73.0" prefHeight="55.0" prefWidth="172.0" text="Dashboard" textFill="#2b579a">
           <font>
             <Font name=".VnArial Bold" size="30.0" />
           </font>
@@ -30,9 +30,9 @@
             <Insets top="2.0" />
           </BorderPane.margin>
         </Label>
-            <AnchorPane layoutX="139.0" layoutY="96.0" prefHeight="604.0" prefWidth="850.0" style="-fx-border-radius: 20; -fx-border-color: #CCCCCC;">
+            <AnchorPane layoutX="139.0" layoutY="137.0" prefHeight="582.0" prefWidth="850.0" style="-fx-border-radius: 20; -fx-border-color: #CCCCCC;">
                <children>
-                  <AnchorPane layoutX="1.6" layoutY="3.2" prefHeight="132.0" prefWidth="847.0" style="-fx-border-color: #CCCCCC; -fx-border-width: 2; -fx-border-radius: 20;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane layoutX="3.0" layoutY="14.0" prefHeight="95.0" prefWidth="848.0" style="-fx-border-color: #CCCCCC; -fx-border-width: 2; -fx-border-radius: 20;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <AnchorPane layoutX="19.2" layoutY="9.6" prefHeight="101.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="7.0">
                            <children>
@@ -92,7 +92,7 @@
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <BarChart layoutX="77.0" layoutY="146.0" prefHeight="375.0" prefWidth="683.0" title="Books and Members">
+                  <BarChart layoutX="73.0" layoutY="158.0" prefHeight="375.0" prefWidth="683.0" title="Books and Members">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -102,7 +102,7 @@
                   </BarChart>
                </children>
             </AnchorPane>
-          <VBox layoutY="95.0" prefHeight="605.0" prefWidth="130.0" style="-fx-background-color: #2B579A;">
+          <VBox layoutY="131.0" prefHeight="576.0" prefWidth="130.0" style="-fx-background-color: #2B579A;">
             <children>
               <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#HomeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
                 <font>
