@@ -1,7 +1,7 @@
 package org.group4.librarymanagercode;
 
 import javafx.application.Platform;
-import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXButton; // Thư viện JFoenix cho các thành phần giao diện đẹp hơn
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,8 +12,9 @@ import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 public class AdminPaneController {
-  private Stage stage;
+  private Stage stage; // Biến để lưu trữ Stage (cửa sổ chính của ứng dụng)
 
+  // Các nút giao diện được ánh xạ bằng @FXML từ file FXML
   @FXML
   private JFXButton homeButton;
   @FXML
@@ -27,64 +28,88 @@ public class AdminPaneController {
   @FXML
   private JFXButton closeButton;
 
+  /**
+   * Xử lý sự kiện khi nhấn nút "Home"
+   */
   public void HomeAction(ActionEvent actionEvent) throws IOException {
+    // Tải file FXML cho giao diện chính
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) homeButton.getScene().getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
+    // Lấy stage từ nút đang hoạt động và cập nhật scene mới
+    Stage stage = (Stage) homeButton.getScene().getWindow();
+    stage.setTitle("Library Manager"); // Đặt tiêu đề cửa sổ
     stage.setScene(scene);
     stage.show();
-    System.out.println("Home button clicked");
+    System.out.println("Home button clicked"); // Debug: In ra console khi nhấn nút
   }
+
+  /**
+   * Xử lý sự kiện khi nhấn nút "Member"
+   */
   public void MemberAction(ActionEvent actionEvent) throws IOException {
+    // Tải giao diện MemberView.fxml
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) MemberButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    // Lấy stage từ nút và chuyển scene
+    Stage stage = (Stage) MemberButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
-    System.out.println("Member button clicked");
+    System.out.println("Member button clicked"); // Debug
   }
+
+  /**
+   * Xử lý sự kiện khi nhấn nút "Book"
+   */
   public void BookAction(ActionEvent actionEvent) throws IOException {
+    // Tải giao diện BookView.fxml
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) bookButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    // Chuyển đổi scene
+    Stage stage = (Stage) bookButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
-    System.out.println("Book button clicked");
+    System.out.println("Book button clicked"); // Debug
   }
+
+  /**
+   * Xử lý sự kiện khi nhấn nút "Notification"
+   */
   public void notificationAction(ActionEvent actionEvent) throws IOException {
+    // Tải giao diện Notification.fxml
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) notificationButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) notificationButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
-    System.out.println("Notification button clicked");
+    System.out.println("Notification button clicked"); // Debug
   }
+
+  /**
+   * Xử lý sự kiện khi nhấn nút "Setting"
+   */
   public void SettingAction(ActionEvent actionEvent) throws IOException {
+    // Tải giao diện Setting.fxml
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) settingButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) settingButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
-    System.out.println("Setting button clicked");
+    System.out.println("Setting button clicked"); // Debug
   }
 
+  /**
+   * Đóng ứng dụng khi nhấn nút "Close"
+   */
   public void Close(ActionEvent actionEvent) {
-    Platform.exit();
+    Platform.exit(); // Thoát ứng dụng
   }
-
 }

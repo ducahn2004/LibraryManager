@@ -11,6 +11,7 @@ module org.group.librarymanagercode {
   requires eu.hansolo.tilesfx;
   requires com.almasb.fxgl.all;
   requires com.jfoenix;
+  requires java.logging;
   requires annotations;
   requires java.desktop;
   requires okhttp;
@@ -30,7 +31,6 @@ module org.group.librarymanagercode {
   requires org.testng;
   requires jbcrypt;
   requires javax.mail.api;
-  requires java.sql;
 
   opens org.group4.librarymanagercode to javafx.fxml;
   exports org.group4.librarymanagercode;
