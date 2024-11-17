@@ -5,46 +5,60 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * GenericDAO is a generic interface that defines standard CRUD operations for DAO classes.
- * This interface provides a consistent structure for adding, updating, deleting,
- * and retrieving entities from a data source, allowing for flexibility in the types of
- * entities managed.
+ * A generic DAO interface providing common CRUD operations.
  *
- * @param <T> the type of the entity managed by this DAO
+ * @param <T>  the type of the entity
+ * @param <ID> the type of the entity's identifier
  */
 public interface GenericDAO<T, ID> {
 
     /**
-     * Adds a new entity to the data source.
+     * Adds a new entity to the database.
      *
-     * @param entity the entity to be added
-     * @return true if the entity was successfully added, false otherwise
+     * @param entity the entity to add
+     * @return true if the operation is successful, otherwise false
      */
-    boolean add(T entity);
+    default boolean add(T entity) {
+        throw new UnsupportedOperationException("Add operation is not supported");
+    }
 
     /**
-     * Updates an existing entity in the data source.
+     * Updates an existing entity in the database.
      *
-     * @param entity the entity with updated information
-     * @return true if the entity was successfully updated, false otherwise
+     * @param entity the entity to update
+     * @return true if the operation is successful, otherwise false
      */
-    boolean update(T entity);
+    default boolean update(T entity) {
+        throw new UnsupportedOperationException("Update operation is not supported");
+    }
 
     /**
-     * Deletes an entity from the data source.
+     * Deletes an entity by its ID from the database.
      *
-     * @param id the unique identifier of the entity to be deleted
-     * @return true if the entity was successfully deleted, false otherwise
+     * @param id the identifier of the entity to delete
+     * @return true if the operation is successful, otherwise false
      */
-    boolean delete(ID id) throws SQLException;
-
-    Optional<T> getById(ID id) throws SQLException;
+    default boolean delete(ID id) {
+        throw new UnsupportedOperationException("Delete operation is not supported");
+    }
 
     /**
-     * Retrieves all entities from the data source.
+     * Retrieves an entity by its ID.
      *
-     * @return a Collection of all entities
+     * @param id the identifier of the entity
+     * @return an Optional containing the entity if found, otherwise empty
+     * @throws SQLException if a database access error occurs
      */
-    Collection<T> getAll();
+    default Optional<T> getById(ID id) throws SQLException {
+        throw new UnsupportedOperationException("GetById operation is not supported");
+    }
 
+    /**
+     * Retrieves all entities from the database.
+     *
+     * @return a collection of all entities
+     */
+    default Collection<T> getAll() {
+        throw new UnsupportedOperationException("GetAll operation is not supported");
+    }
 }

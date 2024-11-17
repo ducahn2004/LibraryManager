@@ -13,19 +13,31 @@ import org.group4.module.books.Rack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
- * RackDAO implements GenericDAO interface for performing CRUD operations on the 'racks' table.
+ * Data Access Object (DAO) class for CRUD operations on the {@link Rack} entity in the database.
+ * This class provides methods to add, update, delete, and retrieve racks using JDBC connection.
+ * Each method is executed within a try-with-resources statement to ensure proper resource handling.
  */
 public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
 
+  /** The logger for RackDAO. */
   private static final Logger logger = LoggerFactory.getLogger(RackDAO.class);
 
-  private static final String ADD_RACK_SQL = "INSERT INTO racks (numberRack, locationIdentifier) VALUES (?, ?)";
-  private static final String UPDATE_RACK_SQL = "UPDATE racks SET locationIdentifier = ? WHERE numberRack "
-      + "= ?";
+  /** SQL query to add a new rack to the database. */
+  private static final String ADD_RACK_SQL =
+      "INSERT INTO racks (numberRack, locationIdentifier) VALUES (?, ?)";
+
+  /** SQL query to update an existing rack in the database. */
+  private static final String UPDATE_RACK_SQL =
+      "UPDATE racks SET locationIdentifier = ? WHERE numberRack = ?";
+
+  /** SQL query to delete a rack from the database by its number. */
   private static final String DELETE_RACK_SQL = "DELETE FROM racks WHERE numberRack = ?";
+
+  /** SQL query to find a rack by its number. */
   private static final String GET_ALL_RACKS_SQL = "SELECT * FROM racks";
+
+  /** SQL query to find all racks in the database. */
   private static final String GET_RACK_BY_ID_SQL = "SELECT * FROM racks WHERE numberRack = ?";
 
   @Override
@@ -96,10 +108,16 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
     return racks;
   }
 
+  /**
+   * Maps a row in the {@code ResultSet} to a {@link Rack} object.
+   *
+   * @param rs the {@code ResultSet} to map
+   * @return a {@code Rack} object
+   * @throws SQLException if an error occurs while accessing the {@code ResultSet}
+   */
   private Rack mapRowToRack(ResultSet rs) throws SQLException {
     int numberRack = rs.getInt("numberRack");
     String locationIdentifier = rs.getString("locationIdentifier");
     return new Rack(numberRack, locationIdentifier);
   }
-
 }

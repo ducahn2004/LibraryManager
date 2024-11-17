@@ -19,6 +19,12 @@ import org.group4.module.users.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Data Access Object (DAO) class for CRUD operations on the {@link BookLending} entity in the
+ * database. This class provides methods to add, update, delete, and retrieve book lendings using
+ * JDBC connection. Each method is executed within a try-with-resources statement to ensure
+ * proper resource handling.
+ */
 public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, BookLending> {
 
   /** Logger for BookLendingDAO class. */
@@ -39,8 +45,11 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
       "DELETE FROM book_lendings WHERE barcode = ? AND memberId = ?";
 
   /** SQL query to find a book lending by barcode and member ID. */
-  private static final String GET_BOOK_LENDING_BY_ID_SQL =
-      "SELECT * FROM book_lendings WHERE barcode = ? AND memberId = ?";
+  private static final String GET_BOOK_LENDING_BY_BARCODE_SQL =
+      "SELECT * FROM book_lendings WHERE barcode = ?";
+
+  private static final String GET_BOOK_LENDING_BY_MEMBER_SQL =
+      "SELECT * FROM book_lendings WHERE memberId = ?";
 
   /** SQL query to find all book lendings in the database. */
   private static final String GET_ALL_BOOK_LENDINGS_SQL = "SELECT * FROM book_lendings";
@@ -82,21 +91,48 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
     }
   }
 
-  @Override
-  public Optional<BookLending> getById(BookLending bookLending) throws SQLException {
+  /**
+   * Retrieves a list of book lendings from the database by barcode.
+   *
+   * @param barcode the barcode of the book item to find lendings for
+   * @return a list of book lendings with the given barcode
+   */
+  public List<BookLending> getByBarcode(String barcode) {
+    List<BookLending> bookLendings = new ArrayList<>();
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(GET_BOOK_LENDING_BY_ID_SQL)) {
-      stmt.setString(1, bookLending.getBookItem().getBarcode());
-      stmt.setString(2, bookLending.getMember().getMemberId());
+        PreparedStatement stmt = connection.prepareStatement(GET_BOOK_LENDING_BY_BARCODE_SQL)) {
+      stmt.setString(1, barcode);
       try (ResultSet rs = stmt.executeQuery()) {
-        if (rs.next()) {
-          return Optional.of(mapRowToBookLending(rs));
+        while (rs.next()) {
+          bookLendings.add(mapRowToBookLending(rs));
         }
       }
     } catch (SQLException e) {
-      logger.error("Error finding book lending by ID: {}", bookLending, e);
+      logger.error("Error finding book lendings by barcode: {}", barcode, e);
     }
-    return Optional.empty();
+    return bookLendings;
+  }
+
+  /**
+   * Retrieves a list of book lendings from the database by member ID.
+   *
+   * @param memberId the ID of the member to find lendings for
+   * @return a list of book lendings with the given member ID
+   */
+  public List<BookLending> getByMember(String memberId) {
+    List<BookLending> bookLendings = new ArrayList<>();
+    try (Connection connection = getConnection();
+        PreparedStatement stmt = connection.prepareStatement(GET_BOOK_LENDING_BY_MEMBER_SQL)) {
+      stmt.setString(1, memberId);
+      try (ResultSet rs = stmt.executeQuery()) {
+        while (rs.next()) {
+          bookLendings.add(mapRowToBookLending(rs));
+        }
+      }
+    } catch (SQLException e) {
+      logger.error("Error finding book lendings by member ID: {}", memberId, e);
+    }
+    return bookLendings;
   }
 
   @Override

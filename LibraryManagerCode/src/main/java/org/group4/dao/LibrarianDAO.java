@@ -5,9 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.group4.module.users.Librarian;
@@ -37,9 +34,6 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
 
   /** SQL query to find a librarian by ID. */
   private static final String GET_LIBRARIAN_BY_ID_SQL = "SELECT * FROM librarian WHERE id = ?";
-
-  /** SQL query to find all librarians in the database. */
-  private static final String GET_ALL_LIBRARIANS_SQL = "SELECT * FROM librarian";
 
   @Override
   public boolean add(Librarian librarian) {
@@ -89,21 +83,6 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
       }
     }
     return Optional.empty();
-  }
-
-  @Override
-  public Collection<Librarian> getAll() {
-    List<Librarian> librarians = new ArrayList<>();
-    try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_LIBRARIANS_SQL);
-        ResultSet resultSet = preparedStatement.executeQuery()) {
-      while (resultSet.next()) {
-        librarians.add(mapRowToLibrarian(resultSet));
-      }
-    } catch (SQLException e) {
-      logger.error("Error retrieving all librarians", e);
-    }
-    return librarians;
   }
 
   /**

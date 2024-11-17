@@ -14,15 +14,13 @@ import org.group4.module.books.Author;
 import org.group4.module.books.Book;
 
 import org.group4.module.books.BookItem;
-import org.group4.module.enums.BookFormat;
-import org.group4.module.enums.BookStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * BookDAO is responsible for CRUD operations on {@link Book} data in the database.
- * <p>This class implements {@link GenericDAO} to provide a standard set of methods
- * for data persistence and retrieval.</p>
+ * Data Access Object (DAO) class for CRUD operations on the {@link Book} entity in the database.
+ * This class provides methods to add, update, delete, and retrieve books using JDBC connection.
+ * Each method is executed within a try-with-resources statement to ensure proper resource handling.
  */
 public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
 
@@ -217,5 +215,4 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
     BookItemDAO bookItemDAO = new BookItemDAO();
     return bookItemDAO.getAllByIsbn(isbn);
   }
-
 }

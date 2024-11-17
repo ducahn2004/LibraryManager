@@ -31,12 +31,13 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   /** SQL query to add a new book item to the database. */
   private static final String ADD_BOOK_ITEM_SQL =
       "INSERT INTO book_items (barcode, ISBN, isReferenceOnly, borrowed, dueDate, price, format, "
-          + "status, dateOfPurchase, publicationDate, rackNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+          + "status, dateOfPurchase, publicationDate, rackNumber) "
+          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   /** SQL query to update an existing book item in the database. */
   private static final String UPDATE_BOOK_ITEM_SQL =
-      "UPDATE book_items SET isReferenceOnly = ?, borrowed = ?, dueDate = ?, price = ?, format = ?, status = ?, "
-          + "dateOfPurchase = ?, publicationDate = ?, rackNumber = ? WHERE barcode = ?";
+      "UPDATE book_items SET isReferenceOnly = ?, borrowed = ?, dueDate = ?, price = ?, format = ?, "
+          + "status = ?, dateOfPurchase = ?, publicationDate = ?, rackNumber = ? WHERE barcode = ?";
 
   /** SQL query to delete a book item from the database by barcode. */
   private static final String DELETE_BOOK_ITEM_SQL = "DELETE FROM book_items WHERE barcode = ?";

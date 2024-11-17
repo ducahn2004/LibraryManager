@@ -1,7 +1,8 @@
 package org.group4.dao;
 
 /**
- * FactoryDAO class provides methods to retrieve DAO instances for various entities.
+ * FactoryDAO is a factory class that provides static methods to create instances of DAO classes.
+ * It is used to create instances of DAO classes without exposing the instantiation logic to the client.
  */
 public class FactoryDAO {
 
@@ -78,11 +79,21 @@ public class FactoryDAO {
   }
 
   /**
-   * Returns an instance of NotificationDAO.
+   * Returns an instance of SystemNotificationDAO.
    *
-   * @return NotificationDAO instance
+   * @return SystemNotificationDAO instance
    */
-  public static NotificationDAO getNotificationDAO() {
-    return new NotificationDAO();
+  public static SystemNotificationDAO getSystemNotificationDAO() {
+    return new SystemNotificationDAO();
   }
+
+  /**
+   * Returns an instance of EmailNotificationDAO.
+   *
+   * @return EmailNotificationDAO instance
+   */
+  public static EmailNotificationDAO getEmailNotificationDAO() {
+    return new EmailNotificationDAO();
+  }
+
 }
