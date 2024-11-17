@@ -11,7 +11,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.module.sessions.SessionManager;
+import org.group4.module.manager.SessionManager;
 import org.group4.module.users.Librarian;
 import org.group4.module.users.Member;
 

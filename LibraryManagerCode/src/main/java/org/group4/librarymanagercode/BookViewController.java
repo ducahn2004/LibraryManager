@@ -29,7 +29,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
 import org.group4.module.books.Book;
-import org.group4.module.sessions.SessionManager;
+import org.group4.module.manager.SessionManager;
 import org.group4.module.users.Librarian;
 
 

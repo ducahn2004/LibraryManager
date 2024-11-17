@@ -17,7 +17,7 @@ import org.group4.dao.FactoryDAO;
 import org.group4.module.books.BookItem;
 
 import org.group4.module.books.Rack;
-import org.group4.module.sessions.SessionManager;
+import org.group4.module.manager.SessionManager;
 import org.group4.module.transactions.BookLending;
 import org.group4.module.enums.BookStatus;
 import org.group4.module.users.Librarian;
@@ -124,8 +124,7 @@ public class BorrowingBookController {
   }
 
   private void borrowingBook(BookItem bookItem, Member member) {
-    boolean isBorrowed = librarian.borrowBookItem(
-        new BookLending(bookItem, member));
+    boolean isBorrowed = librarian.borrowBookItem(bookItem, member);
     if (!isBorrowed) {
       Alert alert = new Alert(AlertType.WARNING);
       alert.setTitle("Warning");
