@@ -8,17 +8,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.SettingController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.SettingController">
   <top>
     <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
       <children>
-        <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" />
-        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="106.0" layoutY="31.0" prefHeight="96.0" prefWidth="172.0" text="Setting" textFill="#2e069c">
+        <Pane prefHeight="128.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" />
+        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="106.0" layoutY="31.0" prefHeight="96.0" prefWidth="172.0" text="Setting" textFill="#2b579a">
           <font>
             <Font name=".VnArial Bold" size="30.0" />
           </font>
         </Label>
-        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#2b579a" BorderPane.alignment="CENTER">
           <font>
             <Font name="Segoe UI Semilight" size="23.0" />
           </font>
@@ -31,7 +31,7 @@
 
   </top>
   <left>
-    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;" BorderPane.alignment="CENTER">
+    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" BorderPane.alignment="CENTER">
       <children>
         <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#HomeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
           <font>
