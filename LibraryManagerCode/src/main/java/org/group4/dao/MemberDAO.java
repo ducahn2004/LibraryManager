@@ -26,11 +26,13 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
 
   /** SQL query to add a new member to the database. */
   private static final String ADD_MEMBER_SQL =
-      "INSERT INTO members (memberId, name, dateOfBirth, email, phoneNumber) VALUES (?, ?, ?, ?, ?)";
+      "INSERT INTO members (memberId, name, dateOfBirth, email, phoneNumber, "
+          + "total_book_checked_out) VALUES (?, ?, ?, ?, ?, ?)";
 
   /** SQL query to update an existing member in the database. */
   private static final String UPDATE_MEMBER_SQL =
-      "UPDATE members SET name = ?, dateOfBirth = ?, email = ?, phoneNumber = ? WHERE memberID = ?";
+      "UPDATE members SET name = ?, dateOfBirth = ?, email = ?, phoneNumber = ?, "
+          + "total_book_checked_out = ?  WHERE memberID = ?";
 
   /** SQL query to delete a member from the database by ID. */
   private static final String DELETE_MEMBER_SQL = "DELETE FROM members WHERE memberID = ?";
@@ -90,7 +92,7 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEMBER_SQL)) {
       setMemberData(preparedStatement, member); // Set data from member object
-      preparedStatement.setString(5, member.getMemberId());
+      preparedStatement.setString(6, member.getMemberId());
       return preparedStatement.executeUpdate() > 0; // Return true if update successful
     } catch (SQLException e) {
       logger.error("Error updating member: {}", member, e);
@@ -117,9 +119,9 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(FIND_MEMBER_BY_ID_SQL)) {
       preparedStatement.setString(1, memberId); // Set member ID in query
-      ResultSet rs = preparedStatement.executeQuery();
-      if (rs.next()) {
-        return Optional.of(mapRowToMember(rs)); // Map result to Member object
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        return Optional.of(mapRowToMember(resultSet)); // Map result to Member object
       }
     } catch (SQLException e) {
       logger.error("Error finding member by ID: {}", memberId, e);
@@ -133,10 +135,10 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
     List<Member> members = new ArrayList<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_MEMBERS_SQL);
-        ResultSet rs = preparedStatement.executeQuery()) {
+        ResultSet resultSet = preparedStatement.executeQuery()) {
 
-      while (rs.next()) {
-        members.add(mapRowToMember(rs)); // Map each row to a Member
+      while (resultSet.next()) {
+        members.add(mapRowToMember(resultSet)); // Map each row to a Member
       }
     } catch (SQLException e) {
       logger.error("Error finding all members", e);
@@ -145,24 +147,19 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
   }
 
   /**
-   * Maps the current row in the ResultSet to a Member object.
+   * Maps a row from the result set to a Member object.
    *
-   * @param rs the ResultSet containing member data
-   * @return a new Member populated with data from the ResultSet
-   * @throws SQLException if any database access error occurs
+   * @param resultSet the result set from a SQL query
+   * @return a Member object
+   * @throws SQLException if an SQL error occurs during mapping
    */
-  private Member mapRowToMember(ResultSet rs) throws SQLException {
-    // Map attributes from ResultSet to a new Member object
-    String memberId = rs.getString("memberID");
-    String name = rs.getString("name");
-    Date dateOfBirth = rs.getDate("dateOfBirth");
-    String email = rs.getString("email");
-    String phoneNumber = rs.getString("phoneNumber");
-
-    // Initialize Member and set the memberId
-    Member member = new Member(name, dateOfBirth.toLocalDate(), email, phoneNumber);
-    member.setMemberId(memberId);
-    return member;
+  private Member mapRowToMember(ResultSet resultSet) throws SQLException {
+    return new Member(resultSet.getString("memberID"),
+        resultSet.getString("name"),
+        resultSet.getDate("dateOfBirth").toLocalDate(),
+        resultSet.getString("email"),
+        resultSet.getString("phoneNumber"),
+        resultSet.getInt("total_book_checked_out"));
   }
 
   /**
@@ -178,5 +175,6 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
     preparedStatement.setDate(2, Date.valueOf(member.getDateOfBirth()));
     preparedStatement.setString(3, member.getEmail());
     preparedStatement.setString(4, member.getPhoneNumber());
+    preparedStatement.setInt(5, member.getTotalBooksCheckedOut());
   }
 }

@@ -34,6 +34,15 @@ public class Fine {
   }
 
   /**
+   * Sets the amount of the fine.
+   *
+   * @param amount the fine amount.
+   */
+  public void setAmount(double amount) {
+    this.amount = amount;
+  }
+
+  /**
    * Calculates the fine for a book lending based on overdue days or if the book is lost.
    *
    * @param bookLending The book lending information of a member.

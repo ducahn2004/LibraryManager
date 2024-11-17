@@ -96,4 +96,12 @@ public class FactoryDAO {
     return new EmailNotificationDAO();
   }
 
+  /**
+   * Returns an instance of FineDAO.
+   *
+   * @return FineDAO instance
+   */
+  public static FineDAO getFineDAO() {
+    return new FineDAO();
+  }
 }

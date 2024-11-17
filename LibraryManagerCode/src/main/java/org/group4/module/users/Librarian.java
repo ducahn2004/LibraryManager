@@ -1,8 +1,11 @@
 package org.group4.module.users;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import org.group4.module.books.Book;
 import org.group4.module.books.BookItem;
+import org.group4.module.enums.BookStatus;
+import org.group4.module.manager.BookLendingManager;
 import org.group4.module.services.AccountService;
 import org.group4.module.transactions.BookLending;
 import org.group4.dao.BookDAO;
@@ -17,6 +20,7 @@ import org.group4.dao.FactoryDAO;
  */
 public class Librarian extends Person {
 
+  /** The ID of the librarian. */
   String librarianId;
 
   /** The data access object for books. */
@@ -153,24 +157,29 @@ public class Librarian extends Person {
 
   // Book Lending Management Methods
 
+
   /**
-   * Records the borrowing of a book item by a member.
+   * Borrows a book item from the library system.
    *
-   * @param bookLending the {@code BookLending} object representing the lending transaction
+   * @param bookItem the {@code BookItem} object to borrow
+   * @param member the {@code Member} object borrowing the book item
    * @return {@code true} if the book item was borrowed successfully, {@code false} otherwise
    */
-  public boolean borrowBookItem(BookLending bookLending) {
-    return bookLendingDAO.add(bookLending);
+  public boolean borrowBookItem(BookItem bookItem, Member member) {
+    return BookLendingManager.borrowBookItem(bookItem, member);
   }
 
   /**
-   * Records the return of a borrowed book item by a member.
+   * Returns a book item to the library system.
    *
-   * @param bookLending the {@code BookLending} object representing the lending transaction
+   * @param bookItem the {@code BookItem} object to return
+   * @param member the {@code Member} object returning the book item
+   * @param status the {@code BookStatus} to set for the returned book item
    * @return {@code true} if the book item was returned successfully, {@code false} otherwise
    */
-  public boolean returnBookItem(BookLending bookLending) {
-    return bookLendingDAO.update(bookLending);
+  public boolean returnBookItem(BookItem bookItem, Member member, BookStatus status)
+      throws SQLException {
+    return BookLendingManager.returnBookItem(bookItem, member, status);
   }
 
   /**

@@ -13,8 +13,6 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.Message;
-
-import java.time.LocalDate;
 import org.group4.dao.FactoryDAO;
 import org.group4.module.enums.NotificationType;
 
@@ -22,12 +20,15 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;

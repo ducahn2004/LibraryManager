@@ -31,13 +31,13 @@ public class AccountDAO extends BaseDAO implements GenericDAO<Account, String> {
   @Override
   public Optional<Account> getById(String id) {
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(GET_ACCOUNT_BY_ID_SQL)) {
-      stmt.setString(1, id);
-      try (ResultSet rs = stmt.executeQuery()) {
-        if (rs.next()) {
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_ACCOUNT_BY_ID_SQL)) {
+      preparedStatement.setString(1, id);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        if (resultSet.next()) {
           return Optional.of(new Account(
-              rs.getString("id"),
-              rs.getString("password")));
+              resultSet.getString("id"),
+              resultSet.getString("password")));
         }
       }
     } catch (SQLException e) {
@@ -55,10 +55,10 @@ public class AccountDAO extends BaseDAO implements GenericDAO<Account, String> {
   @Override
   public boolean update(Account account) {
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(UPDATE_ACCOUNT_SQL)) {
-      stmt.setString(1, account.getPassword());
-      stmt.setString(2, account.getId());
-      return stmt.executeUpdate() > 0;
+        PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_SQL)) {
+      preparedStatement.setString(1, account.getPassword());
+      preparedStatement.setString(2, account.getId());
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error updating account: {}", account.getId(), e);
     }
