@@ -22,4 +22,5 @@ public class BookItemManager implements GenericManager<BookItem> {
   public boolean delete(String barcode) {
     return bookItemDAO.delete(barcode);
   }
+
 }

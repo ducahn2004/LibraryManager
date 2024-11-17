@@ -25,5 +25,4 @@ public interface GenericManager<T> {
    * @return {@code true} if the entity was deleted successfully, {@code false} otherwise
    */
   boolean delete(String id);
-
 }

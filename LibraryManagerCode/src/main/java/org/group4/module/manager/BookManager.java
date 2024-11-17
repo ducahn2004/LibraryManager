@@ -22,4 +22,5 @@ public class BookManager implements GenericManager<Book> {
   public boolean delete(String id) {
     return bookDAO.delete(id);
   }
+
 }

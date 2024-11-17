@@ -76,7 +76,8 @@ public class BookLendingManager {
         FactoryDAO.getBookLendingDAO().getById(bookItem.getBarcode(), member.getMemberId());
 
     if (bookLendingOptional.isEmpty()) {
-      throw new SQLException("Book lending record not found for book item: " + bookItem.getBarcode());
+      throw new SQLException(
+          "Book lending record not found for book item: " + bookItem.getBarcode());
     }
 
     BookLending bookLending = bookLendingOptional.get();
@@ -98,4 +99,5 @@ public class BookLendingManager {
 
     return true;
   }
+
 }

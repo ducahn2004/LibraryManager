@@ -22,5 +22,4 @@ public class MemberManager implements GenericManager<Member> {
   public boolean delete(String id) {
     return memberDAO.delete(id);
   }
-
 }
