@@ -57,4 +57,15 @@ public class Member extends Person {
   public void setMemberId(String memberId) {
     this.memberId = memberId;
   }
+
+  @Override
+  public String toString() {
+    return "Member{" +
+        "memberId='" + memberId + '\'' +
+        ", name='" + getName() + '\'' +
+        ", dateOfBirth=" + getDateOfBirth() +
+        ", email='" + getEmail() + '\'' +
+        ", phoneNumber='" + getPhoneNumber() + '\'' +
+        '}';
+  }
 }

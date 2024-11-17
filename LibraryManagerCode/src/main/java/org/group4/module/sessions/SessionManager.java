@@ -53,12 +53,4 @@ public class SessionManager {
     this.currentLibrarian = null;
   }
 
-  /**
-   * Checks if a librarian is currently logged in.
-   *
-   * @return {@code true} if a librarian is logged in, {@code false} otherwise
-   */
-  public boolean isLoggedIn() {
-    return currentLibrarian != null;
-  }
 }

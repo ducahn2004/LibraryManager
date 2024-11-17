@@ -14,6 +14,10 @@ import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.Message;
 
+import java.time.LocalDate;
+import org.group4.dao.FactoryDAO;
+import org.group4.module.enums.NotificationType;
+
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
@@ -24,13 +28,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import java.util.Base64;
-import org.group4.module.enums.NotificationType;
-
-import java.time.LocalDate;
 
 /**
  * Class to handle sending email notifications using the Gmail API.
@@ -61,14 +62,23 @@ public class EmailNotification extends Notification {
    * Constructs an {@code EmailNotification} instance with specified type, content, and recipient email.
    *
    * @param type    The type of notification (e.g., ALERT, REMINDER)
-   * @param content The content or message body of the notification
    * @param email   The email address to which the notification is sent
    */
-  public EmailNotification(NotificationType type, String content, String email) {
-    super(type, content);
+  public EmailNotification(NotificationType type, String email) {
+    super(type);
     this.email = email;
   }
 
+  /**
+   * Constructs an {@code EmailNotification} instance with specified ID, type, content, email,
+   * and creation date.
+   *
+   * @param notificationId The unique ID for the email notification
+   * @param type           The type of email notification
+   * @param content        The message or content of the email notification
+   * @param email          The recipient's email address
+   * @param createdOn      The date when the email notification was created
+   */
   public EmailNotification(String notificationId, NotificationType type, String content,
       String email, LocalDate createdOn) {
     super(notificationId, type, content, createdOn);
@@ -76,14 +86,41 @@ public class EmailNotification extends Notification {
   }
 
   /**
-   * Sends the notification by calling the Gmail API to send an email.
+   * Gets the recipient's email address for sending the notification.
    *
-   * @throws Exception If an error occurs during email sending.
+   * @return The recipient's email address.
    */
-  @Override
-  public void sendNotification() throws Exception {
-    String subject = "Library Notification: " + getType();
-    sendEmail("me", "me", email, subject, getContent());
+  public String getEmail() {
+    return email;
+  }
+
+  /**
+   * Sends an email notification to the specified email address.
+   *
+   * @param type    The type of notification to send
+   * @param email   The recipient's email address
+   * @param details Additional details to include in the notification
+   * @throws Exception If an error occurs while sending the email
+   */
+  public static void sendNotification(NotificationType type, String email, String details)
+      throws Exception {
+    EmailNotification emailNotification = new EmailNotification(type, email);
+    String content;
+
+    switch (type) {
+      case FINE_TRANSACTION -> content = "You have a pending fine transaction." + details;
+      case OVERDUE_NOTIFICATION -> content = "You have overdue books to return." + details;
+      case DUE_DATE_REMINDER -> content = "You have books due soon." + details;
+      case FORGOT_PASSWORD -> content = "You have requested a password reset." + details;
+      case BOOK_BORROW_SUCCESS -> content = "You have successfully borrowed a book." + details;
+      case BOOK_RETURN_SUCCESS -> content = "You have successfully returned a book." + details;
+      default -> content = "This is a email notification.";
+    }
+
+    String subject = "Library Notification: " + type;
+    emailNotification.setContent(content);
+    FactoryDAO.getEmailNotificationDAO().add(emailNotification);
+    sendEmail("me", "me", email, subject, content);
   }
 
   /**
@@ -175,5 +212,4 @@ public class EmailNotification extends Notification {
     message.setRaw(encodedEmail);
     service.users().messages().send(userId, message).execute();
   }
-
 }

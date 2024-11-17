@@ -8,8 +8,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.group4.module.services.AccountService;
 
 public class SettingController {
+
+  AccountService accountService = new AccountService();
 
 
   @FXML

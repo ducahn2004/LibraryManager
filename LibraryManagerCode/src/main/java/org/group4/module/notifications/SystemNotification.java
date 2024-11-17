@@ -1,39 +1,72 @@
 package org.group4.module.notifications;
 
+import org.group4.dao.FactoryDAO;
 import org.group4.module.enums.NotificationType;
 
 import java.time.LocalDate;
 
 /**
- * Represents a system-level notification that is intended to be displayed or logged within the system.
- * This notification type is categorized under {@link NotificationType#SYSTEM}.
+ * Represents a system notification with a unique ID, creation date, type, and content.
+ * This class extends the Notification class and is used to send system notifications
+ * to users, such as reminders, alerts, and updates.
  */
 public class SystemNotification extends Notification {
 
   /**
-   * Constructs a SystemNotification with the specified content.
-   * <p>This notification is automatically assigned the type {@link NotificationType#SYSTEM}.</p>
+   * Constructs a SystemNotification with the specified type and content.
    *
-   * @param content The message or content of the system notification.
+   * @param type    The type of system notification, as defined by NotificationType
    */
-  public SystemNotification(String content) {
-    super(NotificationType.SYSTEM, content);
+  public SystemNotification(NotificationType type) {
+    super(type);
   }
 
   /**
-   * Constructs a SystemNotification with the specified ID, content, and creation date.
-   * <p>This notification is automatically assigned the type {@link NotificationType#SYSTEM}.</p>
+   * Constructs a SystemNotification with the specified ID, type, content, and creation date.
    *
    * @param notificationId The unique ID for the system notification
-   * @param content The message or content of the system notification
-   * @param createdOn The date when the system notification was created
+   * @param type           The type of system notification, as defined by NotificationType
+   * @param content        The message or content of the system notification
+   * @param createdOn      The date when the system notification was created
    */
-  public SystemNotification(String notificationId, String content, LocalDate createdOn) {
-    super(notificationId, NotificationType.SYSTEM, content, createdOn);
+  public SystemNotification(String notificationId, NotificationType type, String content,
+      LocalDate createdOn) {
+    super(notificationId, type, content, createdOn);
   }
 
-  @Override
-  public void sendNotification() throws Exception {
+  /**
+   * Sends a system notification with the specified type and details.
+   * The content of the notification is generated based on the type and details provided.
+   *
+   * @param type    The type of system notification to send
+   * @param details The details or message to include in the notification
+   */
+  public static void sendNotification(NotificationType type, String details) {
+    SystemNotification notification = new SystemNotification(type);
+    String content = switch (type) {
+      case ADD_BOOK_SUCCESS ->
+          "The book has been successfully added to the library. Details: " + details;
+      case DELETE_BOOK_SUCCESS ->
+          "The book has been successfully deleted from the library. Details: " + details;
+      case UPDATE_BOOK_SUCCESS ->
+          "The book has been successfully updated in the library. Details: " + details;
+      case ADD_BOOK_ITEM_SUCCESS ->
+          "The book item has been successfully added to the library. Details: " + details;
+      case DELETE_BOOK_ITEM_SUCCESS ->
+          "The book item has been successfully deleted from the library. Details: " + details;
+      case UPDATE_BOOK_ITEM_SUCCESS ->
+          "The book item has been successfully updated in the library. Details: " + details;
+      case ADD_MEMBER_SUCCESS ->
+          "The member has been successfully added to the library. Details: " + details;
+      case DELETE_MEMBER_SUCCESS ->
+          "The member has been successfully deleted from the library. Details: " + details;
+      case UPDATE_MEMBER_SUCCESS ->
+          "The member has been successfully updated in the library. Details: " + details;
+      default -> "This is a system notification. Details: " + details;
+    };
 
+    notification.setContent(content);
+    FactoryDAO.getSystemNotificationDAO().add(notification);
   }
+
 }

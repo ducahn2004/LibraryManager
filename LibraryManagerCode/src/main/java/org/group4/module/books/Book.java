@@ -192,4 +192,17 @@ public class Book {
         .map(Author::getName)
         .collect(Collectors.joining(", "));
   }
+
+  @Override
+  public String toString() {
+    return "Book{" +
+        "ISBN='" + ISBN + '\'' +
+        ", title='" + title + '\'' +
+        ", subject='" + subject + '\'' +
+        ", publisher='" + publisher + '\'' +
+        ", language='" + language + '\'' +
+        ", numberOfPages=" + numberOfPages +
+        ", authors=" + authors +
+        '}';
+  }
 }

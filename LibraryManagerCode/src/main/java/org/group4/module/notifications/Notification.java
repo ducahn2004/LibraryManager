@@ -29,14 +29,13 @@ public abstract class Notification {
    * <p>The notification ID is generated using the type and the current timestamp.</p>
    *
    * @param type    The type of notification, as defined by NotificationType
-   * @param content The message or content of the notification
    */
-  public Notification(NotificationType type, String content) {
+  public Notification(NotificationType type) {
     this.notificationId = type.toString() + LocalDateTime.now()
         .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     this.createdOn = LocalDate.now();
     this.type = type;
-    this.content = content;
+    this.content = "";
   }
 
   /**
@@ -47,7 +46,8 @@ public abstract class Notification {
    * @param content        The message or content of the notification
    * @param createdOn      The date when the notification was created
    */
-  public Notification(String notificationId, NotificationType type, String content, LocalDate createdOn) {
+  public Notification(String notificationId, NotificationType type, String content,
+      LocalDate createdOn) {
     this.notificationId = notificationId;
     this.createdOn = createdOn;
     this.type = type;
@@ -98,12 +98,4 @@ public abstract class Notification {
   public void setContent(String content) {
     this.content = content;
   }
-
-  /**
-   * Abstract method to send the notification.
-   * <p>Implementations of this method should handle the specific logic for
-   * sending the notification based on the notification type and other properties.</p>
-   */
-  public abstract void sendNotification() throws Exception;
-
 }

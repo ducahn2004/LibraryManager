@@ -299,4 +299,20 @@ public class BookItem extends Book {
   public boolean checkOut() {
     return !isReferenceOnly && status == BookStatus.AVAILABLE;
   }
+
+  @Override
+  public String toString() {
+    return "BookItem{" +
+        "barcode='" + barcode + '\'' +
+        ", isReferenceOnly=" + isReferenceOnly +
+        ", borrowed=" + borrowed +
+        ", dueDate=" + dueDate +
+        ", price=" + price +
+        ", format=" + format +
+        ", status=" + status +
+        ", dateOfPurchase=" + dateOfPurchase +
+        ", publicationDate=" + publicationDate +
+        ", placedAt=" + placedAt +
+        '}';
+  }
 }
