@@ -19,7 +19,7 @@ public class FineTransaction {
     return creationDate;
   }
 
-  public boolean processFinePayment() {
-    return fine.getAmount() > 0;
+  public boolean payFine(double amount) {
+    return !(fine.getAmount() > amount);
   }
 }

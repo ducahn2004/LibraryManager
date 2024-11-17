@@ -17,9 +17,13 @@ import org.slf4j.LoggerFactory;
  */
 public class AccountDAO extends BaseDAO implements GenericDAO<Account, String> {
 
+  /** The logger for AccountDAO. */
   private static final Logger logger = LoggerFactory.getLogger(AccountDAO.class);
 
+  /** SQL query to retrieve an account by its ID. */
   private static final String GET_ACCOUNT_BY_ID_SQL = "SELECT * FROM account WHERE id = ?";
+
+  /** SQL query to update an account's password. */
   private static final String UPDATE_ACCOUNT_SQL = "UPDATE account SET password = ? WHERE id = ?";
 
   /**

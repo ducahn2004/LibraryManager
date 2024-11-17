@@ -2,38 +2,37 @@ package org.group4.module.users;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+
 import org.group4.module.books.Book;
 import org.group4.module.books.BookItem;
 import org.group4.module.enums.BookStatus;
+import org.group4.module.manager.BookItemManager;
 import org.group4.module.manager.BookLendingManager;
-import org.group4.module.services.AccountService;
+import org.group4.module.manager.BookManager;
+import org.group4.module.manager.MemberManager;
 import org.group4.module.transactions.BookLending;
-import org.group4.dao.BookDAO;
-import org.group4.dao.BookItemDAO;
-import org.group4.dao.BookLendingDAO;
-import org.group4.dao.MemberDAO;
-import org.group4.dao.FactoryDAO;
+
 
 /**
- * The {@code Librarian} class represents a librarian with the ability to manage books,
- * members, and lending processes within the library system.
+ * The {@code Librarian} class represents a librarian in the library system. It provides methods to
+ * manage books, book items, members, and book lending operations.
  */
 public class Librarian extends Person {
 
   /** The ID of the librarian. */
   String librarianId;
 
-  /** The data access object for books. */
-  private final BookDAO bookDAO = FactoryDAO.getBookDAO();
+  /** The manager for book-related operations. */
+  private final BookManager bookManager = new BookManager();
 
-  /** The data access object for book items. */
-  private final BookItemDAO bookItemDAO = FactoryDAO.getBookItemDAO();
+  /** The manager for book item-related operations. */
+  private final BookItemManager bookItemManager = new BookItemManager();
 
-  /** The data access object for members. */
-  private final MemberDAO memberDAO = FactoryDAO.getMemberDAO();
+  /** The manager for member-related operations. */
+  private final MemberManager memberManager = new MemberManager();
 
-  /** The data access object for book lendings. */
-  private final BookLendingDAO bookLendingDAO = FactoryDAO.getBookLendingDAO();
+  /** The manager for book lending-related operations. */
+  private final BookLendingManager bookLendingDAO = new BookLendingManager();
 
   /**
    * Constructs a {@code Librarian} object with the specified details and account credentials.
@@ -68,7 +67,7 @@ public class Librarian extends Person {
    * @return {@code true} if the book was added successfully, {@code false} otherwise
    */
   public boolean addBook(Book book) {
-    return bookDAO.add(book);
+    return bookManager.add(book);
   }
 
   /**
@@ -78,7 +77,7 @@ public class Librarian extends Person {
    * @return {@code true} if the book was deleted successfully, {@code false} otherwise
    */
   public boolean deleteBook(String isbn) {
-    return bookDAO.delete(isbn);
+    return bookManager.delete(isbn);
   }
 
   /**
@@ -88,7 +87,7 @@ public class Librarian extends Person {
    * @return {@code true} if the book was updated successfully, {@code false} otherwise
    */
   public boolean updateBook(Book book) {
-    return bookDAO.update(book);
+    return bookManager.update(book);
   }
 
   // BookItem Management Methods
@@ -100,7 +99,7 @@ public class Librarian extends Person {
    * @return {@code true} if the book item was added successfully, {@code false} otherwise
    */
   public boolean addBookItem(BookItem bookItem) {
-    return bookItemDAO.add(bookItem);
+    return bookItemManager.add(bookItem);
   }
 
   /**
@@ -110,7 +109,7 @@ public class Librarian extends Person {
    * @return {@code true} if the book item was deleted successfully, {@code false} otherwise
    */
   public boolean deleteBookItem(String barcode) {
-    return bookItemDAO.delete(barcode);
+    return bookItemManager.delete(barcode);
   }
 
   /**
@@ -120,7 +119,7 @@ public class Librarian extends Person {
    * @return {@code true} if the book item was updated successfully, {@code false} otherwise
    */
   public boolean updateBookItem(BookItem bookItem) {
-    return bookItemDAO.update(bookItem);
+    return bookItemManager.update(bookItem);
   }
 
   // Member Management Methods
@@ -132,7 +131,7 @@ public class Librarian extends Person {
    * @return {@code true} if the member was added successfully, {@code false} otherwise
    */
   public boolean addMember(Member member) {
-    return memberDAO.add(member);
+    return memberManager.add(member);
   }
 
   /**
@@ -142,7 +141,7 @@ public class Librarian extends Person {
    * @return {@code true} if the member was deleted successfully, {@code false} otherwise
    */
   public boolean deleteMember(String memberId) {
-    return memberDAO.delete(memberId);
+    return memberManager.delete(memberId);
   }
 
   /**
@@ -152,7 +151,7 @@ public class Librarian extends Person {
    * @return {@code true} if the member was updated successfully, {@code false} otherwise
    */
   public boolean updateMember(Member member) {
-    return memberDAO.update(member);
+    return memberManager.update(member);
   }
 
   // Book Lending Management Methods
@@ -180,15 +179,5 @@ public class Librarian extends Person {
   public boolean returnBookItem(BookItem bookItem, Member member, BookStatus status)
       throws SQLException {
     return BookLendingManager.returnBookItem(bookItem, member, status);
-  }
-
-  /**
-   * Deletes a book lending record from the library system.
-   *
-   * @param bookLending the {@code BookLending} object representing the lending transaction
-   * @return {@code true} if the lending record was deleted successfully, {@code false} otherwise
-   */
-  public boolean deleteBookLending(BookLending bookLending) {
-    return bookLendingDAO.delete(bookLending);
   }
 }
