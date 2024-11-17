@@ -21,28 +21,28 @@ import org.slf4j.LoggerFactory;
 
 public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, BookLending> {
 
-  /** Logger for BookLendingDAO class. */
+  /** Logger cho lớp BookLendingDAO. */
   private static final Logger logger = LoggerFactory.getLogger(BookLendingDAO.class);
 
-  /** SQL query to add a new book lending to the database. */
+  /** Câu lệnh SQL để thêm một book lending mới vào cơ sở dữ liệu. */
   private static final String ADD_BOOK_LENDING_SQL =
       "INSERT INTO book_lendings (barcode, memberId, lendingDate, dueDate, returnDate) "
           + "VALUES (?, ?, ?, ?, ?)";
 
-  /** SQL query to update an existing book lending in the database. */
+  /** Câu lệnh SQL để cập nhật một book lending hiện có trong cơ sở dữ liệu. */
   private static final String UPDATE_BOOK_LENDING_SQL =
       "UPDATE book_lendings SET lendingDate = ?, dueDate = ?, returnDate = ? "
           + "WHERE barcode = ? AND memberId = ?";
 
-  /** SQL query to delete a book lending from the database by barcode and member ID. */
+  /** Câu lệnh SQL để xóa một book lending khỏi cơ sở dữ liệu bằng barcode và member ID. */
   private static final String DELETE_BOOK_LENDING_SQL =
       "DELETE FROM book_lendings WHERE barcode = ? AND memberId = ?";
 
-  /** SQL query to find a book lending by barcode and member ID. */
+  /** Câu lệnh SQL để tìm một book lending bằng barcode và member ID. */
   private static final String GET_BOOK_LENDING_BY_ID_SQL =
       "SELECT * FROM book_lendings WHERE barcode = ? AND memberId = ?";
 
-  /** SQL query to find all book lendings in the database. */
+  /** Câu lệnh SQL để tìm tất cả các book lendings trong cơ sở dữ liệu. */
   private static final String GET_ALL_BOOK_LENDINGS_SQL = "SELECT * FROM book_lendings";
 
   @Override
@@ -52,7 +52,7 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
       setBookLendingData(stmt, bookLending, false);
       return stmt.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error adding book lending: {}", bookLending, e);
+      logger.error("Lỗi khi thêm book lending: {}", bookLending, e);
       return false;
     }
   }
@@ -64,7 +64,7 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
       setBookLendingData(stmt, bookLending, true);
       return stmt.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error updating book lending: {}", bookLending, e);
+      logger.error("Lỗi khi cập nhật book lending: {}", bookLending, e);
       return false;
     }
   }
@@ -77,7 +77,7 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
       stmt.setString(2, bookLending.getMember().getMemberId());
       return stmt.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error deleting book lending: {}", bookLending, e);
+      logger.error("Lỗi khi xóa book lending: {}", bookLending, e);
       return false;
     }
   }
@@ -94,7 +94,7 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
         }
       }
     } catch (SQLException e) {
-      logger.error("Error finding book lending by ID: {}", bookLending, e);
+      logger.error("Lỗi khi tìm book lending bằng ID: {}", bookLending, e);
     }
     return Optional.empty();
   }
@@ -109,17 +109,17 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
         bookLendings.add(mapRowToBookLending(rs));
       }
     } catch (SQLException e) {
-      logger.error("Error finding all book lendings", e);
+      logger.error("Lỗi khi tìm tất cả book lendings", e);
     }
     return bookLendings;
   }
 
   /**
-   * Maps a row in a ResultSet to a BookLending object.
+   * Ánh xạ một hàng trong ResultSet thành đối tượng BookLending.
    *
-   * @param resultSet the ResultSet to map
-   * @return the BookLending object mapped from the ResultSet
-   * @throws SQLException if an SQL error occurs during mapping
+   * @param resultSet ResultSet để ánh xạ
+   * @return đối tượng BookLending được ánh xạ từ ResultSet
+   * @throws SQLException nếu có lỗi SQL xảy ra trong quá trình ánh xạ
    */
   private BookLending mapRowToBookLending(ResultSet resultSet) throws SQLException {
     Optional<BookItem> bookItemOpt =
@@ -128,24 +128,24 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
         FactoryDAO.getMemberDAO().getById(resultSet.getString("memberId"));
 
     if (bookItemOpt.isPresent() && memberOpt.isPresent()) {
-        BookItem bookItem = bookItemOpt.get();
-        Member member = memberOpt.get();
-        LocalDate lendingDate = resultSet.getDate("lendingDate").toLocalDate();
-        LocalDate dueDate = resultSet.getDate("dueDate").toLocalDate();
-        LocalDate returnDate = resultSet.getDate("returnDate") != null ? resultSet.getDate("returnDate").toLocalDate() : null;
-        return new BookLending(bookItem, member, lendingDate, dueDate, returnDate);
+      BookItem bookItem = bookItemOpt.get();
+      Member member = memberOpt.get();
+      LocalDate lendingDate = resultSet.getDate("lendingDate").toLocalDate();
+      LocalDate dueDate = resultSet.getDate("dueDate").toLocalDate();
+      LocalDate returnDate = resultSet.getDate("returnDate") != null ? resultSet.getDate("returnDate").toLocalDate() : null;
+      return new BookLending(bookItem, member, lendingDate, dueDate, returnDate);
     } else {
-        throw new SQLException("BookItem or Member not found for the given IDs.");
+      throw new SQLException("Không tìm thấy BookItem hoặc Member với các ID đã cho.");
     }
   }
 
   /**
-   * Sets the data for a BookLending object in a PreparedStatement.
+   * Thiết lập dữ liệu cho một đối tượng BookLending trong PreparedStatement.
    *
-   * @param preparedStatement the PreparedStatement to set data in
-   * @param bookLending the BookLending object to set data from
-   * @param isUpdate true if the PreparedStatement is for an update, false if for an insert
-   * @throws SQLException if an SQL error occurs during setting data
+   * @param preparedStatement PreparedStatement để thiết lập dữ liệu
+   * @param bookLending đối tượng BookLending để lấy dữ liệu
+   * @param isUpdate true nếu PreparedStatement là cho cập nhật, false nếu cho thêm mới
+   * @throws SQLException nếu có lỗi SQL xảy ra trong quá trình thiết lập dữ liệu
    */
   private void setBookLendingData(PreparedStatement preparedStatement, BookLending bookLending,
       boolean isUpdate) throws SQLException {
@@ -159,14 +159,14 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
     preparedStatement.setDate(index++, Date.valueOf(bookLending.getLendingDate()));
     preparedStatement.setDate(index++, Date.valueOf(bookLending.getDueDate()));
 
-    // Set return date if present, else set to NULL
+    // Thiết lập ngày trả nếu có, nếu không thì thiết lập NULL
     if (bookLending.getReturnDate().isPresent()) {
       preparedStatement.setDate(index++, Date.valueOf(bookLending.getReturnDate().get()));
     } else {
       preparedStatement.setNull(index++, Types.DATE);
     }
 
-    // Set remaining fields for update if necessary
+    // Thiết lập các trường còn lại cho cập nhật nếu cần thiết
     if (isUpdate) {
       preparedStatement.setString(index++, bookLending.getBookItem().getBarcode());
       preparedStatement.setString(index, bookLending.getMember().getMemberId());

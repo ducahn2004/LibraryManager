@@ -13,8 +13,8 @@ public class Connector {
     public static Connection getConnection() {
       if (connection == null) {
         try {
-          connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/book",
-              "root",
+          connection = DriverManager.getConnection("jdbc:mysql://192.168.31.193:3307/book",
+              "Satoh",
               "Tranducanh2004@");
         } catch (SQLException e) {
           e.printStackTrace();

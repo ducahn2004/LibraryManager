@@ -14,52 +14,63 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Data Access Object (DAO) class for CRUD operations on the {@link Author} entity in the database.
- * This class provides methods to add, update, delete, and retrieve authors using JDBC connection.
- * Each method is executed within a try-with-resources statement to ensure proper resource handling.
+ * Lớp DAO (Data Access Object) phục vụ cho việc thao tác dữ liệu của thực thể {@link Author}.
+ * Lớp này cung cấp các phương thức thêm, sửa, xóa, và truy vấn thông tin từ bảng "authors" trong cơ sở dữ liệu.
  */
 public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
 
-  /** The logger for AuthorDAO. */
+  /** Logger cho lớp AuthorDAO. */
   private static final Logger logger = LoggerFactory.getLogger(AuthorDAO.class);
 
-  /** SQL query to add a new author to the database. */
+  /** Câu lệnh SQL để thêm tác giả mới vào cơ sở dữ liệu. */
   private static final String ADD_AUTHOR_SQL = "INSERT INTO authors (author_id, name) VALUES (?, ?)";
 
-  /** SQL query to update an existing author in the database. */
+  /** Câu lệnh SQL để cập nhật thông tin tác giả trong cơ sở dữ liệu. */
   private static final String UPDATE_AUTHOR_SQL = "UPDATE authors SET name = ? WHERE author_id = ?";
 
-  /** SQL query to delete an author from the database by ID. */
+  /** Câu lệnh SQL để xóa tác giả khỏi cơ sở dữ liệu dựa trên ID. */
   private static final String DELETE_AUTHOR_SQL = "DELETE FROM authors WHERE author_id = ?";
 
-  /** SQL query to find an author by ID. */
+  /** Câu lệnh SQL để tìm tác giả theo ID. */
   private static final String GET_AUTHOR_BY_ID_SQL = "SELECT * FROM authors WHERE author_id = ?";
 
-  /** SQL query to find all authors in the database. */
+  /** Câu lệnh SQL để lấy tất cả các tác giả từ cơ sở dữ liệu. */
   private static final String GET_ALL_AUTHORS_SQL = "SELECT * FROM authors";
 
-  /** SQL query to find the maximum author_id in the database. */
+  /** Câu lệnh SQL để tìm ID lớn nhất của tác giả trong cơ sở dữ liệu. */
   private static final String GET_MAX_AUTHOR_ID_SQL = "SELECT MAX(author_id) AS max_id FROM authors";
 
+  /**
+   * Thêm một tác giả mới vào cơ sở dữ liệu.
+   *
+   * @param author đối tượng Author cần thêm.
+   * @return {@code true} nếu thêm thành công, {@code false} nếu thất bại.
+   */
   @Override
   public boolean add(Author author) {
     try (Connection connection = getConnection()) {
-      // Generate new Author ID
+      // Tạo ID mới cho tác giả
       String newAuthorId = generateAuthorId(connection);
       author.setAuthorId(newAuthorId);
 
-      // Prepare and execute the SQL INSERT statement
+      // Chuẩn bị và thực thi câu lệnh SQL INSERT
       try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_AUTHOR_SQL)) {
         preparedStatement.setString(1, author.getAuthorId());
         preparedStatement.setString(2, author.getName());
         return preparedStatement.executeUpdate() > 0;
       }
     } catch (SQLException e) {
-      logger.error("Error adding author: {}", author.getAuthorId(), e);
+      logger.error("Lỗi khi thêm tác giả: {}", author.getAuthorId(), e);
     }
     return false;
   }
 
+  /**
+   * Cập nhật thông tin tác giả trong cơ sở dữ liệu.
+   *
+   * @param author đối tượng Author chứa thông tin cần cập nhật.
+   * @return {@code true} nếu cập nhật thành công, {@code false} nếu thất bại.
+   */
   @Override
   public boolean update(Author author) {
     try (Connection connection = getConnection();
@@ -68,11 +79,17 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
       preparedStatement.setString(2, author.getAuthorId());
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error updating author with ID {}: {}", author.getAuthorId(), e.getMessage());
+      logger.error("Lỗi khi cập nhật tác giả với ID {}: {}", author.getAuthorId(), e.getMessage());
     }
     return false;
   }
 
+  /**
+   * Xóa một tác giả khỏi cơ sở dữ liệu dựa trên ID.
+   *
+   * @param authorId ID của tác giả cần xóa.
+   * @return {@code true} nếu xóa thành công, {@code false} nếu thất bại.
+   */
   @Override
   public boolean delete(String authorId) {
     try (Connection connection = getConnection();
@@ -80,11 +97,17 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
       preparedStatement.setString(1, authorId);
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error deleting author with ID {}: {}", authorId, e.getMessage());
+      logger.error("Lỗi khi xóa tác giả với ID {}: {}", authorId, e.getMessage());
     }
     return false;
   }
 
+  /**
+   * Tìm một tác giả theo ID.
+   *
+   * @param authorId ID của tác giả cần tìm.
+   * @return {@code Optional<Author>} chứa đối tượng Author nếu tìm thấy, hoặc rỗng nếu không có.
+   */
   @Override
   public Optional<Author> getById(String authorId) {
     try (Connection connection = getConnection();
@@ -96,11 +119,16 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
         }
       }
     } catch (SQLException e) {
-      logger.error("Error finding author by ID {}: {}", authorId, e.getMessage());
+      logger.error("Lỗi khi tìm tác giả theo ID {}: {}", authorId, e.getMessage());
     }
     return Optional.empty();
   }
 
+  /**
+   * Lấy tất cả các tác giả từ cơ sở dữ liệu.
+   *
+   * @return {@code Set<Author>} tập hợp các đối tượng Author.
+   */
   @Override
   public Set<Author> getAll() {
     Set<Author> authors = new HashSet<>();
@@ -112,17 +140,17 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
         authors.add(mapRowToAuthor(resultSet));
       }
     } catch (SQLException e) {
-      logger.error("Error retrieving all authors: {}", e.getMessage());
+      logger.error("Lỗi khi lấy danh sách tất cả tác giả: {}", e.getMessage());
     }
     return authors;
   }
 
   /**
-   * Maps a row from the {@link ResultSet} to an {@link Author} object.
+   * Ánh xạ một hàng từ {@link ResultSet} sang đối tượng {@link Author}.
    *
-   * @param resultSet the {@link ResultSet} from which to map the author data.
-   * @return an {@link Author} object populated with data from the current row in {@link ResultSet}.
-   * @throws SQLException if a database access error occurs.
+   * @param resultSet kết quả truy vấn từ cơ sở dữ liệu.
+   * @return đối tượng Author chứa dữ liệu ánh xạ từ ResultSet.
+   * @throws SQLException nếu có lỗi truy vấn.
    */
   private Author mapRowToAuthor(ResultSet resultSet) throws SQLException {
     String authorId = formatAuthorId(resultSet.getInt("author_id"));
@@ -131,20 +159,21 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   }
 
   /**
-   * Formats an author ID with the "AUTHOR-" prefix and zero padding for consistency.
+   * Định dạng ID tác giả theo tiền tố "AUTHOR-" và đệm số 0 để đảm bảo nhất quán.
    *
-   * @param id the raw integer ID from the database.
-   * @return the formatted author ID string with prefix.
+   * @param id ID dạng số từ cơ sở dữ liệu.
+   * @return chuỗi ID đã định dạng với tiền tố.
    */
   private String formatAuthorId(int id) {
     return "AUTHOR-" + String.format("%03d", id);
   }
 
   /**
-   * Generates a new Author ID by finding the current maximum ID and incrementing it.
-   * @param connection The database connection.
-   * @return A new unique Author ID in the format AUTHOR-XXX.
-   * @throws SQLException If a database access error occurs.
+   * Tạo ID mới cho tác giả bằng cách tìm ID lớn nhất hiện tại và tăng lên 1.
+   *
+   * @param connection kết nối cơ sở dữ liệu.
+   * @return ID mới dạng "AUTHOR-XXX".
+   * @throws SQLException nếu có lỗi truy vấn.
    */
   private String generateAuthorId(Connection connection) throws SQLException {
     try (PreparedStatement statement = connection.prepareStatement(GET_MAX_AUTHOR_ID_SQL);
@@ -152,13 +181,13 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
       if (resultSet.next()) {
         String maxId = resultSet.getString("max_id");
         if (maxId != null) {
-          // Extract the numeric part, increment it, and format the new ID
+          // Lấy phần số, tăng lên 1 và định dạng lại ID
           int nextId = Integer.parseInt(maxId.replace("AUTHOR-", "")) + 1;
-          return formatAuthorId(nextId); // Reuse the formatAuthorId method
+          return formatAuthorId(nextId);
         }
       }
     }
-    return formatAuthorId(1); // Default ID if no records exist
+    return formatAuthorId(1); // ID mặc định nếu không có bản ghi nào
   }
 
 }

@@ -13,29 +13,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The {@code AccountDAO} class is responsible for handling database operations
- * related to {@code Account} objects, such as verifying credentials and updating accounts.
+ * Lớp {@code AccountDAO} chịu trách nhiệm xử lý các thao tác cơ sở dữ liệu liên quan đến
+ * đối tượng {@code Account}, như xác minh thông tin đăng nhập và cập nhật tài khoản.
  */
 public class AccountDAO extends BaseDAO {
 
-  /** Logger for the AccountDAO class. */
+  /** Logger cho lớp AccountDAO. */
   private static final Logger logger = LoggerFactory.getLogger(AccountDAO.class);
 
-  /** SQL query to retrieve an account by its ID from the database. */
+  /** Câu lệnh SQL để lấy thông tin tài khoản dựa vào ID từ cơ sở dữ liệu. */
   private static final String GET_ACCOUNT_BY_ID_SQL = "SELECT * FROM account WHERE id = ?";
 
-  /** SQL query to update an account's password in the database. */
+  /** Câu lệnh SQL để cập nhật mật khẩu của tài khoản trong cơ sở dữ liệu. */
   private static final String UPDATE_ACCOUNT_SQL = "UPDATE account SET password = ? WHERE id = ?";
 
-  /** SQL query to retrieve an account's password from the database. */
+  /** Câu lệnh SQL để lấy mật khẩu của tài khoản từ cơ sở dữ liệu. */
   private static final String GET_ACCOUNT_PASSWORD_SQL = "SELECT password FROM account WHERE id = ?";
 
   /**
-   * Retrieves an account by its ID from the database.
+   * Lấy tài khoản dựa vào ID từ cơ sở dữ liệu.
    *
-   * @param id the account ID
-   * @return an {@code Optional} containing the account if found,
-   *         or an empty {@code Optional} otherwise
+   * @param id ID của tài khoản
+   * @return {@code Optional} chứa tài khoản nếu tìm thấy,
+   *         hoặc một {@code Optional} rỗng nếu không tìm thấy
    */
   public Optional<Account> getById(String id) {
     try (Connection connection = getConnection();
@@ -48,17 +48,16 @@ public class AccountDAO extends BaseDAO {
         }
       }
     } catch (SQLException e) {
-      logger.error("Error retrieving account by ID: {}", id, e);
+      logger.error("Lỗi khi lấy tài khoản bằng ID: {}", id, e);
     }
     return Optional.empty();
   }
 
-
   /**
-   * Updates the account's password in the database.
+   * Cập nhật mật khẩu của tài khoản trong cơ sở dữ liệu.
    *
-   * @param account the account object with updated information
-   * @return {@code true} if the update was successful, {@code false} otherwise
+   * @param account đối tượng tài khoản với thông tin đã được cập nhật
+   * @return {@code true} nếu cập nhật thành công, {@code false} nếu thất bại
    */
   public boolean update(Account account) {
     try (Connection connection = getConnection();
@@ -67,17 +66,17 @@ public class AccountDAO extends BaseDAO {
       preparedStatement.setString(2, account.getId());
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error updating account: {}", account.getId(), e);
+      logger.error("Lỗi khi cập nhật tài khoản: {}", account.getId(), e);
       return false;
     }
   }
 
   /**
-   * Retrieves the stored hashed password for the given account ID.
+   * Lấy mật khẩu đã được mã hóa lưu trữ trong cơ sở dữ liệu cho một ID tài khoản cụ thể.
    *
-   * @param id the account ID
-   * @return an {@code Optional} containing the hashed password if it exists,
-   *         or an empty {@code Optional} if not found
+   * @param id ID của tài khoản
+   * @return {@code Optional} chứa mật khẩu mã hóa nếu tồn tại,
+   *         hoặc một {@code Optional} rỗng nếu không tìm thấy
    */
   public Optional<String> getStoredHashedPassword(String id) {
     try (Connection connection = getConnection();
@@ -89,24 +88,24 @@ public class AccountDAO extends BaseDAO {
         }
       }
     } catch (SQLException e) {
-      logger.error("Error retrieving hashed password for account ID: {}", id, e);
+      logger.error("Lỗi khi lấy mật khẩu mã hóa cho tài khoản ID: {}", id, e);
     }
     return Optional.empty();
   }
 
   /**
-   * Verifies if the provided credentials match the stored hashed password for the account ID.
+   * Xác minh thông tin đăng nhập bằng cách kiểm tra mật khẩu đã mã hóa.
    *
-   * @param id       the account ID
-   * @param password the plain text password to verify
-   * @return {@code true} if the provided password matches the stored hashed password,
-   *         {@code false} otherwise
+   * @param id       ID của tài khoản
+   * @param password mật khẩu dạng văn bản thường để xác minh
+   * @return {@code true} nếu mật khẩu khớp với mật khẩu đã lưu trữ,
+   *         {@code false} nếu không khớp
    */
   public boolean verifyCredentials(String id, String password) {
-    // Fetch the stored hashed password for the account from the database
+    // Lấy mật khẩu mã hóa đã lưu trữ từ cơ sở dữ liệu
     Optional<String> storedHashedPassword = getStoredHashedPassword(id);
 
-    // Check if the password matches
+    // Kiểm tra mật khẩu
     return storedHashedPassword.isPresent() && BCrypt.checkpw(password, storedHashedPassword.get());
   }
 }
