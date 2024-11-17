@@ -46,13 +46,13 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
    * @return true if the notification was added successfully, false otherwise.
    */
   public boolean add(SystemNotification systemNotification) {
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(ADD_NOTIFICATION_SQL)) {
-      stmt.setString(1, systemNotification.getNotificationId());
-      stmt.setString(2, systemNotification.getType().toString());
-      stmt.setString(3, systemNotification.getContent());
-      stmt.setDate(4, Date.valueOf(systemNotification.getCreatedOn()));
-      return stmt.executeUpdate() > 0;
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(ADD_NOTIFICATION_SQL)) {
+      preparedStatement.setString(1, systemNotification.getNotificationId());
+      preparedStatement.setString(2, systemNotification.getType().toString());
+      preparedStatement.setString(3, systemNotification.getContent());
+      preparedStatement.setDate(4, Date.valueOf(systemNotification.getCreatedOn()));
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error adding system notification: {}", systemNotification, e);
       return false;
@@ -66,10 +66,10 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
    * @return true if the notification was deleted successfully, false otherwise.
    */
   public boolean delete(String notificationId) {
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(DELETE_NOTIFICATION_SQL)) {
-      stmt.setString(1, notificationId);
-      return stmt.executeUpdate() > 0;
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_NOTIFICATION_SQL)) {
+      preparedStatement.setString(1, notificationId);
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error deleting system notification: {}", notificationId, e);
       return false;
@@ -83,12 +83,12 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
    * @return An Optional containing the SystemNotification if found, or an empty Optional otherwise.
    */
   public Optional<SystemNotification> getById(String notificationId) {
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(GET_NOTIFICATION_BY_ID_SQL)) {
-      stmt.setString(1, notificationId);
-      try (ResultSet rs = stmt.executeQuery()) {
-        if (rs.next()) {
-          return Optional.of(mapRowToSystemNotification(rs));
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_NOTIFICATION_BY_ID_SQL)) {
+      preparedStatement.setString(1, notificationId);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        if (resultSet.next()) {
+          return Optional.of(mapRowToSystemNotification(resultSet));
         }
       }
     } catch (SQLException e) {
@@ -104,9 +104,9 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
    */
   public List<SystemNotification> getAll() {
     List<SystemNotification> notifications = new ArrayList<>();
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(GET_ALL_NOTIFICATIONS_SQL);
-        ResultSet rs = stmt.executeQuery()) {
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_NOTIFICATIONS_SQL);
+        ResultSet rs = preparedStatement.executeQuery()) {
       while (rs.next()) {
         notifications.add(mapRowToSystemNotification(rs));
       }
@@ -119,15 +119,15 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
   /**
    * Maps a ResultSet row to a SystemNotification object.
    *
-   * @param rs The ResultSet containing the row data.
+   * @param resultSet The ResultSet containing the row data.
    * @return A SystemNotification object.
    * @throws SQLException If an error occurs while mapping the data.
    */
-  private SystemNotification mapRowToSystemNotification(ResultSet rs) throws SQLException {
+  private SystemNotification mapRowToSystemNotification(ResultSet resultSet) throws SQLException {
     return new SystemNotification(
-        rs.getString("notificationId"),
-        NotificationType.valueOf(rs.getString("type")),
-        rs.getString("content"),
-        rs.getDate("createdOn").toLocalDate());
+        resultSet.getString("notificationId"),
+        NotificationType.valueOf(resultSet.getString("type")),
+        resultSet.getString("content"),
+        resultSet.getDate("createdOn").toLocalDate());
   }
 }

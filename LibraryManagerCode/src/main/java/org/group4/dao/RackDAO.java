@@ -42,11 +42,11 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
 
   @Override
   public boolean add(Rack rack) {
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(ADD_RACK_SQL)) {
-      stmt.setInt(1, rack.getNumberRack());
-      stmt.setString(2, rack.getLocationIdentifier());
-      return stmt.executeUpdate() > 0;
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(ADD_RACK_SQL)) {
+      preparedStatement.setInt(1, rack.getNumberRack());
+      preparedStatement.setString(2, rack.getLocationIdentifier());
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error adding rack: {}", rack, e);
       return false;
@@ -55,11 +55,11 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
 
   @Override
   public boolean update(Rack rack) {
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(UPDATE_RACK_SQL)) {
-      stmt.setString(1, rack.getLocationIdentifier());
-      stmt.setInt(2, rack.getNumberRack());
-      return stmt.executeUpdate() > 0;
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_RACK_SQL)) {
+      preparedStatement.setString(1, rack.getLocationIdentifier());
+      preparedStatement.setInt(2, rack.getNumberRack());
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error updating rack: {}", rack, e);
       return false;
@@ -68,10 +68,10 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
 
   @Override
   public boolean delete(Integer numberRack) {
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(DELETE_RACK_SQL)) {
-      stmt.setInt(1, numberRack);
-      return stmt.executeUpdate() > 0;
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_RACK_SQL)) {
+      preparedStatement.setInt(1, numberRack);
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error deleting rack: {}", numberRack, e);
       return false;
@@ -80,12 +80,12 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
 
   @Override
   public Optional<Rack> getById(Integer numberRack) throws SQLException {
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(GET_RACK_BY_ID_SQL)) {
-      stmt.setInt(1, numberRack);
-      try (ResultSet rs = stmt.executeQuery()) {
-        if (rs.next()) {
-          return Optional.of(mapRowToRack(rs));
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_RACK_BY_ID_SQL)) {
+      preparedStatement.setInt(1, numberRack);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        if (resultSet.next()) {
+          return Optional.of(mapRowToRack(resultSet));
         }
       }
     }
@@ -95,11 +95,11 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   @Override
   public List<Rack> getAll() {
     List<Rack> racks = new ArrayList<>();
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(GET_ALL_RACKS_SQL);
-        ResultSet rs = stmt.executeQuery()) {
-        while (rs.next()) {
-        racks.add(mapRowToRack(rs));
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_RACKS_SQL);
+        ResultSet resultSet = preparedStatement.executeQuery()) {
+        while (resultSet.next()) {
+        racks.add(mapRowToRack(resultSet));
 
       }
     } catch (SQLException e) {

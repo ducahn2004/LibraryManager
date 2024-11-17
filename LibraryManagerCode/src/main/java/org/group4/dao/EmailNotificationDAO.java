@@ -62,10 +62,10 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
 
   @Override
   public Optional<EmailNotification> getById(String notificationId) {
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(GET_NOTIFICATION_BY_ID_SQL)) {
-      stmt.setString(1, notificationId);
-      try (ResultSet rs = stmt.executeQuery()) {
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_NOTIFICATION_BY_ID_SQL)) {
+      preparedStatement.setString(1, notificationId);
+      try (ResultSet rs = preparedStatement.executeQuery()) {
         if (rs.next()) {
           return Optional.of(mapRowToEmailNotification(rs));
         }
@@ -79,11 +79,11 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
   @Override
   public List<EmailNotification> getAll() {
     List<EmailNotification> emailNotifications = new ArrayList<>();
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(GET_ALL_NOTIFICATIONS_SQL);
-        ResultSet rs = stmt.executeQuery()) {
-      while (rs.next()) {
-        emailNotifications.add(mapRowToEmailNotification(rs));
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_NOTIFICATIONS_SQL);
+        ResultSet resultSet = preparedStatement.executeQuery()) {
+      while (resultSet.next()) {
+        emailNotifications.add(mapRowToEmailNotification(resultSet));
       }
     } catch (SQLException e) {
       logger.error("Error retrieving all email notifications", e);
@@ -94,17 +94,17 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
   /**
    * Maps a row from the email_notifications table to an EmailNotification object.
    *
-   * @param rs The ResultSet containing the row data
+   * @param resultSet The ResultSet containing the row data
    * @return An EmailNotification object with the data from the ResultSet
    * @throws SQLException If an error occurs while retrieving data from the ResultSet
    */
-  private EmailNotification mapRowToEmailNotification(ResultSet rs) throws SQLException {
+  private EmailNotification mapRowToEmailNotification(ResultSet resultSet) throws SQLException {
     return new EmailNotification(
-        rs.getString("notificationId"),
-        NotificationType.valueOf(rs.getString("type")),
-        rs.getString("content"),
-        rs.getString("email"),
-        rs.getDate("createdOn").toLocalDate());
+        resultSet.getString("notificationId"),
+        NotificationType.valueOf(resultSet.getString("type")),
+        resultSet.getString("content"),
+        resultSet.getString("email"),
+        resultSet.getDate("createdOn").toLocalDate());
   }
 
   /**

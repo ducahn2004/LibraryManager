@@ -12,6 +12,9 @@ public class Member extends Person {
   /** The unique identifier for the member */
   private String memberId;
 
+  /** The total number of books lent by the member */
+  private int totalBooksCheckedOut;
+
   /**
    * Constructs a {@code Member} object with the given details.
    *
@@ -23,6 +26,7 @@ public class Member extends Person {
   public Member(String name, LocalDate dateOfBirth, String email, String phoneNumber) {
     super(name, dateOfBirth, email, phoneNumber);
     this.memberId = "";
+    totalBooksCheckedOut = 0;
   }
 
   /**
@@ -33,11 +37,13 @@ public class Member extends Person {
    * @param dateOfBirth the date of birth of the member
    * @param email the email address of the member
    * @param phoneNumber the phone number of the member
+   * @param totalBooksCheckedOut the total number of books checked out by the member
    */
   public Member(String memberId, String name, LocalDate dateOfBirth, String email,
-      String phoneNumber) {
+      String phoneNumber, int totalBooksCheckedOut) {
     super(name, dateOfBirth, email, phoneNumber);
     this.memberId = memberId;
+    this.totalBooksCheckedOut = totalBooksCheckedOut;
   }
 
   /**
@@ -56,6 +62,25 @@ public class Member extends Person {
    */
   public void setMemberId(String memberId) {
     this.memberId = memberId;
+  }
+
+  /**
+   * Returns the total number of books checked out by the member.
+   *
+   * @return the total number of books checked out
+   */
+  public int getTotalBooksCheckedOut() {
+    return totalBooksCheckedOut;
+  }
+
+  /**
+   * Sets the total number of books checked out by the member.
+   *
+   * @param totalBooksCheckedOut the total number of books checked out
+   */
+
+  public void setTotalBooksCheckedOut(int totalBooksCheckedOut) {
+    this.totalBooksCheckedOut = totalBooksCheckedOut;
   }
 
   @Override

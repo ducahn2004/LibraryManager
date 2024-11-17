@@ -1,4 +1,4 @@
-package org.group4.module.sessions;
+package org.group4.module.manager;
 
 import org.group4.module.users.Librarian;
 

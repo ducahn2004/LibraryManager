@@ -45,6 +45,10 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   /** SQL query to find a book item by barcode. */
   private static final String GET_ALL_BOOK_ITEMS_SQL = "SELECT * FROM book_items";
 
+  /** SQL query to find a book item by ISBN. */
+  private static final String GET_BOOK_ITEM_BY_ISBN_SQL = "SELECT * FROM book_items WHERE ISBN = ?";
+
+  /** SQL query to find the maximum barcode for a given ISBN. */
   private static final String GET_MAX_BARCODE_SQL =
       "SELECT MAX(barcode) AS max_barcode FROM book_items";
 
@@ -69,11 +73,11 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   @Override
   public boolean update(BookItem bookItem) {
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(UPDATE_BOOK_ITEM_SQL)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_ITEM_SQL)) {
 
-      setBookItemData(stmt, bookItem, true);
-      stmt.setString(10, bookItem.getBarcode());  // Set barcode for WHERE clause
-      return stmt.executeUpdate() > 0;
+      setBookItemData(preparedStatement, bookItem, true);
+      preparedStatement.setString(10, bookItem.getBarcode());  // Set barcode for WHERE clause
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error updating book item: {}", bookItem, e);
       return false;
@@ -83,10 +87,10 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   @Override
   public boolean delete(String barcode) {
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(DELETE_BOOK_ITEM_SQL)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BOOK_ITEM_SQL)) {
 
-      stmt.setString(1, barcode);
-      return stmt.executeUpdate() > 0;
+      preparedStatement.setString(1, barcode);
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error deleting book item with barcode: {}", barcode, e);
       return false;
@@ -96,10 +100,10 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   @Override
   public Optional<BookItem> getById(String barcode) throws SQLException {
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(GET_ALL_BOOK_ITEMS_SQL)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_BOOK_ITEMS_SQL)) {
 
-      stmt.setString(1, barcode);
-      try (ResultSet rs = stmt.executeQuery()) {
+      preparedStatement.setString(1, barcode);
+      try (ResultSet rs = preparedStatement.executeQuery()) {
         if (rs.next()) {
           return Optional.of(mapRowToBookItem(rs));
         }
@@ -111,9 +115,9 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   @Override
   public List<BookItem> getAll() {
     List<BookItem> bookItems = new ArrayList<>();
-    try (Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(GET_ALL_BOOK_ITEMS_SQL);
-        ResultSet resultSet = stmt.executeQuery()) {
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_BOOK_ITEMS_SQL);
+        ResultSet resultSet = preparedStatement.executeQuery()) {
 
       while (resultSet.next()) {
         BookItem bookItem = mapRowToBookItem(resultSet);
@@ -242,9 +246,8 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
    */
   public List<BookItem> getAllByIsbn(String isbn) throws SQLException {
     List<BookItem> bookItems = new ArrayList<>();
-    String query = "SELECT * FROM book_items WHERE ISBN = ?";
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(query)) {
+        PreparedStatement stmt = connection.prepareStatement(GET_BOOK_ITEM_BY_ISBN_SQL)) {
       stmt.setString(1, isbn);
       try (ResultSet rs = stmt.executeQuery()) {
         while (rs.next()) {

@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +47,13 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   private static final String GET_BOOK_LENDING_BY_BARCODE_SQL =
       "SELECT * FROM book_lendings WHERE barcode = ?";
 
+  /** SQL query to find a book lending by member ID. */
   private static final String GET_BOOK_LENDING_BY_MEMBER_SQL =
       "SELECT * FROM book_lendings WHERE memberId = ?";
+
+  /** SQL query to find a book lending by barcode and member ID. */
+  private static final String GET_BOOK_LENDING_BY_ID_SQL =
+      "SELECT * FROM book_lendings WHERE barcode = ? AND memberId = ?";
 
   /** SQL query to find all book lendings in the database. */
   private static final String GET_ALL_BOOK_LENDINGS_SQL = "SELECT * FROM book_lendings";
@@ -57,9 +61,9 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   @Override
   public boolean add(BookLending bookLending) {
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(ADD_BOOK_LENDING_SQL)) {
-      setBookLendingData(stmt, bookLending, false);
-      return stmt.executeUpdate() > 0;
+        PreparedStatement preparedStatement = connection.prepareStatement(ADD_BOOK_LENDING_SQL)) {
+      setBookLendingData(preparedStatement, bookLending, false);
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error adding book lending: {}", bookLending, e);
       return false;
@@ -69,9 +73,9 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   @Override
   public boolean update(BookLending bookLending) {
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(UPDATE_BOOK_LENDING_SQL)) {
-      setBookLendingData(stmt, bookLending, true);
-      return stmt.executeUpdate() > 0;
+        PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_LENDING_SQL)) {
+      setBookLendingData(preparedStatement, bookLending, true);
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error updating book lending: {}", bookLending, e);
       return false;
@@ -81,10 +85,10 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   @Override
   public boolean delete(BookLending bookLending) {
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(DELETE_BOOK_LENDING_SQL)) {
-      stmt.setString(1, bookLending.getBookItem().getBarcode());
-      stmt.setString(2, bookLending.getMember().getMemberId());
-      return stmt.executeUpdate() > 0;
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BOOK_LENDING_SQL)) {
+      preparedStatement.setString(1, bookLending.getBookItem().getBarcode());
+      preparedStatement.setString(2, bookLending.getMember().getMemberId());
+      return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error deleting book lending: {}", bookLending, e);
       return false;
@@ -100,11 +104,11 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   public List<BookLending> getByBarcode(String barcode) {
     List<BookLending> bookLendings = new ArrayList<>();
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(GET_BOOK_LENDING_BY_BARCODE_SQL)) {
-      stmt.setString(1, barcode);
-      try (ResultSet rs = stmt.executeQuery()) {
-        while (rs.next()) {
-          bookLendings.add(mapRowToBookLending(rs));
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_LENDING_BY_BARCODE_SQL)) {
+      preparedStatement.setString(1, barcode);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        while (resultSet.next()) {
+          bookLendings.add(mapRowToBookLending(resultSet));
         }
       }
     } catch (SQLException e) {
@@ -119,14 +123,14 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
    * @param memberId the ID of the member to find lendings for
    * @return a list of book lendings with the given member ID
    */
-  public List<BookLending> getByMember(String memberId) {
+  public List<BookLending> getByMemberId(String memberId) {
     List<BookLending> bookLendings = new ArrayList<>();
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(GET_BOOK_LENDING_BY_MEMBER_SQL)) {
-      stmt.setString(1, memberId);
-      try (ResultSet rs = stmt.executeQuery()) {
-        while (rs.next()) {
-          bookLendings.add(mapRowToBookLending(rs));
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_LENDING_BY_MEMBER_SQL)) {
+      preparedStatement.setString(1, memberId);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        while (resultSet.next()) {
+          bookLendings.add(mapRowToBookLending(resultSet));
         }
       }
     } catch (SQLException e) {
@@ -135,17 +139,40 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
     return bookLendings;
   }
 
-  @Override
-  public Collection<BookLending> getAll() {
-    List<BookLending> bookLendings = new ArrayList<>();
+  /**
+   * Retrieves a book lending from the database by barcode and member ID.
+   *
+   * @param barcode the barcode of the book item to find
+   * @param memberId the ID of the member to find
+   * @return an Optional containing the BookLending if found, or an empty Optional otherwise
+   */
+  public Optional<BookLending> getById(String barcode, String memberId) {
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(GET_ALL_BOOK_LENDINGS_SQL);
-        ResultSet rs = stmt.executeQuery()) {
-      while (rs.next()) {
-        bookLendings.add(mapRowToBookLending(rs));
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_LENDING_BY_ID_SQL)) {
+      preparedStatement.setString(1, barcode);
+      preparedStatement.setString(2, memberId);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        if (resultSet.next()) {
+          return Optional.of(mapRowToBookLending(resultSet));
+        }
       }
     } catch (SQLException e) {
-      logger.error("Error finding all book lendings", e);
+      logger.error("Error finding book lending by barcode and member ID: {} {}", barcode, memberId, e);
+    }
+    return Optional.empty();
+  }
+
+  @Override
+  public List<BookLending> getAll() {
+    List<BookLending> bookLendings = new ArrayList<>();
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_BOOK_LENDINGS_SQL);
+        ResultSet resultSet = preparedStatement.executeQuery()) {
+      while (resultSet.next()) {
+        bookLendings.add(mapRowToBookLending(resultSet));
+      }
+    } catch (SQLException e) {
+      logger.error("Error retrieving all book lendings", e);
     }
     return bookLendings;
   }
@@ -168,7 +195,8 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
         Member member = memberOpt.get();
         LocalDate lendingDate = resultSet.getDate("lendingDate").toLocalDate();
         LocalDate dueDate = resultSet.getDate("dueDate").toLocalDate();
-        LocalDate returnDate = resultSet.getDate("returnDate") != null ? resultSet.getDate("returnDate").toLocalDate() : null;
+        LocalDate returnDate = resultSet.getDate("returnDate") != null ?
+            resultSet.getDate("returnDate").toLocalDate() : null;
         return new BookLending(bookItem, member, lendingDate, dueDate, returnDate);
     } else {
         throw new SQLException("BookItem or Member not found for the given IDs.");
