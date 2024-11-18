@@ -182,4 +182,5 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
     }
     return "AUTHOR-001";
   }
+
 }

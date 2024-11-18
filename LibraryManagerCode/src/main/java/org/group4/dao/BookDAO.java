@@ -185,4 +185,5 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
     authorDAO.add(author);
     return author.getAuthorId();
   }
+
 }
