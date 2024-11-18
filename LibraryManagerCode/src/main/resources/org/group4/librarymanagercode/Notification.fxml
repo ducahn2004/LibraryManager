@@ -10,122 +10,105 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23"
-  xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="org.group4.librarymanagercode.NotificationController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.NotificationController">
   <top>
     <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
-      <children>
-        <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2e069c;"/>
-        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0"
-          prefHeight="96.0" prefWidth="172.0" text="Notification" textFill="#2e069c">
-          <font>
-            <Font name=".VnArial Bold" size="30.0"/>
-          </font>
-        </Label>
-        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#a1a1a1"
-          BorderPane.alignment="CENTER">
-          <font>
-            <Font name="Segoe UI Semilight" size="23.0"/>
-          </font>
-          <BorderPane.margin>
-            <Insets top="2.0"/>
-          </BorderPane.margin>
-        </Label>
-      </children>
+      <Pane prefHeight="132.0" prefWidth="130.0" style="-fx-background-color: #2B579A;"/>
+      <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0"
+        prefHeight="96.0" prefWidth="172.0" text="Notification" textFill="#2b579a">
+        <font>
+          <Font name=".VnArial Bold" size="30.0"/>
+        </font>
+      </Label>
+      <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#2b579a"
+        BorderPane.alignment="CENTER">
+        <font>
+          <Font name="Segoe UI Semilight" size="23.0"/>
+        </font>
+        <BorderPane.margin>
+          <Insets top="2.0"/>
+        </BorderPane.margin>
+      </Label>
     </Pane>
 
   </top>
   <left>
-    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;"
+    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2B579A;"
       BorderPane.alignment="CENTER">
-      <children>
-        <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP"
-          onAction="#HomeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE"
-          textOverrun="CLIP">
-          <font>
-            <Font size="16.0"/>
-          </font>
-        </JFXButton>
-        <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false"
-          onAction="#MemberAction" prefHeight="46.0" prefWidth="133.0" text="Member"
-          textFill="#fff8f8" textOverrun="CLIP">
-          <font>
-            <Font size="16.0"/>
-          </font>
-        </JFXButton>
-        <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#BookAction" prefHeight="46.0"
-          prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
-          <font>
-            <Font size="16.0"/>
-          </font>
-        </JFXButton>
-        <JFXButton fx:id="notificationButton" alignment="TOP_LEFT" onAction="#notificationAction"
-          prefHeight="46.0" prefWidth="137.0" text="Notification" textFill="#fff8f8"
-          textOverrun="CLIP">
-          <font>
-            <Font size="16.0"/>
-          </font>
-        </JFXButton>
-        <JFXButton fx:id="settingButton" alignment="TOP_LEFT" onAction="#SettingAction"
-          prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
-          <font>
-            <Font size="16.0"/>
-          </font>
-        </JFXButton>
-        <JFXButton fx:id="closeButton" alignment="TOP_LEFT" onAction="#Close" prefHeight="46.0"
-          prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
-          <font>
-            <Font size="16.0"/>
-          </font>
-        </JFXButton>
-      </children>
+      <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#HomeAction"
+        prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
+        <font>
+          <Font size="16.0"/>
+        </font>
+      </JFXButton>
+      <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false"
+        onAction="#MemberAction" prefHeight="46.0" prefWidth="133.0" text="Member"
+        textFill="#fff8f8" textOverrun="CLIP">
+        <font>
+          <Font size="16.0"/>
+        </font>
+      </JFXButton>
+      <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#BookAction" prefHeight="46.0"
+        prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
+        <font>
+          <Font size="16.0"/>
+        </font>
+      </JFXButton>
+      <JFXButton fx:id="notificationButton" alignment="TOP_LEFT" onAction="#notificationAction"
+        prefHeight="46.0" prefWidth="137.0" text="Notification" textFill="#fff8f8"
+        textOverrun="CLIP">
+        <font>
+          <Font size="16.0"/>
+        </font>
+      </JFXButton>
+      <JFXButton fx:id="settingButton" alignment="TOP_LEFT" onAction="#SettingAction"
+        prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
+        <font>
+          <Font size="16.0"/>
+        </font>
+      </JFXButton>
+      <JFXButton fx:id="closeButton" alignment="TOP_LEFT" onAction="#Close" prefHeight="46.0"
+        prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
+        <font>
+          <Font size="16.0"/>
+        </font>
+      </JFXButton>
     </VBox>
   </left>
   <center>
     <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-      <children>
-        <Pane prefHeight="4.0" prefWidth="870.0" style="-fx-background-color: #e7e3e3;"/>
-        <Pane prefHeight="38.0" prefWidth="870.0">
-          <children>
-            <Label layoutX="348.0" layoutY="4.0" style="-fx-text-fill: #2b579a;"
-              text="System Notification" textFill="#e7e3e3">
-              <font>
-                <Font size="20.0"/>
-              </font>
-            </Label>
-          </children>
-        </Pane>
-        <TableView fx:id="systemTable" prefHeight="254.0" prefWidth="870.0">
-          <columns>
-            <TableColumn fx:id="systemDate" prefWidth="128.80000913143158" text="Date "/>
-            <TableColumn fx:id="systemTime" minWidth="0.0" prefWidth="134.4000244140625"
-              text="Time "/>
-            <TableColumn fx:id="systemType" prefWidth="99.20001220703125" text="Type "/>
-            <TableColumn fx:id="systemContent" minWidth="0.0" prefWidth="503.9999938964844"
-              text="Content "/>
-          </columns>
-        </TableView>
-        <Pane prefHeight="34.0" prefWidth="870.0">
-          <children>
-            <Label layoutX="356.0" layoutY="5.0" style="-fx-text-fill: #2b579a;"
-              text="Email Notification">
-              <font>
-                <Font size="20.0"/>
-              </font>
-            </Label>
-          </children>
-        </Pane>
-        <TableView fx:id="emailTable" prefHeight="245.0" prefWidth="870.0">
-          <columns>
-            <TableColumn fx:id="emailDate" prefWidth="131.1999877691269" text="Date"/>
-            <TableColumn fx:id="emailTime" minWidth="1.60003662109375"
-              prefWidth="135.20001220703125" text="Time"/>
-            <TableColumn fx:id="emailType" prefWidth="112.79998779296875" text="Type "/>
-            <TableColumn fx:id="emailContent" prefWidth="490.39996337890625" text="Content "/>
-          </columns>
-        </TableView>
-      </children>
+      <Pane prefHeight="4.0" prefWidth="870.0" style="-fx-background-color: #e7e3e3;"/>
+      <Pane prefHeight="38.0" prefWidth="870.0">
+        <Label layoutX="348.0" layoutY="4.0" style="-fx-text-fill: #2b579a;"
+          text="System Notification" textFill="#e7e3e3">
+          <font>
+            <Font size="20.0"/>
+          </font>
+        </Label>
+      </Pane>
+      <TableView fx:id="systemTable" prefHeight="254.0" prefWidth="870.0">
+        <columns>
+          <TableColumn fx:id="systemType" prefWidth="160.0" text="Type "/>
+          <TableColumn fx:id="systemContent" minWidth="0.0" prefWidth="443.9999694824219"
+            text="Content "/>
+        </columns>
+      </TableView>
+      <Pane prefHeight="34.0" prefWidth="870.0">
+        <Label layoutX="356.0" layoutY="5.0" style="-fx-text-fill: #2b579a;"
+          text="Email Notification">
+          <font>
+            <Font size="20.0"/>
+          </font>
+        </Label>
+      </Pane>
+      <TableView fx:id="emailTable" prefHeight="245.0" prefWidth="870.0">
+        <columns>
+          <TableColumn fx:id="emailType" prefWidth="160.0" text="Type "/>
+          <TableColumn fx:id="emailContent" prefWidth="442.3999938964844" text="Content "/>
+          <TableColumn fx:id="emailDate" prefWidth="160.0" text="Type "/>
+
+        </columns>
+      </TableView>
     </VBox>
   </center>
 </BorderPane>

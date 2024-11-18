@@ -2,6 +2,8 @@ package org.group4.module.manager;
 
 import org.group4.dao.FactoryDAO;
 import org.group4.dao.MemberDAO;
+import org.group4.module.enums.NotificationType;
+import org.group4.module.notifications.SystemNotification;
 import org.group4.module.users.Member;
 
 public class MemberManager implements GenericManager<Member> {
@@ -10,7 +12,11 @@ public class MemberManager implements GenericManager<Member> {
 
   @Override
   public boolean add(Member member) {
-    return memberDAO.add(member);
+    if (memberDAO.add(member)) {
+      SystemNotification.sendNotification(NotificationType.ADD_MEMBER_SUCCESS, member.toString());
+      return true;
+    }
+    return false;
   }
 
   @Override

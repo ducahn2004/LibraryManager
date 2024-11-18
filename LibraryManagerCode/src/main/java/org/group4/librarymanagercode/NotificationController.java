@@ -25,6 +25,7 @@ import org.group4.module.users.Member;
 public class NotificationController {
 
   private final ObservableList<Notification> notificationObservableList = FXCollections.observableArrayList();
+  public TableColumn emailDate;
 
   @FXML
   private TableView<SystemNotification> systemTable;
