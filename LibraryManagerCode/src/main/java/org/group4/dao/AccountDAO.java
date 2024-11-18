@@ -7,19 +7,21 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 import org.group4.module.users.Account;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Data Access Object for CRUD operations on {@link Account} entities in the database.
- * Implements {@link GenericDAO} to standardize database operations for Accounts.
  */
-public class AccountDAO extends BaseDAO implements GenericDAO<Account, String> {
+public class AccountDAO extends BaseDAO {
 
+  /** The logger for AccountDAO. */
   private static final Logger logger = LoggerFactory.getLogger(AccountDAO.class);
 
+  /** SQL statements for CRUD operations on the account table. */
   private static final String GET_ACCOUNT_BY_ID_SQL = "SELECT * FROM account WHERE id = ?";
+
+  /** SQL statements for CRUD operations on the account table. */
   private static final String UPDATE_ACCOUNT_SQL = "UPDATE account SET password = ? WHERE id = ?";
 
   /**
@@ -28,16 +30,15 @@ public class AccountDAO extends BaseDAO implements GenericDAO<Account, String> {
    * @param id the account ID
    * @return an {@code Optional} containing the account if found, or empty otherwise
    */
-  @Override
   public Optional<Account> getById(String id) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ACCOUNT_BY_ID_SQL)) {
       preparedStatement.setString(1, id);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
-          return Optional.of(new Account(
-              resultSet.getString("id"),
-              resultSet.getString("password")));
+          String retrievedId = resultSet.getString("id");
+          String password = resultSet.getString("password");
+          return Optional.of(new Account(retrievedId, password));
         }
       }
     } catch (SQLException e) {
@@ -52,7 +53,6 @@ public class AccountDAO extends BaseDAO implements GenericDAO<Account, String> {
    * @param account the account to update
    * @return {@code true} if the update was successful, {@code false} otherwise
    */
-  @Override
   public boolean update(Account account) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_SQL)) {

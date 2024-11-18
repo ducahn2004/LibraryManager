@@ -11,8 +11,12 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class AccountService {
 
+  /** The data access object for account entities. */
   private final AccountDAO accountDAO;
 
+  /**
+   * Constructs an {@code AccountService} object with the default account DAO.
+   */
   public AccountService() {
     this.accountDAO = FactoryDAO.getAccountDAO();
   }
