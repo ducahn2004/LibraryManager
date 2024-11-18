@@ -52,33 +52,44 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   private static final String GET_MAX_BARCODE_SQL =
       "SELECT MAX(barcode) AS max_barcode FROM book_items WHERE barcode LIKE ?";
 
+  /** SQL query to check if a rack exists in the database. */
+  private static final String CHECK_RACK_SQL = "SELECT 1 FROM racks WHERE numberRack = ?";
+
   @Override
   public boolean add(BookItem bookItem) {
     try (Connection connection = getConnection()) {
-      // Generate new barcode
+      // Check if the rack exists in the database
+      if (bookItem.getPlacedAt() == null || !rackExists(connection, bookItem.getPlacedAt().getNumberRack())) {
+        logger.error("Invalid rack or rack does not exist");
+        return false;
+      }
+
+      // Generate a new barcode
       String newBarcode = generateBarcode(connection, bookItem.getISBN());
       bookItem.setBarcode(newBarcode);
 
-      // Prepare and execute the SQL INSERT statement
+      // Insert new book item into database
       try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_BOOK_ITEM_SQL)) {
         preparedStatement.setString(1, newBarcode);
         preparedStatement.setString(2, bookItem.getISBN());
         preparedStatement.setBoolean(3, bookItem.getIsReferenceOnly());
-        preparedStatement.setDate(4, bookItem.getBorrowed()
-            != null ? Date.valueOf(bookItem.getBorrowed()) : null);
-        preparedStatement.setDate(5, bookItem.getDueDate()
-            != null ? Date.valueOf(bookItem.getDueDate()) : null);
+        preparedStatement.setDate(4, bookItem.getBorrowed() != null ?
+            Date.valueOf(bookItem.getBorrowed()) : null);
+        preparedStatement.setDate(5, bookItem.getDueDate() != null ?
+            Date.valueOf(bookItem.getDueDate()) : null);
         preparedStatement.setDouble(6, bookItem.getPrice());
         preparedStatement.setString(7, bookItem.getFormat().name());
         preparedStatement.setString(8, bookItem.getStatus().name());
-        preparedStatement.setDate(9, Date.valueOf(bookItem.getDateOfPurchase()));
-        preparedStatement.setDate(10, Date.valueOf(bookItem.getPublicationDate()));
+        preparedStatement.setDate(9, bookItem.getDateOfPurchase() != null ?
+            Date.valueOf(bookItem.getDateOfPurchase()) : null);
+        preparedStatement.setDate(10, bookItem.getPublicationDate() != null ?
+            Date.valueOf(bookItem.getPublicationDate()) : null);
         preparedStatement.setInt(11, bookItem.getPlacedAt().getNumberRack());
 
-        return preparedStatement.executeUpdate() > 0;
+        return preparedStatement.executeUpdate() > 0; // Return true if successful
       }
     } catch (SQLException e) {
-      logger.error("Error adding book item: {}", bookItem, e);
+      logger.error("Error adding book item: {}", bookItem, e); // Log error
       return false;
     }
   }
@@ -88,13 +99,17 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_ITEM_SQL)) {
       preparedStatement.setBoolean(1, bookItem.getIsReferenceOnly());
-      preparedStatement.setDate(2, Date.valueOf(bookItem.getBorrowed()));
-      preparedStatement.setDate(3, Date.valueOf(bookItem.getDueDate()));
+      preparedStatement.setDate(2, bookItem.getBorrowed() != null ?
+          Date.valueOf(bookItem.getBorrowed()) : null);
+      preparedStatement.setDate(3, bookItem.getDueDate() != null ?
+          Date.valueOf(bookItem.getDueDate()) : null);
       preparedStatement.setDouble(4, bookItem.getPrice());
-      preparedStatement.setString(5, bookItem.getFormat().toString());
-      preparedStatement.setString(6, bookItem.getStatus().toString());
-      preparedStatement.setDate(7, Date.valueOf(bookItem.getDateOfPurchase()));
-      preparedStatement.setDate(8, Date.valueOf(bookItem.getPublicationDate()));
+      preparedStatement.setString(5, bookItem.getFormat().name());
+      preparedStatement.setString(6, bookItem.getStatus().name());
+      preparedStatement.setDate(7, bookItem.getDateOfPurchase() != null ?
+          Date.valueOf(bookItem.getDateOfPurchase()) : null);
+      preparedStatement.setDate(8, bookItem.getPublicationDate() != null ?
+          Date.valueOf(bookItem.getPublicationDate()) : null);
       preparedStatement.setInt(9, bookItem.getPlacedAt().getNumberRack());
       preparedStatement.setString(10, bookItem.getBarcode());
       return preparedStatement.executeUpdate() > 0;
@@ -199,8 +214,9 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   /**
    * Generates a new barcode for a book item.
    *
-   * @param connection the database connection to use
-   * @return the new barcode as a String
+   * @param connection the database connection
+   * @param isbn the ISBN of the book
+   * @return the generated barcode as a String
    * @throws SQLException if a database access error occurs
    */
   public String generateBarcode(Connection connection, String isbn) throws SQLException {
@@ -209,9 +225,9 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
           String maxBarcode = resultSet.getString("max_barcode");
-          if (maxBarcode != null) {
+          if (maxBarcode != null && maxBarcode.matches("^" + isbn + "-\\d{4}$")) {
             String[] parts = maxBarcode.split("-");
-            int nextBarcode = Integer.parseInt(parts[1]) + 1;
+            int nextBarcode = Integer.parseInt(parts[parts.length - 1]) + 1;
             return formatBarcode(isbn, nextBarcode);
           }
         }
@@ -243,6 +259,23 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
       throw e;
     }
     return bookItems;
+  }
+
+  /**
+   * Checks if a rack exists in the database.
+   *
+   * @param connection the database connection
+   * @param rackNumber the rack number to check
+   * @return true if the rack exists, false otherwise
+   * @throws SQLException if a database access error occurs
+   */
+  private boolean rackExists(Connection connection, int rackNumber) throws SQLException {
+    try (PreparedStatement preparedStatement = connection.prepareStatement(CHECK_RACK_SQL)) {
+      preparedStatement.setInt(1, rackNumber);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        return resultSet.next();
+      }
+    }
   }
 
 }
