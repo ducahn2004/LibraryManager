@@ -49,7 +49,7 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(ADD_NOTIFICATION_SQL)) {
       preparedStatement.setString(1, systemNotification.getNotificationId());
-      preparedStatement.setString(2, systemNotification.getType().toString());
+      preparedStatement.setString(2, systemNotification.getType().name());
       preparedStatement.setString(3, systemNotification.getContent());
       preparedStatement.setDate(4, Date.valueOf(systemNotification.getCreatedOn()));
       return preparedStatement.executeUpdate() > 0;
