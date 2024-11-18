@@ -26,7 +26,7 @@
           <Font size="16.0"/>
         </font>
       </JFXButton>
-      <JFXButton fx:id="memberButton" alignment="TOP_LEFT" centerShape="false"
+      <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false"
         onAction="#memberAction" prefHeight="46.0" prefWidth="133.0" text="Member"
         textFill="#fff8f8" textOverrun="CLIP">
         <font>
@@ -35,13 +35,6 @@
       </JFXButton>
       <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#bookAction" prefHeight="46.0"
         prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
-        <font>
-          <Font size="16.0"/>
-        </font>
-      </JFXButton>
-      <JFXButton fx:id="returnBookButton" alignment="TOP_LEFT" onAction="#returnBookAction"
-        prefHeight="46.0" prefWidth="137.0" text="Return Book" textFill="#fff8f8"
-        textOverrun="CLIP">
         <font>
           <Font size="16.0"/>
         </font>
@@ -96,7 +89,6 @@
         </HBox>
         <HBox prefHeight="60.0" prefWidth="619.0">
           <TextField fx:id="titleField" prefHeight="26.0" prefWidth="450.0" promptText="Title"/>
-          <Button onAction="#searchByTitle" text="Search"/>
         </HBox>
         <HBox prefHeight="60.0" prefWidth="619.0">
           <TextField fx:id="subjectField" prefHeight="26.0" prefWidth="450.0"

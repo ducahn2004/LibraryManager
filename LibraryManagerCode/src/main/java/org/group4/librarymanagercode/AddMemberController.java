@@ -79,11 +79,11 @@ public class AddMemberController {
       // TODO Uncomment after notification complete
       //SystemNotification.sendNotification(String type, String content);
       System.out.println(
-          "Book with ISBN: " + currentMember.getMemberId() + " has been edited successfully.");
+          "Member with member ID: " + currentMember.getMemberId() + " has been edited successfully.");
     } else {
 
       System.out.println("Failed to edit book with ISBN: " + currentMember.getMemberId());
-      throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
+      throw new IllegalArgumentException("Member with the same information already exists in the library.");
     }
   }
 

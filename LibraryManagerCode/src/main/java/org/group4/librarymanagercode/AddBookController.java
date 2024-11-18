@@ -9,16 +9,17 @@ import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.dao.FactoryDAO;
+import org.group4.librarymanagercode.SceneSwitcher;
 import org.group4.module.books.Author;
 import org.group4.module.books.Book;
 import org.group4.module.manager.SessionManager;
-import org.group4.module.notifications.SystemNotification;
 import org.group4.module.users.Librarian;
 import org.group4.module.services.GoogleBooksService;
 import org.json.JSONArray;
@@ -41,7 +42,7 @@ public class AddBookController {
   @FXML
   private JFXButton bookButton;
   @FXML
-  private JFXButton memberButton;
+  private JFXButton MemberButton;
   @FXML
   private JFXButton homeButton;
   @FXML
@@ -87,7 +88,7 @@ public class AddBookController {
    * Adds a new book to the library by collecting data from fields and validating inputs.
    */
   @FXML
-  private void addBook(ActionEvent actionEvent) {
+  private void addBookAction(ActionEvent actionEvent) {
     if (isbnField.getText().isEmpty() || titleField.getText().isEmpty()
         || subjectField.getText().isEmpty() || languageField.getText().isEmpty()
         || numberOfPagesField.getText().isEmpty() || authorsField.getText().isEmpty()) {
@@ -205,36 +206,63 @@ public class AddBookController {
     alert.setContentText(message);
     alert.showAndWait();
   }
+  public void homeAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-  private Stage getStage() {
-    return (Stage) homeButton.getScene().getWindow(); // Có thể sử dụng bất kỳ button nào
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) homeButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Home button clicked");
+  }
+  public void memberAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) MemberButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Member button clicked");
+  }
+  public void bookAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) bookButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Book button clicked");
+  }
+  public void notificationAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) notificationButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Notification button clicked");
+  }
+  public void settingAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) settingButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Setting button clicked");
   }
 
-  public void HomeAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
-  }
-
-  public void MemberAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
-  }
-
-  public void BookAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
-  }
-
-  public void NotificationAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
-  }
-
-  public void SettingAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
-  }
-
-  public void Close(ActionEvent actionEvent) {
+  public void close(ActionEvent actionEvent) {
     Platform.exit();
   }
-
-  public void notificationAction(ActionEvent actionEvent) {
-  }
-
 }
