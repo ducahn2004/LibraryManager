@@ -75,6 +75,30 @@ public class BookItem extends Book {
   /**
    * Constructs a {@code BookItem} instance with specific details.
    *
+   * @param book the book to create an item for
+   * @param isReferenceOnly whether the book is for reference only
+   * @param price the price of the book item
+   * @param format the format of the book item
+   * @param dateOfPurchase the date the book item was purchased
+   * @param publicationDate the publication date of the book item
+   * @param placedAt the rack location of the book item
+   */
+  public BookItem(Book book, boolean isReferenceOnly, double price, BookFormat format,
+      LocalDate dateOfPurchase, LocalDate publicationDate, Rack placedAt) {
+    super(book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
+        book.getLanguage(), book.getNumberOfPages(), book.getAuthors());
+    this.isReferenceOnly = isReferenceOnly;
+    this.price = price;
+    this.format = format;
+    this.status = BookStatus.AVAILABLE;
+    this.dateOfPurchase = dateOfPurchase;
+    this.publicationDate = publicationDate;
+    this.placedAt = placedAt;
+  }
+
+  /**
+   * Constructs a {@code BookItem} instance with specific details.
+   *
    * @param ISBN the ISBN of the book
    * @param title the title of the book
    * @param subject the subject of the book
