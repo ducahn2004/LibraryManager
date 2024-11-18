@@ -50,7 +50,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
 
   /** SQL query to find the maximum barcode for a given ISBN. */
   private static final String GET_MAX_BARCODE_SQL =
-      "SELECT MAX(barcode) AS max_barcode FROM book_items";
+      "SELECT MAX(barcode) AS max_barcode FROM book_items WHERE barcode LIKE ?";
 
   @Override
   public boolean add(BookItem bookItem) {
@@ -61,14 +61,16 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
 
       // Prepare and execute the SQL INSERT statement
       try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_BOOK_ITEM_SQL)) {
-        preparedStatement.setString(1, bookItem.getBarcode());
+        preparedStatement.setString(1, newBarcode);
         preparedStatement.setString(2, bookItem.getISBN());
         preparedStatement.setBoolean(3, bookItem.getIsReferenceOnly());
-        preparedStatement.setDate(4, Date.valueOf(bookItem.getBorrowed()));
-        preparedStatement.setDate(5, Date.valueOf(bookItem.getDueDate()));
+        preparedStatement.setDate(4, bookItem.getBorrowed()
+            != null ? Date.valueOf(bookItem.getBorrowed()) : null);
+        preparedStatement.setDate(5, bookItem.getDueDate()
+            != null ? Date.valueOf(bookItem.getDueDate()) : null);
         preparedStatement.setDouble(6, bookItem.getPrice());
-        preparedStatement.setString(7, bookItem.getFormat().toString());
-        preparedStatement.setString(8, bookItem.getStatus().toString());
+        preparedStatement.setString(7, bookItem.getFormat().name());
+        preparedStatement.setString(8, bookItem.getStatus().name());
         preparedStatement.setDate(9, Date.valueOf(bookItem.getDateOfPurchase()));
         preparedStatement.setDate(10, Date.valueOf(bookItem.getPublicationDate()));
         preparedStatement.setInt(11, bookItem.getPlacedAt().getNumberRack());
@@ -215,7 +217,6 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
         }
       }
     }
-
     return formatBarcode(isbn, 1);
   }
 
