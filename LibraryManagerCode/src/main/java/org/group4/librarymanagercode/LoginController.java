@@ -99,7 +99,12 @@ public class LoginController {
 
     if (accountService.login(username, password)) {
       Optional<Librarian> librarian = FactoryDAO.getLibrarianDAO().getById(username);
-      SessionManager.getInstance().setCurrentLibrarian(librarian.get());
+      if (librarian.isPresent()) {
+        SessionManager.getInstance().setCurrentLibrarian(librarian.get());
+      } else {
+        // Handle the case where the librarian is not found
+        System.out.println("Librarian not found for username: " + username);
+      }
       try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminPane.fxml"));
         Parent root = loader.load();

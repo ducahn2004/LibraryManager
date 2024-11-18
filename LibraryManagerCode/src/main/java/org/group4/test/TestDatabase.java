@@ -8,22 +8,14 @@ import org.group4.dao.BookDAO;
 import org.group4.dao.FactoryDAO;
 import org.group4.module.books.Author;
 import org.group4.module.books.Book;
+import org.group4.module.services.AccountService;
+import org.group4.module.users.Account;
 
 public class TestDatabase {
   public static void main(String[] args) {
 //    Author author = new Author("TranDogAnh");
-    AuthorDAO authorDAO = new AuthorDAO();
-//    authorDAO.add(author);
-    Book book = new Book("9780743273565",
-        "The Great Gatsby",
-        "F. Scott Fitzgerald",
-        "1925",
-        "Scribner",
-        100,
-        new HashSet<>());
+   String password = Account.hashPassword("password");
 
-    BookDAO bookDAO = FactoryDAO.getBookDAO();
-//    bookDAO.add(book);
-    bookDAO.delete("9780743273565");
+    FactoryDAO.getAccountDAO().update(new Account("admin", password));
   }
 }
