@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TableCell;
@@ -35,6 +36,7 @@ import org.group4.module.users.Librarian;
 
 public class BookViewController {
 
+  public Button addBookButton;
   private Stage stage;
 
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();
