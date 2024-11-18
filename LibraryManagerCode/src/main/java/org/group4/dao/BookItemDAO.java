@@ -60,9 +60,20 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
       bookItem.setBarcode(newBarcode);
 
       // Prepare and execute the SQL INSERT statement
-      try (PreparedStatement stmt = connection.prepareStatement(ADD_BOOK_ITEM_SQL)) {
-        setBookItemData(stmt, bookItem, false);
-        return stmt.executeUpdate() > 0;
+      try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_BOOK_ITEM_SQL)) {
+        preparedStatement.setString(1, bookItem.getBarcode());
+        preparedStatement.setString(2, bookItem.getISBN());
+        preparedStatement.setBoolean(3, bookItem.getIsReferenceOnly());
+        preparedStatement.setDate(4, Date.valueOf(bookItem.getBorrowed()));
+        preparedStatement.setDate(5, Date.valueOf(bookItem.getDueDate()));
+        preparedStatement.setDouble(6, bookItem.getPrice());
+        preparedStatement.setString(7, bookItem.getFormat().toString());
+        preparedStatement.setString(8, bookItem.getStatus().toString());
+        preparedStatement.setDate(9, Date.valueOf(bookItem.getDateOfPurchase()));
+        preparedStatement.setDate(10, Date.valueOf(bookItem.getPublicationDate()));
+        preparedStatement.setInt(11, bookItem.getPlacedAt().getNumberRack());
+
+        return preparedStatement.executeUpdate() > 0;
       }
     } catch (SQLException e) {
       logger.error("Error adding book item: {}", bookItem, e);
@@ -74,9 +85,16 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   public boolean update(BookItem bookItem) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_ITEM_SQL)) {
-
-      setBookItemData(preparedStatement, bookItem, true);
-      preparedStatement.setString(10, bookItem.getBarcode());  // Set barcode for WHERE clause
+      preparedStatement.setBoolean(1, bookItem.getIsReferenceOnly());
+      preparedStatement.setDate(2, Date.valueOf(bookItem.getBorrowed()));
+      preparedStatement.setDate(3, Date.valueOf(bookItem.getDueDate()));
+      preparedStatement.setDouble(4, bookItem.getPrice());
+      preparedStatement.setString(5, bookItem.getFormat().toString());
+      preparedStatement.setString(6, bookItem.getStatus().toString());
+      preparedStatement.setDate(7, Date.valueOf(bookItem.getDateOfPurchase()));
+      preparedStatement.setDate(8, Date.valueOf(bookItem.getPublicationDate()));
+      preparedStatement.setInt(9, bookItem.getPlacedAt().getNumberRack());
+      preparedStatement.setString(10, bookItem.getBarcode());
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error updating book item: {}", bookItem, e);
@@ -88,7 +106,6 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   public boolean delete(String barcode) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BOOK_ITEM_SQL)) {
-
       preparedStatement.setString(1, barcode);
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
@@ -101,7 +118,6 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   public Optional<BookItem> getById(String barcode) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_BOOK_ITEMS_SQL)) {
-
       preparedStatement.setString(1, barcode);
       try (ResultSet rs = preparedStatement.executeQuery()) {
         if (rs.next()) {
@@ -165,39 +181,6 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
         resultSet.getDate("publicationDate").toLocalDate(),
         rack
     );
-  }
-
-  /**
-   * Sets the data for a BookItem into a PreparedStatement.
-   *
-   * @param preparedStatement the PreparedStatement to set data into.
-   * @param bookItem the BookItem object containing data to be set.
-   * @throws SQLException if a database access error occurs.
-   */
-  private void setBookItemData(PreparedStatement preparedStatement, BookItem bookItem,
-      boolean isUpdate) throws SQLException {
-
-    int index = 1;
-
-    // Set data for ADD or UPDATE
-    if (!isUpdate) {
-      preparedStatement.setString(index++, bookItem.getBarcode());
-    }
-
-    preparedStatement.setString(index++, bookItem.getISBN());
-    preparedStatement.setBoolean(index++, bookItem.getIsReferenceOnly());
-    preparedStatement.setDate(index++, Date.valueOf(bookItem.getBorrowed()));
-    preparedStatement.setDate(index++, Date.valueOf(bookItem.getDueDate()));
-    preparedStatement.setDouble(index++, bookItem.getPrice());
-    preparedStatement.setString(index++, bookItem.getFormat().name());
-    preparedStatement.setString(index++, bookItem.getStatus().name());
-    preparedStatement.setDate(index++, Date.valueOf(bookItem.getDateOfPurchase()));
-    preparedStatement.setDate(index++, Date.valueOf(bookItem.getPublicationDate()));
-    preparedStatement.setInt(index++, bookItem.getPlacedAt().getNumberRack());
-
-    if (isUpdate) {
-      preparedStatement.setString(index, bookItem.getBarcode());
-    }
   }
 
   /**

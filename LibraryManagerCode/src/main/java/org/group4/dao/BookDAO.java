@@ -12,6 +12,7 @@ import java.util.Set;
 import org.group4.module.books.Author;
 import org.group4.module.books.Book;
 
+import org.group4.module.books.BookItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +60,11 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   @Override
   public boolean add(Book book) {
     try (Connection connection = getConnection()) {
+      // Check if the book already exists
+      if (getById(book.getISBN()).isPresent()) {
+        return false;
+      }
+
       // Start transaction
       connection.setAutoCommit(false);
 
@@ -186,4 +192,16 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
     return author.getAuthorId();
   }
 
+  /**
+   * Retrieves all BookItems for a given book using its ISBN.
+   *
+   * @param isbn the ISBN of the book.
+   * @return a list of BookItems associated with the given ISBN.
+   * @throws SQLException if a database access error occurs.
+   */
+  public List<BookItem> getAllBookItems(String isbn) throws SQLException {
+    BookItemDAO bookItemDAO = new BookItemDAO();
+    return bookItemDAO.getAllByIsbn(isbn);
+  }
 }
+

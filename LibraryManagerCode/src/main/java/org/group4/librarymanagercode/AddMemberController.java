@@ -1,6 +1,5 @@
 package org.group4.librarymanagercode;
 
-import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -8,8 +7,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import org.group4.module.books.Book;
 import org.group4.module.manager.SessionManager;
 import org.group4.module.users.Member;
 import org.group4.module.users.Librarian;
@@ -66,8 +63,6 @@ public class AddMemberController {
   }
 
   private void closeForm() {
-    Stage stage = (Stage) memberID.getScene().getWindow();
-    stage.close();
   }
 
   private void returnCheckAddMember() {
