@@ -1,8 +1,6 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -69,11 +67,30 @@ public class MemberEditController {
   private void saveMember(ActionEvent actionEvent) {
     // Check if any required field is empty
     if (memberName.getText().isEmpty() || memberEmail.getText().isEmpty() ||
-        memberPhone.getText().isEmpty() || memberBirth.getValue() == null) {
+        memberPhone.getText().isEmpty() || memberBirth.getValue() == null || validateInput(
+        memberName.getText(), memberEmail.getText(), memberPhone.getText())) {
       showAlert("Incomplete Information", "Please fill in all required information.");
       return; // Stop execution to allow user to correct input
     }
+    if (!memberName.getText().matches("([A-Z][a-z]*)(\\s[A-Z][a-z]*)*")) {
+      showAlert(Alert.AlertType.WARNING, "Invalid Name",
+          "Name must start with uppercase letters for each word.");
+      return;
+    }
 
+    // Check if email matches standard email pattern
+    if (!memberEmail.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+      showAlert(Alert.AlertType.WARNING, "Invalid Email",
+          "Please enter a valid email address.");
+      return;
+    }
+
+    // Check if phone is exactly 10 digits
+    if (!memberPhone.getText().matches("\\d{10}")) {
+      showAlert(Alert.AlertType.WARNING, "Invalid Phone Number",
+          "Phone number must contain exactly 10 digits.");
+      return;
+    }
     // Set member details after validating that fields are not empty
     currentMember.setName(memberName.getText());
     currentMember.setDateOfBirth(memberBirth.getValue());
@@ -119,19 +136,6 @@ public class MemberEditController {
     return alert;
   }
 
-  /**
-   * Displays a warning alert with a specified title and content message.
-   *
-   * @param title   the title of the alert
-   * @param content the content message of the alert
-   */
-  private void showAlert(String title, String content) {
-    Alert alert = new Alert(AlertType.WARNING);
-    alert.setTitle(title);
-    alert.setHeaderText(null);
-    alert.setContentText(content);
-    alert.showAndWait();
-  }
 
   /**
    * Cancels the current edit operation and closes the form.
@@ -147,5 +151,61 @@ public class MemberEditController {
   private void closeForm() {
     Stage stage = (Stage) memberID.getScene().getWindow();
     stage.close();
+  }
+
+  /**
+   * Validates the input information for name, email, and phone number.
+   *
+   * @param name  The name to validate.
+   * @param email The email to validate.
+   * @param phone The phone number to validate.
+   * @return true if all inputs are valid, false otherwise.
+   */
+  private boolean validateInput(String name, String email, String phone) {
+    // Check if name has each word starting with uppercase
+    if (!name.matches("([A-Z][a-z]*)(\\s[A-Z][a-z]*)*")) {
+      showAlert(Alert.AlertType.WARNING, "Invalid Name",
+          "Name must start with uppercase letters for each word.");
+      return false;
+    }
+
+    // Check if email matches standard email pattern
+    if (!email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+      showAlert(Alert.AlertType.WARNING, "Invalid Email",
+          "Please enter a valid email address.");
+      return false;
+    }
+
+    // Check if phone is exactly 10 digits
+    if (!phone.matches("\\d{10}")) {
+      showAlert(Alert.AlertType.WARNING, "Invalid Phone Number",
+          "Phone number must contain exactly 10 digits.");
+      return false;
+    }
+
+    // All validations passed
+    return true;
+  }
+
+  void showAlert(AlertType type, String title, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(content);
+    alert.showAndWait();
+  }
+
+  /**
+   * Displays a warning alert with a specified title and content message.
+   *
+   * @param title   the title of the alert
+   * @param content the content message of the alert
+   */
+  private void showAlert(String title, String content) {
+    Alert alert = new Alert(AlertType.WARNING);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(content);
+    alert.showAndWait();
   }
 }
