@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -67,15 +68,52 @@ public class EditBookItemController {
 
   @FXML
   private void saveChanges() {
-    currentItem.setReferenceOnly(referenceOnlyCheckBox.isSelected());
-    currentItem.setStatus(statusComboBox.getValue());
-    currentItem.setPrice(Double.parseDouble(priceTextField.getText()));
-    currentItem.setFormat(formatComboBox.getValue());
-    currentItem.setDateOfPurchase(dateOfPurchasePicker.getValue());
-    currentItem.setPublicationDate(publicationDatePicker.getValue());
-    currentItem.setPlacedAt(new Rack(1, placeAtTextField.getText()));
-    ((Stage) referenceOnlyCheckBox.getScene().getWindow()).close();
+    // Check for missing required fields
+    if (statusComboBox.getValue() == null ||
+        priceTextField.getText().isEmpty() ||
+        formatComboBox.getValue() == null ||
+        dateOfPurchasePicker.getValue() == null ||
+        publicationDatePicker.getValue() == null ||
+        placeAtTextField.getText().isEmpty()) {
+
+      showAlert(Alert.AlertType.WARNING, "Incomplete Information",
+          "Please ensure all required fields are filled before saving.");
+      return; // Stop execution
+    }
+
+    try {
+      // Save changes to currentItem
+      currentItem.setReferenceOnly(referenceOnlyCheckBox.isSelected());
+      currentItem.setStatus(statusComboBox.getValue());
+      currentItem.setPrice(Double.parseDouble(priceTextField.getText()));
+      currentItem.setFormat(formatComboBox.getValue());
+      currentItem.setDateOfPurchase(dateOfPurchasePicker.getValue());
+      currentItem.setPublicationDate(publicationDatePicker.getValue());
+      currentItem.setPlacedAt(new Rack(1, placeAtTextField.getText()));
+
+      // Close the form
+      ((Stage) referenceOnlyCheckBox.getScene().getWindow()).close();
+    } catch (NumberFormatException e) {
+      // Handle invalid price input
+      showAlert(Alert.AlertType.ERROR, "Invalid Input",
+          "Please enter a valid number for the price.");
+    }
   }
+
+  /**
+   * Shows an alert dialog with specified type, title, and message.
+   *
+   * @param alertType Type of alert
+   * @param title     Title of the alert
+   * @param message   Message content of the alert
+   */
+  private void showAlert(Alert.AlertType alertType, String title, String message) {
+    Alert alert = new Alert(alertType);
+    alert.setTitle(title);
+    alert.setContentText(message);
+    alert.showAndWait();
+  }
+
 
   public void cancel(ActionEvent actionEvent) {
   }
