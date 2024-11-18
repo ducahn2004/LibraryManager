@@ -12,7 +12,7 @@
   <top>
     <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
       <children>
-        <Pane prefHeight="128.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" />
+        <Pane prefHeight="132.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" />
         <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="106.0" layoutY="31.0" prefHeight="96.0" prefWidth="172.0" text="Setting" textFill="#2b579a">
           <font>
             <Font name=".VnArial Bold" size="30.0" />
