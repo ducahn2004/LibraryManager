@@ -14,48 +14,59 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Data Access Object (DAO) class for CRUD operations on the {@link Author} entity in the database.
- * This class provides methods to add, update, delete, and retrieve authors using JDBC connection.
- * Each method is executed within a try-with-resources statement to ensure proper resource handling.
+ * Data Access Object (DAO) for managing {@link Author} entities in the database.
+ * Handles CRUD operations and supports additional functionality for relationships with books.
  */
 public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
 
   /** The logger for AuthorDAO. */
   private static final Logger logger = LoggerFactory.getLogger(AuthorDAO.class);
 
-  /** SQL query to add a new author to the database. */
-  private static final String ADD_AUTHOR_SQL = "INSERT INTO authors (author_id, name) VALUES (?, ?)";
+  /** SQL statements for CRUD operations on the authors table. */
+  private static final String ADD_AUTHOR_SQL =
+      "INSERT INTO authors (author_id, name) VALUES (?, ?)";
 
-  /** SQL query to update an existing author in the database. */
-  private static final String UPDATE_AUTHOR_SQL = "UPDATE authors SET name = ? WHERE author_id = ?";
+  /** SQL statements for CRUD operations on the authors table. */
+  private static final String UPDATE_AUTHOR_SQL =
+      "UPDATE authors SET name = ? WHERE author_id = ?";
 
-  /** SQL query to delete an author from the database by ID. */
-  private static final String DELETE_AUTHOR_SQL = "DELETE FROM authors WHERE author_id = ?";
+  /** SQL statements for CRUD operations on the authors table. */
+  private static final String DELETE_AUTHOR_SQL =
+      "DELETE FROM authors WHERE author_id = ?";
 
-  /** SQL query to find an author by ID. */
-  private static final String GET_AUTHOR_BY_ID_SQL = "SELECT * FROM authors WHERE author_id = ?";
+  /** SQL statements for CRUD operations on the authors table. */
+  private static final String GET_AUTHOR_BY_ID_SQL =
+      "SELECT * FROM authors WHERE author_id = ?";
 
-  /** SQL query to find all authors in the database. */
-  private static final String GET_ALL_AUTHORS_SQL = "SELECT * FROM authors";
+  /** SQL statements for CRUD operations on the authors table. */
+  private static final String GET_ALL_AUTHORS_SQL =
+      "SELECT * FROM authors";
 
-  /** SQL query to find the maximum author_id in the database. */
-  private static final String GET_MAX_AUTHOR_ID_SQL = "SELECT MAX(author_id) AS max_id FROM authors";
+  /** SQL statements for CRUD operations on the authors table. */
+  private static final String GET_AUTHORS_BY_BOOK_SQL =
+      "SELECT a.author_id, a.name FROM authors a "
+          + "JOIN book_authors ba ON a.author_id = ba.author_id "
+          + "WHERE ba.book_isbn = ?";
+
+  /** SQL statements for CRUD operations on the authors table. */
+  private static final String GET_MAX_AUTHOR_ID_SQL =
+      "SELECT MAX(author_id) AS max_id FROM authors";
 
   @Override
   public boolean add(Author author) {
     try (Connection connection = getConnection()) {
-      // Generate new Author ID
+      // Generate a new Author ID
       String newAuthorId = generateAuthorId(connection);
       author.setAuthorId(newAuthorId);
 
-      // Prepare and execute the SQL INSERT statement
+      // Insert new author into database
       try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_AUTHOR_SQL)) {
         preparedStatement.setString(1, author.getAuthorId());
         preparedStatement.setString(2, author.getName());
         return preparedStatement.executeUpdate() > 0;
       }
     } catch (SQLException e) {
-      logger.error("Error adding author: {}", author.getAuthorId(), e);
+      logger.error("Error adding author: {}", author, e);
     }
     return false;
   }
@@ -68,7 +79,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
       preparedStatement.setString(2, author.getAuthorId());
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error updating author with ID {}: {}", author.getAuthorId(), e.getMessage());
+      logger.error("Error updating author: {}", author, e);
     }
     return false;
   }
@@ -80,7 +91,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
       preparedStatement.setString(1, authorId);
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
-      logger.error("Error deleting author with ID {}: {}", authorId, e.getMessage());
+      logger.error("Error deleting author with ID {}: {}", authorId, e);
     }
     return false;
   }
@@ -96,7 +107,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
         }
       }
     } catch (SQLException e) {
-      logger.error("Error finding author by ID {}: {}", authorId, e.getMessage());
+      logger.error("Error retrieving author by ID {}: {}", authorId, e);
     }
     return Optional.empty();
   }
@@ -107,44 +118,56 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_AUTHORS_SQL);
         ResultSet resultSet = preparedStatement.executeQuery()) {
-
       while (resultSet.next()) {
         authors.add(mapRowToAuthor(resultSet));
       }
     } catch (SQLException e) {
-      logger.error("Error retrieving all authors: {}", e.getMessage());
+      logger.error("Error retrieving all authors", e);
     }
     return authors;
   }
 
   /**
-   * Maps a row from the {@link ResultSet} to an {@link Author} object.
+   * Retrieves authors associated with a specific book.
    *
-   * @param resultSet the {@link ResultSet} from which to map the author data.
-   * @return an {@link Author} object populated with data from the current row in {@link ResultSet}.
-   * @throws SQLException if a database access error occurs.
+   * @param isbn the ISBN of the book
+   * @return a set of authors associated with the book
+   */
+  public Set<Author> getAuthorsByBook(String isbn) {
+    Set<Author> authors = new HashSet<>();
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_AUTHORS_BY_BOOK_SQL)) {
+      preparedStatement.setString(1, isbn);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        while (resultSet.next()) {
+          authors.add(mapRowToAuthor(resultSet));
+        }
+      }
+    } catch (SQLException e) {
+      logger.error("Error retrieving authors for book with ISBN {}: {}", isbn, e);
+    }
+    return authors;
+  }
+
+  /**
+   * Maps a ResultSet row to an Author object.
+   *
+   * @param resultSet the ResultSet to map
+   * @return an Author object
+   * @throws SQLException if a database access error occurs
    */
   private Author mapRowToAuthor(ResultSet resultSet) throws SQLException {
-    String authorId = formatAuthorId(resultSet.getInt("author_id"));
+    String authorId = resultSet.getString("author_id");
     String name = resultSet.getString("name");
     return new Author(authorId, name);
   }
 
   /**
-   * Formats an author ID with the "AUTHOR-" prefix and zero padding for consistency.
+   * Generates a new unique Author ID.
    *
-   * @param id the raw integer ID from the database.
-   * @return the formatted author ID string with prefix.
-   */
-  private String formatAuthorId(int id) {
-    return "AUTHOR-" + String.format("%03d", id);
-  }
-
-  /**
-   * Generates a new Author ID by finding the current maximum ID and incrementing it.
-   * @param connection The database connection.
-   * @return A new unique Author ID in the format AUTHOR-XXX.
-   * @throws SQLException If a database access error occurs.
+   * @param connection the database connection
+   * @return a new Author ID
+   * @throws SQLException if a database access error occurs
    */
   private String generateAuthorId(Connection connection) throws SQLException {
     try (PreparedStatement statement = connection.prepareStatement(GET_MAX_AUTHOR_ID_SQL);
@@ -152,13 +175,11 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
       if (resultSet.next()) {
         String maxId = resultSet.getString("max_id");
         if (maxId != null) {
-          // Extract the numeric part, increment it, and format the new ID
           int nextId = Integer.parseInt(maxId.replace("AUTHOR-", "")) + 1;
-          return formatAuthorId(nextId); // Reuse the formatAuthorId method
+          return String.format("AUTHOR-%03d", nextId);
         }
       }
     }
-    return formatAuthorId(1); // Default ID if no records exist
+    return "AUTHOR-001";
   }
-
 }
