@@ -82,7 +82,7 @@ public class AddMemberController {
           "Member with member ID: " + currentMember.getMemberId() + " has been edited successfully.");
     } else {
 
-      System.out.println("Failed to edit book with ISBN: " + currentMember.getMemberId());
+      System.out.println("Member with member ID: " + currentMember.getMemberId());
       throw new IllegalArgumentException("Member with the same information already exists in the library.");
     }
   }

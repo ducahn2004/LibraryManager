@@ -26,14 +26,19 @@ public class NotificationController {
 
   private final ObservableList<Notification> notificationObservableList = FXCollections.observableArrayList();
 
+
   @FXML
   private TableView<SystemNotification> systemTable;
+  @FXML
+  private TableColumn<SystemNotification, String> systemDate;
   @FXML
   private TableColumn<SystemNotification, String> systemType;
   @FXML
   private TableColumn<SystemNotification, String> systemContent;
   @FXML
   private TableView<EmailNotification> emailTable;
+  @FXML
+  private TableColumn<EmailNotification, String> emailDate;
   @FXML
   private TableColumn<EmailNotification, String> emailType;
   @FXML
@@ -53,18 +58,28 @@ public class NotificationController {
   private final ObservableList<SystemNotification> systemNotificationObservableList = FXCollections.observableArrayList();
   private final ObservableList<EmailNotification> emailNotificationObservableList = FXCollections.observableArrayList();
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+
   @FXML
   public void initialize() {
-    systemType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
-    systemContent.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
+    systemDate.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getCreatedOn().toString()));
+    systemType.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
+    systemContent.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
     loadSystemNotification();
     systemTable.setItems(systemNotificationObservableList);
-    emailType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
-    emailContent.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
+    emailDate.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getCreatedOn().toString()));
+    emailType.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
+    emailContent.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
     loadEmailNotification();
     emailTable.setItems(emailNotificationObservableList);
 
   }
+
   private void loadSystemNotification() {
     systemNotificationObservableList.clear();
     Task<ObservableList<SystemNotification>> loadTask = new Task<>() {
@@ -102,6 +117,7 @@ public class NotificationController {
     alert.setContentText(content);
     alert.showAndWait();
   }
+
   private Stage getStage() {
     return (Stage) homeButton.getScene().getWindow(); // Có thể sử dụng bất kỳ button nào
   }
@@ -129,5 +145,5 @@ public class NotificationController {
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
-  
+
 }

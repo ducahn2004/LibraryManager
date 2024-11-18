@@ -10,7 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.NotificationController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="org.group4.librarymanagercode.NotificationController">
   <top>
     <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
       <Pane prefHeight="132.0" prefWidth="130.0" style="-fx-background-color: #2B579A;"/>
@@ -88,6 +90,7 @@
       </Pane>
       <TableView fx:id="systemTable" prefHeight="254.0" prefWidth="870.0">
         <columns>
+          <TableColumn fx:id="systemDate" prefWidth="160.0" text="Date "/>
           <TableColumn fx:id="systemType" prefWidth="160.0" text="Type "/>
           <TableColumn fx:id="systemContent" minWidth="0.0" prefWidth="443.9999694824219"
             text="Content "/>
@@ -103,6 +106,7 @@
       </Pane>
       <TableView fx:id="emailTable" prefHeight="245.0" prefWidth="870.0">
         <columns>
+          <TableColumn fx:id="emailDate" prefWidth="160.0" text="Date "/>
           <TableColumn fx:id="emailType" prefWidth="160.0" text="Type "/>
           <TableColumn fx:id="emailContent" prefWidth="442.3999938964844" text="Content "/>
         </columns>
