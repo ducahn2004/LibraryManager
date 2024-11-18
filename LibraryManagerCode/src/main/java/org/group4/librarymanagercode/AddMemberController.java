@@ -40,8 +40,26 @@ public class AddMemberController {
           "Please fill in all required information.");
       return; // Stop execution to allow user to correct input
     }
-    returnCheckAddMember();
+    if (!memberName.getText().matches("([A-Z][a-z]*)(\\s[A-Z][a-z]*)*")) {
+      showAlert(Alert.AlertType.WARNING, "Invalid Name",
+          "Name must start with uppercase letters for each word.");
+      return;
+    }
 
+    // Check if email matches standard email pattern
+    if (!memberEmail.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+      showAlert(Alert.AlertType.WARNING, "Invalid Email",
+          "Please enter a valid email address.");
+      return;
+    }
+
+    // Check if phone is exactly 10 digits
+    if (!memberPhone.getText().matches("\\d{10}")) {
+      showAlert(Alert.AlertType.WARNING, "Invalid Phone Number",
+          "Phone number must contain exactly 10 digits.");
+      return;
+    }
+    returnCheckAddMember();
     try {
       // Add the new member to the library (i.e., database)
       // After the member is successfully added to the library, update the parent controller's table.
@@ -74,11 +92,13 @@ public class AddMemberController {
       // TODO Uncomment after notification complete
       //SystemNotification.sendNotification(String type, String content);
       System.out.println(
-          "Member with member ID: " + currentMember.getMemberId() + " has been edited successfully.");
+          "Member with member ID: " + currentMember.getMemberId()
+              + " has been edited successfully.");
     } else {
 
       System.out.println("Member with member ID: " + currentMember.getMemberId());
-      throw new IllegalArgumentException("Member with the same information already exists in the library.");
+      throw new IllegalArgumentException(
+          "Member with the same information already exists in the library.");
     }
   }
 
