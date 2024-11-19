@@ -7,6 +7,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -18,6 +22,14 @@ public class AdminPaneController {
 
   public Label total_Members;
   public Label total_books;
+
+  @FXML
+  private BarChart<String, Number> home_chart;
+  @FXML
+  public CategoryAxis xAxis;
+  @FXML
+  public NumberAxis yAxis;
+
   private Stage stage;
 
   @FXML
@@ -108,12 +120,33 @@ public class AdminPaneController {
     total_books.setText(String.valueOf(totalBooks));
   }
 
+
+  public void Home_chart(){
+    home_chart.getData().clear();
+
+  int totalBooks = bookDAO.getTotalBooks();
+  int totalMembers = memberDAO.getTotalMembers();
+
+  // add series
+  XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();
+    bookSeries.setName("Books");
+    bookSeries.getData().add(new XYChart.Data<>("Total Books", totalBooks));
+
+  // add series
+  XYChart.Series<String, Number> memberSeries = new XYChart.Series<>();
+    memberSeries.setName("Members");
+    memberSeries.getData().add(new XYChart.Data<>("Total Members", totalMembers));
+
+  //add data for home_chart
+    home_chart.getData().addAll(bookSeries, memberSeries);
+}
+
   @FXML
   public void initialize() {
     // updateTotalMembers();
     updateTotalMembers();
     // updateTotalBooks();
     updateTotalBooks();
+    Home_chart();
   }
-
 }
