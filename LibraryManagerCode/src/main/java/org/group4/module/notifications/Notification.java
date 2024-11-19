@@ -31,7 +31,7 @@ public abstract class Notification {
    * @param type    The type of notification, as defined by NotificationType
    */
   public Notification(NotificationType type) {
-    this.notificationId = type.toString() + LocalDateTime.now()
+    this.notificationId = type.toString() + "_" + LocalDateTime.now()
         .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     this.createdOn = LocalDate.now();
     this.type = type;
