@@ -32,8 +32,7 @@ public class MemberEditController {
 
   private Member currentMember; // The member being edited
   private MemberViewController parentController; // Reference to the parent controller
-  private final Librarian librarian = SessionManager.getInstance()
-      .getCurrentLibrarian(); // Default librarian instance
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian(); // Default librarian instance
 
   /**
    * Sets the parent controller to enable refreshing the member table after updates.
@@ -58,84 +57,103 @@ public class MemberEditController {
   }
 
   /**
-   * Saves the member data after validating the input fields. If all fields are filled, updates the
-   * member and refreshes the table in the parent controller.
+   * Saves the member data after validating the input fields.
    *
    * @param actionEvent the event triggered by the save button
    */
   @FXML
   private void saveMember(ActionEvent actionEvent) {
-    // Check if any required field is empty
-    if (memberName.getText().isEmpty() || memberEmail.getText().isEmpty() ||
-        memberPhone.getText().isEmpty() || memberBirth.getValue() == null || validateInput(
-        memberName.getText(), memberEmail.getText(), memberPhone.getText())) {
-      showAlert("Incomplete Information", "Please fill in all required information.");
-      return; // Stop execution to allow user to correct input
-    }
-    if (!memberName.getText().matches("([A-Z][a-z]*)(\\s[A-Z][a-z]*)*")) {
-      showAlert(Alert.AlertType.WARNING, "Invalid Name",
-          "Name must start with uppercase letters for each word.");
+    // Validate inputs and handle errors
+    if (!validateAllInputs()) {
       return;
     }
 
-    // Check if email matches standard email pattern
-    if (!memberEmail.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-      showAlert(Alert.AlertType.WARNING, "Invalid Email",
-          "Please enter a valid email address.");
-      return;
-    }
-
-    // Check if phone is exactly 10 digits
-    if (!memberPhone.getText().matches("\\d{10}")) {
-      showAlert(Alert.AlertType.WARNING, "Invalid Phone Number",
-          "Phone number must contain exactly 10 digits.");
-      return;
-    }
-    // Set member details after validating that fields are not empty
+    // Set member details after validation passes
     currentMember.setName(memberName.getText());
     currentMember.setDateOfBirth(memberBirth.getValue());
     currentMember.setEmail(memberEmail.getText());
     currentMember.setPhoneNumber(memberPhone.getText());
 
+    // Update member in the system
     returnCheckEditMember();
-    // Refresh the table and close the form if all validations pass
+
+    // Refresh the table and close the form
     if (parentController != null) {
       parentController.refreshTable();
     }
     closeForm();
   }
 
-  private void returnCheckEditMember() {
-    boolean successEdit = librarian.updateMember(currentMember);
-    if (successEdit) {
-      // TODO Uncomment after notification complete
-      //SystemNotification.sendNotification(String type, String content);
-      System.out.println(
-          "Book with ISBN: " + currentMember.getMemberId() + " has been edited successfully.");
-    } else {
-
-      System.out.println("Failed to edit book with ISBN: " + currentMember.getMemberId());
-      throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
+  /**
+   * Validates all input fields.
+   *
+   * @return true if all inputs are valid, false otherwise
+   */
+  private boolean validateAllInputs() {
+    // Check if any required field is empty
+    if (memberName.getText().isEmpty() || memberEmail.getText().isEmpty() ||
+        memberPhone.getText().isEmpty() || memberBirth.getValue() == null) {
+      showAlert(AlertType.WARNING, "Incomplete Information", "Please fill in all required information.");
+      return false;
     }
+
+    // Check if name is valid
+    if (!isValidName(memberName.getText())) {
+      showAlert(AlertType.WARNING, "Invalid Name", "Name must start with uppercase letters for each word.");
+      return false;
+    }
+
+    // Check if email is valid
+    if (!isValidEmail(memberEmail.getText())) {
+      showAlert(AlertType.WARNING, "Invalid Email", "Please enter a valid email address.");
+      return false;
+    }
+
+    // Check if phone is valid
+    if (!isValidPhone(memberPhone.getText())) {
+      showAlert(AlertType.WARNING, "Invalid Phone Number", "Phone number must contain exactly 10 digits.");
+      return false;
+    }
+
+    return true;
   }
 
   /**
-   * Creates an alert dialog with specified parameters.
+   * Checks if the name is valid.
    *
-   * @param type    the type of alert
-   * @param title   the title of the alert
-   * @param header  the header text of the alert
-   * @param content the content message of the alert
-   * @return the constructed Alert object
+   * @param name the name to validate
+   * @return true if valid, false otherwise
    */
-  private Alert createAlert(AlertType type, String title, String header, String content) {
-    Alert alert = new Alert(type);
-    alert.setTitle(title);
-    alert.setHeaderText(header);
-    alert.setContentText(content);
-    return alert;
+  private boolean isValidName(String name) {
+    return name.matches("([A-Z][a-z]*)(\\s[A-Z][a-z]*)*");
   }
 
+  /**
+   * Checks if the email is valid.
+   *
+   * @param email the email to validate
+   * @return true if valid, false otherwise
+   */
+  private boolean isValidEmail(String email) {
+    return email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+  }
+
+  /**
+   * Checks if the phone number is valid.
+   *
+   * @param phone the phone number to validate
+   * @return true if valid, false otherwise
+   */
+  private boolean isValidPhone(String phone) {
+    return phone.matches("\\d{10}");
+  }
+
+  private void returnCheckEditMember() {
+    boolean successEdit = librarian.updateMember(currentMember);
+    if (!successEdit) {
+      throw new IllegalArgumentException("Member with the same details already exists in the library.");
+    }
+  }
 
   /**
    * Cancels the current edit operation and closes the form.
@@ -154,55 +172,14 @@ public class MemberEditController {
   }
 
   /**
-   * Validates the input information for name, email, and phone number.
+   * Displays an alert dialog.
    *
-   * @param name  The name to validate.
-   * @param email The email to validate.
-   * @param phone The phone number to validate.
-   * @return true if all inputs are valid, false otherwise.
-   */
-  private boolean validateInput(String name, String email, String phone) {
-    // Check if name has each word starting with uppercase
-    if (!name.matches("([A-Z][a-z]*)(\\s[A-Z][a-z]*)*")) {
-      showAlert(Alert.AlertType.WARNING, "Invalid Name",
-          "Name must start with uppercase letters for each word.");
-      return false;
-    }
-
-    // Check if email matches standard email pattern
-    if (!email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-      showAlert(Alert.AlertType.WARNING, "Invalid Email",
-          "Please enter a valid email address.");
-      return false;
-    }
-
-    // Check if phone is exactly 10 digits
-    if (!phone.matches("\\d{10}")) {
-      showAlert(Alert.AlertType.WARNING, "Invalid Phone Number",
-          "Phone number must contain exactly 10 digits.");
-      return false;
-    }
-
-    // All validations passed
-    return true;
-  }
-
-  void showAlert(AlertType type, String title, String content) {
-    Alert alert = new Alert(type);
-    alert.setTitle(title);
-    alert.setHeaderText(null);
-    alert.setContentText(content);
-    alert.showAndWait();
-  }
-
-  /**
-   * Displays a warning alert with a specified title and content message.
-   *
+   * @param type    the type of alert
    * @param title   the title of the alert
    * @param content the content message of the alert
    */
-  private void showAlert(String title, String content) {
-    Alert alert = new Alert(AlertType.WARNING);
+  private void showAlert(AlertType type, String title, String content) {
+    Alert alert = new Alert(type);
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(content);
