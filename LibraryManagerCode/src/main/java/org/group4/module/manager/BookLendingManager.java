@@ -108,8 +108,8 @@ public class BookLendingManager {
 
     // Check if the book was returned late and calculate fine if necessary
     if (bookLending.getDueDate().isBefore(LocalDate.now())) {
-      Fine fine = new Fine();
-      fine.calculateFine(bookLending);
+      Fine fine = new Fine(bookLending);
+      fine.calculateFine();
       FactoryDAO.getFineDAO().add(fine);
     }
 

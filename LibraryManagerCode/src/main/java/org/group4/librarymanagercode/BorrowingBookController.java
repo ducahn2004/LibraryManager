@@ -154,7 +154,8 @@ public class BorrowingBookController {
 
         System.out.println(
             "MEMBER ID: " + currentBookLending.getMember().getMemberId() + " BORROWED");
-        System.out.println("BarCode" + currentBookLending.getBookItem().getBarcode() + " BORROWED");
+        System.out.println("BarCode: " + currentBookLending.getBookItem().getBarcode() + " "
+            + "BORROWED");
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Success");
         alert.setHeaderText(null);

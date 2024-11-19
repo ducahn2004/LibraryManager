@@ -12,16 +12,23 @@ import org.group4.dao.FactoryDAO;
  */
 public class Fine {
 
-  /**
-   * The amount of the fine.
-   */
+  /** The book lending information. */
+  private final BookLending bookLending;
+
+  /** The amount of the fine. */
   private double amount;
 
   /**
    * Constructs a new {@code Fine} object with a default fine amount of 0.
    */
-  public Fine() {
+  public Fine(BookLending bookLending) {
+    this.bookLending = bookLending;
     this.amount = 0;
+  }
+
+  public Fine(BookLending bookLending, double amount) {
+    this.bookLending = bookLending;
+    this.amount = amount;
   }
 
   /**
@@ -31,6 +38,15 @@ public class Fine {
    */
   public double getAmount() {
     return amount;
+  }
+
+  /**
+   * Returns the book lending information.
+   *
+   * @return the book lending information.
+   */
+  public BookLending getBookLending() {
+    return bookLending;
   }
 
   /**
@@ -45,11 +61,10 @@ public class Fine {
   /**
    * Calculates the fine for a book lending based on overdue days or if the book is lost.
    *
-   * @param bookLending The book lending information of a member.
    * @return The calculated fine amount.
    * @throws SQLException If there is an issue accessing the book data.
    */
-  public double calculateFine(BookLending bookLending) throws SQLException {
+  public double calculateFine() throws SQLException {
     BookItem bookItem = FactoryDAO.getBookItemDAO().getById(bookLending.getBookItem().getBarcode())
         .orElseThrow(() -> new SQLException("Book item not found."));
     double bookPrice = bookItem.getPrice();

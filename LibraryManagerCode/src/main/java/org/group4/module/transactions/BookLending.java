@@ -21,7 +21,7 @@ public class BookLending {
   private final LocalDate lendingDate;
 
   /** The date when the book item is due for return. */
-  private LocalDate dueDate;
+  private final LocalDate dueDate;
 
   /** The date when the book item was returned, or null if not yet returned. */
   private LocalDate returnDate;
@@ -103,16 +103,6 @@ public class BookLending {
    */
   public Optional<LocalDate> getReturnDate() {
     return Optional.ofNullable(returnDate);
-  }
-
-
-  /**
-   * Sets the due date for the book item.
-   *
-   * @param dueDate The new due date for the book.
-   */
-  public void setDueDate(LocalDate dueDate) {
-    this.dueDate = dueDate;
   }
 
   /**

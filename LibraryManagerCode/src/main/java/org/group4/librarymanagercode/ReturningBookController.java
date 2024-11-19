@@ -183,8 +183,8 @@ public class ReturningBookController {
       throw new IllegalArgumentException("Book lending cannot be null.");
     }
 
-    Fine amountFine = new Fine();
-    double fineAmount = amountFine.calculateFine(currentBookLending);
+    Fine amountFine = new Fine(currentBookLending);
+    double fineAmount = amountFine.calculateFine();
     feeField.setText(Double.toString(fineAmount));
   }
 
@@ -240,8 +240,8 @@ public class ReturningBookController {
     boolean isChecked = statusCheckBox.isSelected();
 
     currentBookItem.setStatus(isChecked ? BookStatus.AVAILABLE : BookStatus.LOST);
-    Fine amountFine = new Fine();
-    double fineAmount = amountFine.calculateFine(findBookLendingById(currentBookItem.getBarcode()));
+    Fine amountFine = new Fine(findBookLendingById(currentBookItem.getBarcode()));
+    double fineAmount = amountFine.calculateFine();
     feeField.setText(Double.toString(fineAmount));
 
     if (isChecked) {
