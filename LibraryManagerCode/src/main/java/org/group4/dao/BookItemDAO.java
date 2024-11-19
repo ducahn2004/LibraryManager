@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import kotlin.jvm.internal.SpreadBuilder;
 import org.group4.module.books.Book;
 import org.group4.module.books.BookItem;
 import org.group4.module.books.Rack;
@@ -28,31 +29,28 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   /** Logger for BookItemDAO class. */
   private static final Logger logger = LoggerFactory.getLogger(BookItemDAO.class);
 
-  /** SQL query to add a new book item to the database. */
+  /** SQL statements for CRUD operations on the book_items table */
   private static final String ADD_BOOK_ITEM_SQL =
       "INSERT INTO book_items (barcode, ISBN, isReferenceOnly, borrowed, dueDate, price, format, "
           + "status, dateOfPurchase, publicationDate, rackNumber) "
           + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-  /** SQL query to update an existing book item in the database. */
   private static final String UPDATE_BOOK_ITEM_SQL =
       "UPDATE book_items SET isReferenceOnly = ?, borrowed = ?, dueDate = ?, price = ?, format = ?, "
           + "status = ?, dateOfPurchase = ?, publicationDate = ?, rackNumber = ? WHERE barcode = ?";
 
-  /** SQL query to delete a book item from the database by barcode. */
   private static final String DELETE_BOOK_ITEM_SQL = "DELETE FROM book_items WHERE barcode = ?";
 
-  /** SQL query to find a book item by barcode. */
   private static final String GET_ALL_BOOK_ITEMS_SQL = "SELECT * FROM book_items";
 
-  /** SQL query to find a book item by ISBN. */
+  private static final String GET_BOOK_ITEM_BY_BARCODE_SQL =
+      "SELECT * FROM book_items WHERE barcode = ?";
+
   private static final String GET_BOOK_ITEM_BY_ISBN_SQL = "SELECT * FROM book_items WHERE ISBN = ?";
 
-  /** SQL query to find the maximum barcode for a given ISBN. */
   private static final String GET_MAX_BARCODE_SQL =
       "SELECT MAX(barcode) AS max_barcode FROM book_items WHERE barcode LIKE ?";
 
-  /** SQL query to check if a rack exists in the database. */
   private static final String CHECK_RACK_SQL = "SELECT 1 FROM racks WHERE numberRack = ?";
 
   @Override
@@ -130,7 +128,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   @Override
   public Optional<BookItem> getById(String barcode) throws SQLException {
     try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_BOOK_ITEMS_SQL)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_ITEM_BY_BARCODE_SQL)) {
       preparedStatement.setString(1, barcode);
       try (ResultSet rs = preparedStatement.executeQuery()) {
         if (rs.next()) {

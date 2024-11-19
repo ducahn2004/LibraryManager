@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 import org.group4.module.users.Account;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,14 +16,19 @@ import org.slf4j.LoggerFactory;
  */
 public class AccountDAO extends BaseDAO {
 
-  /** The logger for AccountDAO. */
+  /** Logger for AccountDAO. */
   private static final Logger logger = LoggerFactory.getLogger(AccountDAO.class);
 
-  /** SQL statements for CRUD operations on the account table. */
-  private static final String GET_ACCOUNT_BY_ID_SQL = "SELECT * FROM account WHERE id = ?";
+  /** Column names in the account table. */
+  private static final String COLUMN_ID = "id";
+  private static final String COLUMN_PASSWORD = "password";
 
   /** SQL statements for CRUD operations on the account table. */
-  private static final String UPDATE_ACCOUNT_SQL = "UPDATE account SET password = ? WHERE id = ?";
+  private static final String GET_ACCOUNT_BY_ID_SQL =
+      "SELECT * FROM account WHERE " + COLUMN_ID + " = ?";
+
+  private static final String UPDATE_ACCOUNT_SQL =
+      "UPDATE account SET " + COLUMN_PASSWORD + " = ? WHERE " + COLUMN_ID + " = ?";
 
   /**
    * Retrieves an account by its ID from the database.
@@ -36,8 +42,8 @@ public class AccountDAO extends BaseDAO {
       preparedStatement.setString(1, id);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
-          String retrievedId = resultSet.getString("id");
-          String password = resultSet.getString("password");
+          String retrievedId = resultSet.getString(COLUMN_ID);
+          String password = resultSet.getString(COLUMN_PASSWORD);
           return Optional.of(new Account(retrievedId, password));
         }
       }
