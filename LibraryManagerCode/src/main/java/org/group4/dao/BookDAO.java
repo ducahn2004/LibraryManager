@@ -52,6 +52,8 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   private static final String DELETE_BOOK_AUTHORS_SQL =
       "DELETE FROM book_authors WHERE book_isbn = ?";
 
+  private static final String FIND_TOTAL_BOOK_SQL = "SELECT COUNT(*) FROM books";
+
   /** The AuthorDAO dependency for managing authors. */
   private final AuthorDAO authorDAO;
 
@@ -218,6 +220,20 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   public List<BookItem> getAllBookItems(String isbn) throws SQLException {
     BookItemDAO bookItemDAO = new BookItemDAO();
     return bookItemDAO.getAllByIsbn(isbn);
+  }
+
+  public int getTotalBooks() {
+    int totalBooks = 0;
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(FIND_TOTAL_BOOK_SQL)) {
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        totalBooks = resultSet.getInt(1);
+      }
+    } catch (SQLException e) {
+      logger.error("Error total Books", e);
+    }
+    return totalBooks;
   }
 
   /**

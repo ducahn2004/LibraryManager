@@ -10,12 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.group4.dao.BookDAO;
 import org.group4.dao.MemberDAO;
 import org.jetbrains.annotations.NotNull;
 
 public class AdminPaneController {
 
   public Label total_Members;
+  public Label total_books;
   private Stage stage;
 
   @FXML
@@ -92,17 +94,26 @@ public class AdminPaneController {
   }
 
   MemberDAO memberDAO = new MemberDAO();
+  BookDAO bookDAO = new BookDAO();
 
-  
+
   public void updateTotalMembers() {
     int totalMembers = memberDAO.getTotalMembers();
     total_Members.setText(String.valueOf(totalMembers));
   }
 
+
+  public void updateTotalBooks() {
+    int totalBooks = bookDAO.getTotalBooks();
+    total_books.setText(String.valueOf(totalBooks));
+  }
+
   @FXML
   public void initialize() {
-
+    // updateTotalMembers();
     updateTotalMembers();
+    // updateTotalBooks();
+    updateTotalBooks();
   }
 
 }
