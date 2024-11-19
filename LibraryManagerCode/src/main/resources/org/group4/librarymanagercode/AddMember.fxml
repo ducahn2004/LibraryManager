@@ -15,7 +15,7 @@
   <center>
     <VBox prefHeight="570.0" prefWidth="284.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
       <Pane prefHeight="54.0" prefWidth="300.0">
-        <Label layoutX="32.0" layoutY="-2.0" style="-fx-text-fill: #2b579a;" text="Member information">
+        <Label fx:id="memberInformation" layoutX="32.0" layoutY="-2.0" style="-fx-text-fill: #2b579a;" text="Member information">
           <font>
             <Font size="24.0" />
           </font>

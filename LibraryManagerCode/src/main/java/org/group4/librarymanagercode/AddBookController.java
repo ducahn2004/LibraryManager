@@ -112,6 +112,7 @@ public class AddBookController {
    * @param bookDetails JSON object containing book details
    */
   private void populateFieldsFromJson(JSONObject bookDetails) {
+    isbnField.setText(convertISBN10toISBN13(isbnField.getText()));
     titleField.setText(bookDetails.optString("title", "Unknown"));
     subjectField.setText(bookDetails.optString("categories", "Unknown"));
     publisherField.setText(bookDetails.optString("publisher", "Unknown"));
@@ -159,7 +160,6 @@ public class AddBookController {
         .map(Author::new)
         .collect(Collectors.toCollection(HashSet::new));
   }
-
   /**
    * Parses authors from a JSON array to a formatted string.
    *
@@ -192,7 +192,36 @@ public class AddBookController {
     System.out.println(
         "Book with ISBN: " + book.getISBN() + " has been edited successfully.");
   }
+  /**
+   * Converts an ISBN-10 to an ISBN-13.
+   *
+   * @param isbn10 The 10-digit ISBN string to convert.
+   * @return The corresponding 13-digit ISBN string.
+   * @throws IllegalArgumentException if the input is not a valid 10-digit ISBN.
+   */
+  public String convertISBN10toISBN13(String isbn10) {
+    // Validate the input ISBN-10 length
+    if(isbn10.length() == 13){return isbn10;}
+    else if (isbn10.length() != 10) {
+      throw new IllegalArgumentException("Invalid ISBN-10! The input must be exactly 10 characters long.");
+    }
 
+    // Add the "978" prefix to the ISBN-10 (excluding its checksum digit)
+    String isbn13WithoutChecksum = "978" + isbn10.substring(0, 9);
+
+    // Calculate the checksum for the new ISBN-13
+    int checksum = 0;
+    for (int i = 0; i < isbn13WithoutChecksum.length(); i++) {
+      int digit = Character.getNumericValue(isbn13WithoutChecksum.charAt(i));
+      // Multiply by 1 for odd positions and 3 for even positions
+      checksum += (i % 2 == 0) ? digit : digit * 3;
+    }
+    // Compute the final checksum digit
+    checksum = (10 - (checksum % 10)) % 10;
+
+    // Return the full 13-digit ISBN
+    return isbn13WithoutChecksum + checksum;
+  }
   /**
    * Shows an alert dialog with specified type, title, and message.
    *

@@ -277,5 +277,4 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
       }
     }
   }
-
 }
