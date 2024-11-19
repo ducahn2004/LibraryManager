@@ -156,15 +156,14 @@ public class Librarian extends Person {
 
   // Book Lending Management Methods
 
-
   /**
    * Borrows a book item from the library system.
    *
    * @param bookItem the {@code BookItem} object to borrow
-   * @param member the {@code Member} object borrowing the book item
+   * @param member the {@code Member} borrowing the book item
    * @return {@code true} if the book item was borrowed successfully, {@code false} otherwise
    */
-  public boolean borrowBookItem(BookItem bookItem, Member member) {
+  public boolean borrowBookItem(BookItem bookItem, Member member) throws Exception {
     return BookLendingManager.borrowBookItem(bookItem, member);
   }
 
@@ -173,11 +172,11 @@ public class Librarian extends Person {
    *
    * @param bookItem the {@code BookItem} object to return
    * @param member the {@code Member} object returning the book item
-   * @param status the {@code BookStatus} to set for the returned book item
+   * @param status the status of the book item
    * @return {@code true} if the book item was returned successfully, {@code false} otherwise
    */
   public boolean returnBookItem(BookItem bookItem, Member member, BookStatus status)
-      throws SQLException {
+      throws Exception {
     return BookLendingManager.returnBookItem(bookItem, member, status);
   }
 
