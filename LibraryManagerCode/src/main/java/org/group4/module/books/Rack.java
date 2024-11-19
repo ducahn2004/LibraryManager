@@ -49,4 +49,12 @@ public class Rack {
   public void setLocationIdentifier(String locationIdentifier) {
     this.locationIdentifier = locationIdentifier;
   }
+
+  @Override
+  public String toString() {
+    return "Rack{" +
+        "numberRack = " + numberRack +
+        ", locationIdentifier = '" + locationIdentifier + '\'' +
+        '}';
+  }
 }
