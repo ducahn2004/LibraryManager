@@ -214,19 +214,31 @@ public class BookViewController {
   private void showDeleteConfirmation(Book book) {
     Alert alert = createAlert(AlertType.CONFIRMATION, "Delete Confirmation",
         "Are you sure you want to delete this book?",
-        "ID: " + book.getISBN() + "\nName: " + book.getTitle() + "\nSubject" + book.getSubject()
-            + "\nLanguage" + book.getLanguage() + "\nNumber Of Pages" + book.getNumberOfPages()
-            + "\nAuthor" + book.authorsToString());
+        "ID: " + book.getISBN() + "\nName: " + book.getTitle() + "\nSubject: " + book.getSubject()
+            + "\nLanguage: " + book.getLanguage() + "\nNumber Of Pages: " + book.getNumberOfPages()
+            + "\nAuthor: " + book.authorsToString());
+
     alert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
-        bookList.remove(book);
-        librarian.deleteBook(book.getISBN());
+        if (librarian.deleteBook(book.getISBN())) {
+          // TODO Uncomment after notification complete
+          //SystemNotification.sendNotification(String type, String content);
+          System.out.println(
+              "Book with ISBN: " + book.getISBN() + " has been deleted successfully.");
+          bookList.remove(book);
+        } else {
+          System.out.println("Failed to delete book with ISBN: " + book.getISBN());
+          showAlert(AlertType.ERROR, "Deletion Failed",
+              "The book with the ISBN " + book.getISBN()
+                  + " could not be deleted because it already exists in the library.");
+        }
       }
     });
   }
 
+
   private void logAndShowError(String message, Exception e) {
-    Logger.getLogger(MemberViewController.class.getName()).log(Level.SEVERE, message, e);
+    Logger.getLogger(BookViewController.class.getName()).log(Level.SEVERE, message, e);
     showAlert(AlertType.ERROR, "Error", message);
   }
 
@@ -251,6 +263,14 @@ public class BookViewController {
     alert.setHeaderText(header);
     alert.setContentText(content);
     return alert;
+  }
+
+  @FXML
+  public void addBookAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
+    Parent root = loader.load();
+    Stage stage = (Stage) addBookButton.getScene().getWindow();
+    stage.getScene().setRoot(root);
   }
 
   @FXML
@@ -281,14 +301,6 @@ public class BookViewController {
   @FXML
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
-  }
-
-  @FXML
-  public void addBookAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
-    Parent root = loader.load();
-    Stage stage = (Stage) addBookButton.getScene().getWindow();
-    stage.getScene().setRoot(root);
   }
 
   private Stage getStage() {
