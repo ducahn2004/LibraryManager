@@ -21,11 +21,19 @@ public class MemberManager implements GenericManager<Member> {
 
   @Override
   public boolean update(Member member) {
-    return memberDAO.update(member);
+    if (memberDAO.update(member)) {
+      SystemNotification.sendNotification(NotificationType.UPDATE_MEMBER_SUCCESS, member.toString());
+      return true;
+    }
+    return false;
   }
 
   @Override
   public boolean delete(String id) {
-    return memberDAO.delete(id);
+    if (memberDAO.delete(id)) {
+      SystemNotification.sendNotification(NotificationType.DELETE_MEMBER_SUCCESS, id);
+      return true;
+    }
+    return false;
   }
 }

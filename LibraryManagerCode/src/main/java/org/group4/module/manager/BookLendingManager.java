@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.group4.dao.FactoryDAO;
 import org.group4.module.books.BookItem;
 import org.group4.module.enums.BookStatus;
+import org.group4.module.enums.NotificationType;
+import org.group4.module.notifications.SystemNotification;
 import org.group4.module.transactions.BookLending;
 import org.group4.module.transactions.Fine;
 import org.group4.module.users.Member;
@@ -47,7 +49,8 @@ public class BookLendingManager {
     FactoryDAO.getBookItemDAO().update(bookItem);
     FactoryDAO.getMemberDAO().update(member);
     FactoryDAO.getBookLendingDAO().add(bookLending);
-
+    SystemNotification.sendNotification(NotificationType.BOOK_BORROW_SUCCESS,
+        member.getMemberId() + " borrowed " + bookItem.getBarcode());
     return true;
   }
 
@@ -89,6 +92,8 @@ public class BookLendingManager {
     FactoryDAO.getBookItemDAO().update(bookItem);
     FactoryDAO.getMemberDAO().update(member);
     FactoryDAO.getBookLendingDAO().update(bookLending);
+    SystemNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS,
+        member.getMemberId() + " returned " + bookItem.getBarcode());
 
     // Check if the book was returned late and calculate fine if necessary
     if (bookLending.getDueDate().isBefore(LocalDate.now())) {
