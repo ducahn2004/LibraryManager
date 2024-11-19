@@ -38,6 +38,24 @@ module org.group.librarymanagercode {
   exports org.group4.librarymanagercode;
   opens org.group4.librarymanagercode to javafx.fxml;
 
+  exports org.group4.module.notifications;
+  opens org.group4.module.notifications to javafx.fxml;
+
+  exports org.group4.module.users;
+  opens org.group4.module.users to javafx.fxml;
+
+  exports org.group4.module.books;
+  opens org.group4.module.books to javafx.fxml;
+
+  exports org.group4.module.enums;
+  opens org.group4.module.enums to javafx.fxml;
+
+  exports org.group4.module.transactions;
+  opens org.group4.module.transactions to javafx.fxml;
+
+  exports org.group4.module.manager;
+  opens org.group4.module.manager to javafx.fxml;
+
   exports org.group4.test;
   opens org.group4.test to junit;
 }
