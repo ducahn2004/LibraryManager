@@ -203,5 +203,6 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
     BookItemDAO bookItemDAO = new BookItemDAO();
     return bookItemDAO.getAllByIsbn(isbn);
   }
+
 }
 

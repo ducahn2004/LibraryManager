@@ -54,7 +54,9 @@ public class Book {
     this.language = language;
     this.numberOfPages = numberOfPages;
     this.authors = Objects.requireNonNullElse(authors, new HashSet<>());
+//    this.authors = authors;
   }
+
 
   /**
    * Returns the ISBN of the book.
@@ -180,6 +182,7 @@ public class Book {
    */
   public void setAuthors(Set<Author> authors) {
     this.authors = Objects.requireNonNullElse(authors, new HashSet<>());
+//    this.authors = authors;
   }
 
   /**
