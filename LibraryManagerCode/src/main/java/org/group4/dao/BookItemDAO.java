@@ -73,15 +73,15 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
         preparedStatement.setString(1, newBarcode);
         preparedStatement.setString(2, bookItem.getISBN());
         preparedStatement.setBoolean(3, bookItem.getIsReferenceOnly());
-        preparedStatement.setDate(4, Date.valueOf(bookItem.getBorrowed()));
-        preparedStatement.setDate(5, Date.valueOf(bookItem.getDueDate()));
+        preparedStatement.setDate(4, bookItem.getBorrowed() != null ?
+            Date.valueOf(bookItem.getBorrowed()) : null);
+        preparedStatement.setDate(5, bookItem.getDueDate() != null ?
+            Date.valueOf(bookItem.getDueDate()) : null);
         preparedStatement.setDouble(6, bookItem.getPrice());
         preparedStatement.setString(7, bookItem.getFormat().name());
         preparedStatement.setString(8, bookItem.getStatus().name());
-        preparedStatement.setDate(9, bookItem.getDateOfPurchase() != null ?
-            Date.valueOf(bookItem.getDateOfPurchase()) : null);
-        preparedStatement.setDate(10, bookItem.getPublicationDate() != null ?
-            Date.valueOf(bookItem.getPublicationDate()) : null);
+        preparedStatement.setDate(9, Date.valueOf(bookItem.getDateOfPurchase()));
+        preparedStatement.setDate(10, Date.valueOf(bookItem.getPublicationDate()));
         preparedStatement.setInt(11, bookItem.getPlacedAt().getNumberRack());
 
         return preparedStatement.executeUpdate() > 0; // Return true if successful
@@ -97,15 +97,15 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_ITEM_SQL)) {
       preparedStatement.setBoolean(1, bookItem.getIsReferenceOnly());
-      preparedStatement.setDate(2, Date.valueOf(bookItem.getBorrowed()));
-      preparedStatement.setDate(3, Date.valueOf(bookItem.getDueDate()));
+      preparedStatement.setDate(2, bookItem.getBorrowed() != null ?
+          Date.valueOf(bookItem.getBorrowed()) : null);
+      preparedStatement.setDate(3, bookItem.getDueDate() != null ?
+          Date.valueOf(bookItem.getDueDate()) : null);
       preparedStatement.setDouble(4, bookItem.getPrice());
       preparedStatement.setString(5, bookItem.getFormat().name());
       preparedStatement.setString(6, bookItem.getStatus().name());
-      preparedStatement.setDate(7, bookItem.getDateOfPurchase() != null ?
-          Date.valueOf(bookItem.getDateOfPurchase()) : null);
-      preparedStatement.setDate(8, bookItem.getPublicationDate() != null ?
-          Date.valueOf(bookItem.getPublicationDate()) : null);
+      preparedStatement.setDate(7, Date.valueOf(bookItem.getDateOfPurchase()));
+      preparedStatement.setDate(8, Date.valueOf(bookItem.getPublicationDate()));
       preparedStatement.setInt(9, bookItem.getPlacedAt().getNumberRack());
       preparedStatement.setString(10, bookItem.getBarcode());
       return preparedStatement.executeUpdate() > 0;
