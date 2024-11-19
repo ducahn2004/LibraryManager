@@ -327,16 +327,16 @@ public class BookItem extends Book {
   @Override
   public String toString() {
     return "BookItem{\n" +
-        "  barcode ='" + barcode + "',\n" +
+        "  barcode = '" + barcode + "',\n" +
         "  isReferenceOnly =" + isReferenceOnly + ",\n" +
-        "  borrowed =" + borrowed + ",\n" +
-        "  dueDate =" + dueDate + ",\n" +
-        "  price =" + price + ",\n" +
-        "  format =" + format + ",\n" +
-        "  status =" + status + ",\n" +
-        "  dateOfPurchase =" + dateOfPurchase + ",\n" +
-        "  publicationDate =" + publicationDate + ",\n" +
-        "  placedAt =" + placedAt.toString() + "\n" +
+        "  borrowed = " + borrowed + ",\n" +
+        "  dueDate = " + dueDate + ",\n" +
+        "  price = " + price + ",\n" +
+        "  format = " + format + ",\n" +
+        "  status = " + status + ",\n" +
+        "  dateOfPurchase = " + dateOfPurchase + ",\n" +
+        "  publicationDate = " + publicationDate + ",\n" +
+        "  placedAt = " + placedAt.toString() + "\n" +
         '}';
   }
 
