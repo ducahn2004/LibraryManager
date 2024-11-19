@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
@@ -36,16 +37,17 @@
               <children>
                 <AnchorPane layoutX="19.2" layoutY="9.6" prefHeight="101.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="7.0">
                   <children>
-                    <Label layoutX="53.0" layoutY="68.0" text="All Book" textFill="WHITE" AnchorPane.topAnchor="75.0">
+                    <Label layoutX="27.0" layoutY="76.0" text="Total Members" textFill="WHITE" AnchorPane.topAnchor="76.0">
                       <font>
                         <Font size="20.0" />
                       </font>
                     </Label>
-                    <Label layoutX="65.0" layoutY="14.0" prefHeight="30.0" prefWidth="114.0" text="0" textAlignment="RIGHT" textFill="WHITE">
+                    <Label fx:id="total_Members" layoutX="109.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="WHITE">
                       <font>
                         <Font size="20.0" />
                       </font>
                     </Label>
+                              <FontAwesomeIconView fill="#fffffe" glyphName="USERS" layoutX="27.0" layoutY="49.0" size="30" />
                   </children>
                 </AnchorPane>
                 <AnchorPane layoutX="24.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="224.0" AnchorPane.topAnchor="5.0">
@@ -55,7 +57,7 @@
                         <Font size="20.0" />
                       </font>
                     </Label>
-                    <Label layoutX="77.0" layoutY="14.0" prefHeight="30.0" prefWidth="102.0" text="0" textAlignment="RIGHT" textFill="WHITE">
+                    <Label layoutX="109.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="WHITE">
                       <font>
                         <Font size="20.0" />
                       </font>
@@ -64,16 +66,17 @@
                 </AnchorPane>
                 <AnchorPane layoutX="224.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="434.0" AnchorPane.topAnchor="5.0">
                   <children>
-                    <Label layoutX="48.0" layoutY="103.0" text="Members" textFill="WHITE" AnchorPane.topAnchor="75.0">
+                    <Label layoutX="38.0" layoutY="76.0" text="Total Books" textFill="WHITE" AnchorPane.topAnchor="76.0">
                       <font>
                         <Font size="20.0" />
                       </font>
                     </Label>
-                    <Label layoutX="65.0" layoutY="14.0" prefHeight="30.0" prefWidth="114.0" text="0" textAlignment="RIGHT" textFill="WHITE">
+                    <Label fx:id="total_books" layoutX="110.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="WHITE">
                       <font>
                         <Font size="20.0" />
                       </font>
                     </Label>
+                              <FontAwesomeIconView fill="WHITE" glyphName="BOOK" layoutX="38.0" layoutY="49.0" size="30" />
                   </children>
                 </AnchorPane>
                 <AnchorPane layoutX="648.8" layoutY="9.6" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="646.0" AnchorPane.topAnchor="7.0">
@@ -83,7 +86,7 @@
                         <Font size="20.0" />
                       </font>
                     </Label>
-                    <Label layoutX="65.0" layoutY="14.0" prefHeight="30.0" prefWidth="114.0" text="0" textAlignment="RIGHT" textFill="WHITE">
+                    <Label layoutX="104.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="WHITE">
                       <font>
                         <Font size="20.0" />
                       </font>

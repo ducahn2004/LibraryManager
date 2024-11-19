@@ -7,11 +7,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.group4.dao.MemberDAO;
 import org.jetbrains.annotations.NotNull;
 
 public class AdminPaneController {
+
+  public Label total_Members;
   private Stage stage;
 
   @FXML
@@ -87,5 +91,18 @@ public class AdminPaneController {
     Platform.exit();
   }
 
+  MemberDAO memberDAO = new MemberDAO();
+
+  
+  public void updateTotalMembers() {
+    int totalMembers = memberDAO.getTotalMembers();
+    total_Members.setText(String.valueOf(totalMembers));
+  }
+
+  @FXML
+  public void initialize() {
+
+    updateTotalMembers();
+  }
 
 }

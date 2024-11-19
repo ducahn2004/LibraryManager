@@ -47,6 +47,9 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
   private static final String FIND_MAX_MEMBER_ID_SQL =
       "SELECT MAX(memberID) FROM members WHERE memberID LIKE ?";
 
+  /** SQL query to find the total number of members in the database. */
+  private static final String FIND_TOTAL_MEMBERS_SQL = "SELECT COUNT(*) FROM members";
+
   @Override
   public boolean add(Member member) {
     // Adds a new member and sets a unique ID
@@ -153,6 +156,21 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
       logger.error("Error finding all members", e);
     }
     return members;
+  }
+
+
+  public int getTotalMembers() {
+    int totalMembers = 0;
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(FIND_TOTAL_MEMBERS_SQL)) {
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        totalMembers = resultSet.getInt(1);
+      }
+    } catch (SQLException e) {
+      logger.error("Error total member", e);
+    }
+    return totalMembers;
   }
 
   /**
