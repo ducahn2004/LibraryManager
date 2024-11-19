@@ -57,7 +57,6 @@
           <Insets top="25.0" />
         </padding>
       </AnchorPane>
-      <!-- Thanh tìm kiếm -->
       <HBox alignment="CENTER" spacing="10" />
       <Pane prefHeight="132.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" />
       <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="31.0" prefHeight="96.0" prefWidth="104.0" text="Book" textFill="#2b579a">

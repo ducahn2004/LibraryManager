@@ -22,69 +22,95 @@ import org.group4.module.manager.SessionManager;
 import org.group4.module.services.AccountService;
 import org.group4.module.users.Librarian;
 
-
+/**
+ * Controller for the Login screen in the Library Manager application.
+ * Handles user input, authentication, and navigation to the admin panel upon successful login.
+ */
 public class LoginController {
 
-  public TextField textShowpassword;
-  public ImageView iconOpen_eye;
-  public ImageView iconClose_eye;
+  @FXML private TextField textShowPassword;
+  @FXML private ImageView iconOpen_eye;
+  @FXML private ImageView iconClose_eye;
+  @FXML private TextField usernameField;
+  @FXML private PasswordField passwordField;
+  @FXML private Button loginButton;
 
-  String password;
-  @FXML
-  private TextField usernameField;
-
-  @FXML
-  private PasswordField passwordField;
-
-  @FXML
-  private Button loginButton;
-  AccountService accountService = new AccountService();
+  private final AccountService accountService = new AccountService();
   private static final Logger logger = Logger.getLogger(LoginController.class.getName());
+  private String password;
+
+  /**
+   * Initializes the controller.
+   * Sets default visibility for password field elements and assigns event handlers.
+   */
   @FXML
   private void initialize() {
-    textShowpassword.setVisible(false);
-    iconClose_eye.setVisible(true); // Mắt nhắm hiển thị
-    iconOpen_eye.setVisible(false); // Mắt mở bị ẩn
+    textShowPassword.setVisible(false);
+    iconClose_eye.setVisible(true);
+    iconOpen_eye.setVisible(false);
 
     // Set an event handler on the password field to listen for the Enter key
     passwordField.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.ENTER) {
         try {
-          handleLoginButton();  // Call the login method
+          handleLoginButton();
         } catch (SQLException e) {
-          throw new RuntimeException(e);
+          throw new RuntimeException("Error during login process", e);
         }
       }
     });
   }
 
-  public void HidePasswordonAction(KeyEvent keyevent) {
+  /**
+   * Updates the visible password field when a key is pressed.
+   *
+   * @param keyEvent The KeyEvent triggered when a key is pressed.
+   */
+  public void hidePasswordOnAction(KeyEvent keyEvent) {
     password = passwordField.getText();
-    textShowpassword.setText(password);
-
+    textShowPassword.setText(password);
   }
 
-  public void ShowPasswordonAction(KeyEvent keyEvent) {
-    password = textShowpassword.getText();
+  /**
+   * Updates the masked password field when a key is pressed.
+   *
+   * @param keyEvent The KeyEvent triggered when a key is pressed.
+   */
+  public void showPasswordOnAction(KeyEvent keyEvent) {
+    password = textShowPassword.getText();
     passwordField.setText(password);
   }
 
-  public void Close_clicked_OnAction(MouseEvent mouseEvent) {
-    textShowpassword.setVisible(true);
+  /**
+   * Toggles visibility to show the password in plain text.
+   *
+   * @param mouseEvent The MouseEvent triggered when the "eye open" icon is clicked.
+   */
+  public void closeClickedOnAction(MouseEvent mouseEvent) {
+    textShowPassword.setVisible(true);
     iconOpen_eye.setVisible(true);
     iconClose_eye.setVisible(false);
     passwordField.setVisible(false);
-
   }
 
-  public void Open_clicked_OnAction(MouseEvent mouseEvent) {
-    textShowpassword.setVisible(false);
+  /**
+   * Toggles visibility to mask the password.
+   *
+   * @param mouseEvent The MouseEvent triggered when the "eye closed" icon is clicked.
+   */
+  public void openClickedOnAction(MouseEvent mouseEvent) {
+    textShowPassword.setVisible(false);
     iconOpen_eye.setVisible(false);
     iconClose_eye.setVisible(true);
     passwordField.setVisible(true);
   }
 
-
+  /**
+   * Handles the login button action.
+   * Authenticates the user and navigates to the admin panel if login is successful.
+   *
+   * @throws SQLException If there is an error during the login process.
+   */
   @FXML
   private void handleLoginButton() throws SQLException {
     String username = usernameField.getText().trim();
@@ -99,12 +125,13 @@ public class LoginController {
 
     if (accountService.login(username, password)) {
       Optional<Librarian> librarian = FactoryDAO.getLibrarianDAO().getById(username);
+
       if (librarian.isPresent()) {
         SessionManager.getInstance().setCurrentLibrarian(librarian.get());
       } else {
-        // Handle the case where the librarian is not found
-        System.out.println("Librarian not found for username: " + username);
+        logger.warning("Librarian not found for username: " + username);
       }
+
       try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminPane.fxml"));
         Parent root = loader.load();
@@ -119,11 +146,16 @@ public class LoginController {
         showAlert("Error", "Unable to load the admin panel.");
       }
     } else {
-
       showAlert("Login Failed", "Incorrect username or password!");
     }
   }
 
+  /**
+   * Displays an alert dialog with the specified title and message.
+   *
+   * @param title The title of the alert dialog.
+   * @param message The message to display in the alert dialog.
+   */
   private void showAlert(String title, String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setTitle(title);
@@ -131,5 +163,6 @@ public class LoginController {
     alert.setContentText(message);
     alert.showAndWait();
   }
+
 
 }
