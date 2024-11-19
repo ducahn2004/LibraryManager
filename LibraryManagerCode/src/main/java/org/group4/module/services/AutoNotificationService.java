@@ -119,4 +119,19 @@ public class AutoNotificationService {
             );
         }
     }
+
+    /**
+     * Shuts down the notification service.
+     * Stops the scheduler and waits for any pending tasks to complete.
+     */
+    public void shutdown() {
+        scheduler.shutdown();
+        try {
+            if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                scheduler.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            scheduler.shutdownNow();
+        }
+    }
 }
