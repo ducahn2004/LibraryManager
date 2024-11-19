@@ -33,7 +33,7 @@ public class BookLendingManager {
    *                   If email notification fails to send
    */
   public static boolean borrowBookItem(BookItem bookItem, Member member) throws Exception {
-    if (member.getTotalBooksCheckedOut() >= MAX_BOOKS_BORROWED) {
+    if (member.getTotalBooksCheckedOut() >= MAX_BOOKS_BORROWED || !bookItem.checkOut()) {
       return false; // Member cannot borrow more than the allowed limit.
     }
 
@@ -52,6 +52,8 @@ public class BookLendingManager {
     FactoryDAO.getBookItemDAO().update(bookItem);
     FactoryDAO.getMemberDAO().update(member);
     FactoryDAO.getBookLendingDAO().add(bookLending);
+
+    // Send notifications
     SystemNotification.sendNotification(NotificationType.BOOK_BORROW_SUCCESS,
         member.getMemberId() + " borrowed " + bookItem.getBarcode());
     EmailNotification.sendNotification(NotificationType.BOOK_BORROW_SUCCESS, member.getEmail(),
@@ -97,6 +99,8 @@ public class BookLendingManager {
     FactoryDAO.getBookItemDAO().update(bookItem);
     FactoryDAO.getMemberDAO().update(member);
     FactoryDAO.getBookLendingDAO().update(bookLending);
+
+    // Send notifications
     SystemNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS,
         member.getMemberId() + " returned " + bookItem.getBarcode());
     EmailNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS, member.getEmail(),
