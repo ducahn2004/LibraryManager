@@ -109,12 +109,12 @@ public class EmailNotification extends Notification {
     String content;
 
     switch (type) {
-      case FINE_TRANSACTION -> content = "You have a pending fine transaction." + details;
-      case OVERDUE_NOTIFICATION -> content = "You have overdue books to return." + details;
-      case DUE_DATE_REMINDER -> content = "You have books due soon." + details;
-      case FORGOT_PASSWORD -> content = "You have requested a password reset." + details;
-      case BOOK_BORROW_SUCCESS -> content = "You have successfully borrowed a book." + details;
-      case BOOK_RETURN_SUCCESS -> content = "You have successfully returned a book." + details;
+      case FINE_TRANSACTION -> content = "You have a pending fine transaction. \n" + details;
+      case OVERDUE_NOTIFICATION -> content = "You have overdue books to return. \n" + details;
+      case DUE_DATE_REMINDER -> content = "You have books due soon. \n" + details;
+      case FORGOT_PASSWORD -> content = "You have requested a password reset. \n" + details;
+      case BOOK_BORROW_SUCCESS -> content = "You have successfully borrowed a book. \n" + details;
+      case BOOK_RETURN_SUCCESS -> content = "You have successfully returned a book. \n" + details;
       default -> content = "This is a email notification.";
     }
 
