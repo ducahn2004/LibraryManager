@@ -35,7 +35,7 @@
           <children>
             <AnchorPane layoutX="3.0" layoutY="14.0" prefHeight="95.0" prefWidth="848.0" style="-fx-border-color: #CCCCCC; -fx-border-width: 2; -fx-border-radius: 20;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <children>
-                <AnchorPane layoutX="19.2" layoutY="9.6" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="5.0">
+                <AnchorPane layoutX="19.2" layoutY="9.6" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="5.0">
                   <children>
                     <Label layoutX="40.0" layoutY="66.0" text="Total Members" textFill="#2b579a" AnchorPane.topAnchor="66.0">
                       <font>
@@ -50,7 +50,7 @@
                               <FontAwesomeIconView fill="#2b579a" glyphName="USERS" layoutX="27.0" layoutY="49.0" size="30" />
                   </children>
                 </AnchorPane>
-                <AnchorPane layoutX="24.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="224.0" AnchorPane.topAnchor="5.0">
+                <AnchorPane layoutX="24.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="224.0" AnchorPane.topAnchor="5.0">
                   <children>
                     <Label layoutX="54.0" layoutY="57.0" text="Number of" textFill="#2b579a" AnchorPane.topAnchor="57.0">
                       <font>
@@ -70,7 +70,7 @@
                               <FontAwesomeIconView fill="#2b579a" glyphName="CHECK" layoutX="25.0" layoutY="55.0" size="30" />
                   </children>
                 </AnchorPane>
-                <AnchorPane layoutX="224.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="434.0" AnchorPane.topAnchor="5.0">
+                <AnchorPane layoutX="224.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="434.0" AnchorPane.topAnchor="5.0">
                   <children>
                     <Label layoutX="51.0" layoutY="64.0" text="Total Books" textFill="#2b579a" AnchorPane.topAnchor="64.0">
                       <font>
@@ -85,7 +85,7 @@
                               <FontAwesomeIconView fill="#2b579a" glyphName="BOOK" layoutX="37.0" layoutY="56.0" size="30" text="" />
                   </children>
                 </AnchorPane>
-                <AnchorPane layoutX="648.8" layoutY="9.6" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="646.0" AnchorPane.topAnchor="5.0">
+                <AnchorPane layoutX="648.8" layoutY="9.6" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="646.0" AnchorPane.topAnchor="5.0">
                   <children>
                     <Label layoutX="32.0" layoutY="51.2" prefHeight="30.0" prefWidth="126.0" text="Number of books" textFill="#2b579a" AnchorPane.topAnchor="51.0">
                       <font>
@@ -107,12 +107,12 @@
                 </AnchorPane>
               </children>
             </AnchorPane>
-            <BarChart layoutX="73.0" layoutY="158.0" prefHeight="375.0" prefWidth="683.0" title="Books and Members">
+            <BarChart fx:id="home_chart" layoutX="73.0" layoutY="158.0" prefHeight="375.0" prefWidth="683.0" title="Books and Members">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis fx:id="xAxis" label="Categories" />
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis fx:id="yAxis" label="Values" />
               </yAxis>
             </BarChart>
           </children>
