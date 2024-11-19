@@ -86,11 +86,16 @@ public class BookViewController {
   public void initialize() {
     // Khởi tạo các cột của bảng
     ISBN.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getISBN()));
-    bookName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-    bookSubject.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubject()));
-    bookPublisher.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPublisher()));
-    bookLanguage.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLanguage()));
-    numberOfPages.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getNumberOfPages()));
+    bookName.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+    bookSubject.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getSubject()));
+    bookPublisher.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getPublisher()));
+    bookLanguage.setCellValueFactory(
+        cellData -> new SimpleStringProperty(cellData.getValue().getLanguage()));
+    numberOfPages.setCellValueFactory(
+        cellData -> new SimpleObjectProperty<>(cellData.getValue().getNumberOfPages()));
     bookAuthor.setCellValueFactory(cellData -> new SimpleStringProperty(
         cellData.getValue().getAuthors().iterator().next().getName()));
 
@@ -100,7 +105,8 @@ public class BookViewController {
 
       {
         editLink.setOnAction(event -> showEditForm(getTableView().getItems().get(getIndex())));
-        deleteLink.setOnAction(event -> showDeleteConfirmation(getTableView().getItems().get(getIndex())));
+        deleteLink.setOnAction(
+            event -> showDeleteConfirmation(getTableView().getItems().get(getIndex())));
       }
 
       @Override
@@ -117,7 +123,8 @@ public class BookViewController {
 
     loadBookData();
 
-    searchField.textProperty().addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+    searchField.textProperty()
+        .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
     searchField.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.ENTER) {
         filterBookList(searchField.getText());
@@ -129,11 +136,7 @@ public class BookViewController {
     List<Book> books = FactoryDAO.getBookDAO().getAll();
 
     if (books == null) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("No Data Found");
-      alert.setHeaderText(null);
-      alert.setContentText("No books were found in the database.");
-      alert.showAndWait();
+      showAlert(AlertType.WARNING, "No Data Found", "No books were found in the database.");
       return;
     }
 
@@ -206,9 +209,61 @@ public class BookViewController {
   }
 
   private void showEditForm(Book book) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("EditBook.fxml"));
+      Stage editStage = new Stage();
+      editStage.setScene(new Scene(loader.load()));
+
+      EditBookController controller = loader.getController();
+      controller.setBookData(book);
+      controller.setParentController(this);
+
+      editStage.setTitle("Edit Member");
+      editStage.showAndWait();
+    } catch (IOException e) {
+      logAndShowError("Failed to load edit form page", e);
+    }
   }
 
   private void showDeleteConfirmation(Book book) {
+    Alert alert = createAlert(AlertType.CONFIRMATION, "Delete Confirmation",
+        "Are you sure you want to delete this book?",
+        "ID: " + book.getISBN() + "\nName: " + book.getTitle() + "\nSubject" + book.getSubject()
+            + "\nLanguage" + book.getLanguage() + "\nNumber Of Pages" + book.getNumberOfPages()
+            + "\nAuthor" + book.authorsToString());
+    alert.showAndWait().ifPresent(response -> {
+      if (response == ButtonType.OK) {
+        bookList.remove(book);
+        librarian.deleteBook(book.getISBN());
+      }
+    });
   }
 
+  private void logAndShowError(String message, Exception e) {
+    Logger.getLogger(MemberViewController.class.getName()).log(Level.SEVERE, message, e);
+    showAlert(AlertType.ERROR, "Error", message);
+  }
+
+  /**
+   * A single method for handling various alert types.
+   *
+   * @param type    The type of the alert.
+   * @param title   The title of the alert.
+   * @param content The content message of the alert.
+   */
+  void showAlert(AlertType type, String title, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(content);
+    alert.showAndWait();
+  }
+
+  private Alert createAlert(AlertType type, String title, String header, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(header);
+    alert.setContentText(content);
+    return alert;
+  }
 }
