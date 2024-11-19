@@ -336,7 +336,7 @@ public class BookItem extends Book {
         "  status =" + status + ",\n" +
         "  dateOfPurchase =" + dateOfPurchase + ",\n" +
         "  publicationDate =" + publicationDate + ",\n" +
-        "  placedAt =" + placedAt + "\n" +
+        "  placedAt =" + placedAt.toString() + "\n" +
         '}';
   }
 

@@ -167,11 +167,11 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
    */
   private BookItem mapRowToBookItem(ResultSet resultSet) throws SQLException {
     // Retrieve the associated Book object using ISBN from the database
-    Book book = new BookDAO().getById(resultSet.getString("isbn"))
+    Book book = FactoryDAO.getBookDAO().getById(resultSet.getString("isbn"))
         .orElseThrow(() -> new SQLException("Book not found for ISBN"));
 
     // Retrieve the associated Rack object using rackNumber from the database
-    Rack rack = new RackDAO().getById(resultSet.getInt("rackNumber"))
+    Rack rack = FactoryDAO.getRackDAO().getById(resultSet.getInt("rackNumber"))
         .orElseThrow(() -> new SQLException("Rack not found for rack number"));
 
     // Construct and return a new BookItem directly with values from ResultSet and associated objects
