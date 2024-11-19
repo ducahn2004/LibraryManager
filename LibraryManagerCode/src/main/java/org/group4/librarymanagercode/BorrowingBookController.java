@@ -123,7 +123,7 @@ public class BorrowingBookController {
     referenceOnlyCheck.setText((bookItem.getIsReferenceOnly()) ? "Yes" : "No");
   }
 
-  private void borrowingBook(BookItem bookItem, Member member) {
+  private void borrowingBook(BookItem bookItem, Member member) throws Exception {
     boolean isBorrowed = librarian.borrowBookItem(bookItem, member);
     if (!isBorrowed) {
       Alert alert = new Alert(AlertType.WARNING);
@@ -135,7 +135,7 @@ public class BorrowingBookController {
     }
   }
 
-  public void handleSubmit(ActionEvent actionEvent) throws IOException, SQLException {
+  public void handleSubmit(ActionEvent actionEvent) throws Exception {
 
     if (memberNameField.getText().isEmpty() || memberIdField.getText().isEmpty() ||
         emailField.getText().isEmpty() || phoneField.getText().isEmpty()) {

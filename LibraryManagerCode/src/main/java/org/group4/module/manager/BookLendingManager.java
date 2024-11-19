@@ -8,6 +8,7 @@ import org.group4.dao.FactoryDAO;
 import org.group4.module.books.BookItem;
 import org.group4.module.enums.BookStatus;
 import org.group4.module.enums.NotificationType;
+import org.group4.module.notifications.EmailNotification;
 import org.group4.module.notifications.SystemNotification;
 import org.group4.module.transactions.BookLending;
 import org.group4.module.transactions.Fine;
@@ -23,13 +24,15 @@ public class BookLendingManager {
   private static final int MAX_BOOKS_BORROWED = 5;
 
   /**
-   * Allows a member to borrow a book item if they meet the borrowing criteria.
+   * Processes the borrowing of a book item by a member, updating the book's and member's status.
    *
-   * @param bookItem The book item to be borrowed.
-   * @param member   The member borrowing the book.
-   * @return true if the book was successfully borrowed; false otherwise.
+   * @param bookItem The book item being borrowed
+   * @param member   The member borrowing the book
+   * @return true if the book was successfully borrowed
+   * @throws Exception If there is a database error while updating the records
+   *                   If email notification fails to send
    */
-  public static boolean borrowBookItem(BookItem bookItem, Member member) {
+  public static boolean borrowBookItem(BookItem bookItem, Member member) throws Exception {
     if (member.getTotalBooksCheckedOut() >= MAX_BOOKS_BORROWED) {
       return false; // Member cannot borrow more than the allowed limit.
     }
@@ -51,21 +54,23 @@ public class BookLendingManager {
     FactoryDAO.getBookLendingDAO().add(bookLending);
     SystemNotification.sendNotification(NotificationType.BOOK_BORROW_SUCCESS,
         member.getMemberId() + " borrowed " + bookItem.getBarcode());
+    EmailNotification.sendNotification(NotificationType.BOOK_BORROW_SUCCESS, member.getEmail(),
+        bookItem.toString());
     return true;
   }
 
   /**
-   * Processes the return of a book item, updating the book's and member's status.
-   * Calculates and adds a fine if the book is returned after the due date.
+   * Processes the return of a book item by a member, updating the book's and member's status.
    *
-   * @param bookItem The book item being returned.
-   * @param member   The member returning the book.
-   * @param status   The status to set for the returned book (e.g., AVAILABLE, LOST).
-   * @return true if the book was successfully returned.
-   * @throws SQLException If there is a database error while updating the records.
+   * @param bookItem The book item being returned
+   * @param member   The member returning the book
+   * @param status   The new status of the book item
+   * @return true if the book was successfully returned
+   * @throws Exception If there is a database error while updating the records
+   *                   If email notification fails to send
    */
   public static boolean returnBookItem(BookItem bookItem, Member member, BookStatus status)
-      throws SQLException {
+      throws Exception {
     // Update book item status
     bookItem.setStatus(status);
     bookItem.setBorrowed(null);
@@ -94,6 +99,8 @@ public class BookLendingManager {
     FactoryDAO.getBookLendingDAO().update(bookLending);
     SystemNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS,
         member.getMemberId() + " returned " + bookItem.getBarcode());
+    EmailNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS, member.getEmail(),
+        bookItem.toString());
 
     // Check if the book was returned late and calculate fine if necessary
     if (bookLending.getDueDate().isBefore(LocalDate.now())) {
