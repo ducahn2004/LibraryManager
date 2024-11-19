@@ -30,6 +30,9 @@ import java.util.logging.Logger;
 public class BookViewController {
 
   @FXML
+  private JFXButton bookLendingButton;
+
+  @FXML
   private JFXButton homeButton;
 
   @FXML
@@ -298,6 +301,11 @@ public class BookViewController {
     SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 
+  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
+  }
+
+
   @FXML
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
@@ -306,4 +314,6 @@ public class BookViewController {
   private Stage getStage() {
     return (Stage) homeButton.getScene().getWindow();
   }
+
+
 }
