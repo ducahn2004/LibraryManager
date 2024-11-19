@@ -148,9 +148,10 @@ public class BorrowingBookController {
       alert.showAndWait();
     } else {
       if (currentBookItem != null && currentBookItem.getStatus() == BookStatus.AVAILABLE) {
-        borrowingBook(currentBookItem, returnMember(memberIdField.getText()));
         currentBookLending = new BookLending(currentBookItem,
             returnMember(memberIdField.getText()));
+        borrowingBook(currentBookLending.getBookItem(), currentBookLending.getMember());
+
         System.out.println(
             "MEMBER ID: " + currentBookLending.getMember().getMemberId() + " BORROWED");
         System.out.println("BarCode" + currentBookLending.getBookItem().getBarcode() + " BORROWED");

@@ -22,6 +22,7 @@ import org.group4.module.manager.SessionManager;
 import org.group4.module.transactions.BookLending;
 import org.group4.module.transactions.Fine;
 import org.group4.module.users.Librarian;
+import org.group4.module.users.Member;
 
 
 public class ReturningBookController {
@@ -78,56 +79,113 @@ public class ReturningBookController {
 
   public void setItemDetailReturning(BookItem bookItem) throws SQLException {
     this.currentBookItem = bookItem;
+
     BookLending currentBookLending = findBookLendingById(bookItem.getBarcode());
-    Fine amountFine = new Fine();
-    System.out.println("Set up setItemDetailReturning");
-    System.out.println("ISBN: " + currentBookLending.getBookItem().getISBN() + " BORROWED");
-    System.out.println("MEMBER ID: " + currentBookLending.getMember().getName() + " BORROWED");
-    System.out.println("BarCode" + currentBookLending.getBookItem().getBarcode() + " BORROWED");
-    isbnField.setText(bookItem.getISBN());
-    titleField.setText(bookItem.getTitle());
-    subjectField.setText(bookItem.getSubject());
-    languageField.setText(bookItem.getLanguage());
-    authorField.setText(bookItem.authorsToString());
-    noPageField.setText(String.valueOf(bookItem.getNumberOfPages()));
 
-    barcodeField.setText(bookItem.getBarcode());
-    placeField.setText(bookItem.getPlacedAt().getLocationIdentifier());
-    referenceOnlyCheck.setText(bookItem.getIsReferenceOnly() ? "Yes" : "No");
+    displayBookDetails(currentBookLending);
 
-    memberIdField.setText(currentBookLending.getMember().getMemberId());
-    memberNameField.setText(currentBookLending.getMember().getName());
-    dobDatePicker.setText(currentBookLending.getMember().getDateOfBirth().toString());
-    emailField.setText(currentBookLending.getMember().getEmail());
-    phoneField.setText(currentBookLending.getMember().getPhoneNumber());
+    displayMemberDetails(currentBookLending);
 
-    creationDatePicker.setValue(currentBookLending.getLendingDate());
-    dueDatePicker.setValue(currentBookLending.getDueDate());
-    returnDatePicker.setValue(LocalDate.now());
-    currentBookLending.setReturnDate(LocalDate.now());
-    currentBookLending.getBookItem()
-        .setStatus(statusCheckBox.isSelected() ? BookStatus.AVAILABLE : BookStatus.LOST);
-    double fineAmount = amountFine.calculateFine(currentBookLending);
-    feeField.setText(Double.toString(fineAmount));
+    setupReturnDetails(currentBookLending);
+
+    calculateAndDisplayFine(currentBookLending);
 
     System.out.println("End show information");
   }
 
   private BookLending findBookLendingById(String bookItemBarCode) {
+    if (bookItemBarCode == null || bookItemBarCode.isEmpty()) {
+      throw new IllegalArgumentException("Barcode cannot be null or empty.");
+    }
+
     BookLending foundBookItem = null;
+
     for (BookLending bookLending : FactoryDAO.getBookLendingDAO().getAll()) {
       if (bookLending.getBookItem().getBarcode().equals(bookItemBarCode)) {
         foundBookItem = bookLending;
         break;
       }
     }
-    System.out.println("Throw book Lending");
-    assert foundBookItem != null;
-    System.out.println("ISBN: " + foundBookItem.getBookItem().getISBN() + " BORROWED");
-    System.out.println("MEMBER ID: " + foundBookItem.getMember().getName() + " BORROWED");
-    System.out.println("BarCode" + foundBookItem.getBookItem().getBarcode() + " BORROWED");
-    System.out.println("End throw book Lending");
+
+    if (foundBookItem == null) {
+      throw new IllegalArgumentException("Book lending not found for barcode: " + bookItemBarCode);
+    }
+
+    System.out.println("Found book lending:");
+    System.out.println("ISBN: " + foundBookItem.getBookItem().getISBN());
+    System.out.println("MEMBER ID: " + foundBookItem.getMember().getName());
+    System.out.println("BarCode: " + foundBookItem.getBookItem().getBarcode());
+
     return foundBookItem;
+  }
+
+  private void displayBookDetails(BookLending currentBookLending) {
+    if (currentBookLending == null) {
+      throw new IllegalArgumentException("Book lending cannot be null.");
+    }
+
+    BookItem bookItem = currentBookLending.getBookItem();
+    if (bookItem == null) {
+      throw new IllegalArgumentException("Book item in lending cannot be null.");
+    }
+
+    isbnField.setText(bookItem.getISBN());
+    titleField.setText(bookItem.getTitle());
+    subjectField.setText(bookItem.getSubject());
+    languageField.setText(bookItem.getLanguage());
+    authorField.setText(bookItem.authorsToString());
+    noPageField.setText(String.valueOf(bookItem.getNumberOfPages()));
+    barcodeField.setText(bookItem.getBarcode());
+    placeField.setText(bookItem.getPlacedAt().getLocationIdentifier());
+    referenceOnlyCheck.setText(bookItem.getIsReferenceOnly() ? "Yes" : "No");
+  }
+
+  private void displayMemberDetails(BookLending currentBookLending) {
+    if (currentBookLending == null) {
+      throw new IllegalArgumentException("Book lending cannot be null.");
+    }
+
+    Member member = currentBookLending.getMember();
+    if (member == null) {
+      throw new IllegalArgumentException("Member in lending cannot be null.");
+    }
+
+    memberIdField.setText(member.getMemberId());
+    memberNameField.setText(member.getName());
+    dobDatePicker.setText(
+        member.getDateOfBirth() != null ? member.getDateOfBirth().toString() : "");
+    emailField.setText(member.getEmail());
+    phoneField.setText(member.getPhoneNumber());
+  }
+
+  private void setupReturnDetails(BookLending currentBookLending) {
+    if (currentBookLending == null) {
+      throw new IllegalArgumentException("Book lending cannot be null.");
+    }
+
+    creationDatePicker.setValue(currentBookLending.getLendingDate());
+    dueDatePicker.setValue(currentBookLending.getDueDate());
+    returnDatePicker.setValue(LocalDate.now());
+    currentBookLending.setReturnDate(LocalDate.now());
+
+    BookItem bookItem = currentBookLending.getBookItem();
+    if (bookItem == null) {
+      throw new IllegalArgumentException("Book item in lending cannot be null.");
+    }
+
+    BookStatus status = statusCheckBox.isSelected() ? BookStatus.AVAILABLE : BookStatus.LOST;
+    bookItem.setStatus(status);
+  }
+
+  // Tính và hiển thị tiền phạt
+  private void calculateAndDisplayFine(BookLending currentBookLending) throws SQLException {
+    if (currentBookLending == null) {
+      throw new IllegalArgumentException("Book lending cannot be null.");
+    }
+
+    Fine amountFine = new Fine();
+    double fineAmount = amountFine.calculateFine(currentBookLending);
+    feeField.setText(Double.toString(fineAmount));
   }
 
 
@@ -181,7 +239,6 @@ public class ReturningBookController {
   public void handleUserAction(ActionEvent actionEvent) throws SQLException {
     boolean isChecked = statusCheckBox.isSelected();
 
-    // Cập nhật trạng thái và tính toán lại phí phạt
     currentBookItem.setStatus(isChecked ? BookStatus.AVAILABLE : BookStatus.LOST);
     Fine amountFine = new Fine();
     double fineAmount = amountFine.calculateFine(findBookLendingById(currentBookItem.getBarcode()));
