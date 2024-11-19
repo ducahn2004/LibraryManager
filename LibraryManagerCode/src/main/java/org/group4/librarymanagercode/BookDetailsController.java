@@ -1,13 +1,9 @@
 package org.group4.librarymanagercode;
 
-import com.jfoenix.controls.JFXButton;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -34,6 +30,9 @@ import org.group4.module.enums.BookFormat;
 import org.group4.module.enums.BookStatus;
 import org.group4.module.manager.SessionManager;
 import org.group4.module.users.Librarian;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class BookDetailsController {
 
@@ -41,6 +40,8 @@ public class BookDetailsController {
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
   private Book currentBook;
   private final ObservableList<BookItem> bookItems = FXCollections.observableArrayList();
+  private static final Logger logger = LoggerFactory.getLogger(
+      BookDetailsController.class.getName());
 
   @FXML
   private Label isbnLabel, titleLabel, authorLabel, publisherLabel, subjectLabel, pagesLabel;
@@ -69,8 +70,6 @@ public class BookDetailsController {
   private TableColumn<BookItem, String> publicationDate;
   @FXML
   private TableColumn<BookItem, Void> actionColumn;
-  @FXML
-  private JFXButton addItem;
 
   @FXML
   private void initialize() {
@@ -101,7 +100,7 @@ public class BookDetailsController {
             openReturningBookPage(selectedItem);
           }
         } catch (IOException e) {
-          e.printStackTrace();
+          logger.error(e.getMessage(), e);
         }
       }
     }
@@ -157,7 +156,7 @@ public class BookDetailsController {
             openEditBookItemPage(item);
           } catch (IOException e) {
             System.out.println("Not show the edit page");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
 
           }
         });
@@ -212,15 +211,6 @@ public class BookDetailsController {
 
   private void openBorrowingBookPage(BookItem bookItem) throws IOException {
     try {
-//      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
-//      Stage detailStage = new Stage();
-//      detailStage.setScene(new Scene(loader.load()));
-//
-//      BorrowingBookController controller = loader.getController();
-//      controller.setItemDetailBorrowing(bookItem);
-//
-//      detailStage.setTitle("Book Item Detail");
-//      detailStage.show();
 
       FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
 
@@ -232,25 +222,14 @@ public class BookDetailsController {
 
       BorrowingBookController controller = loader.getController();
       controller.setItemDetailBorrowing(bookItem);
-      // Cập nhật tiêu đề cho Stage
       currentStage.setTitle("Book Item Detail");
     } catch (Exception e) {
-      Logger.getLogger(BookViewController.class.getName())
-          .log(Level.SEVERE, "Failed to load book details page", e);
+      logger.error("\"Failed to load book details page\"", e);
     }
   }
 
   private void openReturningBookPage(BookItem bookItem) throws IOException {
     try {
-//      FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
-//      Stage detailStage = new Stage();
-//      detailStage.setScene(new Scene(loader.load()));
-//
-//      BorrowingBookController controller = loader.getController();
-//      controller.setItemDetailBorrowing(bookItem);
-//
-//      detailStage.setTitle("Book Item Detail");
-//      detailStage.show();
 
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
 
@@ -266,14 +245,8 @@ public class BookDetailsController {
 
       currentStage.setTitle("Book Item Detail");
     } catch (Exception e) {
-      Logger.getLogger(BookDetailsController.class.getName())
-          .log(Level.SEVERE, "Failed to load book details page", e);
+      logger.error("Failed to load book details page", e);
     }
-  }
-
-  public void updateBookItemStatus(BookItem bookItem, BookStatus newStatus) {
-    bookItem.setStatus(newStatus);
-    tableView.refresh();
   }
 
 
@@ -314,7 +287,7 @@ public class BookDetailsController {
       stage.setScene(new Scene(root));
       stage.show();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.error(e.getMessage(), e);
     }
   }
 
