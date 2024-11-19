@@ -1,6 +1,7 @@
 package org.group4.librarymanagercode;
 
 import com.jfoenix.controls.JFXButton;
+import java.sql.SQLException;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -122,7 +123,14 @@ public class BookViewController {
     });
 
     loadBookData();
-
+    tableView.setOnMouseClicked(event -> {
+      if (event.getClickCount() == 2) {
+        Book selectedBook = tableView.getSelectionModel().getSelectedItem();
+        if (selectedBook != null) {
+          showBookDetail(selectedBook);
+        }
+      }
+    });
     searchField.textProperty()
         .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
     searchField.setOnKeyPressed(event -> {
@@ -166,46 +174,24 @@ public class BookViewController {
     tableView.setItems(bookList);
   }
 
-  @FXML
-  public void HomeAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
-  }
+  private void showBookDetail(Book book) {
+    try {
+      // Tạo FXMLLoader và mở cửa sổ chi tiết sách
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      Parent root = loader.load();
+      Stage stage = new Stage();
+      stage.setScene(new Scene(root));
 
-  @FXML
-  public void MemberAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
-  }
+      BookDetailsController controller = loader.getController();
+      controller.setItemDetail(book);
 
-  @FXML
-  public void BookAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
-  }
-
-  @FXML
-  public void notificationAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
-  }
-
-  @FXML
-  public void SettingAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
-  }
-
-  @FXML
-  public void Close(ActionEvent actionEvent) {
-    Platform.exit();
-  }
-
-  @FXML
-  public void addBookAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
-    Parent root = loader.load();
-    Stage stage = (Stage) addBookButton.getScene().getWindow();
-    stage.getScene().setRoot(root);
-  }
-
-  private Stage getStage() {
-    return (Stage) homeButton.getScene().getWindow();
+      stage.setTitle("Book Detail");
+      stage.show();
+    } catch (IOException e) {
+      logAndShowError("Failed to load book detail form", e);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private void showEditForm(Book book) {
@@ -265,5 +251,47 @@ public class BookViewController {
     alert.setHeaderText(header);
     alert.setContentText(content);
     return alert;
+  }
+
+  @FXML
+  public void HomeAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
+  }
+
+  @FXML
+  public void MemberAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
+  }
+
+  @FXML
+  public void BookAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
+  }
+
+  @FXML
+  public void notificationAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
+  }
+
+  @FXML
+  public void SettingAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
+  }
+
+  @FXML
+  public void Close(ActionEvent actionEvent) {
+    Platform.exit();
+  }
+
+  @FXML
+  public void addBookAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
+    Parent root = loader.load();
+    Stage stage = (Stage) addBookButton.getScene().getWindow();
+    stage.getScene().setRoot(root);
+  }
+
+  private Stage getStage() {
+    return (Stage) homeButton.getScene().getWindow();
   }
 }
