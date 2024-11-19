@@ -35,6 +35,11 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
       "INSERT INTO book_authors (book_isbn, author_id) VALUES (?, ?)";
 
   /** SQL statements for CRUD operations on the books table. */
+  private static final String UPDATE_BOOK_SQL =
+      "UPDATE books SET title = ?, subject = ?, publisher = ?, language = ?, number_of_pages = ? "
+          + "WHERE isbn = ?";
+
+  /** SQL statements for CRUD operations on the books table. */
   private static final String GET_BOOK_BY_ID_SQL = "SELECT * FROM books WHERE isbn = ?";
 
   /** SQL statements for CRUD operations on the books table. */
@@ -60,15 +65,12 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   @Override
   public boolean add(Book book) {
     try (Connection connection = getConnection()) {
-      // Check if the book already exists
       if (getById(book.getISBN()).isPresent()) {
         return false;
       }
 
-      // Start transaction
       connection.setAutoCommit(false);
 
-      // Insert book into books table
       try (PreparedStatement bookStmt = connection.prepareStatement(ADD_BOOK_SQL)) {
         bookStmt.setString(1, book.getISBN());
         bookStmt.setString(2, book.getTitle());
@@ -79,15 +81,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
         bookStmt.executeUpdate();
       }
 
-      // Add authors and establish relationships in book_authors table
-      for (Author author : book.getAuthors()) {
-        String authorId = findOrCreateAuthor(author);
-        try (PreparedStatement bookAuthorStmt = connection.prepareStatement(ADD_BOOK_AUTHOR_SQL)) {
-          bookAuthorStmt.setString(1, book.getISBN());
-          bookAuthorStmt.setString(2, authorId);
-          bookAuthorStmt.executeUpdate();
-        }
-      }
+      updateBookAuthors(connection, book);
 
       connection.commit();
       return true;
@@ -98,12 +92,33 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   }
 
   @Override
+  public boolean update(Book book) {
+    try (Connection connection = getConnection()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_SQL);
+      preparedStatement.setString(1, book.getTitle());
+      preparedStatement.setString(2, book.getSubject());
+      preparedStatement.setString(3, book.getPublisher());
+      preparedStatement.setString(4, book.getLanguage());
+      preparedStatement.setInt(5, book.getNumberOfPages());
+      preparedStatement.setString(6, book.getISBN());
+      preparedStatement.executeUpdate();
+
+      updateBookAuthors(connection, book);
+      return true;
+    } catch (SQLException e) {
+      logger.error("Error updating book: {}", book, e);
+      return false;
+    }
+  }
+
+  @Override
   public boolean delete(String isbn) {
     try (Connection connection = getConnection()) {
       connection.setAutoCommit(false);
 
       // Delete relationships in book_authors table
-      try (PreparedStatement deleteAuthorsStmt = connection.prepareStatement(DELETE_BOOK_AUTHORS_SQL)) {
+      try (PreparedStatement deleteAuthorsStmt =
+          connection.prepareStatement(DELETE_BOOK_AUTHORS_SQL)) {
         deleteAuthorsStmt.setString(1, isbn);
         deleteAuthorsStmt.executeUpdate();
       }
@@ -202,6 +217,29 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   public List<BookItem> getAllBookItems(String isbn) throws SQLException {
     BookItemDAO bookItemDAO = new BookItemDAO();
     return bookItemDAO.getAllByIsbn(isbn);
+  }
+
+  /**
+   * Updates the authors associated with a book in the database.
+   *
+   * @param connection the connection to the database
+   * @param book the book to update
+   * @throws SQLException if a database access error occurs
+   */
+  private void updateBookAuthors(Connection connection, Book book) throws SQLException {
+    try (PreparedStatement deleteAuthorsStmt = connection.prepareStatement(DELETE_BOOK_AUTHORS_SQL)) {
+      deleteAuthorsStmt.setString(1, book.getISBN());
+      deleteAuthorsStmt.executeUpdate();
+    }
+
+    for (Author author : book.getAuthors()) {
+      String authorId = findOrCreateAuthor(author);
+      try (PreparedStatement bookAuthorStmt = connection.prepareStatement(ADD_BOOK_AUTHOR_SQL)) {
+        bookAuthorStmt.setString(1, book.getISBN());
+        bookAuthorStmt.setString(2, authorId);
+        bookAuthorStmt.executeUpdate();
+      }
+    }
   }
 
 }
