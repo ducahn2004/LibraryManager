@@ -36,12 +36,12 @@
               <children>
                 <AnchorPane layoutX="19.2" layoutY="9.6" prefHeight="101.0" prefWidth="180.0" style="-fx-background-color: #888888; -fx-background-radius: 20;" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="7.0">
                   <children>
-                    <Label layoutX="53.0" layoutY="68.0" text="All Book" textFill="WHITE" AnchorPane.topAnchor="75.0">
+                    <Label layoutX="27.0" layoutY="76.0" text="Total Members" textFill="WHITE" AnchorPane.topAnchor="76.0">
                       <font>
                         <Font size="20.0" />
                       </font>
                     </Label>
-                    <Label layoutX="65.0" layoutY="14.0" prefHeight="30.0" prefWidth="114.0" text="0" textAlignment="RIGHT" textFill="WHITE">
+                    <Label fx:id="total_Members" layoutX="65.0" layoutY="14.0" prefHeight="30.0" prefWidth="114.0" text="0" textAlignment="RIGHT" textFill="WHITE">
                       <font>
                         <Font size="20.0" />
                       </font>

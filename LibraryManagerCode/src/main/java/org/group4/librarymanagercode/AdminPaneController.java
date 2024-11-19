@@ -7,11 +7,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.group4.dao.MemberDAO;
 import org.jetbrains.annotations.NotNull;
 
 public class AdminPaneController {
+
+  public Label total_Members;
   private Stage stage;
 
   @FXML
@@ -87,5 +91,20 @@ public class AdminPaneController {
     Platform.exit();
   }
 
+  MemberDAO memberDAO = new MemberDAO(); // Tạo DAO để truy xuất dữ liệu
+
+  /**
+   * Phương thức để cập nhật số lượng thành viên trên giao diện.
+   */
+  public void updateTotalMembers() {
+    int totalMembers = memberDAO.getTotalMembers(); // Gọi phương thức từ MemberDAO
+    total_Members.setText(String.valueOf(totalMembers)); // Cập nhật nội dung Label
+  }
+
+  @FXML
+  public void initialize() {
+    // Tự động cập nhật số lượng thành viên khi khởi tạo giao diện
+    updateTotalMembers();
+  }
 
 }
