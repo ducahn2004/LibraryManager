@@ -1,5 +1,6 @@
 package org.group4.librarymanagercode;
-import  org.group4.module.enums.BookStatus;
+
+import org.group4.module.enums.BookStatus;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -130,7 +131,7 @@ public class ReturningBookController {
   }
 
 
-  public void handleSubmit(ActionEvent actionEvent) throws IOException, SQLException {
+  public void handleSubmit(ActionEvent actionEvent) throws Exception {
     returningBookToLibrary(findBookLendingById(currentBookItem.getBarcode()));
     Alert alert = new Alert(AlertType.INFORMATION);
     alert.setTitle("Success");
@@ -192,15 +193,18 @@ public class ReturningBookController {
       System.out.println("User has not ticked the Status checkbox.");
     }
   }
+
   public static BookStatus getBookStatus(CheckBox availableCheckBox) {
     if (availableCheckBox.isSelected()) {
       return BookStatus.AVAILABLE;
     }
     return BookStatus.NONE; // Default case if no CheckBox is selected
   }
-  private void returningBookToLibrary(BookLending bookLending) throws SQLException {
+
+  private void returningBookToLibrary(BookLending bookLending) throws Exception {
     // Add the logic to store the book in the library's database
-    boolean successAdded = librarian.returnBookItem(bookLending.getBookItem(), bookLending.getMember(), getBookStatus(statusCheckBox) );
+    boolean successAdded = librarian.returnBookItem(bookLending.getBookItem(),
+        bookLending.getMember(), getBookStatus(statusCheckBox));
     if (!successAdded) {
       System.out.println("Failed to edit book with ISBN: " + bookLending.getBookItem().getISBN());
       throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
