@@ -27,7 +27,10 @@ import java.util.logging.Logger;
 
 public class MemberViewController {
 
-  public JFXButton closeButton;
+  @FXML
+  private JFXButton closeButton;
+  @FXML
+  private JFXButton bookLendingButton;
   @FXML
   private TextField searchField;
   @FXML
@@ -280,6 +283,10 @@ public class MemberViewController {
     SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
 
+  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
+  }
+
   public void notificationAction(ActionEvent actionEvent) throws IOException {
     SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
   }
@@ -291,5 +298,5 @@ public class MemberViewController {
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
-  
+
 }

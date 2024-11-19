@@ -12,16 +12,15 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.group4.dao.BookDAO;
 import org.group4.dao.MemberDAO;
-import org.jetbrains.annotations.NotNull;
 
 public class AdminPaneController {
 
   public Label total_Members;
   public Label total_books;
+
 
   @FXML
   private BarChart<String, Number> home_chart;
@@ -39,6 +38,8 @@ public class AdminPaneController {
   @FXML
   private JFXButton bookButton;
   @FXML
+  private JFXButton bookLendingButton;
+  @FXML
   private JFXButton settingButton;
   @FXML
   private JFXButton notificationButton;
@@ -50,51 +51,73 @@ public class AdminPaneController {
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) homeButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) homeButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Home button clicked");
   }
+
   public void MemberAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) MemberButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) MemberButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Member button clicked");
   }
+
   public void BookAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) bookButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) bookButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Book button clicked");
   }
+
+  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookLending.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) bookButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Book button clicked");
+  }
+
   public void notificationAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) notificationButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) notificationButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Notification button clicked");
   }
+
   public void SettingAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) settingButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) settingButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
@@ -121,25 +144,25 @@ public class AdminPaneController {
   }
 
 
-  public void Home_chart(){
+  public void Home_chart() {
     home_chart.getData().clear();
 
-  int totalBooks = bookDAO.getTotalBooks();
-  int totalMembers = memberDAO.getTotalMembers();
+    int totalBooks = bookDAO.getTotalBooks();
+    int totalMembers = memberDAO.getTotalMembers();
 
-  // add series
-  XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();
+    // add series
+    XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();
     bookSeries.setName("Books");
     bookSeries.getData().add(new XYChart.Data<>("Total Books", totalBooks));
 
-  // add series
-  XYChart.Series<String, Number> memberSeries = new XYChart.Series<>();
+    // add series
+    XYChart.Series<String, Number> memberSeries = new XYChart.Series<>();
     memberSeries.setName("Members");
     memberSeries.getData().add(new XYChart.Data<>("Total Members", totalMembers));
 
-  //add data for home_chart
+    //add data for home_chart
     home_chart.getData().addAll(bookSeries, memberSeries);
-}
+  }
 
   @FXML
   public void initialize() {

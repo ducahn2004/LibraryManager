@@ -25,17 +25,16 @@
         <TitledPane collapsible="false" text="Book Item Information">
           <GridPane hgap="10" vgap="10">
             <Label text="Barcode: " GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Label fx:id="barcodeField" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <Label fx:id="barcodeField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
             <Label text="Reference Only:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Label fx:id="referenceOnlyCheck" layoutX="113.0" layoutY="84.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="referenceOnlyCheck" layoutX="113.0" layoutY="84.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
             <Label text="Place At:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <Label fx:id="placeField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="placeField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
             <columnConstraints>
               <ColumnConstraints />
-                     <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
               <ColumnConstraints />
             </columnConstraints>
             <rowConstraints>

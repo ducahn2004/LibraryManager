@@ -22,6 +22,8 @@ public class SettingController {
   @FXML
   private JFXButton bookButton;
   @FXML
+  private JFXButton bookLendingButton;
+  @FXML
   private JFXButton settingButton;
   @FXML
   private JFXButton notificationButton;
@@ -46,6 +48,10 @@ public class SettingController {
     SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
 
+  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
+  }
+
   public void notificationAction(ActionEvent actionEvent) throws IOException {
     SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
   }
@@ -57,5 +63,5 @@ public class SettingController {
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
-  
+
 }

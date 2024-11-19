@@ -50,6 +50,8 @@ public class NotificationController {
   @FXML
   private JFXButton bookButton;
   @FXML
+  private JFXButton bookLendingButton;
+  @FXML
   private JFXButton settingButton;
   @FXML
   private JFXButton notificationButton;
@@ -132,6 +134,10 @@ public class NotificationController {
 
   public void BookAction(ActionEvent actionEvent) throws IOException {
     SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
+  }
+
+  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
+    SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
   }
 
   public void notificationAction(ActionEvent actionEvent) throws IOException {
