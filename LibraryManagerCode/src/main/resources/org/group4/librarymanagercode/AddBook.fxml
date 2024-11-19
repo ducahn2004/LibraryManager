@@ -12,70 +12,55 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-  prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23"
-  xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="org.group4.librarymanagercode.AddBookController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.AddBookController">
   <left>
-    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2e069c;"
-      BorderPane.alignment="CENTER">
-      <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP"
-        onAction="#homeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE"
-        textOverrun="CLIP">
+    <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" BorderPane.alignment="CENTER">
+      <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#homeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
         <font>
-          <Font size="16.0"/>
+          <Font size="16.0" />
         </font>
       </JFXButton>
-      <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false"
-        onAction="#memberAction" prefHeight="46.0" prefWidth="133.0" text="Member"
-        textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false" onAction="#memberAction" prefHeight="46.0" prefWidth="133.0" text="Member" textFill="#fff8f8" textOverrun="CLIP">
         <font>
-          <Font size="16.0"/>
+          <Font size="16.0" />
         </font>
       </JFXButton>
-      <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#bookAction" prefHeight="46.0"
-        prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#bookAction" prefHeight="46.0" prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
         <font>
-          <Font size="16.0"/>
+          <Font size="16.0" />
         </font>
       </JFXButton>
-      <JFXButton fx:id="notificationButton" alignment="TOP_LEFT" onAction="#notificationAction"
-        prefHeight="46.0" prefWidth="137.0" text="Notification" textFill="#fff8f8"
-        textOverrun="CLIP">
+      <JFXButton fx:id="notificationButton" alignment="TOP_LEFT" onAction="#notificationAction" prefHeight="46.0" prefWidth="137.0" text="Notification" textFill="#fff8f8" textOverrun="CLIP">
         <font>
-          <Font size="16.0"/>
+          <Font size="16.0" />
         </font>
       </JFXButton>
-      <JFXButton fx:id="settingButton" alignment="TOP_LEFT" onAction="#settingAction"
-        prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="settingButton" alignment="TOP_LEFT" onAction="#settingAction" prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8" textOverrun="CLIP">
         <font>
-          <Font size="16.0"/>
+          <Font size="16.0" />
         </font>
       </JFXButton>
-      <JFXButton fx:id="closeButton" alignment="TOP_LEFT" onAction="#close" prefHeight="46.0"
-        prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
+      <JFXButton fx:id="closeButton" alignment="TOP_LEFT" onAction="#close" prefHeight="46.0" prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
         <font>
-          <Font size="16.0"/>
+          <Font size="16.0" />
         </font>
       </JFXButton>
     </VBox>
   </left>
   <top>
     <Pane prefHeight="130.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
-      <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2e069c;"/>
-      <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="434.0" layoutY="31.0"
-        prefHeight="96.0" prefWidth="172.0" text="Add Book" textFill="#2e069c">
+      <Pane prefHeight="135.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" />
+      <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="434.0" layoutY="31.0" prefHeight="96.0" prefWidth="172.0" text="Add Book" textFill="#2b579a">
         <font>
-          <Font name=".VnArial Bold" size="30.0"/>
+          <Font name=".VnArial Bold" size="30.0" />
         </font>
       </Label>
-      <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#a1a1a1"
-        BorderPane.alignment="CENTER">
+      <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#2b579a" BorderPane.alignment="CENTER">
         <font>
-          <Font name="Segoe UI Semilight" size="23.0"/>
+          <Font name="Segoe UI Semilight" size="23.0" />
         </font>
         <BorderPane.margin>
-          <Insets top="2.0"/>
+          <Insets top="2.0" />
         </BorderPane.margin>
       </Label>
     </Pane>
@@ -84,35 +69,30 @@
     <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
       <VBox layoutX="138.0" layoutY="22.0" prefHeight="526.0" prefWidth="619.0">
         <HBox prefHeight="60.0" prefWidth="619.0">
-          <TextField fx:id="isbnField" prefHeight="26.0" prefWidth="450.0" promptText="ISBN"/>
-          <Button onAction="#searchByISBN" text="Search"/>
+          <TextField fx:id="isbnField" prefHeight="26.0" prefWidth="450.0" promptText="ISBN" />
+          <Button onAction="#searchByISBN" text="Search" />
         </HBox>
         <HBox prefHeight="60.0" prefWidth="619.0">
-          <TextField fx:id="titleField" prefHeight="26.0" prefWidth="450.0" promptText="Title"/>
+          <TextField fx:id="titleField" prefHeight="26.0" prefWidth="450.0" promptText="Title" />
         </HBox>
         <HBox prefHeight="60.0" prefWidth="619.0">
-          <TextField fx:id="subjectField" prefHeight="26.0" prefWidth="450.0"
-            promptText="Subject"/>
+          <TextField fx:id="subjectField" prefHeight="26.0" prefWidth="450.0" promptText="Subject" />
         </HBox>
         <HBox prefHeight="60.0" prefWidth="200.0">
-          <TextField fx:id="publisherField" prefHeight="26.0" prefWidth="450.0"
-            promptText="Publisher"/>
+          <TextField fx:id="publisherField" prefHeight="26.0" prefWidth="450.0" promptText="Publisher" />
         </HBox>
         <HBox prefHeight="60.0" prefWidth="200.0">
-          <TextField fx:id="languageField" prefHeight="26.0" prefWidth="450.0"
-            promptText="Language"/>
+          <TextField fx:id="languageField" prefHeight="26.0" prefWidth="450.0" promptText="Language" />
         </HBox>
         <HBox prefHeight="60.0" prefWidth="200.0">
-          <TextField fx:id="numberOfPagesField" prefHeight="26.0" prefWidth="450.0"
-            promptText="Number of Pages"/>
+          <TextField fx:id="numberOfPagesField" prefHeight="26.0" prefWidth="450.0" promptText="Number of Pages" />
         </HBox>
         <HBox prefHeight="100.0" prefWidth="619.0">
-          <TextArea fx:id="authorsField" prefHeight="96.0" prefWidth="450.0"
-            promptText="Authors (comma separated)"/>
+          <TextArea fx:id="authorsField" prefHeight="96.0" prefWidth="450.0" promptText="Authors (comma separated)" />
         </HBox>
-        <Pane prefHeight="22.0" prefWidth="619.0"/>
+        <Pane prefHeight="22.0" prefWidth="619.0" />
         <HBox prefHeight="100.0" prefWidth="200.0">
-          <Button onAction="#addBookAction" text="Add Book"/>
+          <Button onAction="#addBookAction" text="Add Book" />
         </HBox>
       </VBox>
     </Pane>
