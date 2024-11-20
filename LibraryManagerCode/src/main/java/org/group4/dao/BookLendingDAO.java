@@ -38,24 +38,33 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
 
   /** SQL statements for CRUD operations on the book_lendings table */
   private static final String ADD_BOOK_LENDING_SQL =
-      "INSERT INTO book_lendings (barcode, member_id, lending_date, due_date, return_date) "
+      "INSERT INTO book_lendings ("
+          + COLUMN_BARCODE + ", "
+          + COLUMN_MEMBER_ID + ", "
+          + COLUMN_LENDING_DATE + ", "
+          + COLUMN_DUE_DATE + ", "
+          + COLUMN_RETURN_DATE + ") "
           + "VALUES (?, ?, ?, ?, ?)";
 
   private static final String UPDATE_BOOK_LENDING_SQL =
-      "UPDATE book_lendings SET lending_date = ?, due_date = ?, return_date = ? "
-          + "WHERE barcode = ? AND member_id = ?";
+      "UPDATE book_lendings SET "
+          + COLUMN_LENDING_DATE + " = ?, "
+          + COLUMN_DUE_DATE + " = ?, "
+          + COLUMN_RETURN_DATE + " = ? "
+          + "WHERE " + COLUMN_BARCODE + " = ? AND " + COLUMN_MEMBER_ID + " = ?";
 
   private static final String DELETE_BOOK_LENDING_SQL =
-      "DELETE FROM book_lendings WHERE barcode = ? AND member_id = ?";
+      "DELETE FROM book_lendings WHERE " + COLUMN_BARCODE + " = ? AND " + COLUMN_MEMBER_ID + " = ?";
 
   private static final String GET_BOOK_LENDING_BY_BARCODE_SQL =
-      "SELECT * FROM book_lendings WHERE barcode = ?";
+      "SELECT * FROM book_lendings WHERE " + COLUMN_BARCODE + " = ?";
 
   private static final String GET_BOOK_LENDING_BY_MEMBER_SQL =
-      "SELECT * FROM book_lendings WHERE member_id = ?";
+      "SELECT * FROM book_lendings WHERE " + COLUMN_MEMBER_ID + " = ?";
 
   private static final String GET_BOOK_LENDING_BY_ID_SQL =
-      "SELECT * FROM book_lendings WHERE barcode = ? AND member_id = ?";
+      "SELECT * FROM book_lendings "
+          + "WHERE " + COLUMN_BARCODE + " = ? AND " + COLUMN_MEMBER_ID + " = ?";
 
   private static final String GET_ALL_BOOK_LENDINGS_SQL =
       "SELECT * FROM book_lendings";
@@ -204,12 +213,17 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
    * @throws SQLException if a database error occurs
    */
   private BookLending mapRowToBookLending(ResultSet resultSet) throws SQLException {
+    // Retrieve BookItem and Member objects from the database
     BookItem bookItem = FactoryDAO.getBookItemDAO()
         .getById(resultSet.getString(COLUMN_BARCODE))
         .orElseThrow(() -> new SQLException("BookItem not found"));
+
+    // Retrieve Member object from the database
     Member member = FactoryDAO.getMemberDAO()
         .getById(resultSet.getString(COLUMN_MEMBER_ID))
         .orElseThrow(() -> new SQLException("Member not found"));
+
+    // Create BookLending object from ResultSet data
     LocalDate lendingDate = resultSet.getDate(COLUMN_LENDING_DATE).toLocalDate();
     LocalDate dueDate = resultSet.getDate(COLUMN_DUE_DATE).toLocalDate();
     LocalDate returnDate = resultSet.getDate(COLUMN_RETURN_DATE) != null

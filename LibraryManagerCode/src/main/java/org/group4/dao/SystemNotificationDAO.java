@@ -31,14 +31,18 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
 
   /** SQL statements for CRUD operations on the system_notifications table. */
   private static final String ADD_NOTIFICATION_SQL =
-      "INSERT INTO system_notifications ("+ COLUMN_NOTIFICATION_ID +", "+ COLUMN_TYPE +", "
-          + COLUMN_CONTENT +", "+ COLUMN_CREATED_ON +") VALUES (?, ?, ?, ?)";
+      "INSERT INTO system_notifications ("
+          + COLUMN_NOTIFICATION_ID + ", "
+          + COLUMN_TYPE + ", "
+          + COLUMN_CONTENT + ", "
+          + COLUMN_CREATED_ON + ") "
+          + "VALUES (?, ?, ?, ?)";
 
   private static final String DELETE_NOTIFICATION_SQL =
-      "DELETE FROM system_notifications WHERE "+ COLUMN_NOTIFICATION_ID +" = ?";
+      "DELETE FROM system_notifications WHERE " + COLUMN_NOTIFICATION_ID + " = ?";
 
   private static final String GET_NOTIFICATION_BY_ID_SQL =
-      "SELECT * FROM system_notifications WHERE "+ COLUMN_NOTIFICATION_ID +" = ?";
+      "SELECT * FROM system_notifications WHERE " + COLUMN_NOTIFICATION_ID + " = ?";
 
   private static final String GET_ALL_NOTIFICATIONS_SQL = "SELECT * FROM system_notifications";
 

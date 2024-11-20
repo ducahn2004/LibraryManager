@@ -30,27 +30,27 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
 
   /** SQL statements for CRUD operations on the authors table. */
   private static final String ADD_AUTHOR_SQL =
-      "INSERT INTO authors ("+ COLUMN_AUTHOR_ID +", "+ COLUMN_NAME +") VALUES (?, ?)";
+      "INSERT INTO authors (" + COLUMN_AUTHOR_ID + ", " + COLUMN_NAME + ") VALUES (?, ?)";
 
   private static final String UPDATE_AUTHOR_SQL =
-      "UPDATE authors SET "+ COLUMN_NAME +" = ? WHERE "+ COLUMN_AUTHOR_ID +" = ?";
+      "UPDATE authors SET " + COLUMN_NAME + " = ? WHERE " + COLUMN_AUTHOR_ID + " = ?";
 
   private static final String DELETE_AUTHOR_SQL =
-      "DELETE FROM authors WHERE "+ COLUMN_AUTHOR_ID +" = ?";
+      "DELETE FROM authors WHERE " + COLUMN_AUTHOR_ID + " = ?";
 
   private static final String GET_AUTHOR_BY_ID_SQL =
-      "SELECT * FROM authors WHERE "+ COLUMN_AUTHOR_ID +" = ?";
+      "SELECT * FROM authors WHERE " + COLUMN_AUTHOR_ID + " = ?";
 
   private static final String GET_ALL_AUTHORS_SQL =
       "SELECT * FROM authors";
 
   private static final String GET_AUTHORS_BY_BOOK_SQL =
-      "SELECT a."+ COLUMN_AUTHOR_ID +", a."+ COLUMN_NAME +" FROM authors a "
-      + "JOIN book_authors ba ON a."+ COLUMN_AUTHOR_ID +" = ba."+ COLUMN_AUTHOR_ID +" "
-      + "WHERE ba."+ COLUMN_BOOK_ISBN +" = ?";
+      "SELECT a." + COLUMN_AUTHOR_ID + ", a." + COLUMN_NAME + " FROM authors a "
+      + "JOIN book_authors ba ON a." + COLUMN_AUTHOR_ID + " = ba." + COLUMN_AUTHOR_ID + " "
+      + "WHERE ba." + COLUMN_BOOK_ISBN + " = ?";
 
   private static final String GET_MAX_AUTHOR_ID_SQL =
-      "SELECT MAX("+ COLUMN_AUTHOR_ID +") AS "+ COLUMN_MAX_ID +" FROM authors";
+      "SELECT MAX(" + COLUMN_AUTHOR_ID + ") AS " + COLUMN_MAX_ID + " FROM authors";
 
   @Override
   public boolean add(Author author) {

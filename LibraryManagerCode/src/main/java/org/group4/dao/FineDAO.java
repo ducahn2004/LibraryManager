@@ -27,7 +27,10 @@ public class FineDAO extends BaseDAO implements GenericDAO<Fine, BookLending> {
 
   /** SQL statements for CRUD operations on the fines table. */
   private static final String ADD_FINE_SQL =
-      "INSERT INTO fines (" + COLUMN_BARCODE + ", " + COLUMN_MEMBER_ID + ", " + COLUMN_AMOUNT + ") "
+      "INSERT INTO fines ("
+          + COLUMN_BARCODE + ", "
+          + COLUMN_MEMBER_ID + ", "
+          + COLUMN_AMOUNT + ") "
           + "VALUES (?, ?, ?)";
 
   private static final String DELETE_FINE_SQL =

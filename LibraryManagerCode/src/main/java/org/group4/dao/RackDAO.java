@@ -29,7 +29,9 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
 
   /** SQL statements for CRUD operations on the racks table. */
   private static final String ADD_RACK_SQL =
-      "INSERT INTO racks (" + COLUMN_NUMBER_RACK + ", " + COLUMN_LOCATION_IDENTIFIER + ") "
+      "INSERT INTO racks ("
+          + COLUMN_NUMBER_RACK + ", "
+          + COLUMN_LOCATION_IDENTIFIER + ") "
           + "VALUES (?, ?)";
 
   private static final String UPDATE_RACK_SQL =

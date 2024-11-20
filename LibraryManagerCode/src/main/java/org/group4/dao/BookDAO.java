@@ -36,27 +36,36 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
 
   /** SQL statements for CRUD operations on the books table. */
   private static final String ADD_BOOK_SQL =
-      "INSERT INTO books ("+ COLUMN_ISBN +", "+ COLUMN_TITLE +", "+ COLUMN_SUBJECT +", "
-          + COLUMN_PUBLISHER +", "+ COLUMN_LANGUAGE +", "+ COLUMN_NUMBER_OF_PAGES +") "
+      "INSERT INTO books ("
+          + COLUMN_ISBN + ", "
+          + COLUMN_TITLE + ", "
+          + COLUMN_SUBJECT + ", "
+          + COLUMN_PUBLISHER + ", "
+          + COLUMN_LANGUAGE + ", "
+          + COLUMN_NUMBER_OF_PAGES + ") "
           + "VALUES (?, ?, ?, ?, ?, ?)";
 
   private static final String ADD_BOOK_AUTHOR_SQL =
       "INSERT INTO book_authors ("+ COLUMN_ISBN +", "+ COLUMN_AUTHOR_ID +") VALUES (?, ?)";
 
   private static final String UPDATE_BOOK_SQL =
-      "UPDATE books SET "+ COLUMN_TITLE +" = ?, "+ COLUMN_SUBJECT +" = ?, "
-          + COLUMN_PUBLISHER +" = ?, "+ COLUMN_LANGUAGE +" = ?, "+ COLUMN_NUMBER_OF_PAGES +" = ? "
-          + "WHERE "+ COLUMN_ISBN +" = ?";
+      "UPDATE books SET "
+          + COLUMN_TITLE + " = ?, "
+          + COLUMN_SUBJECT + " = ?, "
+          + COLUMN_PUBLISHER + " = ?, "
+          + COLUMN_LANGUAGE + " = ?, "
+          + COLUMN_NUMBER_OF_PAGES + " = ? "
+          + "WHERE "+ COLUMN_ISBN + " = ?";
 
   private static final String GET_BOOK_BY_ID_SQL =
       "SELECT * FROM books WHERE "+ COLUMN_ISBN + " = ?";
 
   private static final String GET_ALL_BOOKS_SQL = "SELECT * FROM books";
 
-  private static final String DELETE_BOOK_SQL = "DELETE FROM books WHERE "+ COLUMN_ISBN +" = ?";
+  private static final String DELETE_BOOK_SQL = "DELETE FROM books WHERE " + COLUMN_ISBN + " = ?";
 
   private static final String DELETE_BOOK_AUTHORS_SQL =
-      "DELETE FROM book_authors WHERE "+ COLUMN_ISBN +" = ?";
+      "DELETE FROM book_authors WHERE " + COLUMN_ISBN + " = ?";
 
   private static final String FIND_TOTAL_BOOK_SQL = "SELECT COUNT(*) FROM books";
 

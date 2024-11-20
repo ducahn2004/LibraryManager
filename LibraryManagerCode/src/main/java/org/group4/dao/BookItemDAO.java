@@ -44,16 +44,32 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
 
   /** SQL statements for CRUD operations on the book_items table */
   private static final String ADD_BOOK_ITEM_SQL =
-      "INSERT INTO book_items (" + COLUMN_BARCODE + ", " + COLUMN_ISBN + ", " + COLUMN_IS_REFERENCE_ONLY
-          + ", " + COLUMN_BORROWED + ", " + COLUMN_DUE_DATE + ", " + COLUMN_PRICE + ", " + COLUMN_FORMAT
-          + ", " + COLUMN_STATUS + ", " + COLUMN_DATE_OF_PURCHASE + ", " + COLUMN_PUBLICATION_DATE
-          + ", " + COLUMN_RACK_NUMBER + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO book_items ("
+          + COLUMN_BARCODE + ", "
+          + COLUMN_ISBN + ", "
+          + COLUMN_IS_REFERENCE_ONLY + ", "
+          + COLUMN_BORROWED + ", "
+          + COLUMN_DUE_DATE + ", "
+          + COLUMN_PRICE + ", "
+          + COLUMN_FORMAT + ", "
+          + COLUMN_STATUS + ", "
+          + COLUMN_DATE_OF_PURCHASE + ", "
+          + COLUMN_PUBLICATION_DATE + ", "
+          + COLUMN_RACK_NUMBER + ") "
+          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   private static final String UPDATE_BOOK_ITEM_SQL =
-      "UPDATE book_items SET " + COLUMN_IS_REFERENCE_ONLY + " = ?, " + COLUMN_BORROWED + " = ?, "
-          + COLUMN_DUE_DATE + " = ?, " + COLUMN_PRICE + " = ?, " + COLUMN_FORMAT + " = ?, "
-          + COLUMN_STATUS + " = ?, " + COLUMN_DATE_OF_PURCHASE + " = ?, " + COLUMN_PUBLICATION_DATE
-          + " = ?, " + COLUMN_RACK_NUMBER + " = ? WHERE " + COLUMN_BARCODE + " = ?";
+      "UPDATE book_items SET "
+          + COLUMN_IS_REFERENCE_ONLY + " = ?, "
+          + COLUMN_BORROWED + " = ?, "
+          + COLUMN_DUE_DATE + " = ?, "
+          + COLUMN_PRICE + " = ?, "
+          + COLUMN_FORMAT + " = ?, "
+          + COLUMN_STATUS + " = ?, "
+          + COLUMN_DATE_OF_PURCHASE + " = ?, "
+          + COLUMN_PUBLICATION_DATE
+          + " = ?, " + COLUMN_RACK_NUMBER + " = ? "
+          + "WHERE " + COLUMN_BARCODE + " = ?";
 
   private static final String DELETE_BOOK_ITEM_SQL =
       "DELETE FROM book_items WHERE " + COLUMN_BARCODE + " = ?";

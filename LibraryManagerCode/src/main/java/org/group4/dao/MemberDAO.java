@@ -34,14 +34,23 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
 
   /** SQL statements for CRUD operations on the members table. */
   private static final String ADD_MEMBER_SQL =
-      "INSERT INTO members (" + COLUMN_MEMBER_ID + ", " + COLUMN_NAME + ", " + COLUMN_DATE_OF_BIRTH
-          + ", " + COLUMN_EMAIL + ", " + COLUMN_PHONE_NUMBER + ", " + COLUMN_TOTAL_BOOKS_CHECKED_OUT
-          + ") VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO members ("
+          + COLUMN_MEMBER_ID + ", "
+          + COLUMN_NAME + ", "
+          + COLUMN_DATE_OF_BIRTH + ", "
+          + COLUMN_EMAIL + ", "
+          + COLUMN_PHONE_NUMBER + ", "
+          + COLUMN_TOTAL_BOOKS_CHECKED_OUT + ") "
+          + "VALUES (?, ?, ?, ?, ?, ?)";
 
   private static final String UPDATE_MEMBER_SQL =
-      "UPDATE members SET " + COLUMN_NAME + " = ?, " + COLUMN_DATE_OF_BIRTH + " = ?, " + COLUMN_EMAIL
-          + " = ?, " + COLUMN_PHONE_NUMBER + " = ?, " + COLUMN_TOTAL_BOOKS_CHECKED_OUT
-          + " = ? WHERE " + COLUMN_MEMBER_ID + " = ?";
+      "UPDATE members SET "
+          + COLUMN_NAME + " = ?, "
+          + COLUMN_DATE_OF_BIRTH + " = ?, "
+          + COLUMN_EMAIL + " = ?, "
+          + COLUMN_PHONE_NUMBER + " = ?, "
+          + COLUMN_TOTAL_BOOKS_CHECKED_OUT + " = ? "
+          + "WHERE " + COLUMN_MEMBER_ID + " = ?";
 
   private static final String DELETE_MEMBER_SQL
       = "DELETE FROM members WHERE " + COLUMN_MEMBER_ID + " = ?";
