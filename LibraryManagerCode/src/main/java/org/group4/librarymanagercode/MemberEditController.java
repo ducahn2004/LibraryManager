@@ -119,14 +119,17 @@ public class MemberEditController {
   }
 
   /**
-   * Checks if the name is valid.
+   * Checks if the name is valid, including Vietnamese characters.
    *
    * @param name the name to validate
    * @return true if valid, false otherwise
    */
   private boolean isValidName(String name) {
-    return name.matches("([A-Z][a-z]*)(\\s[A-Z][a-z]*)*");
+    // Regex to validate names with Unicode (Vietnamese support)
+    String regex = "([A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)(\\s[A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)*";
+    return name.matches(regex);
   }
+
 
   /**
    * Checks if the email is valid.
