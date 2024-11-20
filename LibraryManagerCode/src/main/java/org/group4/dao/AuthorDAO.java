@@ -22,35 +22,35 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   /** The logger for AuthorDAO. */
   private static final Logger logger = LoggerFactory.getLogger(AuthorDAO.class);
 
+  /** Column names in the authors table. */
+  private static final String COLUMN_AUTHOR_ID = "author_id";
+  private static final String COLUMN_NAME = "name";
+  private static final String COLUMN_BOOK_ISBN = "book_isbn";
+  private static final String COLUMN_MAX_ID = "max_id";
+
   /** SQL statements for CRUD operations on the authors table. */
   private static final String ADD_AUTHOR_SQL =
-      "INSERT INTO authors (author_id, name) VALUES (?, ?)";
+      "INSERT INTO authors ("+ COLUMN_AUTHOR_ID +", "+ COLUMN_NAME +") VALUES (?, ?)";
 
-  /** SQL statements for CRUD operations on the authors table. */
   private static final String UPDATE_AUTHOR_SQL =
-      "UPDATE authors SET name = ? WHERE author_id = ?";
+      "UPDATE authors SET "+ COLUMN_NAME +" = ? WHERE "+ COLUMN_AUTHOR_ID +" = ?";
 
-  /** SQL statements for CRUD operations on the authors table. */
   private static final String DELETE_AUTHOR_SQL =
-      "DELETE FROM authors WHERE author_id = ?";
+      "DELETE FROM authors WHERE "+ COLUMN_AUTHOR_ID +" = ?";
 
-  /** SQL statements for CRUD operations on the authors table. */
   private static final String GET_AUTHOR_BY_ID_SQL =
-      "SELECT * FROM authors WHERE author_id = ?";
+      "SELECT * FROM authors WHERE "+ COLUMN_AUTHOR_ID +" = ?";
 
-  /** SQL statements for CRUD operations on the authors table. */
   private static final String GET_ALL_AUTHORS_SQL =
       "SELECT * FROM authors";
 
-  /** SQL statements for CRUD operations on the authors table. */
   private static final String GET_AUTHORS_BY_BOOK_SQL =
-      "SELECT a.author_id, a.name FROM authors a "
-          + "JOIN book_authors ba ON a.author_id = ba.author_id "
-          + "WHERE ba.book_isbn = ?";
+      "SELECT a."+ COLUMN_AUTHOR_ID +", a."+ COLUMN_NAME +" FROM authors a "
+      + "JOIN book_authors ba ON a."+ COLUMN_AUTHOR_ID +" = ba."+ COLUMN_AUTHOR_ID +" "
+      + "WHERE ba."+ COLUMN_BOOK_ISBN +" = ?";
 
-  /** SQL statements for CRUD operations on the authors table. */
   private static final String GET_MAX_AUTHOR_ID_SQL =
-      "SELECT MAX(author_id) AS max_id FROM authors";
+      "SELECT MAX("+ COLUMN_AUTHOR_ID +") AS "+ COLUMN_MAX_ID +" FROM authors";
 
   @Override
   public boolean add(Author author) {
@@ -157,8 +157,8 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
    * @throws SQLException if a database access error occurs
    */
   private Author mapRowToAuthor(ResultSet resultSet) throws SQLException {
-    String authorId = resultSet.getString("author_id");
-    String name = resultSet.getString("name");
+    String authorId = resultSet.getString(COLUMN_AUTHOR_ID);
+    String name = resultSet.getString(COLUMN_NAME);
     return new Author(authorId, name);
   }
 
@@ -182,5 +182,4 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
     }
     return "AUTHOR-001";
   }
-
 }
