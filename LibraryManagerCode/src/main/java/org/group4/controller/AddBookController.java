@@ -25,13 +25,29 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Controller class for adding a new book to the library. Handles interactions with
- * GoogleBooksService and updates the UI.
+ * Controller class for adding a new book to the library.
+ *
+ * <p>This class handles user interactions related to adding books. It uses
+ * GoogleBooksService to fetch book details and allows librarians to input additional information
+ * before storing the book in the library system.
  */
 public class AddBookController {
 
   @FXML
-  private JFXButton bookButton, MemberButton, homeButton, bookLendingButton, notificationButton, settingButton, closeButton;
+  private JFXButton bookButton;
+  @FXML
+  private JFXButton MemberButton;
+  @FXML
+  private JFXButton homeButton;
+  @FXML
+  private JFXButton bookLendingButton;
+  @FXML
+  private JFXButton notificationButton;
+  @FXML
+  private JFXButton settingButton;
+  @FXML
+  private JFXButton closeButton;
+
   @FXML
   private TextField isbnField;
   @FXML
@@ -47,12 +63,20 @@ public class AddBookController {
   @FXML
   private TextArea authorsField;
 
+  // Service for fetching book details from Google Books API.
   private final GoogleBooksService googleBooksService = new GoogleBooksService();
+
+  // Current librarian using the system.
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+
+  // Book instance for the current operation.
   private Book book;
 
   /**
-   * Searches for a book by ISBN using Google Books API and populates fields.
+   * Searches for a book by its ISBN using the Google Books API.
+   *
+   * <p>If the book is found, the UI fields are populated with the retrieved
+   * details.
    */
   @FXML
   private void searchByISBN() {
@@ -67,12 +91,14 @@ public class AddBookController {
       showAlert(Alert.AlertType.ERROR, "Book Not Found", "No book found with the entered ISBN.");
       return;
     }
+
     populateFieldsFromJson(bookDetails.get());
   }
 
-
   /**
-   * Adds a new book to the library by collecting data from fields and validating inputs.
+   * Adds a new book to the library.
+   *
+   * <p>Validates user inputs before creating and storing a Book object.
    */
   @FXML
   private void addBookAction(ActionEvent actionEvent) {
@@ -83,6 +109,7 @@ public class AddBookController {
           "Please fill in all required information.");
       return;
     }
+
     try {
       Book book = createBookFromFields();
       addBookToLibrary(book);
@@ -94,9 +121,9 @@ public class AddBookController {
   }
 
   /**
-   * Populates fields based on book details fetched from Google Books API.
+   * Populates the UI fields using the JSON book details.
    *
-   * @param bookDetails JSON object containing book details
+   * @param bookDetails JSON object containing book information
    */
   private void populateFieldsFromJson(JSONObject bookDetails) {
     isbnField.setText(convertISBN10toISBN13(isbnField.getText()));
@@ -105,14 +132,14 @@ public class AddBookController {
     publisherField.setText(bookDetails.optString("publisher", "Unknown"));
     languageField.setText(bookDetails.optString("language", "Unknown"));
     numberOfPagesField.setText(String.valueOf(bookDetails.optInt("pageCount", 0)));
-
     authorsField.setText(parseAuthorsFromJson(bookDetails.optJSONArray("authors")));
   }
 
   /**
-   * Creates a Book object from the fields, validating inputs as necessary.
+   * Creates a Book object using user input from the UI fields.
    *
-   * @return a new Book instance
+   * @return A new Book instance
+   * @throws IllegalArgumentException if any input is invalid
    */
   private Book createBookFromFields() {
     String isbn = isbnField.getText();
@@ -133,10 +160,11 @@ public class AddBookController {
   }
 
   /**
-   * Parses authors from a comma-separated string and returns a set of Author objects.
+   * Parses a comma-separated list of authors into a set of Author objects.
    *
-   * @param authorsText Comma-separated string of authors
-   * @return Set of Author objects
+   * @param authorsText A string containing author names separated by commas
+   * @return A set of Author objects
+   * @throws IllegalArgumentException if the input is empty
    */
   private Set<Author> parseAuthors(String authorsText) {
     if (authorsText == null || authorsText.isEmpty()) {
@@ -149,10 +177,10 @@ public class AddBookController {
   }
 
   /**
-   * Parses authors from a JSON array to a formatted string.
+   * Parses authors from a JSON array into a single string.
    *
-   * @param authorsArray JSON array of authors
-   * @return Formatted string of authors
+   * @param authorsArray A JSON array containing author names
+   * @return A comma-separated string of author names
    */
   private String parseAuthorsFromJson(JSONArray authorsArray) {
     if (authorsArray == null) {
@@ -164,32 +192,30 @@ public class AddBookController {
   }
 
   /**
-   * Adds a Book to the library system (implement your storage logic).
+   * Adds a book to the library system.
    *
-   * @param book Book object to add
+   * <p>Throws an exception if the book already exists.
+   *
+   * @param book The book to add
    */
   private void addBookToLibrary(Book book) {
-    // Add the logic to store the book in the library's database
     boolean successAdded = librarian.addBook(book);
     if (!successAdded) {
-      System.out.println("Failed to edit book with ISBN: " + book.getISBN());
       throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
     }
-    // TODO Uncomment after notification complete
-    //SystemNotification.sendNotification(String type, String content);
-    System.out.println(
-        "Book with ISBN: " + book.getISBN() + " has been edited successfully.");
+    System.out.println("Book with ISBN: " + book.getISBN() + " has been added successfully.");
   }
 
   /**
-   * Converts an ISBN-10 to an ISBN-13.
+   * Converts an ISBN-10 to its corresponding ISBN-13.
    *
-   * @param isbn10 The 10-digit ISBN string to convert.
-   * @return The corresponding 13-digit ISBN string.
-   * @throws IllegalArgumentException if the input is not a valid 10-digit ISBN.
+   * <p>Validates the input and calculates the checksum for the ISBN-13.
+   *
+   * @param isbn10 The 10-digit ISBN string to convert
+   * @return The 13-digit ISBN string
+   * @throws IllegalArgumentException if the input is not a valid ISBN-10
    */
   public String convertISBN10toISBN13(String isbn10) {
-    // Validate the input ISBN-10 length
     if (isbn10.length() == 13) {
       return isbn10;
     } else if (isbn10.length() != 10) {
@@ -197,29 +223,24 @@ public class AddBookController {
           "Invalid ISBN-10! The input must be exactly 10 characters long.");
     }
 
-    // Add the "978" prefix to the ISBN-10 (excluding its checksum digit)
     String isbn13WithoutChecksum = "978" + isbn10.substring(0, 9);
 
-    // Calculate the checksum for the new ISBN-13
     int checksum = 0;
     for (int i = 0; i < isbn13WithoutChecksum.length(); i++) {
       int digit = Character.getNumericValue(isbn13WithoutChecksum.charAt(i));
-      // Multiply by 1 for odd positions and 3 for even positions
       checksum += (i % 2 == 0) ? digit : digit * 3;
     }
-    // Compute the final checksum digit
-    checksum = (10 - (checksum % 10)) % 10;
 
-    // Return the full 13-digit ISBN
+    checksum = (10 - (checksum % 10)) % 10;
     return isbn13WithoutChecksum + checksum;
   }
 
   /**
-   * Shows an alert dialog with specified type, title, and message.
+   * Displays an alert dialog with the given type, title, and message.
    *
-   * @param alertType Type of alert
-   * @param title     Title of the alert
-   * @param message   Message content of the alert
+   * @param alertType The type of the alert (e.g., ERROR, WARNING, INFORMATION)
+   * @param title     The title of the alert dialog
+   * @param message   The message to display in the alert dialog
    */
   private void showAlert(Alert.AlertType alertType, String title, String message) {
     Alert alert = new Alert(alertType);
@@ -228,85 +249,115 @@ public class AddBookController {
     alert.showAndWait();
   }
 
+  /**
+   * Handles navigation to the home screen.
+   *
+   * @param actionEvent The action event triggered by the home button
+   * @throws IOException if the FXML file cannot be loaded
+   */
   public void homeAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) homeButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) homeButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Home button clicked");
   }
 
+  /**
+   * Handles navigation to the member view.
+   *
+   * @param actionEvent The action event triggered by the member button
+   * @throws IOException if the FXML file cannot be loaded
+   */
   public void memberAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) MemberButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) MemberButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Member button clicked");
   }
 
+  /**
+   * Handles navigation to the book view.
+   *
+   * @param actionEvent The action event triggered by the book button
+   * @throws IOException if the FXML file cannot be loaded
+   */
   public void bookAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) bookButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) bookButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Book button clicked");
   }
 
+  /**
+   * Handles navigation to the book lending view.
+   *
+   * @param actionEvent The action event triggered by the book lending button
+   * @throws IOException if the FXML file cannot be loaded
+   */
   public void bookLendingAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookLending.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) bookButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) bookButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
-    System.out.println("Book button clicked");
+    System.out.println("Book lending button clicked");
   }
 
+  /**
+   * Handles navigation to the notification view.
+   *
+   * @param actionEvent The action event triggered by the notification button
+   * @throws IOException if the FXML file cannot be loaded
+   */
   public void notificationAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) notificationButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) notificationButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Notification button clicked");
   }
 
+  /**
+   * Handles navigation to the settings view.
+   *
+   * @param actionEvent The action event triggered by the settings button
+   * @throws IOException if the FXML file cannot be loaded
+   */
   public void settingAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) settingButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) settingButton.getScene().getWindow();
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Setting button clicked");
   }
 
+  /**
+   * Closes the application.
+   *
+   * @param actionEvent The action event triggered by the close button
+   */
   public void close(ActionEvent actionEvent) {
     Platform.exit();
   }
 }
+
