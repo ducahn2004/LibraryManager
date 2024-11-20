@@ -16,20 +16,25 @@ import javafx.stage.Stage;
 import org.group4.dao.BookDAO;
 import org.group4.dao.MemberDAO;
 
+/**
+ * Controller for the Admin Pane.
+ * <p>
+ * This class handles the interactions and updates for the Admin Pane, including displaying
+ * statistics, handling navigation, and updating charts.
+ */
 public class AdminPaneController {
 
-  public Label total_Members;
-  public Label total_books;
-
+  @FXML
+  private Label total_Members;
+  @FXML
+  private Label total_books;
 
   @FXML
   private BarChart<String, Number> home_chart;
   @FXML
-  public CategoryAxis xAxis;
+  private CategoryAxis xAxis;
   @FXML
-  public NumberAxis yAxis;
-
-  private Stage stage;
+  private NumberAxis yAxis;
 
   @FXML
   private JFXButton homeButton;
@@ -45,132 +50,165 @@ public class AdminPaneController {
   private JFXButton notificationButton;
   @FXML
   private JFXButton closeButton;
-  MemberDAO memberDAO = new MemberDAO();
-  BookDAO bookDAO = new BookDAO();
 
+  private MemberDAO memberDAO = new MemberDAO();
+  private BookDAO bookDAO = new BookDAO();
+  private Stage stage;
 
+  /**
+   * Updates the total number of members displayed in the UI.
+   */
   public void updateTotalMembers() {
     int totalMembers = memberDAO.getTotalMembers();
     total_Members.setText(String.valueOf(totalMembers));
   }
 
-
+  /**
+   * Updates the total number of books displayed in the UI.
+   */
   public void updateTotalBooks() {
     int totalBooks = bookDAO.getTotalBooks();
     total_books.setText(String.valueOf(totalBooks));
   }
 
-
+  /**
+   * Updates the bar chart with total members and total books data.
+   */
   public void Home_chart() {
     home_chart.getData().clear();
 
     int totalBooks = bookDAO.getTotalBooks();
     int totalMembers = memberDAO.getTotalMembers();
 
-    // add series
+    // Create and populate the "Books" series
     XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();
     bookSeries.setName("Books");
     bookSeries.getData().add(new XYChart.Data<>("Total Books", totalBooks));
 
-    // add series
+    // Create and populate the "Members" series
     XYChart.Series<String, Number> memberSeries = new XYChart.Series<>();
     memberSeries.setName("Members");
     memberSeries.getData().add(new XYChart.Data<>("Total Members", totalMembers));
 
-    //add data for home_chart
+    // Add data to the bar chart
     home_chart.getData().addAll(bookSeries, memberSeries);
   }
 
+  /**
+   * Initializes the Admin Pane by updating statistics and the chart.
+   */
   @FXML
   public void initialize() {
-    // updateTotalMembers();
     updateTotalMembers();
-    // updateTotalBooks();
     updateTotalBooks();
     Home_chart();
   }
 
+  /**
+   * Handles the action for the Home button.
+   * <p>
+   * Navigates to the Admin Pane view.
+   *
+   * @param actionEvent The event triggered by clicking the Home button.
+   * @throws IOException If the FXML file cannot be loaded.
+   */
   public void HomeAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) homeButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
+    navigateToView("AdminPane.fxml", homeButton, "Library Manager");
     System.out.println("Home button clicked");
   }
 
+  /**
+   * Handles the action for the Member button.
+   * <p>
+   * Navigates to the Member View.
+   *
+   * @param actionEvent The event triggered by clicking the Member button.
+   * @throws IOException If the FXML file cannot be loaded.
+   */
   public void MemberAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) MemberButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
+    navigateToView("MemberView.fxml", MemberButton, "Library Manager");
     System.out.println("Member button clicked");
   }
 
+  /**
+   * Handles the action for the Book button.
+   * <p>
+   * Navigates to the Book View.
+   *
+   * @param actionEvent The event triggered by clicking the Book button.
+   * @throws IOException If the FXML file cannot be loaded.
+   */
   public void BookAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) bookButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
+    navigateToView("BookView.fxml", bookButton, "Library Manager");
     System.out.println("Book button clicked");
   }
 
+  /**
+   * Handles the action for the Book Lending button.
+   * <p>
+   * Navigates to the Book Lending View.
+   *
+   * @param actionEvent The event triggered by clicking the Book Lending button.
+   * @throws IOException If the FXML file cannot be loaded.
+   */
   public void BookLendingAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookLending.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) bookButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Book button clicked");
+    navigateToView("BookLending.fxml", bookLendingButton, "Library Manager");
+    System.out.println("Book Lending button clicked");
   }
 
+  /**
+   * Handles the action for the Notification button.
+   * <p>
+   * Navigates to the Notification View.
+   *
+   * @param actionEvent The event triggered by clicking the Notification button.
+   * @throws IOException If the FXML file cannot be loaded.
+   */
   public void notificationAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) notificationButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
+    navigateToView("Notification.fxml", notificationButton, "Library Manager");
     System.out.println("Notification button clicked");
   }
 
+  /**
+   * Handles the action for the Setting button.
+   * <p>
+   * Navigates to the Setting View.
+   *
+   * @param actionEvent The event triggered by clicking the Setting button.
+   * @throws IOException If the FXML file cannot be loaded.
+   */
   public void SettingAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from any button that was clicked
-    Stage stage = (Stage) settingButton.getScene()
-        .getWindow();  // Or use any other button, since the stage is the same
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
+    navigateToView("Setting.fxml", settingButton, "Library Manager");
     System.out.println("Setting button clicked");
   }
 
+  /**
+   * Handles the action for the Close button.
+   * <p>
+   * Exits the application.
+   *
+   * @param actionEvent The event triggered by clicking the Close button.
+   */
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
 
+  /**
+   * Navigates to a specified view.
+   *
+   * @param fxmlFile The FXML file to load.
+   * @param button   The button triggering the navigation.
+   * @param title    The title of the new scene.
+   * @throws IOException If the FXML file cannot be loaded.
+   */
+  private void navigateToView(String fxmlFile, JFXButton button, String title) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxmlFile));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
+    // Get the stage from the button's scene
+    Stage stage = (Stage) button.getScene().getWindow();
+    stage.setTitle(title);
+    stage.setScene(scene);
+    stage.show();
+  }
 }

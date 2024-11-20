@@ -12,6 +12,13 @@ import org.group4.module.manager.SessionManager;
 import org.group4.module.users.Member;
 import org.group4.module.users.Librarian;
 
+/**
+ * Controller for the "Add Member" functionality.
+ * <p>
+ * This class manages the UI and logic for adding a new library member. It validates user input,
+ * interacts with the database through a librarian, and updates the parent controller when
+ * necessary.
+ */
 public class AddMemberController {
 
   @FXML
@@ -25,121 +32,164 @@ public class AddMemberController {
   @FXML
   private TextField memberPhone;
 
-
   private MemberViewController parentController;
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
-  Member currentMember;
+  private Member currentMember;
   private Stage memberFormStage;
 
+  /**
+   * Sets the stage for the member form.
+   *
+   * @param stage The stage to be set.
+   */
   public void setStage(Stage stage) {
     this.memberFormStage = stage;
   }
 
+  /**
+   * Handles the cancel button action.
+   * <p>
+   * Closes the form without saving any changes.
+   *
+   * @param actionEvent The event triggered by clicking the cancel button.
+   */
   public void cancel(ActionEvent actionEvent) {
     closeForm();
   }
 
+  /**
+   * Handles the save button action.
+   * <p>
+   * Validates the input, adds the member to the library, and shows a success message.
+   *
+   * @param actionEvent The event triggered by clicking the save button.
+   */
   public void saveMember(ActionEvent actionEvent) {
     try {
-      // Validate inputs
+      // Validate the input fields
       validateInputs();
 
-      // Perform member addition logic
+      // Add the member to the library database
       addMemberToLibrary();
 
-      // Show success message and wait for user confirmation
+      // Show a success message and close the form
       showSuccessAndCloseForm();
 
     } catch (IllegalArgumentException e) {
-      // Handle invalid input exceptions
+      // Display an error message if input validation fails
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
     }
   }
 
+  /**
+   * Validates the input fields for the member form.
+   *
+   * @throws IllegalArgumentException If any input is invalid.
+   */
   private void validateInputs() throws IllegalArgumentException {
-    // Check if required fields are empty
     String regex = "([A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)(\\s[A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)*";
+
+    // Ensure all required fields are filled
     if (memberName.getText().isEmpty() || memberEmail.getText().isEmpty() ||
         memberPhone.getText().isEmpty() || memberBirth.getValue() == null) {
       throw new IllegalArgumentException("Please fill in all required information.");
     }
 
-    // Validate name format
-
+    // Validate the name format
     if (!memberName.getText().matches(regex)) {
       throw new IllegalArgumentException("Name must start with uppercase letters for each word.");
     }
 
-    // Validate email format
+    // Validate the email format
     if (!memberEmail.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
       throw new IllegalArgumentException("Please enter a valid email address.");
     }
 
-    // Validate phone format
+    // Validate the phone number format
     if (!memberPhone.getText().matches("\\d{10}")) {
       throw new IllegalArgumentException("Phone number must contain exactly 10 digits.");
     }
   }
 
+  /**
+   * Adds a new member to the library database.
+   * <p>
+   * Checks for duplicate entries before adding and updates the parent controller if successful.
+   */
   private void addMemberToLibrary() {
-    // Check if the member already exists (custom logic in returnCheckAddMember)
+    // Verify that the member does not already exist
     returnCheckAddMember();
 
-    // Add the new member to the database
+    // Notify the parent controller of the new member
     if (parentController != null) {
       parentController.addMemberToList(currentMember);
     }
   }
 
+  /**
+   * Displays a success message and closes the form.
+   */
   private void showSuccessAndCloseForm() {
-    // Create a success alert
+    // Create an information alert
     Alert successAlert = new Alert(AlertType.INFORMATION);
     successAlert.setTitle("Add Member Successfully");
     successAlert.setHeaderText(null);
     successAlert.setContentText("The member has been added to the library.");
 
-    // Set an action to close the form after the alert is dismissed
+    // Close the form when the alert is dismissed
     successAlert.setOnHidden(event -> closeForm());
-
-    // Show the alert and wait for the user to click "OK"
     successAlert.showAndWait();
   }
 
-
+  /**
+   * Sets the parent controller for communication.
+   *
+   * @param parentController The parent controller to be set.
+   */
   public void setParentController(MemberViewController parentController) {
     this.parentController = parentController;
   }
 
+  /**
+   * Closes the form.
+   */
   private void closeForm() {
     Stage stage = (Stage) memberInformation.getScene().getWindow();
-    stage.close(); // cửa sổ hiện tại
+    stage.close();
   }
 
+  /**
+   * Checks if the member already exists and adds it to the database if not.
+   * <p>
+   * Throws an exception if a duplicate is detected.
+   */
   private void returnCheckAddMember() {
-    currentMember = new Member(memberName.getText(), memberBirth.getValue(),
+    currentMember = new Member(
+        memberName.getText(),
+        memberBirth.getValue(),
         memberEmail.getText(),
-        memberPhone.getText());
+        memberPhone.getText()
+    );
+
     boolean successEdit = librarian.addMember(currentMember);
     if (successEdit) {
-      // TODO Uncomment after notification complete
-      //SystemNotification.sendNotification(String type, String content);
+      // TODO Uncomment after notification is implemented
+      // SystemNotification.sendNotification(String type, String content);
       System.out.println(
           "Member with member ID: " + currentMember.getMemberId()
               + " has been edited successfully.");
     } else {
-
-      System.out.println("Member with member ID: " + currentMember.getMemberId());
       throw new IllegalArgumentException(
           "Member with the same information already exists in the library.");
     }
   }
 
   /**
-   * Shows an alert dialog with specified type, title, and message.
+   * Shows an alert dialog with a specified type, title, and message.
    *
-   * @param alertType Type of alert
-   * @param title     Title of the alert
-   * @param message   Message content of the alert
+   * @param alertType The type of the alert (e.g., ERROR, INFORMATION).
+   * @param title     The title of the alert dialog.
+   * @param message   The message content of the alert dialog.
    */
   private void showAlert(Alert.AlertType alertType, String title, String message) {
     Alert alert = new Alert(alertType);
@@ -147,5 +197,4 @@ public class AddMemberController {
     alert.setContentText(message);
     alert.showAndWait();
   }
-  
 }
