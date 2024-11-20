@@ -173,13 +173,14 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
     try (PreparedStatement statement = connection.prepareStatement(GET_MAX_AUTHOR_ID_SQL);
         ResultSet resultSet = statement.executeQuery()) {
       if (resultSet.next()) {
-        String maxId = resultSet.getString("max_id");
+        String maxId = resultSet.getString("max_id"); // Get the maximum Author ID
         if (maxId != null) {
+          // Increment the maximum Author ID by 1
           int nextId = Integer.parseInt(maxId.replace("AUTHOR-", "")) + 1;
           return String.format("AUTHOR-%03d", nextId);
         }
       }
     }
-    return "AUTHOR-001";
+    return "AUTHOR-001"; // Default Author ID
   }
 }

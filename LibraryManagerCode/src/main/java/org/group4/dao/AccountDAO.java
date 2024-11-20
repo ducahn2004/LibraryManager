@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class AccountDAO extends BaseDAO {
 
-  /** Logger for AccountDAO. */
+  /** The logger for AccountDAO. */
   private static final Logger logger = LoggerFactory.getLogger(AccountDAO.class);
 
   /** Column names in the account table. */
