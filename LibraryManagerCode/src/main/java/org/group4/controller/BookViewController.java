@@ -1,4 +1,4 @@
-package org.group4.librarymanagercode;
+package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package org.group4.librarymanagercode;
+package org.group4.controller;
 
 import org.group4.module.enums.BookStatus;
 import java.io.IOException;
@@ -16,7 +16,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
-import org.group4.module.books.Book;
 import org.group4.module.books.BookItem;
 import org.group4.module.manager.SessionManager;
 import org.group4.module.transactions.BookLending;
