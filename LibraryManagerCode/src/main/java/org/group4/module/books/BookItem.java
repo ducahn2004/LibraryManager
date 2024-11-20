@@ -327,18 +327,41 @@ public class BookItem extends Book {
 
   @Override
   public String toString() {
-    return "BookItem{\n" +
-        "  barcode = '" + barcode + "',\n" +
-        "  isReferenceOnly =" + isReferenceOnly + ",\n" +
-        "  borrowed = " + borrowed + ",\n" +
-        "  dueDate = " + dueDate + ",\n" +
-        "  price = " + price + ",\n" +
-        "  format = " + format + ",\n" +
-        "  status = " + status + ",\n" +
-        "  dateOfPurchase = " + dateOfPurchase + ",\n" +
-        "  publicationDate = " + publicationDate + ",\n" +
-        "  placedAt = " + placedAt.toString() + "\n" +
-        '}';
+    return "ISBN = '" + getISBN() + "',\n"
+        + "Title = '" + getTitle() + "',\n"
+        + "Subject = '" + getSubject() + "',\n"
+        + "Publisher = '" + getPublisher() + "',\n"
+        + "Language = '" + getLanguage() + "',\n"
+        + "Authors = " + authorsToString() + ",\n"
+        + "Barcode = '" + barcode + "',\n"
+        + "Reference Only = " + isReferenceOnly + ",\n"
+        + "Borrowed = " + borrowed + ",\n"
+        + "Due Date = " + dueDate + ",\n"
+        + "Price = " + price + ",\n"
+        + "Format = " + format + ",\n"
+        + "Status = " + status + ",\n"
+        + "Date of Purchase = " + dateOfPurchase + ",\n"
+        + "Publication Date = " + publicationDate + ",\n"
+        + "Placed At = " + placedAt.getLocationIdentifier();
   }
 
+  /**
+   * Converts the book item details to a string for generating a QR code.
+   *
+   * @return the book item details as a string
+   */
+  public String toQRCodeString() {
+    return "ISBN = '" + getISBN() + "',\n"
+        + "Title = '" + getTitle() + "',\n"
+        + "Subject = '" + getSubject() + "',\n"
+        + "Publisher = '" + getPublisher() + "',\n"
+        + "Language = '" + getLanguage() + "',\n"
+        + "Authors = " + authorsToString() + ",\n"
+        + "Barcode = '" + barcode + "',\n"
+        + "Price = " + price + ",\n"
+        + "Format = " + format + ",\n"
+        + "Date of Purchase = " + dateOfPurchase + ",\n"
+        + "Publication Date = " + publicationDate + ",\n"
+        + "Placed At = " + placedAt.getLocationIdentifier();
+  }
 }

@@ -113,4 +113,13 @@ public class BookLending {
   public void setReturnDate(LocalDate returnDate) {
     this.returnDate = returnDate;
   }
+
+  @Override
+  public String toString() {
+    return "book = " + bookItem.getTitle() + ",\n"
+        + "member = " + member.getName() + ",\n"
+        + "lendingDate = " + lendingDate.toString() + ",\n"
+        + "dueDate = " + dueDate.toString() + ",\n"
+        + "returnDate = " + returnDate.toString();
+  }
 }

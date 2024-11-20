@@ -85,12 +85,10 @@ public class Member extends Person {
 
   @Override
   public String toString() {
-    return "Member{\n" +
-        "  memberId ='" + memberId + "',\n" +
-        "  name ='" + getName() + "',\n" +
-        "  dateOfBirth =" + getDateOfBirth() + ",\n" +
-        "  email ='" + getEmail() + "',\n" +
-        "  phoneNumber ='" + getPhoneNumber() + "'\n" +
-        '}';
+    return "  memberId = '" + memberId + "',\n" +
+        "  name = '" + getName() + "',\n" +
+        "  dateOfBirth = " + getDateOfBirth() + ",\n" +
+        "  email = '" + getEmail() + "',\n" +
+        "  phoneNumber = '" + getPhoneNumber() + "'\n";
   }
 }

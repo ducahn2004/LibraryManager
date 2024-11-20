@@ -1,5 +1,7 @@
 package org.group4.module.manager;
 
+import java.io.IOException;
+
 public interface GenericManager<T> {
 
   /**
@@ -8,7 +10,7 @@ public interface GenericManager<T> {
    * @param entity the entity to add
    * @return {@code true} if the entity was added successfully, {@code false} otherwise
    */
-  boolean add(T entity);
+  boolean add(T entity) throws IOException;
 
   /**
    * Updates an entity in the library.
