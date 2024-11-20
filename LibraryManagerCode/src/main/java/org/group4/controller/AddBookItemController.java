@@ -1,6 +1,7 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -64,7 +65,7 @@ public class AddBookItemController {
       // Show success message
       showAlert(Alert.AlertType.INFORMATION, "Add Book Item Successfully",
           "The book item has been added to the library.");
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException | IOException e) {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
     }
     closeForm();
@@ -81,7 +82,7 @@ public class AddBookItemController {
     stage.close();
   }
 
-  private void addBookItemToLibrary() {
+  private void addBookItemToLibrary() throws IOException {
     bookItem = new BookItem(currentBook,
         referenceOnlyCheckBox.isSelected(), null, null,
         Double.parseDouble(priceTextField.getText()),
