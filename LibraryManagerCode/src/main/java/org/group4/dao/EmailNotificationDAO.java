@@ -111,8 +111,8 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
     return new EmailNotification(
         resultSet.getString(COLUMN_NOTIFICATION_ID),
         NotificationType.valueOf(resultSet.getString(COLUMN_TYPE)),
-        resultSet.getString(COLUMN_EMAIL),
         resultSet.getString(COLUMN_CONTENT),
+        resultSet.getString(COLUMN_EMAIL),
         resultSet.getDate(COLUMN_CREATED_ON).toLocalDate());
   }
 

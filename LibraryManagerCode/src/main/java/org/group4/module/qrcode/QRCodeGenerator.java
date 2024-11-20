@@ -57,15 +57,18 @@ public class QRCodeGenerator {
     }
 
     /**
-     * Generates a QR code for a given BookItem object and saves it as a PNG file.
-     * <p>The QR code will contain the string representation of the BookItem and will
-     * be saved in the directory `LibraryManager/LibraryManagerCode/src/main/resources/qrImage`.
-     * If the directory does not exist, it will be created.</p>
+     * Generates a QR code for a given BookItem and saves it to the specified directory.
      *
-     * @param bookItem the BookItem for which the QR code will be generated. The string
-     *                 representation of the BookItem will be encoded in the QR code.
+     * <p>This method ensures the directory for storing QR code images exists. It then generates a
+     * QR code based on the information provided by the {@code toQRCodeString()} method of the
+     * {@link BookItem} class. The QR code is saved as a PNG file using the book's barcode as the
+     * filename.
+     *
+     * @param bookItem the {@link BookItem} instance for which the QR code is generated
+     * @return the file path of the generated QR code image
+     * @throws IOException if an error occurs while creating the directory or saving the QR code
      */
-    public static void generateQRCodeForBookItem(BookItem bookItem) throws IOException {
+    public static String generateQRCodeForBookItem(BookItem bookItem) throws IOException {
         // Ensure the directory exists
         Path path = Paths.get("LibraryManager/LibraryManagerCode/src/main/resources/qrImage");
         if (!Files.exists(path)) {
@@ -73,12 +76,13 @@ public class QRCodeGenerator {
         }
 
         // Prepare the content for the QR code
-        String bookItemInfo = bookItem.toString();
+        String bookItemInfo = bookItem.toQRCodeString();
         String imageName = bookItem.getBarcode() + ".png";
         String filePath =
             "LibraryManager/LibraryManagerCode/src/main/resources/qrImage/" + imageName;
 
         // Generate and save the QR code
         generateQRCode(bookItemInfo, filePath, 350, 350);
+        return filePath;
     }
 }
