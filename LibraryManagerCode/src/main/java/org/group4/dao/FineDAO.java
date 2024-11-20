@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+
 import org.group4.module.transactions.BookLending;
 import org.group4.module.transactions.Fine;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,15 +20,24 @@ public class FineDAO extends BaseDAO implements GenericDAO<Fine, BookLending> {
   /** The logger for FineDAO. */
   private static final Logger logger = LoggerFactory.getLogger(FineDAO.class);
 
-  /** SQL query to add a new fine to the database. */
-  private static final String ADD_FINE_SQL = "INSERT INTO fines (barcode, member_id, amount) "
-      + "VALUES (?, ?, ?)";
+  /** Column names in the fines table. */
+  private static final String COLUMN_BARCODE = "barcode";
+  private static final String COLUMN_MEMBER_ID = "member_id";
+  private static final String COLUMN_AMOUNT = "amount";
 
-  /** SQL query to delete a fine from the database by ID. */
-  private static final String DELETE_FINE_SQL = "DELETE FROM fines WHERE barcode = ? AND member_id = ?";
+  /** SQL statements for CRUD operations on the fines table. */
+  private static final String ADD_FINE_SQL =
+      "INSERT INTO fines ("
+          + COLUMN_BARCODE + ", "
+          + COLUMN_MEMBER_ID + ", "
+          + COLUMN_AMOUNT + ") "
+          + "VALUES (?, ?, ?)";
 
-  /** SQL query to find a fine by ID. */
-  private static final String FIND_FINE_BY_ID_SQL = "SELECT * FROM fines WHERE barcode = ? AND member_id = ?";
+  private static final String DELETE_FINE_SQL =
+      "DELETE FROM fines WHERE " + COLUMN_BARCODE + " = ? AND " + COLUMN_MEMBER_ID + " = ?";
+
+  private static final String FIND_FINE_BY_ID_SQL =
+      "SELECT * FROM fines WHERE " + COLUMN_BARCODE + " = ? AND " + COLUMN_MEMBER_ID + " = ?";
 
   @Override
   public boolean add(Fine fine) {
@@ -63,7 +74,7 @@ public class FineDAO extends BaseDAO implements GenericDAO<Fine, BookLending> {
       preparedStatement.setString(2, bookLending.getMember().getMemberId());
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
-        double amount = resultSet.getDouble("amount");
+        double amount = resultSet.getDouble(COLUMN_AMOUNT);
         return Optional.of(new Fine(bookLending, amount));
       }
     } catch (SQLException e) {

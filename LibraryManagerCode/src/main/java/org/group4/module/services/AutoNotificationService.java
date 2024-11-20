@@ -26,8 +26,13 @@ import org.slf4j.LoggerFactory;
  */
 public class AutoNotificationService {
 
+    /** Logger for the AutoNotificationService class. */
     private final Logger logger = LoggerFactory.getLogger(AutoNotificationService.class);
+
+    /** Scheduler for running the notification service. */
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    /** Data Access Object for book items. */
     private final BookItemDAO bookItemDAO = new BookItemDAO();
 
     /**
@@ -54,6 +59,7 @@ public class AutoNotificationService {
             for (BookItem bookItem : bookItems) {
                 List<BookLending> activeLendings = getActiveBookLendings(bookItem);
 
+                // Process notifications for each active lending
                 for (BookLending bookLending : activeLendings) {
                     processNotification(bookLending, today);
                 }

@@ -21,25 +21,46 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
   /** Logger for LibrarianDAO class. */
   private static final Logger logger = LoggerFactory.getLogger(LibrarianDAO.class);
 
-  /** SQL query to add a new librarian to the database. */
+  /** Column names in the librarian table. */
+  private static final String COLUMN_ID = "id";
+  private static final String COLUMN_NAME = "name";
+  private static final String COLUMN_DATE_OF_BIRTH = "date_of_birth";
+  private static final String COLUMN_EMAIL = "email";
+  private static final String COLUMN_PHONE = "phone";
+
+  /** SQL statements for CRUD operations on the librarian table. */
   private static final String ADD_LIBRARIAN_SQL =
-      "INSERT INTO librarian (id, name, date_of_birth, email, phone) VALUES (?, ?, ?, ?, ?)";
+      "INSERT INTO librarian ("
+          + COLUMN_ID + ", "
+          + COLUMN_NAME + ", "
+          + COLUMN_DATE_OF_BIRTH + ", "
+          + COLUMN_EMAIL + ", "
+          + COLUMN_PHONE + ") "
+          + "VALUES (?, ?, ?, ?, ?)";
 
-  /** SQL query to update an existing librarian in the database. */
   private static final String UPDATE_LIBRARIAN_SQL =
-      "UPDATE librarian SET name = ?, date_of_birth = ?, email = ?, phone = ? WHERE id = ?";
+      "UPDATE librarian SET "
+          + COLUMN_NAME + " = ?, "
+          + COLUMN_DATE_OF_BIRTH + " = ?, "
+          + COLUMN_EMAIL + " = ?, "
+          + COLUMN_PHONE + " = ? "
+          + "WHERE " + COLUMN_ID + " = ?";
 
-  /** SQL query to delete a librarian from the database by ID. */
-  private static final String DELETE_LIBRARIAN_SQL = "DELETE FROM librarian WHERE id = ?";
+  private static final String DELETE_LIBRARIAN_SQL =
+      "DELETE FROM librarian WHERE " + COLUMN_ID + " = ?";
 
-  /** SQL query to find a librarian by ID. */
-  private static final String GET_LIBRARIAN_BY_ID_SQL = "SELECT * FROM librarian WHERE id = ?";
+  private static final String GET_LIBRARIAN_BY_ID_SQL =
+      "SELECT * FROM librarian WHERE " + COLUMN_ID + " = ?";
 
   @Override
   public boolean add(Librarian librarian) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(ADD_LIBRARIAN_SQL)) {
-      setLibrarianData(preparedStatement, librarian, false);
+      preparedStatement.setString(1, librarian.getLibrarianId());
+      preparedStatement.setString(2, librarian.getName());
+      preparedStatement.setDate(3, Date.valueOf(librarian.getDateOfBirth()));
+      preparedStatement.setString(4, librarian.getEmail());
+      preparedStatement.setString(5, librarian.getPhoneNumber());
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error adding librarian: {}", librarian, e);
@@ -51,7 +72,11 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
   public boolean update(Librarian librarian) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_LIBRARIAN_SQL)) {
-      setLibrarianData(preparedStatement, librarian, true);
+      preparedStatement.setString(1, librarian.getName());
+      preparedStatement.setDate(2, Date.valueOf(librarian.getDateOfBirth()));
+      preparedStatement.setString(3, librarian.getEmail());
+      preparedStatement.setString(4, librarian.getPhoneNumber());
+      preparedStatement.setString(5, librarian.getLibrarianId());
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
       logger.error("Error updating librarian: {}", librarian, e);
@@ -94,39 +119,11 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
    */
   public Librarian mapRowToLibrarian(ResultSet resultSet) throws SQLException {
     return new Librarian(
-        resultSet.getString("id"),
-        resultSet.getString("name"),
-        resultSet.getDate("date_of_birth").toLocalDate(),
-        resultSet.getString("email"),
-        resultSet.getString("phone")
+        resultSet.getString(COLUMN_ID),
+        resultSet.getString(COLUMN_NAME),
+        resultSet.getDate(COLUMN_DATE_OF_BIRTH).toLocalDate(),
+        resultSet.getString(COLUMN_EMAIL),
+        resultSet.getString(COLUMN_PHONE)
     );
-  }
-
-  /**
-   * Sets the data for a librarian into a PreparedStatement.
-   * <p>If `isUpdate` is true, the `id` is set only at the last position, required for the WHERE clause.</p>
-   *
-   * @param preparedStatement the PreparedStatement to set data into
-   * @param librarian the Librarian object containing data to be set
-   * @param isUpdate whether the operation is an update; if true, places ID last for the WHERE clause
-   * @throws SQLException if a database access error occurs
-   */
-  private void setLibrarianData(PreparedStatement preparedStatement, Librarian librarian,
-      boolean isUpdate) throws SQLException {
-
-    int index = 1;
-
-    if (!isUpdate) {
-      preparedStatement.setString(index++, librarian.getLibrarianId());
-    }
-
-    preparedStatement.setString(index++, librarian.getName());
-    preparedStatement.setDate(index++, Date.valueOf(librarian.getDateOfBirth()));
-    preparedStatement.setString(index++, librarian.getEmail());
-    preparedStatement.setString(index++, librarian.getPhoneNumber());
-
-    if (isUpdate) {
-      preparedStatement.setString(index, librarian.getLibrarianId());
-    }
   }
 }

@@ -7,10 +7,10 @@ package org.group4.module.books;
  */
 public class Author {
 
-    /** Unique identifier for the author. */
+    /** The unique identifier of the author. */
     private String authorId;
 
-    /** Name of the author. */
+    /** The name of the author. */
     private String name;
 
     /**

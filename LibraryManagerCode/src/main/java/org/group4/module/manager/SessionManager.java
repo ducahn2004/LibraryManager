@@ -3,7 +3,8 @@ package org.group4.module.manager;
 import org.group4.module.users.Librarian;
 
 /**
- * Manages the session for the current logged-in user.
+ * SessionManager is a singleton class that manages the current session.
+ * <p>It stores the current logged-in librarian.</p>
  */
 public class SessionManager {
 

@@ -8,6 +8,7 @@ import org.group4.module.users.Member;
 
 public class MemberManager implements GenericManager<Member> {
 
+  /** The Member Data Access Object (DAO). */
   private static final MemberDAO memberDAO = FactoryDAO.getMemberDAO();
 
   @Override

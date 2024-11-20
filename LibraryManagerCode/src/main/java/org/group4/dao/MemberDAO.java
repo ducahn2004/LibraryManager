@@ -24,30 +24,45 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
   /** The logger for MemberDAO. */
   private static final Logger logger = LoggerFactory.getLogger(MemberDAO.class);
 
-  /** SQL query to add a new member to the database. */
+  /** Column names in the members table. */
+  private static final String COLUMN_MEMBER_ID = "memberId";
+  private static final String COLUMN_NAME = "name";
+  private static final String COLUMN_DATE_OF_BIRTH = "dateOfBirth";
+  private static final String COLUMN_EMAIL = "email";
+  private static final String COLUMN_PHONE_NUMBER = "phoneNumber";
+  private static final String COLUMN_TOTAL_BOOKS_CHECKED_OUT = "total_book_checked_out";
+
+  /** SQL statements for CRUD operations on the members table. */
   private static final String ADD_MEMBER_SQL =
-      "INSERT INTO members (memberId, name, dateOfBirth, email, phoneNumber, "
-          + "total_book_checked_out) VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO members ("
+          + COLUMN_MEMBER_ID + ", "
+          + COLUMN_NAME + ", "
+          + COLUMN_DATE_OF_BIRTH + ", "
+          + COLUMN_EMAIL + ", "
+          + COLUMN_PHONE_NUMBER + ", "
+          + COLUMN_TOTAL_BOOKS_CHECKED_OUT + ") "
+          + "VALUES (?, ?, ?, ?, ?, ?)";
 
-  /** SQL query to update an existing member in the database. */
   private static final String UPDATE_MEMBER_SQL =
-      "UPDATE members SET name = ?, dateOfBirth = ?, email = ?, phoneNumber = ?, "
-          + "total_book_checked_out = ?  WHERE memberID = ?";
+      "UPDATE members SET "
+          + COLUMN_NAME + " = ?, "
+          + COLUMN_DATE_OF_BIRTH + " = ?, "
+          + COLUMN_EMAIL + " = ?, "
+          + COLUMN_PHONE_NUMBER + " = ?, "
+          + COLUMN_TOTAL_BOOKS_CHECKED_OUT + " = ? "
+          + "WHERE " + COLUMN_MEMBER_ID + " = ?";
 
-  /** SQL query to delete a member from the database by ID. */
-  private static final String DELETE_MEMBER_SQL = "DELETE FROM members WHERE memberID = ?";
+  private static final String DELETE_MEMBER_SQL
+      = "DELETE FROM members WHERE " + COLUMN_MEMBER_ID + " = ?";
 
-  /** SQL query to find a member by ID. */
-  private static final String FIND_MEMBER_BY_ID_SQL = "SELECT * FROM members WHERE memberID = ?";
+  private static final String FIND_MEMBER_BY_ID_SQL
+      = "SELECT * FROM members WHERE " + COLUMN_MEMBER_ID + " = ?";
 
-  /** SQL query to find all members in the database. */
   private static final String FIND_ALL_MEMBERS_SQL = "SELECT * FROM members";
 
-  /** SQL query to find the maximum member ID for the current year. */
   private static final String FIND_MAX_MEMBER_ID_SQL =
-      "SELECT MAX(memberID) FROM members WHERE memberID LIKE ?";
+      "SELECT MAX("+ COLUMN_MEMBER_ID +") FROM members WHERE "+ COLUMN_MEMBER_ID +" LIKE ?";
 
-  /** SQL query to find the total number of members in the database. */
   private static final String FIND_TOTAL_MEMBERS_SQL = "SELECT COUNT(*) FROM members";
 
   @Override
@@ -158,7 +173,11 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
     return members;
   }
 
-
+  /**
+   * Retrieves the total number of members in the database.
+   *
+   * @return the total number of members
+   */
   public int getTotalMembers() {
     int totalMembers = 0;
     try (Connection connection = getConnection();
@@ -181,11 +200,11 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
    * @throws SQLException if an SQL error occurs during mapping
    */
   private Member mapRowToMember(ResultSet resultSet) throws SQLException {
-    return new Member(resultSet.getString("memberID"),
-        resultSet.getString("name"),
-        resultSet.getDate("dateOfBirth").toLocalDate(),
-        resultSet.getString("email"),
-        resultSet.getString("phoneNumber"),
-        resultSet.getInt("total_book_checked_out"));
+    return new Member(resultSet.getString(COLUMN_MEMBER_ID),
+        resultSet.getString(COLUMN_NAME),
+        resultSet.getDate(COLUMN_DATE_OF_BIRTH).toLocalDate(),
+        resultSet.getString(COLUMN_EMAIL),
+        resultSet.getString(COLUMN_PHONE_NUMBER),
+        resultSet.getInt(COLUMN_TOTAL_BOOKS_CHECKED_OUT));
   }
 }

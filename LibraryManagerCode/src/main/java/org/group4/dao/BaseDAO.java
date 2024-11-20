@@ -22,8 +22,8 @@ public abstract class BaseDAO {
 
   /**
    * The HikariDataSource instance used for managing database connections.
-   * It is configured to connect to the specified MySQL database with
-   * defined settings for optimal connection pool usage.
+   * <p>It is configured to connect to the specified MySQL database with
+   *    defined settings for optimal connection pool usage.</p>
    */
   private static final HikariDataSource dataSource;
 

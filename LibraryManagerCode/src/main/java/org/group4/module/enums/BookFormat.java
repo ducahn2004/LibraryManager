@@ -1,6 +1,5 @@
 package org.group4.module.enums;
 
-
 /**
  * Represents different formats that a book or publication can have.
  * This enum is useful for categorizing books or publications by their physical or digital format.
@@ -26,5 +25,4 @@ public enum BookFormat {
 
   /** A publication containing scholarly articles, often peer-reviewed. */
   JOURNAL
-
 }

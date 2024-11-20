@@ -179,5 +179,4 @@ public class Librarian extends Person {
       throws Exception {
     return BookLendingManager.returnBookItem(bookItem, member, status);
   }
-
 }

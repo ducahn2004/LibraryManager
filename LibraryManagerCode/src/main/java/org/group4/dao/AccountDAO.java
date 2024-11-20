@@ -12,11 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Data Access Object for CRUD operations on {@link Account} entities in the database.
+ * Data Access Object (DAO) class for CRUD operations on the {@link Account} entity in the database.
+ * This class provides methods to retrieve and update account information using JDBC connection.
+ * Each method is executed within a try-with-resources statement to ensure proper resource handling.
  */
 public class AccountDAO extends BaseDAO {
 
-  /** Logger for AccountDAO. */
+  /** The logger for AccountDAO. */
   private static final Logger logger = LoggerFactory.getLogger(AccountDAO.class);
 
   /** Column names in the account table. */

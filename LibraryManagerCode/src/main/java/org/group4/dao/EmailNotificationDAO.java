@@ -20,20 +20,29 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
   /** Logger for the EmailNotification class. */
   private static final Logger logger = LoggerFactory.getLogger(EmailNotificationDAO.class);
 
-  /** SQL query to add a new email notification to the database. */
+  /** Column names in the email_notifications table. */
+  private static final String COLUMN_NOTIFICATION_ID = "notificationId";
+  private static final String COLUMN_TYPE = "type";
+  private static final String COLUMN_EMAIL = "email";
+  private static final String COLUMN_CONTENT = "content";
+  private static final String COLUMN_CREATED_ON = "createdOn";
+
+  /** SQL statements for CRUD operations on the email_notifications table. */
   private static final String ADD_NOTIFICATION_SQL =
-      "INSERT INTO email_notifications (notificationId, type, email, content, createdOn) "
+      "INSERT INTO email_notifications ("
+          + COLUMN_NOTIFICATION_ID + ", "
+          + COLUMN_TYPE + ", "
+          + COLUMN_EMAIL + ", "
+          + COLUMN_CONTENT + ", "
+          + COLUMN_CREATED_ON + ") "
           + "VALUES (?, ?, ?, ?, ?)";
 
-  /** SQL query to delete an existing email notification from the database. */
   private static final String DELETE_NOTIFICATION_SQL =
-      "DELETE FROM email_notifications WHERE notificationId = ?";
+      "DELETE FROM email_notifications WHERE " + COLUMN_NOTIFICATION_ID + " = ?";
 
-  /** SQL query to retrieve an email notification by its unique ID. */
   private static final String GET_NOTIFICATION_BY_ID_SQL =
-      "SELECT * FROM email_notifications WHERE notificationId = ?";
+      "SELECT * FROM email_notifications WHERE " + COLUMN_NOTIFICATION_ID + " = ?";
 
-  /** SQL query to retrieve all email notifications from the database. */
   private static final String GET_ALL_NOTIFICATIONS_SQL = "SELECT * FROM email_notifications";
 
   @Override
@@ -100,11 +109,11 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
    */
   private EmailNotification mapRowToEmailNotification(ResultSet resultSet) throws SQLException {
     return new EmailNotification(
-        resultSet.getString("notificationId"),
-        NotificationType.valueOf(resultSet.getString("type")),
-        resultSet.getString("content"),
-        resultSet.getString("email"),
-        resultSet.getDate("createdOn").toLocalDate());
+        resultSet.getString(COLUMN_NOTIFICATION_ID),
+        NotificationType.valueOf(resultSet.getString(COLUMN_TYPE)),
+        resultSet.getString(COLUMN_EMAIL),
+        resultSet.getString(COLUMN_CONTENT),
+        resultSet.getDate(COLUMN_CREATED_ON).toLocalDate());
   }
 
   /**

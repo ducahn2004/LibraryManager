@@ -138,14 +138,18 @@ public class EmailNotification extends Notification {
       throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
     }
 
+    // Load client secrets
     GoogleClientSecrets clientSecrets = GoogleClientSecrets
         .load(JSON_FACTORY, new InputStreamReader(in));
 
+    // Build flow and trigger user authorization request
     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
         HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
         .setDataStoreFactory(new FileDataStoreFactory(new File(TOKENS_DIRECTORY_PATH)))
         .setAccessType("offline")
         .build();
+
+    // Authorize the user
     LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
     return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
   }
@@ -163,10 +167,13 @@ public class EmailNotification extends Notification {
   public static void sendEmail(String userId, String from, String to, String subject,
       String bodyText) throws Exception {
     final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+
+    // Build Gmail service
     Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
         .setApplicationName(APPLICATION_NAME)
         .build();
 
+    // Create email
     MimeMessage email = createEmail(to, from, subject, bodyText);
     sendMessage(service, userId, email);
   }
@@ -186,6 +193,7 @@ public class EmailNotification extends Notification {
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props, null);
 
+    // Create email
     MimeMessage email = new MimeMessage(session);
     email.setFrom(new InternetAddress(from));
     email.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
