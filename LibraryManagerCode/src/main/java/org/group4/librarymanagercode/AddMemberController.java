@@ -59,13 +59,15 @@ public class AddMemberController {
 
   private void validateInputs() throws IllegalArgumentException {
     // Check if required fields are empty
+    String regex = "([A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)(\\s[A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)*";
     if (memberName.getText().isEmpty() || memberEmail.getText().isEmpty() ||
         memberPhone.getText().isEmpty() || memberBirth.getValue() == null) {
       throw new IllegalArgumentException("Please fill in all required information.");
     }
 
     // Validate name format
-    if (!memberName.getText().matches("([A-Z][a-z]*)(\\s[A-Z][a-z]*)*")) {
+
+    if (!memberName.getText().matches(regex)) {
       throw new IllegalArgumentException("Name must start with uppercase letters for each word.");
     }
 
@@ -103,7 +105,6 @@ public class AddMemberController {
     // Show the alert and wait for the user to click "OK"
     successAlert.showAndWait();
   }
-
 
 
   public void setParentController(MemberViewController parentController) {
