@@ -255,7 +255,7 @@ public class ReturningBookController {
     if (availableCheckBox.isSelected()) {
       return BookStatus.AVAILABLE;
     }
-    return BookStatus.NONE; // Default case if no CheckBox is selected
+    return BookStatus.LOST; // Default case if no CheckBox is selected
   }
 
   private void returningBookToLibrary(BookLending bookLending) throws Exception {
