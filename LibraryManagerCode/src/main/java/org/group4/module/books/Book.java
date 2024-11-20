@@ -196,14 +196,12 @@ public class Book {
 
   @Override
   public String toString() {
-    return "Book{\n" +
-        "  ISBN = '" + ISBN + "',\n" +
-        "  title = '" + title + "',\n" +
-        "  subject = '" + subject + "',\n" +
-        "  publisher = '" + publisher + "',\n" +
-        "  language = '" + language + "',\n" +
-        "  numberOfPages = " + numberOfPages + ",\n" +
-        "  authors = " + authors + "\n" +
-        '}';
+    return "  ISBN = '" + ISBN + "',\n"
+        + "  title = '" + title + "',\n"
+        + "  subject = '" + subject + "',\n"
+        + "  publisher = '" + publisher + "',\n"
+        + "  language = '" + language + "',\n"
+        + "  numberOfPages = " + numberOfPages + ",\n"
+        + "  authors = " + authorsToString() + "\n";
   }
 }

@@ -1,19 +1,25 @@
 package org.group4.module.manager;
 
+import java.io.IOException;
 import org.group4.dao.BookItemDAO;
 import org.group4.dao.FactoryDAO;
+import org.group4.dao.QRCodeDAO;
 import org.group4.module.books.BookItem;
 import org.group4.module.enums.NotificationType;
 import org.group4.module.notifications.SystemNotification;
+import org.group4.module.qrcode.QRCodeGenerator;
 
 public class BookItemManager implements GenericManager<BookItem> {
 
   /** The BookItem Data Access Object (DAO). */
   private static final BookItemDAO bookItemDAO = FactoryDAO.getBookItemDAO();
+  private static final QRCodeDAO qrCodeDAO = FactoryDAO.getQRCodeDAO();
 
   @Override
-  public boolean add(BookItem bookItem) {
+  public boolean add(BookItem bookItem) throws IOException {
     if (bookItemDAO.add(bookItem)) {
+      String qrPath= QRCodeGenerator.generateQRCodeForBookItem(bookItem);
+      qrCodeDAO.addQRCode(bookItem.getBarcode(), qrPath);
       SystemNotification.sendNotification(NotificationType.ADD_BOOK_ITEM_SUCCESS,
           bookItem.toString());
       return true;
@@ -34,8 +40,8 @@ public class BookItemManager implements GenericManager<BookItem> {
   @Override
   public boolean delete(String barcode) {
     if (bookItemDAO.delete(barcode)) {
-      SystemNotification.sendNotification(NotificationType.DELETE_BOOK_ITEM_SUCCESS,
-          barcode);
+      qrCodeDAO.deleteByBarcode(barcode);
+      SystemNotification.sendNotification(NotificationType.DELETE_BOOK_ITEM_SUCCESS, barcode);
       return true;
     }
     return false;

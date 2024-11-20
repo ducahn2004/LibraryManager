@@ -1,5 +1,6 @@
 package org.group4.module.users;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -98,7 +99,7 @@ public class Librarian extends Person {
    * @param bookItem the {@code BookItem} object to add
    * @return {@code true} if the book item was added successfully, {@code false} otherwise
    */
-  public boolean addBookItem(BookItem bookItem) {
+  public boolean addBookItem(BookItem bookItem) throws IOException {
     return bookItemManager.add(bookItem);
   }
 

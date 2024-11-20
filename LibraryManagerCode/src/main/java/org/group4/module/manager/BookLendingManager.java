@@ -49,16 +49,16 @@ public class BookLendingManager {
     // Update member's total books checked out
     member.setTotalBooksCheckedOut(member.getTotalBooksCheckedOut() + 1);
 
-    // Persist changes to the database
-    FactoryDAO.getBookItemDAO().update(bookItem);
-    FactoryDAO.getMemberDAO().update(member);
-    FactoryDAO.getBookLendingDAO().add(bookLending);
-
     // Send notifications
     SystemNotification.sendNotification(NotificationType.BOOK_BORROW_SUCCESS,
         member.getMemberId() + " borrowed " + bookItem.getBarcode());
     EmailNotification.sendNotification(NotificationType.BOOK_BORROW_SUCCESS, member.getEmail(),
         bookItem.toString());
+
+    // Persist changes to the database
+    FactoryDAO.getBookItemDAO().update(bookItem);
+    FactoryDAO.getMemberDAO().update(member);
+    FactoryDAO.getBookLendingDAO().add(bookLending);
     return true;
   }
 
@@ -76,8 +76,6 @@ public class BookLendingManager {
       throws Exception {
     // Update book item status
     bookItem.setStatus(status);
-    bookItem.setBorrowed(null);
-    bookItem.setDueDate(null);
 
     // Update member's total books checked out
     member.setTotalBooksCheckedOut(member.getTotalBooksCheckedOut() - 1);
@@ -97,23 +95,30 @@ public class BookLendingManager {
     // Set return date for the book lending record
     bookLending.setReturnDate(LocalDate.now());
 
-    // Persist changes to the database
-    FactoryDAO.getBookItemDAO().update(bookItem);
-    FactoryDAO.getMemberDAO().update(member);
-    FactoryDAO.getBookLendingDAO().update(bookLending);
-
     // Send notifications
-    SystemNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS,
-        member.getMemberId() + " returned " + bookItem.getBarcode());
+    SystemNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS, bookLending.toString());
     EmailNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS,
-        member.getEmail(), bookItem.toString());
+        member.getEmail(), bookLending.toString());
 
     // Calculate and add fines if the book is returned late or lost
     if (bookLending.getDueDate().isBefore(LocalDate.now()) || status == BookStatus.LOST) {
       Fine fine = new Fine(bookLending);
       fine.calculateFine();
       FactoryDAO.getFineDAO().add(fine);
+
+      // Send fine notification
+      EmailNotification.sendNotification(NotificationType.FINE_TRANSACTION, member.getEmail(),
+          fine.toString());
     }
+
+    // Clear the book item's borrowed and due date
+    bookItem.setBorrowed(null);
+    bookItem.setDueDate(null);
+
+    // Persist changes to the database
+    FactoryDAO.getBookItemDAO().update(bookItem);
+    FactoryDAO.getMemberDAO().update(member);
+    FactoryDAO.getBookLendingDAO().update(bookLending);
 
     return true;
   }

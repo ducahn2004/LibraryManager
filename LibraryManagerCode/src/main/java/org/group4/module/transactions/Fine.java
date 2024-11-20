@@ -145,4 +145,10 @@ public class Fine {
       return calculateLostBookFine(bookItem.getPrice(), bookItem.getNumberOfPages());
     }
   }
+
+  @Override
+  public String toString() {
+    return bookLending.toString() + ", \n"
+        + "fine = " + amount;
+  }
 }

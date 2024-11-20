@@ -45,24 +45,24 @@ public class SystemNotification extends Notification {
     SystemNotification notification = new SystemNotification(type);
     String content = switch (type) {
       case ADD_BOOK_SUCCESS ->
-          "The book has been successfully added to the library. Details: " + details;
+          "The book has been successfully added to the library. Details: \n" + details;
       case DELETE_BOOK_SUCCESS ->
-          "The book has been successfully deleted from the library. Details: " + details;
+          "The book has been successfully deleted from the library. Details: \n" + details;
       case UPDATE_BOOK_SUCCESS ->
-          "The book has been successfully updated in the library. Details: " + details;
+          "The book has been successfully updated in the library. Details: \n" + details;
       case ADD_BOOK_ITEM_SUCCESS ->
-          "The book item has been successfully added to the library. Details: " + details;
+          "The book item has been successfully added to the library. Details: \n" + details;
       case DELETE_BOOK_ITEM_SUCCESS ->
-          "The book item has been successfully deleted from the library. Details: " + details;
+          "The book item has been successfully deleted from the library. Details: \n" + details;
       case UPDATE_BOOK_ITEM_SUCCESS ->
-          "The book item has been successfully updated in the library. Details: " + details;
+          "The book item has been successfully updated in the library. Details: \n" + details;
       case ADD_MEMBER_SUCCESS ->
-          "The member has been successfully added to the library. Details: " + details;
+          "The member has been successfully added to the library. Details: \n" + details;
       case DELETE_MEMBER_SUCCESS ->
-          "The member has been successfully deleted from the library. Details: " + details;
+          "The member has been successfully deleted from the library. Details: \n" + details;
       case UPDATE_MEMBER_SUCCESS ->
-          "The member has been successfully updated in the library. Details: " + details;
-      default -> "This is a system notification. Details: " + details;
+          "The member has been successfully updated in the library. Details: \n" + details;
+      default -> "This is a system notification. Details: \n" + details;
     };
 
     notification.setContent(content);
