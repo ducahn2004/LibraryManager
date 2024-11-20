@@ -23,20 +23,23 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
   /** Logger for the SystemNotificationDAO class. */
   private static final Logger logger = LoggerFactory.getLogger(SystemNotificationDAO.class);
 
-  /** SQL query to add a new system notification to the database. */
+  /** Column names for the system_notifications table. */
+  private static final String COLUMN_NOTIFICATION_ID = "notificationId";
+  private static final String COLUMN_TYPE = "type";
+  private static final String COLUMN_CONTENT = "content";
+  private static final String COLUMN_CREATED_ON = "createdOn";
+
+  /** SQL statements for CRUD operations on the system_notifications table. */
   private static final String ADD_NOTIFICATION_SQL =
-      "INSERT INTO system_notifications (notificationId, type, content, createdOn) "
-          + "VALUES (?, ?, ?, ?)";
+      "INSERT INTO system_notifications ("+ COLUMN_NOTIFICATION_ID +", "+ COLUMN_TYPE +", "
+          + COLUMN_CONTENT +", "+ COLUMN_CREATED_ON +") VALUES (?, ?, ?, ?)";
 
-  /** SQL query to delete an existing system notification from the database. */
   private static final String DELETE_NOTIFICATION_SQL =
-      "DELETE FROM system_notifications WHERE notificationId = ?";
+      "DELETE FROM system_notifications WHERE "+ COLUMN_NOTIFICATION_ID +" = ?";
 
-  /** SQL query to retrieve a system notification by its unique ID. */
   private static final String GET_NOTIFICATION_BY_ID_SQL =
-      "SELECT * FROM system_notifications WHERE notificationId = ?";
+      "SELECT * FROM system_notifications WHERE "+ COLUMN_NOTIFICATION_ID +" = ?";
 
-  /** SQL query to retrieve all system notifications from the database. */
   private static final String GET_ALL_NOTIFICATIONS_SQL = "SELECT * FROM system_notifications";
 
   /**
@@ -125,9 +128,9 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
    */
   private SystemNotification mapRowToSystemNotification(ResultSet resultSet) throws SQLException {
     return new SystemNotification(
-        resultSet.getString("notificationId"),
-        NotificationType.valueOf(resultSet.getString("type")),
-        resultSet.getString("content"),
-        resultSet.getDate("createdOn").toLocalDate());
+        resultSet.getString(COLUMN_NOTIFICATION_ID),
+        NotificationType.valueOf(resultSet.getString(COLUMN_TYPE)),
+        resultSet.getString(COLUMN_CONTENT),
+        resultSet.getDate(COLUMN_CREATED_ON).toLocalDate());
   }
 }

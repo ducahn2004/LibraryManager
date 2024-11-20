@@ -23,22 +23,25 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   /** The logger for RackDAO. */
   private static final Logger logger = LoggerFactory.getLogger(RackDAO.class);
 
-  /** SQL query to add a new rack to the database. */
+  /** Column names in the racks table. */
+  private static final String COLUMN_NUMBER_RACK = "rackNumber";
+  private static final String COLUMN_LOCATION_IDENTIFIER = "locationIdentifier";
+
+  /** SQL statements for CRUD operations on the racks table. */
   private static final String ADD_RACK_SQL =
-      "INSERT INTO racks (numberRack, locationIdentifier) VALUES (?, ?)";
+      "INSERT INTO racks (" + COLUMN_NUMBER_RACK + ", " + COLUMN_LOCATION_IDENTIFIER + ") "
+          + "VALUES (?, ?)";
 
-  /** SQL query to update an existing rack in the database. */
   private static final String UPDATE_RACK_SQL =
-      "UPDATE racks SET locationIdentifier = ? WHERE numberRack = ?";
+      "UPDATE racks SET "+ COLUMN_LOCATION_IDENTIFIER +" = ? WHERE "+ COLUMN_NUMBER_RACK +" = ?";
 
-  /** SQL query to delete a rack from the database by its number. */
-  private static final String DELETE_RACK_SQL = "DELETE FROM racks WHERE numberRack = ?";
+  private static final String DELETE_RACK_SQL =
+      "DELETE FROM racks WHERE "+ COLUMN_NUMBER_RACK +" = ?";
 
-  /** SQL query to find a rack by its number. */
   private static final String GET_ALL_RACKS_SQL = "SELECT * FROM racks";
 
-  /** SQL query to find all racks in the database. */
-  private static final String GET_RACK_BY_ID_SQL = "SELECT * FROM racks WHERE numberRack = ?";
+  private static final String GET_RACK_BY_ID_SQL =
+      "SELECT * FROM racks WHERE "+ COLUMN_NUMBER_RACK +" = ?";
 
   @Override
   public boolean add(Rack rack) {
@@ -116,8 +119,8 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
    * @throws SQLException if an error occurs while accessing the {@code ResultSet}
    */
   private Rack mapRowToRack(ResultSet rs) throws SQLException {
-    int numberRack = rs.getInt("numberRack");
-    String locationIdentifier = rs.getString("locationIdentifier");
+    int numberRack = rs.getInt(COLUMN_NUMBER_RACK);
+    String locationIdentifier = rs.getString(COLUMN_LOCATION_IDENTIFIER);
     return new Rack(numberRack, locationIdentifier);
   }
 }
