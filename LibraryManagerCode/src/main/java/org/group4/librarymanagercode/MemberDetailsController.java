@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import org.group4.dao.FactoryDAO;
 import org.group4.module.books.BookItem;
 import org.group4.module.transactions.BookLending;
 import org.group4.module.users.Member;
@@ -93,7 +94,8 @@ public class MemberDetailsController {
     if (currentMember != null) {
       bookLendings.clear();
       // TODO Uncomment after have a method to collect all the bookItems from member
-      //bookLendings.addAll(FactoryDAO.getBookDAO().getAllBookItems(currentBook.getISBN()));
+      bookLendings.addAll(
+          FactoryDAO.getBookLendingDAO().getByMemberId(currentMember.getMemberId()));
       System.out.println("Data loaded: " + bookLendings.size() + " items");
     }
   }
