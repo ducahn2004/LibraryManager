@@ -1,4 +1,4 @@
-package org.group4.librarymanagercode;
+package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
@@ -16,7 +16,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.librarymanagercode.SceneSwitcher;
 import org.group4.module.books.Author;
 import org.group4.module.books.Book;
 import org.group4.module.manager.SessionManager;
@@ -160,6 +159,7 @@ public class AddBookController {
         .map(Author::new)
         .collect(Collectors.toCollection(HashSet::new));
   }
+
   /**
    * Parses authors from a JSON array to a formatted string.
    *
@@ -192,6 +192,7 @@ public class AddBookController {
     System.out.println(
         "Book with ISBN: " + book.getISBN() + " has been edited successfully.");
   }
+
   /**
    * Converts an ISBN-10 to an ISBN-13.
    *
@@ -201,9 +202,11 @@ public class AddBookController {
    */
   public String convertISBN10toISBN13(String isbn10) {
     // Validate the input ISBN-10 length
-    if(isbn10.length() == 13){return isbn10;}
-    else if (isbn10.length() != 10) {
-      throw new IllegalArgumentException("Invalid ISBN-10! The input must be exactly 10 characters long.");
+    if (isbn10.length() == 13) {
+      return isbn10;
+    } else if (isbn10.length() != 10) {
+      throw new IllegalArgumentException(
+          "Invalid ISBN-10! The input must be exactly 10 characters long.");
     }
 
     // Add the "978" prefix to the ISBN-10 (excluding its checksum digit)
@@ -222,6 +225,7 @@ public class AddBookController {
     // Return the full 13-digit ISBN
     return isbn13WithoutChecksum + checksum;
   }
+
   /**
    * Shows an alert dialog with specified type, title, and message.
    *
@@ -235,56 +239,66 @@ public class AddBookController {
     alert.setContentText(message);
     alert.showAndWait();
   }
+
   public void homeAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) homeButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) homeButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Home button clicked");
   }
+
   public void memberAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) MemberButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) MemberButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Member button clicked");
   }
+
   public void bookAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) bookButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) bookButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Book button clicked");
   }
+
   public void notificationAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) notificationButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) notificationButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();
     System.out.println("Notification button clicked");
   }
+
   public void settingAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
-    Stage stage = (Stage) settingButton.getScene().getWindow();  // Or use any other button, since the stage is the same
+    Stage stage = (Stage) settingButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
     stage.setTitle("Library Manager");
     stage.setScene(scene);
     stage.show();

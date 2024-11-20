@@ -10,120 +10,123 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.librarymanagercode.BookDetailsController">
+<BorderPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23"
+  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.controller.BookDetailsController">
   <center>
     <VBox prefHeight="311.0" prefWidth="532.0" spacing="10">
       <HBox prefHeight="18.0" prefWidth="514.0">
         <Label prefHeight="22.0" prefWidth="100.0" text="ISBN: ">
           <font>
-            <Font name="System Bold" size="13.0" />
+            <Font name="System Bold" size="13.0"/>
           </font>
         </Label>
         <Label fx:id="isbnLabel" prefHeight="22.0" prefWidth="451.0" text="Label">
           <font>
-            <Font size="13.0" />
+            <Font size="13.0"/>
           </font>
         </Label>
       </HBox>
       <HBox>
         <Label prefHeight="22.0" prefWidth="100.0" text="Title: ">
           <font>
-            <Font name="System Bold" size="13.0" />
+            <Font name="System Bold" size="13.0"/>
           </font>
         </Label>
         <Label fx:id="titleLabel" prefHeight="22.0" prefWidth="450.0" text="Label">
           <font>
-            <Font size="13.0" />
+            <Font size="13.0"/>
           </font>
         </Label>
       </HBox>
       <HBox>
         <Label prefHeight="22.0" prefWidth="100.0" text="Author: ">
           <font>
-            <Font name="System Bold" size="13.0" />
+            <Font name="System Bold" size="13.0"/>
           </font>
         </Label>
         <Label fx:id="authorLabel" prefHeight="22.0" prefWidth="450.0" text="Label">
           <font>
-            <Font size="13.0" />
+            <Font size="13.0"/>
           </font>
         </Label>
       </HBox>
       <HBox>
         <Label prefHeight="22.0" prefWidth="100.0" text="Publisher: ">
           <font>
-            <Font name="System Bold" size="13.0" />
+            <Font name="System Bold" size="13.0"/>
           </font>
         </Label>
         <Label fx:id="publisherLabel" prefHeight="22.0" prefWidth="446.0" text="Label">
           <font>
-            <Font size="13.0" />
+            <Font size="13.0"/>
           </font>
         </Label>
       </HBox>
       <HBox>
         <Label prefHeight="22.0" prefWidth="100.0" text="Subject: ">
           <font>
-            <Font name="System Bold" size="13.0" />
+            <Font name="System Bold" size="13.0"/>
           </font>
         </Label>
         <Label fx:id="subjectLabel" prefHeight="22.0" prefWidth="451.0" text="Label">
           <font>
-            <Font size="13.0" />
+            <Font size="13.0"/>
           </font>
         </Label>
       </HBox>
       <HBox>
         <Label prefHeight="22.0" prefWidth="100.0" text="Pages: ">
           <font>
-            <Font name="System Bold" size="13.0" />
+            <Font name="System Bold" size="13.0"/>
           </font>
         </Label>
         <Label fx:id="pagesLabel" prefHeight="22.0" prefWidth="451.0" text="Label">
           <font>
-            <Font size="13.0" />
+            <Font size="13.0"/>
           </font>
         </Label>
       </HBox>
       <TableView fx:id="tableView">
         <columns>
-          <TableColumn fx:id="barCode" prefWidth="127.99998319149017" text="Bar Code" />
-          <TableColumn fx:id="referenceOnly" prefWidth="95.20001220703125" text="Reference Only" />
-          <TableColumn fx:id="status" prefWidth="75.20001220703125" text="Status" />
-          <TableColumn fx:id="borrowedDate" text="Borrowed Date" visible="false" />
-          <TableColumn fx:id="dueDate" text="Due Date" visible="false" />
-          <TableColumn fx:id="price" text="Price" />
-          <TableColumn fx:id="format" prefWidth="95.99996948242188" text="Format" />
-          <TableColumn fx:id="dateOfPurchase" prefWidth="80.80001831054688" text="Date of Purchase" />
-          <TableColumn fx:id="publicationDate" prefWidth="63.199951171875" text="Publication Date" />
+          <TableColumn fx:id="barCode" prefWidth="127.99998319149017" text="Bar Code"/>
+          <TableColumn fx:id="referenceOnly" prefWidth="95.20001220703125" text="Reference Only"/>
+          <TableColumn fx:id="status" prefWidth="75.20001220703125" text="Status"/>
+          <TableColumn fx:id="borrowedDate" text="Borrowed Date" visible="false"/>
+          <TableColumn fx:id="dueDate" text="Due Date" visible="false"/>
+          <TableColumn fx:id="price" text="Price"/>
+          <TableColumn fx:id="format" prefWidth="95.99996948242188" text="Format"/>
+          <TableColumn fx:id="dateOfPurchase" prefWidth="80.80001831054688"
+            text="Date of Purchase"/>
+          <TableColumn fx:id="publicationDate" prefWidth="63.199951171875" text="Publication Date"/>
 
-          <TableColumn fx:id="actionColumn" prefWidth="104" text="Actions" />
+          <TableColumn fx:id="actionColumn" prefWidth="104" text="Actions"/>
         </columns>
       </TableView>
     </VBox>
   </center>
   <left>
-    <Pane prefHeight="564.0" prefWidth="58.0" BorderPane.alignment="CENTER" />
+    <Pane prefHeight="564.0" prefWidth="58.0" BorderPane.alignment="CENTER"/>
   </left>
   <right>
-    <Pane prefHeight="387.0" prefWidth="58.0" BorderPane.alignment="CENTER" />
+    <Pane prefHeight="387.0" prefWidth="58.0" BorderPane.alignment="CENTER"/>
   </right>
   <top>
     <Pane prefHeight="66.0" prefWidth="700.0" BorderPane.alignment="CENTER">
       <children>
         <Label layoutX="259.0" layoutY="14.0" text="Book Detail">
           <font>
-            <Font name="System Bold" size="27.0" />
+            <Font name="System Bold" size="27.0"/>
           </font>
         </Label>
       </children>
     </Pane>
   </top>
-   <bottom>
-      <Pane prefHeight="49.0" prefWidth="700.0" BorderPane.alignment="CENTER">
-         <children>
-            <JFXButton fx:id="addItem" layoutX="58.0" layoutY="8.0" onAction="#addItemButton" prefHeight="34.0" prefWidth="584.0" text="+ Add Item" />
-         </children>
-      </Pane>
-   </bottom>
+  <bottom>
+    <Pane prefHeight="49.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+      <children>
+        <JFXButton fx:id="addItem" layoutX="58.0" layoutY="8.0" onAction="#addItemButton"
+          prefHeight="34.0" prefWidth="584.0" text="+ Add Item"/>
+      </children>
+    </Pane>
+  </bottom>
 </BorderPane>

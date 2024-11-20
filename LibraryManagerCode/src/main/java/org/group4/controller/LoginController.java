@@ -1,4 +1,4 @@
-package org.group4.librarymanagercode;
+package org.group4.controller;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -23,25 +23,31 @@ import org.group4.module.services.AccountService;
 import org.group4.module.users.Librarian;
 
 /**
- * Controller for the Login screen in the Library Manager application.
- * Handles user input, authentication, and navigation to the admin panel upon successful login.
+ * Controller for the Login screen in the Library Manager application. Handles user input,
+ * authentication, and navigation to the admin panel upon successful login.
  */
 public class LoginController {
 
-  @FXML private TextField textShowPassword;
-  @FXML private ImageView iconOpen_eye;
-  @FXML private ImageView iconClose_eye;
-  @FXML private TextField usernameField;
-  @FXML private PasswordField passwordField;
-  @FXML private Button loginButton;
+  @FXML
+  private TextField textShowPassword;
+  @FXML
+  private ImageView iconOpen_eye;
+  @FXML
+  private ImageView iconClose_eye;
+  @FXML
+  private TextField usernameField;
+  @FXML
+  private PasswordField passwordField;
+  @FXML
+  private Button loginButton;
 
   private final AccountService accountService = new AccountService();
   private static final Logger logger = Logger.getLogger(LoginController.class.getName());
   private String password;
 
   /**
-   * Initializes the controller.
-   * Sets default visibility for password field elements and assigns event handlers.
+   * Initializes the controller. Sets default visibility for password field elements and assigns
+   * event handlers.
    */
   @FXML
   private void initialize() {
@@ -106,8 +112,8 @@ public class LoginController {
   }
 
   /**
-   * Handles the login button action.
-   * Authenticates the user and navigates to the admin panel if login is successful.
+   * Handles the login button action. Authenticates the user and navigates to the admin panel if
+   * login is successful.
    *
    * @throws SQLException If there is an error during the login process.
    */
@@ -153,7 +159,7 @@ public class LoginController {
   /**
    * Displays an alert dialog with the specified title and message.
    *
-   * @param title The title of the alert dialog.
+   * @param title   The title of the alert dialog.
    * @param message The message to display in the alert dialog.
    */
   private void showAlert(String title, String message) {

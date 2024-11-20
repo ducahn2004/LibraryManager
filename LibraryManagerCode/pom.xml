@@ -17,7 +17,7 @@
   <repositories>
     <repository>
       <id>central</id>
-      <url>	https://repo1.maven.org/maven2/</url>
+      <url>https://repo1.maven.org/maven2/</url>
     </repository>
   </repositories>
 
@@ -281,7 +281,7 @@
             <id>default-cli</id>
             <configuration>
               <mainClass>
-                org.group4.librarymanagercode/org.group4.librarymanagercode.Main
+                org.group4.librarymanagercode/org.group4.controller.Main
               </mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>

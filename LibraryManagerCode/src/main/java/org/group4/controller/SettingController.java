@@ -1,12 +1,10 @@
-package org.group4.librarymanagercode;
+package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.group4.module.services.AccountService;
 
