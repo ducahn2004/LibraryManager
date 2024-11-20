@@ -17,5 +17,4 @@ public enum BookStatus {
 
   /** No status has been assigned to the book yet. */
   NONE
-
 }

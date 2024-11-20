@@ -1,9 +1,9 @@
 package org.group4.module.books;
 
+import java.util.stream.Collectors;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Represents a book with details including ISBN, title, subject, publisher,
@@ -54,7 +54,6 @@ public class Book {
     this.language = language;
     this.numberOfPages = numberOfPages;
     this.authors = Objects.requireNonNullElse(authors, new HashSet<>());
-//    this.authors = authors;
   }
 
 
@@ -182,7 +181,6 @@ public class Book {
    */
   public void setAuthors(Set<Author> authors) {
     this.authors = Objects.requireNonNullElse(authors, new HashSet<>());
-//    this.authors = authors;
   }
 
   /**
@@ -208,5 +206,4 @@ public class Book {
         "  authors = " + authors + "\n" +
         '}';
   }
-
 }

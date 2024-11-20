@@ -8,6 +8,7 @@ import org.group4.module.notifications.SystemNotification;
 
 public class BookItemManager implements GenericManager<BookItem> {
 
+  /** The BookItem Data Access Object (DAO). */
   private static final BookItemDAO bookItemDAO = FactoryDAO.getBookItemDAO();
 
   @Override
@@ -39,5 +40,4 @@ public class BookItemManager implements GenericManager<BookItem> {
     }
     return false;
   }
-
 }

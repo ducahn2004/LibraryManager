@@ -21,6 +21,7 @@ import org.group4.module.users.Member;
  */
 public class BookLendingManager {
 
+  /** The maximum number of books a member can borrow at a time. */
   private static final int MAX_BOOKS_BORROWED = 5;
 
   /**
@@ -85,6 +86,7 @@ public class BookLendingManager {
     Optional<BookLending> bookLendingOptional =
         FactoryDAO.getBookLendingDAO().getById(bookItem.getBarcode(), member.getMemberId());
 
+    // Check if the book lending record exists
     if (bookLendingOptional.isEmpty()) {
       throw new SQLException(
           "Book lending record not found for book item: " + bookItem.getBarcode());
@@ -103,10 +105,10 @@ public class BookLendingManager {
     // Send notifications
     SystemNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS,
         member.getMemberId() + " returned " + bookItem.getBarcode());
-    EmailNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS, member.getEmail(),
-        bookItem.toString());
+    EmailNotification.sendNotification(NotificationType.BOOK_RETURN_SUCCESS,
+        member.getEmail(), bookItem.toString());
 
-    // Check if the book was returned late and calculate fine if necessary
+    // Calculate and add fines if the book is returned late or lost
     if (bookLending.getDueDate().isBefore(LocalDate.now()) || status == BookStatus.LOST) {
       Fine fine = new Fine(bookLending);
       fine.calculateFine();
@@ -115,5 +117,4 @@ public class BookLendingManager {
 
     return true;
   }
-
 }

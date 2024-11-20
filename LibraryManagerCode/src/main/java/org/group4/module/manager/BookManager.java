@@ -8,6 +8,7 @@ import org.group4.module.notifications.SystemNotification;
 
 public class BookManager implements GenericManager<Book> {
 
+  /** The Book Data Access Object (DAO). */
   private static final BookDAO bookDAO = FactoryDAO.getBookDAO();
 
   @Override
