@@ -15,22 +15,25 @@ public class QRCodeDAO extends BaseDAO {
    */
   private static final Logger logger = LoggerFactory.getLogger(QRCodeDAO.class);
 
-  /** The column names in the QR code table. */
+  /** The name of the QR code table. */
+  private static final String TABLE_NAME = "qr_codes";
+
+  /** The column names of the QR code table. */
   private static final String COLUMN_BARCODE = "barcode";
   private static final String COLUMN_QR_CODE_URL = "qr_code_url";
 
   /** SQL queries for the QR code table. */
   private static final String ADD_QR_CODE =
-      "INSERT INTO book_item_qr_codes ("
+      "INSERT INTO " + TABLE_NAME + " ("
           + COLUMN_BARCODE + ", "
           + COLUMN_QR_CODE_URL + ") "
           + "VALUES (?, ?)";
 
   private static final String GET_BY_BARCODE =
-      "SELECT * FROM book_item_qr_codes WHERE " + COLUMN_BARCODE + " = ?";
+      "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_BARCODE + " = ?";
 
   private static final String DELETE_BY_BARCODE =
-      "DELETE FROM book_item_qr_codes WHERE " + COLUMN_BARCODE + " = ?";
+      "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_BARCODE + " = ?";
 
   /**
    * Adds a QR code URL for a book item with the given barcode.
