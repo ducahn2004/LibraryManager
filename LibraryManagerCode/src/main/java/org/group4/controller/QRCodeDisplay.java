@@ -15,7 +15,7 @@ public class QRCodeDisplay extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    String filePath = "book_qr.png";
+    String filePath = "qrImage";
     ImageView imageView = new ImageView();
 
     try {

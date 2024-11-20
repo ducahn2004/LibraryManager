@@ -1,28 +1,28 @@
 package org.group4.test;
 
-import org.group4.qr.QRCodeGenerator;
-import org.group4.qr.QRCodeReader;
 import com.google.zxing.NotFoundException;
-import com.google.zxing.WriterException;
-
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Optional;
+import org.group4.dao.FactoryDAO;
+import org.group4.module.books.BookItem;
+import org.group4.module.qrcode.QRCodeGenerator;
+import org.group4.module.qrcode.QRCodeReader;
 
 public class QRCodeTest {
+  public static void main(String[] args) throws SQLException, IOException, NotFoundException {
+    Optional<BookItem> bookItem = FactoryDAO.getBookItemDAO().getById("9780132350884-0001");
+    if (bookItem.isPresent()) {
+      QRCodeGenerator.generateQRCodeForBookItem(bookItem.get());
+      System.out.println("QR code generated successfully.");
 
-    public static void main(String[] args) {
-        String bookInfo = "Book: Harry Potter and the Philosopher's Stone\nAuthor: J.K. Rowling\nISBN: 9781408855652";
-        try {
-            // Generate QR Code
-            String filePath = "";
-            QRCodeGenerator.generateQRCode(bookInfo, filePath, 350, 350);
-            System.out.println("QR Code generated successfully.");
+      String filePath = "LibraryManager/LibraryManagerCode/src/main/resources/qrImage"
+          + "/9780132350884-0001.png";
+      String text = QRCodeReader.readQRCode(filePath);
+      System.out.println("QR code read successfully: \n" + text);
 
-            // Read QR Code
-            String decodedText = QRCodeReader.readQRCode(filePath);
-            System.out.println("Decoded text from QR Code: " + decodedText);
-
-        } catch (WriterException | IOException | NotFoundException e) {
-            e.printStackTrace();
-        }
+    } else {
+      System.out.println("Book item not found.");
     }
+  }
 }
