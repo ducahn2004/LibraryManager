@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import kotlin.jvm.internal.SpreadBuilder;
 import org.group4.module.books.Book;
 import org.group4.module.books.BookItem;
 import org.group4.module.books.Rack;
@@ -21,37 +20,58 @@ import org.slf4j.LoggerFactory;
 
 /**
  * BookItemDAO is responsible for CRUD operations on {@link BookItem} data in the database.
- * It implements the {@link GenericDAO} interface to provide standard methods
- * for persisting and retrieving {@link BookItem} data.
+ * <p>It implements the {@link GenericDAO} interface to provide standard methods
+ *    for persisting and retrieving {@link BookItem} data.</p>
  */
 public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String> {
 
   /** Logger for BookItemDAO class. */
   private static final Logger logger = LoggerFactory.getLogger(BookItemDAO.class);
 
+  /** Column names for the book_items table */
+  private static final String COLUMN_BARCODE = "barcode";
+  private static final String COLUMN_ISBN = "ISBN";
+  private static final String COLUMN_IS_REFERENCE_ONLY = "isReferenceOnly";
+  private static final String COLUMN_BORROWED = "borrowed";
+  private static final String COLUMN_DUE_DATE = "dueDate";
+  private static final String COLUMN_PRICE = "price";
+  private static final String COLUMN_FORMAT = "format";
+  private static final String COLUMN_STATUS = "status";
+  private static final String COLUMN_DATE_OF_PURCHASE = "dateOfPurchase";
+  private static final String COLUMN_PUBLICATION_DATE = "publicationDate";
+  private static final String COLUMN_RACK_NUMBER = "rackNumber";
+  private static final String COLUMN_MAX_BARCODE = "max_barcode";
+
   /** SQL statements for CRUD operations on the book_items table */
   private static final String ADD_BOOK_ITEM_SQL =
-      "INSERT INTO book_items (barcode, ISBN, isReferenceOnly, borrowed, dueDate, price, format, "
-          + "status, dateOfPurchase, publicationDate, rackNumber) "
-          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO book_items (" + COLUMN_BARCODE + ", " + COLUMN_ISBN + ", " + COLUMN_IS_REFERENCE_ONLY
+          + ", " + COLUMN_BORROWED + ", " + COLUMN_DUE_DATE + ", " + COLUMN_PRICE + ", " + COLUMN_FORMAT
+          + ", " + COLUMN_STATUS + ", " + COLUMN_DATE_OF_PURCHASE + ", " + COLUMN_PUBLICATION_DATE
+          + ", " + COLUMN_RACK_NUMBER + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   private static final String UPDATE_BOOK_ITEM_SQL =
-      "UPDATE book_items SET isReferenceOnly = ?, borrowed = ?, dueDate = ?, price = ?, format = ?, "
-          + "status = ?, dateOfPurchase = ?, publicationDate = ?, rackNumber = ? WHERE barcode = ?";
+      "UPDATE book_items SET " + COLUMN_IS_REFERENCE_ONLY + " = ?, " + COLUMN_BORROWED + " = ?, "
+          + COLUMN_DUE_DATE + " = ?, " + COLUMN_PRICE + " = ?, " + COLUMN_FORMAT + " = ?, "
+          + COLUMN_STATUS + " = ?, " + COLUMN_DATE_OF_PURCHASE + " = ?, " + COLUMN_PUBLICATION_DATE
+          + " = ?, " + COLUMN_RACK_NUMBER + " = ? WHERE " + COLUMN_BARCODE + " = ?";
 
-  private static final String DELETE_BOOK_ITEM_SQL = "DELETE FROM book_items WHERE barcode = ?";
+  private static final String DELETE_BOOK_ITEM_SQL =
+      "DELETE FROM book_items WHERE " + COLUMN_BARCODE + " = ?";
 
   private static final String GET_ALL_BOOK_ITEMS_SQL = "SELECT * FROM book_items";
 
   private static final String GET_BOOK_ITEM_BY_BARCODE_SQL =
-      "SELECT * FROM book_items WHERE barcode = ?";
+      "SELECT * FROM book_items WHERE " + COLUMN_BARCODE + " = ?";
 
-  private static final String GET_BOOK_ITEM_BY_ISBN_SQL = "SELECT * FROM book_items WHERE ISBN = ?";
+  private static final String GET_BOOK_ITEM_BY_ISBN_SQL =
+      "SELECT * FROM book_items WHERE " + COLUMN_ISBN + " = ?";
 
   private static final String GET_MAX_BARCODE_SQL =
-      "SELECT MAX(barcode) AS max_barcode FROM book_items WHERE barcode LIKE ?";
+      "SELECT MAX(" + COLUMN_BARCODE + ") AS " + COLUMN_MAX_BARCODE + " FROM book_items WHERE "
+          + COLUMN_BARCODE + " LIKE ?";
 
-  private static final String CHECK_RACK_SQL = "SELECT 1 FROM racks WHERE numberRack = ?";
+  private static final String CHECK_RACK_SQL =
+      "SELECT 1 FROM racks WHERE " + COLUMN_RACK_NUMBER + " = ?";
 
   @Override
   public boolean add(BookItem bookItem) {
@@ -147,7 +167,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
         ResultSet resultSet = preparedStatement.executeQuery()) {
 
       while (resultSet.next()) {
-        BookItem bookItem = mapRowToBookItem(resultSet);
+        BookItem bookItem = mapRowToBookItem(resultSet); // Map row to BookItem object
         bookItems.add(bookItem);
       }
     } catch (SQLException e) {
@@ -174,24 +194,19 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
 
     // Construct and return a new BookItem directly with values from ResultSet and associated objects
     return new BookItem(
-        book.getISBN(),
-        book.getTitle(),
-        book.getSubject(),
-        book.getPublisher(),
-        book.getLanguage(),
-        book.getNumberOfPages(),
-        book.getAuthors(),
-        resultSet.getString("barcode"),
-        resultSet.getBoolean("isReferenceOnly"),
-        resultSet.getDate("borrowed") != null ?
-            resultSet.getDate("borrowed").toLocalDate() : null,
-        resultSet.getDate("dueDate") != null ?
-            resultSet.getDate("dueDate").toLocalDate() : null,
-        resultSet.getDouble("price"),
-        BookFormat.valueOf(resultSet.getString("format")),
-        BookStatus.valueOf(resultSet.getString("status")),
-        resultSet.getDate("dateOfPurchase").toLocalDate(),
-        resultSet.getDate("publicationDate").toLocalDate(),
+        book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
+        book.getLanguage(), book.getNumberOfPages(), book.getAuthors(),
+        resultSet.getString(COLUMN_BARCODE),
+        resultSet.getBoolean(COLUMN_IS_REFERENCE_ONLY),
+        resultSet.getDate(COLUMN_BORROWED) != null ?
+            resultSet.getDate(COLUMN_BORROWED).toLocalDate() : null,
+        resultSet.getDate(COLUMN_DUE_DATE) != null ?
+            resultSet.getDate(COLUMN_DUE_DATE).toLocalDate() : null,
+        resultSet.getDouble(COLUMN_PRICE),
+        BookFormat.valueOf(resultSet.getString(COLUMN_FORMAT)),
+        BookStatus.valueOf(resultSet.getString(COLUMN_STATUS)),
+        resultSet.getDate(COLUMN_DATE_OF_PURCHASE).toLocalDate(),
+        resultSet.getDate(COLUMN_PUBLICATION_DATE).toLocalDate(),
         rack
     );
   }
@@ -204,7 +219,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
    * @return the formatted barcode as a String
    */
   private String formatBarcode(String isbn, int barcode) {
-    return isbn + String.format("-%04d", barcode);
+    return isbn + String.format("-%04d", barcode); // Format the barcode with leading zeros
   }
 
   /**
@@ -220,18 +235,17 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
       preparedStatement.setString(1, isbn + "-%");
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
-          String maxBarcode = resultSet.getString("max_barcode");
+          String maxBarcode = resultSet.getString(COLUMN_MAX_BARCODE);
           if (maxBarcode != null && maxBarcode.matches("^" + isbn + "-\\d{4}$")) {
-            String[] parts = maxBarcode.split("-");
-            int nextBarcode = Integer.parseInt(parts[parts.length - 1]) + 1;
+            String[] parts = maxBarcode.split("-"); // Split the barcode by hyphen
+            int nextBarcode = Integer.parseInt(parts[parts.length - 1]) + 1; // Increment the barcode
             return formatBarcode(isbn, nextBarcode);
           }
         }
       }
     }
-    return formatBarcode(isbn, 1);
+    return formatBarcode(isbn, 1); // Return the first barcode if no existing barcodes found
   }
-
 
   /**
    * Retrieves all BookItems for the given ISBN.
