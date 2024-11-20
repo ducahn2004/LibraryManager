@@ -13,26 +13,39 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
 import org.group4.module.transactions.BookLending;
+
 import java.util.List;
 
+/**
+ * Controller class for managing book lending functionality in the library system.
+ */
 public class BookLendingController {
 
+  // TableView and columns for displaying book lending information
   @FXML
   private TableView<BookLending> tableView;
-
   @FXML
-  private TableColumn<BookLending, String> bookBarcode, bookISBN, bookTitle, memberID, memberName, Status, creationDate, dueDate, returnDate;
+  private TableColumn<BookLending, String> bookBarcode, bookISBN, bookTitle, memberID,
+      memberName, Status, creationDate, dueDate, returnDate;
 
+  // Navigation and action buttons
   @FXML
-  private JFXButton homeButton, MemberButton, bookButton, bookLendingButton, settingButton, notificationButton, closeButton;
+  private JFXButton homeButton, MemberButton, bookButton, bookLendingButton, settingButton,
+      notificationButton, closeButton;
 
+  // Search field for filtering book lending data
   @FXML
   private TextField searchField;
 
+  // Observable list for managing book lending data
   private final ObservableList<BookLending> bookLendingsList = FXCollections.observableArrayList();
 
+  /**
+   * Initializes the controller after the FXML file has been loaded.
+   */
   @FXML
   public void initialize() {
+    // Set cell value factories for the TableView columns
     bookBarcode.setCellValueFactory(
         data -> new SimpleStringProperty(data.getValue().getBookItem().getBarcode()));
     bookISBN.setCellValueFactory(
@@ -49,12 +62,16 @@ public class BookLendingController {
         data -> new SimpleStringProperty(data.getValue().getLendingDate().toString()));
     dueDate.setCellValueFactory(
         data -> new SimpleStringProperty(data.getValue().getDueDate().toString()));
-    returnDate.setCellValueFactory(data -> new SimpleStringProperty(
-        data.getValue().getReturnDate().isPresent() ? data.getValue().getReturnDate().toString()
-            : "Not Returned"));
+    returnDate.setCellValueFactory(
+        data -> new SimpleStringProperty(
+            data.getValue().getReturnDate().isPresent()
+                ? data.getValue().getReturnDate().toString()
+                : "Not Returned"));
 
+    // Load book lending data into the TableView
     loadBookLending();
 
+    // Add listener for filtering data based on search input
     searchField.textProperty()
         .addListener((observable, oldValue, newValue) -> filterBookLendingList(newValue));
     searchField.setOnKeyPressed(event -> {
@@ -64,6 +81,9 @@ public class BookLendingController {
     });
   }
 
+  /**
+   * Loads book lending data from the database and populates the TableView.
+   */
   private void loadBookLending() {
     List<BookLending> bookLendings = FactoryDAO.getBookLendingDAO().getAll();
     if (bookLendings == null || bookLendings.isEmpty()) {
@@ -76,6 +96,11 @@ public class BookLendingController {
     tableView.setItems(bookLendingsList);
   }
 
+  /**
+   * Filters the book lending list based on the provided search text.
+   *
+   * @param searchText the search text to filter the list
+   */
   private void filterBookLendingList(String searchText) {
     if (searchText == null || searchText.isEmpty()) {
       tableView.setItems(bookLendingsList);
@@ -93,6 +118,13 @@ public class BookLendingController {
     tableView.setItems(filteredList);
   }
 
+  /**
+   * Displays an alert dialog with the specified type, title, and content.
+   *
+   * @param type    the type of alert (e.g., INFORMATION, WARNING)
+   * @param title   the title of the alert dialog
+   * @param content the content of the alert dialog
+   */
   private void showAlert(Alert.AlertType type, String title, String content) {
     Alert alert = new Alert(type);
     alert.setTitle(title);
@@ -100,6 +132,8 @@ public class BookLendingController {
     alert.setContentText(content);
     alert.showAndWait();
   }
+
+  // Navigation methods for various sections of the application
 
   @FXML
   public void HomeAction(ActionEvent event) throws IOException {
@@ -131,15 +165,25 @@ public class BookLendingController {
     switchScene("Setting.fxml", "Library Manager");
   }
 
+  /**
+   * Closes the application.
+   *
+   * @param event the action event triggering the close
+   */
   @FXML
   public void Close(ActionEvent event) {
     Platform.exit();
   }
 
+  /**
+   * Switches the scene to the specified FXML file and updates the window title.
+   *
+   * @param fxmlFile the name of the FXML file to load
+   * @param title    the title of the window
+   * @throws IOException if the FXML file cannot be loaded
+   */
   private void switchScene(String fxmlFile, String title) throws IOException {
-    // Chuyển đổi cảnh
     Stage stage = (Stage) homeButton.getScene().getWindow();
     SceneSwitcher.switchScene(stage, fxmlFile, title);
   }
-
 }
