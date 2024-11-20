@@ -45,7 +45,50 @@ public class AdminPaneController {
   private JFXButton notificationButton;
   @FXML
   private JFXButton closeButton;
+  MemberDAO memberDAO = new MemberDAO();
+  BookDAO bookDAO = new BookDAO();
 
+
+  public void updateTotalMembers() {
+    int totalMembers = memberDAO.getTotalMembers();
+    total_Members.setText(String.valueOf(totalMembers));
+  }
+
+
+  public void updateTotalBooks() {
+    int totalBooks = bookDAO.getTotalBooks();
+    total_books.setText(String.valueOf(totalBooks));
+  }
+
+
+  public void Home_chart() {
+    home_chart.getData().clear();
+
+    int totalBooks = bookDAO.getTotalBooks();
+    int totalMembers = memberDAO.getTotalMembers();
+
+    // add series
+    XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();
+    bookSeries.setName("Books");
+    bookSeries.getData().add(new XYChart.Data<>("Total Books", totalBooks));
+
+    // add series
+    XYChart.Series<String, Number> memberSeries = new XYChart.Series<>();
+    memberSeries.setName("Members");
+    memberSeries.getData().add(new XYChart.Data<>("Total Members", totalMembers));
+
+    //add data for home_chart
+    home_chart.getData().addAll(bookSeries, memberSeries);
+  }
+
+  @FXML
+  public void initialize() {
+    // updateTotalMembers();
+    updateTotalMembers();
+    // updateTotalBooks();
+    updateTotalBooks();
+    Home_chart();
+  }
   public void HomeAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
@@ -128,48 +171,5 @@ public class AdminPaneController {
     Platform.exit();
   }
 
-  MemberDAO memberDAO = new MemberDAO();
-  BookDAO bookDAO = new BookDAO();
 
-
-  public void updateTotalMembers() {
-    int totalMembers = memberDAO.getTotalMembers();
-    total_Members.setText(String.valueOf(totalMembers));
-  }
-
-
-  public void updateTotalBooks() {
-    int totalBooks = bookDAO.getTotalBooks();
-    total_books.setText(String.valueOf(totalBooks));
-  }
-
-
-  public void Home_chart() {
-    home_chart.getData().clear();
-
-    int totalBooks = bookDAO.getTotalBooks();
-    int totalMembers = memberDAO.getTotalMembers();
-
-    // add series
-    XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();
-    bookSeries.setName("Books");
-    bookSeries.getData().add(new XYChart.Data<>("Total Books", totalBooks));
-
-    // add series
-    XYChart.Series<String, Number> memberSeries = new XYChart.Series<>();
-    memberSeries.setName("Members");
-    memberSeries.getData().add(new XYChart.Data<>("Total Members", totalMembers));
-
-    //add data for home_chart
-    home_chart.getData().addAll(bookSeries, memberSeries);
-  }
-
-  @FXML
-  public void initialize() {
-    // updateTotalMembers();
-    updateTotalMembers();
-    // updateTotalBooks();
-    updateTotalBooks();
-    Home_chart();
-  }
 }

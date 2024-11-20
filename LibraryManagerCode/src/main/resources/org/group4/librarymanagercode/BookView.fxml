@@ -42,7 +42,7 @@
       </JFXButton>
       <JFXButton fx:id="bookLendingButton" alignment="TOP_LEFT" onAction="#BookLendingAction"
         prefHeight="46.0"
-        prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
+        prefWidth="136.0" text="Book Lending" textFill="#fff8f8" textOverrun="CLIP">
         <font>
           <Font size="16.0"/>
         </font>
