@@ -31,19 +31,7 @@ import org.json.JSONObject;
 public class AddBookController {
 
   @FXML
-  private JFXButton closeButton;
-  @FXML
-  private JFXButton settingButton;
-  @FXML
-  private JFXButton notificationButton;
-  @FXML
-  private JFXButton returnBookButton;
-  @FXML
-  private JFXButton bookButton;
-  @FXML
-  private JFXButton MemberButton;
-  @FXML
-  private JFXButton homeButton;
+  private JFXButton bookButton, MemberButton, homeButton, bookLendingButton, notificationButton, settingButton, closeButton;
   @FXML
   private TextField isbnField;
   @FXML
@@ -268,6 +256,19 @@ public class AddBookController {
 
   public void bookAction(ActionEvent actionEvent) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
+    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+
+    // Get the stage from any button that was clicked
+    Stage stage = (Stage) bookButton.getScene()
+        .getWindow();  // Or use any other button, since the stage is the same
+    stage.setTitle("Library Manager");
+    stage.setScene(scene);
+    stage.show();
+    System.out.println("Book button clicked");
+  }
+
+  public void bookLendingAction(ActionEvent actionEvent) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookLending.fxml"));
     Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
 
     // Get the stage from any button that was clicked
