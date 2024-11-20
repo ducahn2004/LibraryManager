@@ -104,4 +104,13 @@ public class FactoryDAO {
   public static FineDAO getFineDAO() {
     return new FineDAO();
   }
+
+  /**
+   * Returns an instance of QRCodeDAO.
+   *
+   * @return QRCodeDAO instance
+   */
+  public static QRCodeDAO getQRCodeDAO() {
+    return new QRCodeDAO();
+  }
 }
