@@ -25,7 +25,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   /** Column names in the authors table. */
   private static final String COLUMN_AUTHOR_ID = "author_id";
   private static final String COLUMN_NAME = "name";
-  private static final String COLUMN_BOOK_ISBN = "book_isbn";
+  private static final String COLUMN_BOOK_ISBN = "isbn";
   private static final String COLUMN_MAX_ID = "max_id";
 
   /** SQL statements for CRUD operations on the authors table. */
