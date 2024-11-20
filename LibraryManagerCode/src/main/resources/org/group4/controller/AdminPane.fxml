@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+  prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="org.group4.controller.AdminPaneController">
+  <top>
+    <Pane prefHeight="129.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+      <children>
+        <Pane prefHeight="132.0" prefWidth="130.0" style="-fx-background-color: #2B579A;"/>
+        <Label alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="130.0" layoutY="73.0"
+          prefHeight="55.0" prefWidth="172.0" text="Dashboard" textFill="#2b579a">
+          <font>
+            <Font name=".VnArial Bold" size="30.0"/>
+          </font>
+        </Label>
+        <Label layoutX="379.0" layoutY="14.0" text="Library Management System" textFill="#2b579a"
+          BorderPane.alignment="CENTER">
+          <font>
+            <Font name="Segoe UI Semilight" size="25.0"/>
+          </font>
+          <BorderPane.margin>
+            <Insets top="2.0"/>
+          </BorderPane.margin>
+        </Label>
+        <AnchorPane layoutX="139.0" layoutY="137.0" prefHeight="582.0" prefWidth="850.0"
+          style="-fx-border-radius: 20; -fx-border-color: #CCCCCC;">
+          <children>
+            <AnchorPane layoutX="3.0" layoutY="14.0" prefHeight="95.0" prefWidth="848.0"
+              style="-fx-border-color: #CCCCCC; -fx-border-width: 2; -fx-border-radius: 20;"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <children>
+                <AnchorPane layoutX="19.2" layoutY="9.6" prefHeight="100.0" prefWidth="180.0"
+                  style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;"
+                  AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="17.0"
+                  AnchorPane.topAnchor="5.0">
+                  <children>
+                    <Label layoutX="40.0" layoutY="66.0" text="Total Members" textFill="#2b579a"
+                      AnchorPane.topAnchor="66.0">
+                      <font>
+                        <Font size="15.0"/>
+                      </font>
+                    </Label>
+                    <Label fx:id="total_Members" layoutX="109.0" layoutY="14.0" prefHeight="30.0"
+                      prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="#2b579a"
+                      AnchorPane.topAnchor="14.0">
+                      <font>
+                        <Font size="20.0"/>
+                      </font>
+                    </Label>
+                    <FontAwesomeIconView fill="#2b579a" glyphName="USERS" layoutX="27.0"
+                      layoutY="49.0" size="30"/>
+                  </children>
+                </AnchorPane>
+                <AnchorPane layoutX="24.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0"
+                  style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;"
+                  AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="224.0"
+                  AnchorPane.topAnchor="5.0">
+                  <children>
+                    <Label layoutX="54.0" layoutY="57.0" text="Number of" textFill="#2b579a"
+                      AnchorPane.topAnchor="57.0">
+                      <font>
+                        <Font size="15.0"/>
+                      </font>
+                    </Label>
+                    <Label layoutX="109.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0"
+                      text="0" textAlignment="RIGHT" textFill="#2b579a" AnchorPane.topAnchor="14.0">
+                      <font>
+                        <Font size="20.0"/>
+                      </font>
+                    </Label>
+                    <Label layoutX="25.0" layoutY="76.0" text="members borrowed" textFill="#2b579a">
+                      <font>
+                        <Font size="15.0"/>
+                      </font>
+                    </Label>
+                    <FontAwesomeIconView fill="#2b579a" glyphName="CHECK" layoutX="25.0"
+                      layoutY="55.0" size="30"/>
+                  </children>
+                </AnchorPane>
+                <AnchorPane layoutX="224.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0"
+                  style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;"
+                  AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="434.0"
+                  AnchorPane.topAnchor="5.0">
+                  <children>
+                    <Label layoutX="51.0" layoutY="64.0" text="Total Books" textFill="#2b579a"
+                      AnchorPane.topAnchor="64.0">
+                      <font>
+                        <Font size="15.0"/>
+                      </font>
+                    </Label>
+                    <Label fx:id="total_books" layoutX="110.0" layoutY="14.0" prefHeight="30.0"
+                      prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="#2b579a"
+                      AnchorPane.bottomAnchor="55.6">
+                      <font>
+                        <Font size="20.0"/>
+                      </font>
+                    </Label>
+                    <FontAwesomeIconView fill="#2b579a" glyphName="BOOK" layoutX="37.0"
+                      layoutY="56.0" size="30" text=""/>
+                  </children>
+                </AnchorPane>
+                <AnchorPane layoutX="648.8" layoutY="9.6" prefHeight="100.0" prefWidth="180.0"
+                  style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;"
+                  AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="646.0"
+                  AnchorPane.topAnchor="5.0">
+                  <children>
+                    <Label layoutX="32.0" layoutY="51.2" prefHeight="30.0" prefWidth="126.0"
+                      text="Number of books" textFill="#2b579a" AnchorPane.topAnchor="51.0">
+                      <font>
+                        <Font size="15.0"/>
+                      </font>
+                    </Label>
+                    <Label layoutX="104.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0"
+                      text="0" textAlignment="RIGHT" textFill="#2b579a"
+                      AnchorPane.bottomAnchor="55.6">
+                      <font>
+                        <Font size="20.0"/>
+                      </font>
+                    </Label>
+                    <Label layoutX="58.0" layoutY="76.0" text="borrowed" textFill="#2b579a">
+                      <font>
+                        <Font size="15.0"/>
+                      </font>
+                    </Label>
+                    <FontAwesomeIconView fill="#2b579a" glyphName="CHECK" layoutX="32.0"
+                      layoutY="55.0" size="30"/>
+                  </children>
+                </AnchorPane>
+              </children>
+            </AnchorPane>
+            <BarChart fx:id="home_chart" layoutX="73.0" layoutY="158.0" prefHeight="375.0"
+              prefWidth="683.0" title="Books and Members">
+              <xAxis>
+                <CategoryAxis fx:id="xAxis" label="Categories"/>
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="yAxis" label="Values"/>
+              </yAxis>
+            </BarChart>
+          </children>
+        </AnchorPane>
+        <VBox layoutY="131.0" prefHeight="576.0" prefWidth="130.0"
+          style="-fx-background-color: #2B579A;">
+          <children>
+            <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP"
+              onAction="#HomeAction" prefHeight="46.0" prefWidth="135.0" text="Home"
+              textFill="WHITE" textOverrun="CLIP">
+              <font>
+                <Font size="16.0"/>
+              </font>
+            </JFXButton>
+            <JFXButton fx:id="MemberButton" alignment="TOP_LEFT" centerShape="false"
+              onAction="#MemberAction" prefHeight="46.0" prefWidth="133.0" text="Member"
+              textFill="#fff8f8" textOverrun="CLIP">
+              <font>
+                <Font size="16.0"/>
+              </font>
+            </JFXButton>
+            <JFXButton fx:id="bookButton" alignment="TOP_LEFT" onAction="#BookAction"
+              prefHeight="46.0" prefWidth="136.0" text="Book" textFill="#fff8f8" textOverrun="CLIP">
+              <font>
+                <Font size="16.0"/>
+              </font>
+            </JFXButton>
+            <JFXButton fx:id="bookLendingButton" alignment="TOP_LEFT" onAction="#BookLendingAction"
+              prefHeight="46.0"
+              prefWidth="136.0" text="Book Lending" textFill="#fff8f8" textOverrun="CLIP">
+              <font>
+                <Font size="16.0"/>
+              </font>
+            </JFXButton>
+            <JFXButton fx:id="notificationButton" alignment="TOP_LEFT"
+              onAction="#notificationAction" prefHeight="46.0" prefWidth="137.0" text="Notification"
+              textFill="#fff8f8" textOverrun="CLIP">
+              <font>
+                <Font size="16.0"/>
+              </font>
+            </JFXButton>
+            <JFXButton fx:id="settingButton" alignment="TOP_LEFT" onAction="#SettingAction"
+              prefHeight="46.0" prefWidth="137.0" text="Setting" textFill="#fff8f8"
+              textOverrun="CLIP">
+              <font>
+                <Font size="16.0"/>
+              </font>
+            </JFXButton>
+            <JFXButton fx:id="closeButton" alignment="TOP_LEFT" onAction="#Close" prefHeight="46.0"
+              prefWidth="137.0" text="Close" textFill="#fff8f8" textOverrun="CLIP">
+              <font>
+                <Font size="16.0"/>
+              </font>
+            </JFXButton>
+          </children>
+        </VBox>
+      </children>
+    </Pane>
+
+  </top>
+
+</BorderPane>

@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1381dc6-1017-492f-89b7-87d30bc1f173" name="Changes" comment="Add new classes and update enums for consistency&#10;&#10;Added classes for handling book lending, reservations, fines, and various types of transactions. Updated enum values to uppercase to maintain naming consistency across the project. Additionally, minor template adjustments were made to FXML files.">
+    <list default="true" id="b1381dc6-1017-492f-89b7-87d30bc1f173" name="Changes" comment="Update Controller Module">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/librarymanagercode/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/librarymanagercode/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/group4/librarymanagercode/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/group4/librarymanagercode/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +22,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
     <favorite-branches>
@@ -45,6 +46,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RESET_MODE" value="SOFT" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -52,12 +54,12 @@
     &quot;assignee&quot;: &quot;ducahn2004&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ducahn2004/LibraryManager.git",
-    "accountId": "2827827f-cbbd-461c-9585-0de6046cf4f7"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ducahn2004/LibraryManager.git&quot;,
+    &quot;accountId&quot;: &quot;7e00dfee-d36c-42d2-b3aa-31928fb268c0&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -69,35 +71,43 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2mnRj5w95CwrrKSt2HaicplndZg" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lenovo/Documents/GitHub/LibraryManager/LibraryManagerCode",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.44942528",
-    "settings.editor.selected.configurable": "preferences.editor",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo/Documents/GitHub/LibraryManager/LibraryManagerCode&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.44942528&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.group4.librarymanagercode.Main" />
+      <envs>
+        <env name="JDBC_DATABASE_URL" value="jdbc:mysql://127.0.0.1:3306/librarymanager" />
+        <env name="JDBC_DATABASE_USERNAME" value="root" />
+        <env name="JDBC_DATABASE_PASSWORD" value="12345678" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="org.group4.controller.Main" />
       <module name="LibraryManagerCode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.group4.librarymanagercode.*" />
+          <option name="PATTERN" value="org.group4.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -195,7 +205,47 @@
       <option name="project" value="LOCAL" />
       <updated>1727856558147</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Update AdminPane.fxml&#10; BookLending.fxml&#10; BookView.fxml MemberView.fxml Setting.fxml Notification.fxml">
+      <option name="closed" value="true" />
+      <created>1732061838037</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1732061838037</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Update AddMemberController MemberEditController">
+      <option name="closed" value="true" />
+      <created>1732064686130</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1732064686130</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Update BookLendingController MemberDetailsController">
+      <option name="closed" value="true" />
+      <created>1732068126738</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1732068126738</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Update Controller Module">
+      <option name="closed" value="true" />
+      <created>1732069409505</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1732069409505</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Update Controller Module">
+      <option name="closed" value="true" />
+      <created>1732069928271</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1732069928272</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,7 +270,11 @@
     <MESSAGE value="Add Catalog, Search, and Rank classes, and extend Book&#10;&#10;Introduced new `Catalog`, `Search`, and `Rank` classes to handle library cataloging, searching, and ranking functionalities. Enhanced `Book` and `BookItem` classes with constructors and additional fields to support these new features. Updated `Author` and `Librarian` to include books and membership control functionality respectively." />
     <MESSAGE value="Rename class Rank to Rack&#10;&#10;Renamed the class `Rank` to `Rack` to better reflect its purpose of representing a physical book rack. Updated relevant files and configuration entries to apply this change consistently across the project." />
     <MESSAGE value="Add new classes and update enums for consistency&#10;&#10;Added classes for handling book lending, reservations, fines, and various types of transactions. Updated enum values to uppercase to maintain naming consistency across the project. Additionally, minor template adjustments were made to FXML files." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add new classes and update enums for consistency&#10;&#10;Added classes for handling book lending, reservations, fines, and various types of transactions. Updated enum values to uppercase to maintain naming consistency across the project. Additionally, minor template adjustments were made to FXML files." />
+    <MESSAGE value="Update AdminPane.fxml&#10; BookLending.fxml&#10; BookView.fxml MemberView.fxml Setting.fxml Notification.fxml" />
+    <MESSAGE value="Update AddMemberController MemberEditController" />
+    <MESSAGE value="Update BookLendingController MemberDetailsController" />
+    <MESSAGE value="Update Controller Module" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update Controller Module" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
