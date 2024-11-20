@@ -20,12 +20,19 @@ public class Fine {
 
   /**
    * Constructs a new {@code Fine} object with a default fine amount of 0.
+   *
+   * @param bookLending The book lending information.
    */
   public Fine(BookLending bookLending) {
     this.bookLending = bookLending;
     this.amount = 0;
   }
 
+  /**
+   * Constructs a new {@code Fine} object with a specified fine amount.
+   *
+   * @param amount The fine amount.
+   */
   public Fine(BookLending bookLending, double amount) {
     this.bookLending = bookLending;
     this.amount = amount;
@@ -70,6 +77,7 @@ public class Fine {
     double bookPrice = bookItem.getPrice();
     int numberOfPages = bookItem.getNumberOfPages();
 
+    // Calculate fine based on book status
     if (bookItem.getStatus() == BookStatus.LOST) {
       amount = calculateLostBookFine(bookPrice, numberOfPages);
     } else {

@@ -10,8 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Service for interacting with the Google Books API.
- * Provides methods to retrieve book details using ISBN.
+ * Service class for fetching book details from the Google Books API.
+ * This class provides a method to retrieve book details by ISBN from the API.
  */
 public class GoogleBooksService {
 

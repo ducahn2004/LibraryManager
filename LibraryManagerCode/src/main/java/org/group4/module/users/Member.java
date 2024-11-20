@@ -93,5 +93,4 @@ public class Member extends Person {
         "  phoneNumber ='" + getPhoneNumber() + "'\n" +
         '}';
   }
-
 }
