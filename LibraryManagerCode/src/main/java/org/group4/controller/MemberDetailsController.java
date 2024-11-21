@@ -18,9 +18,14 @@ import org.group4.module.books.BookItem;
 import org.group4.module.transactions.BookLending;
 import org.group4.module.users.Member;
 
+/**
+ * Controller for displaying member details and their associated book lendings. Provides
+ * functionality to display member information and handle interactions with the table view of
+ * borrowed books.
+ */
 public class MemberDetailsController {
 
-
+  // FXML components for the table view and its columns
   @FXML
   private TableView<BookLending> tableView;
   @FXML
@@ -36,6 +41,7 @@ public class MemberDetailsController {
   @FXML
   private TableColumn<BookLending, String> returnDateTable;
 
+  // FXML components for displaying member details
   @FXML
   private Label memberEmailLabel;
   @FXML
@@ -47,21 +53,36 @@ public class MemberDetailsController {
   @FXML
   private Label memberIDLabel;
 
+  // Current member and their book lending data
   private Member currentMember;
   private final ObservableList<BookLending> bookLendings = FXCollections.observableArrayList();
 
+  /**
+   * Initializes the controller. Sets up the table view with appropriate cell value factories and
+   * selection listeners.
+   */
   @FXML
   private void initialize() {
     initializeTable();
   }
 
+  /**
+   * Sets the member whose details are to be displayed.
+   *
+   * @param member The member to display details for.
+   */
   public void setItemDetail(Member member) {
     this.currentMember = member;
     displayMemberDetails();
     loadData();
   }
 
+  /**
+   * Configures the table view to display book lending details. Sets up cell value factories and a
+   * selection listener for row clicks.
+   */
   private void initializeTable() {
+    // Set cell value factories for each column
     isbnTable.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getBookItem().getISBN()));
     bookTitleTable.setCellValueFactory(
@@ -75,8 +96,10 @@ public class MemberDetailsController {
     dueDateTable.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getDueDate().toString()));
 
+    // Bind the observable list to the table view
     tableView.setItems(bookLendings);
 
+    // Add a listener for row selection in the table
     tableView.getSelectionModel().selectedItemProperty()
         .addListener((obs, oldSelection, newSelection) -> {
           if (newSelection != null) {
@@ -87,19 +110,24 @@ public class MemberDetailsController {
             }
           }
         });
-
   }
 
+  /**
+   * Loads book lending data for the current member into the table view.
+   */
   private void loadData() {
     if (currentMember != null) {
       bookLendings.clear();
-      // TODO Uncomment after have a method to collect all the bookItems from member
+      // Load all book lendings associated with the current member
       bookLendings.addAll(
           FactoryDAO.getBookLendingDAO().getByMemberId(currentMember.getMemberId()));
       System.out.println("Data loaded: " + bookLendings.size() + " items");
     }
   }
 
+  /**
+   * Displays details of the current member in the UI.
+   */
   private void displayMemberDetails() {
     if (currentMember != null) {
       memberNameLabel.setText(currentMember.getName());
@@ -110,17 +138,23 @@ public class MemberDetailsController {
     }
   }
 
+  /**
+   * Opens the "Returning Book" page for the selected book item.
+   *
+   * @param bookItem The book item to be returned.
+   * @throws IOException If the FXML file cannot be loaded.
+   */
   private void openReturningBookPage(BookItem bookItem) throws IOException {
     try {
-
+      // Load the ReturningBook.fxml file and set up the new scene
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
-
       Scene returningBookScene = new Scene(loader.load());
-
       Stage currentStage = (Stage) tableView.getScene().getWindow();
 
+      // Switch to the new scene
       currentStage.setScene(returningBookScene);
 
+      // Pass details to the ReturningBookController
       ReturningBookController controller = loader.getController();
       controller.setItemDetailReturning(bookItem);
       controller.setPreviousPage("memberDetails");
@@ -131,6 +165,4 @@ public class MemberDetailsController {
           .log(Level.SEVERE, "Failed to load book details page", e);
     }
   }
-
-
 }

@@ -14,40 +14,41 @@ import org.group4.module.users.Librarian;
 import org.group4.module.users.Member;
 
 /**
- * Controller class for editing member details.
+ * Controller for editing member details. This class handles the UI interactions and business logic
+ * for updating member information, such as name, email, phone number, and date of birth.
  */
 public class MemberEditController {
 
+  // UI components for saving and displaying member details
   @FXML
-  private JFXButton save; // Button to save the member's information
-
+  private JFXButton save;
   @FXML
-  private Label memberID; // Label to display the member ID
-
+  private Label memberID;
   @FXML
-  private TextField memberName, memberEmail, memberPhone; // Text fields for member information
-
+  private TextField memberName, memberEmail, memberPhone;
   @FXML
-  private DatePicker memberBirth; // DatePicker for member's birth date
+  private DatePicker memberBirth;
 
-  private Member currentMember; // The member being edited
-  private MemberViewController parentController; // Reference to the parent controller
-  private final Librarian librarian = SessionManager.getInstance()
-      .getCurrentLibrarian(); // Default librarian instance
+  // Member being edited and the parent controller
+  private Member currentMember;
+  private MemberViewController parentController;
+
+  // Librarian instance for performing member updates
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   /**
-   * Sets the parent controller to enable refreshing the member table after updates.
+   * Sets the parent controller, allowing the parent to refresh the member list after editing.
    *
-   * @param controller the parent controller instance
+   * @param controller The parent controller instance.
    */
   public void setParentController(MemberViewController controller) {
     this.parentController = controller;
   }
 
   /**
-   * Initializes the form fields with the data of the member being edited.
+   * Populates the form fields with the data of the member being edited.
    *
-   * @param member the member whose data will populate the form fields
+   * @param member The member whose data will populate the fields.
    */
   public void setMemberData(Member member) {
     this.currentMember = member;
@@ -58,27 +59,28 @@ public class MemberEditController {
   }
 
   /**
-   * Saves the member data after validating the input fields.
+   * Saves the updated member data after validating the input fields. If validation passes, the
+   * changes are saved, and the parent table is refreshed.
    *
-   * @param actionEvent the event triggered by the save button
+   * @param actionEvent The event triggered by clicking the save button.
    */
   @FXML
   private void saveMember(ActionEvent actionEvent) {
-    // Validate inputs and handle errors
+    // Validate inputs before saving
     if (!validateAllInputs()) {
       return;
     }
 
-    // Set member details after validation passes
+    // Update member details
     currentMember.setName(memberName.getText());
     currentMember.setDateOfBirth(memberBirth.getValue());
     currentMember.setEmail(memberEmail.getText());
     currentMember.setPhoneNumber(memberPhone.getText());
 
-    // Update member in the system
+    // Perform the update in the system
     returnCheckEditMember();
 
-    // Refresh the table and close the form
+    // Refresh parent table and close the form
     if (parentController != null) {
       parentController.refreshTable();
     }
@@ -86,12 +88,12 @@ public class MemberEditController {
   }
 
   /**
-   * Validates all input fields.
+   * Validates all input fields for correctness.
    *
-   * @return true if all inputs are valid, false otherwise
+   * @return true if all fields are valid; false otherwise.
    */
   private boolean validateAllInputs() {
-    // Check if any required field is empty
+    // Check for empty required fields
     if (memberName.getText().isEmpty() || memberEmail.getText().isEmpty() ||
         memberPhone.getText().isEmpty() || memberBirth.getValue() == null) {
       showAlert(AlertType.WARNING, "Incomplete Information",
@@ -99,20 +101,20 @@ public class MemberEditController {
       return false;
     }
 
-    // Check if name is valid
+    // Validate name format
     if (!isValidName(memberName.getText())) {
       showAlert(AlertType.WARNING, "Invalid Name",
           "Name must start with uppercase letters for each word.");
       return false;
     }
 
-    // Check if email is valid
+    // Validate email format
     if (!isValidEmail(memberEmail.getText())) {
       showAlert(AlertType.WARNING, "Invalid Email", "Please enter a valid email address.");
       return false;
     }
 
-    // Check if phone is valid
+    // Validate phone number format
     if (!isValidPhone(memberPhone.getText())) {
       showAlert(AlertType.WARNING, "Invalid Phone Number",
           "Phone number must contain exactly 10 digits.");
@@ -123,38 +125,39 @@ public class MemberEditController {
   }
 
   /**
-   * Checks if the name is valid, including Vietnamese characters.
+   * Validates the member's name, allowing for names with special characters (e.g., Vietnamese).
    *
-   * @param name the name to validate
-   * @return true if valid, false otherwise
+   * @param name The name to validate.
+   * @return true if the name is valid; false otherwise.
    */
   private boolean isValidName(String name) {
-    // Regex to validate names with Unicode (Vietnamese support)
     String regex = "([A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)(\\s[A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)*";
     return name.matches(regex);
   }
 
-
   /**
-   * Checks if the email is valid.
+   * Validates the email format.
    *
-   * @param email the email to validate
-   * @return true if valid, false otherwise
+   * @param email The email to validate.
+   * @return true if the email is valid; false otherwise.
    */
   private boolean isValidEmail(String email) {
     return email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
   }
 
   /**
-   * Checks if the phone number is valid.
+   * Validates the phone number format.
    *
-   * @param phone the phone number to validate
-   * @return true if valid, false otherwise
+   * @param phone The phone number to validate.
+   * @return true if the phone number is valid; false otherwise.
    */
   private boolean isValidPhone(String phone) {
     return phone.matches("\\d{10}");
   }
 
+  /**
+   * Checks if the member's update is successful. Throws an exception if the update fails.
+   */
   private void returnCheckEditMember() {
     boolean successEdit = librarian.updateMember(currentMember);
     if (!successEdit) {
@@ -164,7 +167,7 @@ public class MemberEditController {
   }
 
   /**
-   * Cancels the current edit operation and closes the form.
+   * Cancels the current operation and closes the form.
    */
   @FXML
   private void cancel() {
@@ -172,7 +175,7 @@ public class MemberEditController {
   }
 
   /**
-   * Closes the current form window.
+   * Closes the form window.
    */
   private void closeForm() {
     Stage stage = (Stage) memberID.getScene().getWindow();
@@ -180,11 +183,11 @@ public class MemberEditController {
   }
 
   /**
-   * Displays an alert dialog.
+   * Displays an alert with the specified details.
    *
-   * @param type    the type of alert
-   * @param title   the title of the alert
-   * @param content the content message of the alert
+   * @param type    The type of alert.
+   * @param title   The alert's title.
+   * @param content The alert's message content.
    */
   private void showAlert(AlertType type, String title, String content) {
     Alert alert = new Alert(type);
@@ -193,5 +196,4 @@ public class MemberEditController {
     alert.setContentText(content);
     alert.showAndWait();
   }
-
 }
