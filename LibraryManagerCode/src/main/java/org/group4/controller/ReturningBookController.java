@@ -23,10 +23,16 @@ import org.group4.module.transactions.Fine;
 import org.group4.module.users.Librarian;
 import org.group4.module.users.Member;
 
-
+/**
+ * Controller class for handling book return actions in the library system. This class allows for
+ * displaying book details, member details, and fine information when a book is returned.
+ */
 public class ReturningBookController {
 
+  // The current librarian session
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+
+  // FXML components for UI
   @FXML
   private Button cancelButton;
   @FXML
@@ -68,30 +74,48 @@ public class ReturningBookController {
   @FXML
   private Label referenceOnlyCheck;
 
+  // Current book item being processed
   private BookItem currentBookItem;
 
+  // Previous page to navigate to after returning the book
   private String previousPage;
 
+  /**
+   * Sets the previous page for navigation purposes.
+   *
+   * @param previousPage the previous page's identifier
+   */
   public void setPreviousPage(String previousPage) {
     this.previousPage = previousPage;
   }
 
+  /**
+   * Sets the book details for returning based on the provided book item.
+   *
+   * @param bookItem the book item to be returned
+   * @throws SQLException if there is an error with the database
+   */
   public void setItemDetailReturning(BookItem bookItem) throws SQLException {
     this.currentBookItem = bookItem;
 
     BookLending currentBookLending = findBookLendingById(bookItem.getBarcode());
 
+    // Display book and member details and setup return details
     displayBookDetails(currentBookLending);
-
     displayMemberDetails(currentBookLending);
-
     setupReturnDetails(currentBookLending);
-
     calculateAndDisplayFine(currentBookLending);
 
     System.out.println("End show information");
   }
 
+  /**
+   * Finds a book lending record by the barcode of the book item.
+   *
+   * @param bookItemBarCode the barcode of the book item
+   * @return the found BookLending object
+   * @throws IllegalArgumentException if the barcode is invalid or the book lending is not found
+   */
   private BookLending findBookLendingById(String bookItemBarCode) {
     if (bookItemBarCode == null || bookItemBarCode.isEmpty()) {
       throw new IllegalArgumentException("Barcode cannot be null or empty.");
@@ -99,6 +123,7 @@ public class ReturningBookController {
 
     BookLending foundBookItem = null;
 
+    // Search through all book lendings to find the corresponding one
     for (BookLending bookLending : FactoryDAO.getBookLendingDAO().getAll()) {
       if (bookLending.getBookItem().getBarcode().equals(bookItemBarCode)) {
         foundBookItem = bookLending;
@@ -106,6 +131,7 @@ public class ReturningBookController {
       }
     }
 
+    // If the lending is not found, throw an exception
     if (foundBookItem == null) {
       throw new IllegalArgumentException("Book lending not found for barcode: " + bookItemBarCode);
     }
@@ -118,6 +144,12 @@ public class ReturningBookController {
     return foundBookItem;
   }
 
+  /**
+   * Displays the details of the book being returned.
+   *
+   * @param currentBookLending the BookLending object containing the book details
+   * @throws IllegalArgumentException if the BookLending or BookItem is null
+   */
   private void displayBookDetails(BookLending currentBookLending) {
     if (currentBookLending == null) {
       throw new IllegalArgumentException("Book lending cannot be null.");
@@ -128,6 +160,7 @@ public class ReturningBookController {
       throw new IllegalArgumentException("Book item in lending cannot be null.");
     }
 
+    // Set the values in the UI labels
     isbnField.setText(bookItem.getISBN());
     titleField.setText(bookItem.getTitle());
     subjectField.setText(bookItem.getSubject());
@@ -139,6 +172,12 @@ public class ReturningBookController {
     referenceOnlyCheck.setText(bookItem.getIsReferenceOnly() ? "Yes" : "No");
   }
 
+  /**
+   * Displays the member details for the member who borrowed the book.
+   *
+   * @param currentBookLending the BookLending object containing the member details
+   * @throws IllegalArgumentException if the BookLending or Member is null
+   */
   private void displayMemberDetails(BookLending currentBookLending) {
     if (currentBookLending == null) {
       throw new IllegalArgumentException("Book lending cannot be null.");
@@ -149,6 +188,7 @@ public class ReturningBookController {
       throw new IllegalArgumentException("Member in lending cannot be null.");
     }
 
+    // Set the member details in the UI labels
     memberIdField.setText(member.getMemberId());
     memberNameField.setText(member.getName());
     dobDatePicker.setText(
@@ -157,6 +197,12 @@ public class ReturningBookController {
     phoneField.setText(member.getPhoneNumber());
   }
 
+  /**
+   * Sets up the return date and status for the book being returned.
+   *
+   * @param currentBookLending the BookLending object containing the return details
+   * @throws IllegalArgumentException if the BookLending or BookItem is null
+   */
   private void setupReturnDetails(BookLending currentBookLending) {
     if (currentBookLending == null) {
       throw new IllegalArgumentException("Book lending cannot be null.");
@@ -172,11 +218,17 @@ public class ReturningBookController {
       throw new IllegalArgumentException("Book item in lending cannot be null.");
     }
 
+    // Set the status of the book based on the checkbox
     BookStatus status = statusCheckBox.isSelected() ? BookStatus.AVAILABLE : BookStatus.LOST;
     bookItem.setStatus(status);
   }
 
-  // Tính và hiển thị tiền phạt
+  /**
+   * Calculates and displays any fines that may be applicable when returning the book.
+   *
+   * @param currentBookLending the BookLending object containing the lending details
+   * @throws SQLException if there is an error calculating the fine
+   */
   private void calculateAndDisplayFine(BookLending currentBookLending) throws SQLException {
     if (currentBookLending == null) {
       throw new IllegalArgumentException("Book lending cannot be null.");
@@ -187,7 +239,13 @@ public class ReturningBookController {
     feeField.setText(Double.toString(fineAmount));
   }
 
-
+  /**
+   * Handles the action of submitting the return of the book to the library system. Displays a
+   * success message and navigates to the appropriate page.
+   *
+   * @param actionEvent the action event triggering the submission
+   * @throws Exception if there is an error during the submission process
+   */
   public void handleSubmit(ActionEvent actionEvent) throws Exception {
     returningBookToLibrary(findBookLendingById(currentBookItem.getBarcode()));
     Alert alert = new Alert(AlertType.INFORMATION);
@@ -196,6 +254,7 @@ public class ReturningBookController {
     alert.setContentText("The book has been successfully borrowed.");
     alert.showAndWait();
 
+    // Navigate to the previous page
     if ("memberDetails".equals(previousPage)) {
       loadMemberDetail();
     } else {
@@ -203,6 +262,13 @@ public class ReturningBookController {
     }
   }
 
+  /**
+   * Handles the action of canceling the return and navigating to the previous page.
+   *
+   * @param actionEvent the action event triggering the cancel action
+   * @throws IOException  if there is an error loading the previous page
+   * @throws SQLException if there is an error with the database
+   */
   public void handleCancel(ActionEvent actionEvent) throws IOException, SQLException {
     if ("memberDetails".equals(previousPage)) {
       loadMemberDetail();
@@ -211,33 +277,50 @@ public class ReturningBookController {
     }
   }
 
+  /**
+   * Loads the book detail page for further actions.
+   *
+   * @throws IOException  if there is an error loading the page
+   * @throws SQLException if there is an error with the database
+   */
   private void loadBookDetail() throws IOException, SQLException {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
     Scene bookDetailScene = new Scene(loader.load());
 
     Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-
     currentStage.setScene(bookDetailScene);
 
     BookDetailsController bookDetailsController = loader.getController();
     bookDetailsController.setItemDetail(currentBookItem);
   }
 
+  /**
+   * Loads the member detail page for further actions.
+   *
+   * @throws IOException  if there is an error loading the page
+   * @throws SQLException if there is an error with the database
+   */
   private void loadMemberDetail() throws IOException, SQLException {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
     Scene memberDetailScene = new Scene(loader.load());
 
     Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-
     currentStage.setScene(memberDetailScene);
 
     BookDetailsController bookDetailsController = loader.getController();
     bookDetailsController.setItemDetail(currentBookItem);
   }
 
+  /**
+   * Handles user actions for updating the status of the book (Available or Lost).
+   *
+   * @param actionEvent the action event triggering the status change
+   * @throws SQLException if there is an error with the database
+   */
   public void handleUserAction(ActionEvent actionEvent) throws SQLException {
     boolean isChecked = statusCheckBox.isSelected();
 
+    // Update the book status based on the checkbox
     currentBookItem.setStatus(isChecked ? BookStatus.AVAILABLE : BookStatus.LOST);
     Fine amountFine = new Fine(findBookLendingById(currentBookItem.getBarcode()));
     double fineAmount = amountFine.calculateFine();
@@ -250,6 +333,12 @@ public class ReturningBookController {
     }
   }
 
+  /**
+   * Retrieves the book status based on the state of the checkbox.
+   *
+   * @param availableCheckBox the checkbox indicating whether the book is available
+   * @return the BookStatus of the book
+   */
   public static BookStatus getBookStatus(CheckBox availableCheckBox) {
     if (availableCheckBox.isSelected()) {
       return BookStatus.AVAILABLE;
@@ -257,8 +346,14 @@ public class ReturningBookController {
     return BookStatus.LOST; // Default case if no CheckBox is selected
   }
 
+  /**
+   * Handles the logic for returning the book to the library system.
+   *
+   * @param bookLending the BookLending object representing the lending details
+   * @throws Exception if there is an error during the return process
+   */
   private void returningBookToLibrary(BookLending bookLending) throws Exception {
-    // Add the logic to store the book in the library's database
+    // Return the book item to the library system
     boolean successAdded = librarian.returnBookItem(bookLending.getBookItem(),
         bookLending.getMember(), getBookStatus(statusCheckBox));
     if (!successAdded) {
@@ -271,5 +366,4 @@ public class ReturningBookController {
         "Book with ISBN: " + bookLending.getBookItem().getISBN()
             + " has been edited successfully.");
   }
-
 }
