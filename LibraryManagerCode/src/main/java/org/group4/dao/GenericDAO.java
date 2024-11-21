@@ -1,6 +1,5 @@
 package org.group4.dao;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -43,13 +42,12 @@ public interface GenericDAO<T, ID> {
     }
 
     /**
-     * Retrieves an entity by its ID.
+     * Retrieves an entity by its ID from the database.
      *
-     * @param id the identifier of the entity
-     * @return an Optional containing the entity if found, otherwise empty
-     * @throws SQLException if a database access error occurs
+     * @param id the identifier of the entity to retrieve
+     * @return an {@code Optional} containing the entity if found, or empty otherwise
      */
-    default Optional<T> getById(ID id) throws SQLException {
+    default Optional<T> getById(ID id) {
         throw new UnsupportedOperationException("GetById operation is not supported");
     }
 

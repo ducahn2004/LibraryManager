@@ -185,9 +185,9 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
    * Retrieves a book lending from the database by the barcode of the book item and the member ID of
    * the member.
    *
-   * @param barcode The barcode of the book item to retrieve the book lending for
-   * @param memberId The ID of the member to retrieve the book lending for
-   * @return An Optional containing the BookLending if found, or an empty Optional otherwise
+   * @param barcode The barcode of the book item
+   * @param memberId The ID of the member
+   * @return An {@code Optional} containing the book lending if found, or empty otherwise
    */
   public Optional<BookLending> getById(String barcode, String memberId) {
     try (Connection connection = getConnection();
@@ -196,7 +196,7 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
       preparedStatement.setString(2, memberId);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
-          return Optional.of(mapRowToBookLending(resultSet));
+          return Optional.ofNullable(mapRowToBookLending(resultSet));
         }
       }
     } catch (SQLException e) {
@@ -210,25 +210,29 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
    *
    * @param resultSet the ResultSet containing book lending data
    * @return a BookLending object with data from the ResultSet
-   * @throws SQLException if a database error occurs
    */
-  private BookLending mapRowToBookLending(ResultSet resultSet) throws SQLException {
-    // Retrieve BookItem and Member objects from the database
-    BookItem bookItem = FactoryDAO.getBookItemDAO()
-        .getById(resultSet.getString(COLUMN_BARCODE))
-        .orElseThrow(() -> new SQLException("BookItem not found"));
+  private BookLending mapRowToBookLending(ResultSet resultSet) {
+    try {
+      // Retrieve BookItem and Member objects from the database
+      BookItem bookItem = FactoryDAO.getBookItemDAO()
+          .getById(resultSet.getString(COLUMN_BARCODE))
+          .orElseThrow(() -> new SQLException("BookItem not found"));
 
-    // Retrieve Member object from the database
-    Member member = FactoryDAO.getMemberDAO()
-        .getById(resultSet.getString(COLUMN_MEMBER_ID))
-        .orElseThrow(() -> new SQLException("Member not found"));
+      // Retrieve Member object from the database
+      Member member = FactoryDAO.getMemberDAO()
+          .getById(resultSet.getString(COLUMN_MEMBER_ID))
+          .orElseThrow(() -> new SQLException("Member not found"));
 
-    // Create BookLending object from ResultSet data
-    LocalDate lendingDate = resultSet.getDate(COLUMN_LENDING_DATE).toLocalDate();
-    LocalDate dueDate = resultSet.getDate(COLUMN_DUE_DATE).toLocalDate();
-    LocalDate returnDate = resultSet.getDate(COLUMN_RETURN_DATE) != null
-        ? resultSet.getDate(COLUMN_RETURN_DATE).toLocalDate()
-        : null;
-    return new BookLending(bookItem, member, lendingDate, dueDate, returnDate);
+      // Create BookLending object from ResultSet data
+      LocalDate lendingDate = resultSet.getDate(COLUMN_LENDING_DATE).toLocalDate();
+      LocalDate dueDate = resultSet.getDate(COLUMN_DUE_DATE).toLocalDate();
+      LocalDate returnDate = resultSet.getDate(COLUMN_RETURN_DATE) != null
+          ? resultSet.getDate(COLUMN_RETURN_DATE).toLocalDate()
+          : null;
+      return new BookLending(bookItem, member, lendingDate, dueDate, returnDate);
+    } catch (SQLException e) {
+      logger.error("Error mapping row to BookLending", e);
+      return null;
+    }
   }
 }

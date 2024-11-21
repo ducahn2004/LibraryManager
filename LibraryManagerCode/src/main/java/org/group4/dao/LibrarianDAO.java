@@ -97,7 +97,7 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
   }
 
   @Override
-  public Optional<Librarian> getById(String id) throws SQLException {
+  public Optional<Librarian> getById(String id) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_LIBRARIAN_BY_ID_SQL)) {
       preparedStatement.setString(1, id);
@@ -106,6 +106,8 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
           return Optional.of(mapRowToLibrarian(resultSet));
         }
       }
+    } catch (SQLException e) {
+      logger.error("Error retrieving librarian with ID: {}", id, e);
     }
     return Optional.empty();
   }
@@ -115,15 +117,19 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
    *
    * @param resultSet the result set from a SQL query.
    * @return a Librarian object.
-   * @throws SQLException if an SQL error occurs during mapping.
    */
-  public Librarian mapRowToLibrarian(ResultSet resultSet) throws SQLException {
-    return new Librarian(
-        resultSet.getString(COLUMN_ID),
-        resultSet.getString(COLUMN_NAME),
-        resultSet.getDate(COLUMN_DATE_OF_BIRTH).toLocalDate(),
-        resultSet.getString(COLUMN_EMAIL),
-        resultSet.getString(COLUMN_PHONE)
-    );
+  public Librarian mapRowToLibrarian(ResultSet resultSet){
+    try {
+      return new Librarian(
+          resultSet.getString(COLUMN_ID),
+          resultSet.getString(COLUMN_NAME),
+          resultSet.getDate(COLUMN_DATE_OF_BIRTH).toLocalDate(),
+          resultSet.getString(COLUMN_EMAIL),
+          resultSet.getString(COLUMN_PHONE)
+      );
+    } catch (SQLException e) {
+      logger.error("Error mapping row to Librarian object", e);
+      return null;
+    }
   }
 }

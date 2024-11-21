@@ -162,15 +162,17 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   }
 
   @Override
-  public Optional<BookItem> getById(String barcode) throws SQLException {
+  public Optional<BookItem> getById(String barcode) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_ITEM_BY_BARCODE_SQL)) {
       preparedStatement.setString(1, barcode);
       try (ResultSet rs = preparedStatement.executeQuery()) {
         if (rs.next()) {
-          return Optional.of(mapRowToBookItem(rs));
+          return Optional.ofNullable(mapRowToBookItem(rs));
         }
       }
+    } catch (SQLException e) {
+      logger.error("Error retrieving book item by barcode: {}", barcode, e);
     }
     return Optional.empty();
   }
@@ -193,38 +195,42 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   }
 
   /**
-   * Maps a row from the result set to a BookItem object.
+   * Maps a row in the ResultSet to a {@link BookItem} object.
    *
-   * @param resultSet the ResultSet containing the row data to be mapped.
-   * @return the mapped BookItem object.
-   * @throws SQLException if an error occurs while accessing the ResultSet or the database.
+   * @param resultSet the ResultSet to map
+   * @return a BookItem object
    */
-  private BookItem mapRowToBookItem(ResultSet resultSet) throws SQLException {
-    // Retrieve the associated Book object using ISBN from the database
-    Book book = FactoryDAO.getBookDAO().getById(resultSet.getString("isbn"))
-        .orElseThrow(() -> new SQLException("Book not found for ISBN"));
+  private BookItem mapRowToBookItem(ResultSet resultSet) {
+    try {
+      // Retrieve the associated Book object using ISBN from the database
+      Book book = FactoryDAO.getBookDAO().getById(resultSet.getString("isbn"))
+          .orElseThrow(() -> new SQLException("Book not found for ISBN"));
 
-    // Retrieve the associated Rack object using rackNumber from the database
-    Rack rack = FactoryDAO.getRackDAO().getById(resultSet.getInt("rackNumber"))
-        .orElseThrow(() -> new SQLException("Rack not found for rack number"));
+      // Retrieve the associated Rack object using rackNumber from the database
+      Rack rack = FactoryDAO.getRackDAO().getById(resultSet.getInt("rackNumber"))
+          .orElseThrow(() -> new SQLException("Rack not found for rack number"));
 
-    // Construct and return a new BookItem directly with values from ResultSet and associated objects
-    return new BookItem(
-        book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
-        book.getLanguage(), book.getNumberOfPages(), book.getAuthors(),
-        resultSet.getString(COLUMN_BARCODE),
-        resultSet.getBoolean(COLUMN_IS_REFERENCE_ONLY),
-        resultSet.getDate(COLUMN_BORROWED) != null ?
-            resultSet.getDate(COLUMN_BORROWED).toLocalDate() : null,
-        resultSet.getDate(COLUMN_DUE_DATE) != null ?
-            resultSet.getDate(COLUMN_DUE_DATE).toLocalDate() : null,
-        resultSet.getDouble(COLUMN_PRICE),
-        BookFormat.valueOf(resultSet.getString(COLUMN_FORMAT)),
-        BookStatus.valueOf(resultSet.getString(COLUMN_STATUS)),
-        resultSet.getDate(COLUMN_DATE_OF_PURCHASE).toLocalDate(),
-        resultSet.getDate(COLUMN_PUBLICATION_DATE).toLocalDate(),
-        rack
-    );
+      // Construct and return a new BookItem directly with values from ResultSet and associated objects
+      return new BookItem(
+          book.getISBN(), book.getTitle(), book.getSubject(), book.getPublisher(),
+          book.getLanguage(), book.getNumberOfPages(), book.getAuthors(),
+          resultSet.getString(COLUMN_BARCODE),
+          resultSet.getBoolean(COLUMN_IS_REFERENCE_ONLY),
+          resultSet.getDate(COLUMN_BORROWED) != null ?
+              resultSet.getDate(COLUMN_BORROWED).toLocalDate() : null,
+          resultSet.getDate(COLUMN_DUE_DATE) != null ?
+              resultSet.getDate(COLUMN_DUE_DATE).toLocalDate() : null,
+          resultSet.getDouble(COLUMN_PRICE),
+          BookFormat.valueOf(resultSet.getString(COLUMN_FORMAT)),
+          BookStatus.valueOf(resultSet.getString(COLUMN_STATUS)),
+          resultSet.getDate(COLUMN_DATE_OF_PURCHASE).toLocalDate(),
+          resultSet.getDate(COLUMN_PUBLICATION_DATE).toLocalDate(),
+          rack
+      );
+    } catch (SQLException e) {
+      logger.error("Error mapping row to BookItem", e);
+    }
+    return null;
   }
 
   /**
@@ -244,9 +250,8 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
    * @param connection the database connection
    * @param isbn the ISBN of the book
    * @return the generated barcode as a String
-   * @throws SQLException if a database access error occurs
    */
-  public String generateBarcode(Connection connection, String isbn) throws SQLException {
+  public String generateBarcode(Connection connection, String isbn)  {
     try (PreparedStatement preparedStatement = connection.prepareStatement(GET_MAX_BARCODE_SQL)) {
       preparedStatement.setString(1, isbn + "-%");
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -259,30 +264,30 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
           }
         }
       }
+    } catch (SQLException e) {
+      logger.error("Error generating barcode for ISBN: {}", isbn, e);
     }
     return formatBarcode(isbn, 1); // Return the first barcode if no existing barcodes found
   }
 
   /**
-   * Retrieves all BookItems for the given ISBN.
+   * Retrieves all book items associated with a specific ISBN.
    *
    * @param isbn the ISBN of the book
-   * @return a list of BookItems associated with the given ISBN
-   * @throws SQLException if a database access error occurs
+   * @return a list of book items associated with the ISBN
    */
-  public List<BookItem> getAllByIsbn(String isbn) throws SQLException {
+  public List<BookItem> getAllByIsbn(String isbn) {
     List<BookItem> bookItems = new ArrayList<>();
     try (Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement(GET_BOOK_ITEM_BY_ISBN_SQL)) {
-      stmt.setString(1, isbn);
-      try (ResultSet rs = stmt.executeQuery()) {
-        while (rs.next()) {
-          bookItems.add(mapRowToBookItem(rs));
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_ITEM_BY_ISBN_SQL)) {
+      preparedStatement.setString(1, isbn);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        while (resultSet.next()) {
+          bookItems.add(mapRowToBookItem(resultSet));
         }
       }
     } catch (SQLException e) {
-      logger.error("Error retrieving book items for ISBN: {}", isbn, e);
-      throw e;
+      logger.error("Error retrieving book items by ISBN: {}", isbn, e);
     }
     return bookItems;
   }
@@ -293,14 +298,16 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
    * @param connection the database connection
    * @param rackNumber the rack number to check
    * @return true if the rack exists, false otherwise
-   * @throws SQLException if a database access error occurs
    */
-  private boolean rackExists(Connection connection, int rackNumber) throws SQLException {
+  private boolean rackExists(Connection connection, int rackNumber)  {
     try (PreparedStatement preparedStatement = connection.prepareStatement(CHECK_RACK_SQL)) {
       preparedStatement.setInt(1, rackNumber);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         return resultSet.next();
       }
+    } catch (SQLException e) {
+      logger.error("Error checking rack number: {}", rackNumber, e);
+      return false;
     }
   }
 }

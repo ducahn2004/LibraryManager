@@ -76,7 +76,7 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
       preparedStatement.setString(1, notificationId);
       try (ResultSet rs = preparedStatement.executeQuery()) {
         if (rs.next()) {
-          return Optional.of(mapRowToEmailNotification(rs));
+          return Optional.ofNullable(mapRowToEmailNotification(rs));
         }
       }
     } catch (SQLException e) {
@@ -101,34 +101,40 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
   }
 
   /**
-   * Maps a row from the email_notifications table to an EmailNotification object.
+   * Maps a row in the ResultSet to an EmailNotification object.
    *
-   * @param resultSet The ResultSet containing the row data
-   * @return An EmailNotification object with the data from the ResultSet
-   * @throws SQLException If an error occurs while retrieving data from the ResultSet
+   * @param resultSet The ResultSet to map
+   * @return The EmailNotification object
    */
-  private EmailNotification mapRowToEmailNotification(ResultSet resultSet) throws SQLException {
-    return new EmailNotification(
-        resultSet.getString(COLUMN_NOTIFICATION_ID),
-        NotificationType.valueOf(resultSet.getString(COLUMN_TYPE)),
-        resultSet.getString(COLUMN_CONTENT),
-        resultSet.getString(COLUMN_EMAIL),
-        resultSet.getDate(COLUMN_CREATED_ON).toLocalDate());
+  private EmailNotification mapRowToEmailNotification(ResultSet resultSet) {
+    try {
+      return new EmailNotification(
+          resultSet.getString(COLUMN_NOTIFICATION_ID),
+          NotificationType.valueOf(resultSet.getString(COLUMN_TYPE)),
+          resultSet.getString(COLUMN_CONTENT),
+          resultSet.getString(COLUMN_EMAIL),
+          resultSet.getDate(COLUMN_CREATED_ON).toLocalDate());
+    } catch (SQLException e) {
+      logger.error("Error mapping row to EmailNotification", e);
+      return null;
+    }
   }
 
   /**
-   * Sets the data of an EmailNotification object to a PreparedStatement.
+   * Sets the data in the prepared statement for an EmailNotification object.
    *
-   * @param preparedStatement The PreparedStatement to set the data to
-   * @param emailNotification The EmailNotification object to retrieve the data from
-   * @throws SQLException If an error occurs while setting the data
+   * @param preparedStatement The prepared statement to set the data in
+   * @param emailNotification The EmailNotification object to set the data from
    */
-  private void setData(PreparedStatement preparedStatement, EmailNotification emailNotification)
-      throws SQLException {
-    preparedStatement.setString(1, emailNotification.getNotificationId());
-    preparedStatement.setString(2, emailNotification.getType().name());
-    preparedStatement.setString(3, emailNotification.getEmail());
-    preparedStatement.setString(4, emailNotification.getContent());
-    preparedStatement.setDate(5, Date.valueOf(emailNotification.getCreatedOn()));
+  private void setData(PreparedStatement preparedStatement, EmailNotification emailNotification) {
+    try {
+      preparedStatement.setString(1, emailNotification.getNotificationId());
+      preparedStatement.setString(2, emailNotification.getType().name());
+      preparedStatement.setString(3, emailNotification.getEmail());
+      preparedStatement.setString(4, emailNotification.getContent());
+      preparedStatement.setDate(5, Date.valueOf(emailNotification.getCreatedOn()));
+    } catch (SQLException e) {
+      logger.error("Error setting data for email notification: {}", emailNotification, e);
+    }
   }
 }
