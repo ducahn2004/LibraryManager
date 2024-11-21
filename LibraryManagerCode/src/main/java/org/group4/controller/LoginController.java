@@ -23,39 +23,44 @@ import org.group4.module.services.AccountService;
 import org.group4.module.users.Librarian;
 
 /**
- * Controller for the Login screen in the Library Manager application. Handles user input,
- * authentication, and navigation to the admin panel upon successful login.
+ * Controller for the Login screen in the Library Manager application. Manages user authentication,
+ * input validation, and navigation to the admin panel upon successful login.
  */
 public class LoginController {
 
   @FXML
-  private TextField textShowPassword;
-  @FXML
-  private ImageView iconOpen_eye;
-  @FXML
-  private ImageView iconClose_eye;
-  @FXML
-  private TextField usernameField;
-  @FXML
-  private PasswordField passwordField;
-  @FXML
-  private Button loginButton;
+  private TextField textShowPassword; // Text field to display the password in plain text.
 
-  private final AccountService accountService = new AccountService();
-  private static final Logger logger = Logger.getLogger(LoginController.class.getName());
-  private String password;
+  @FXML
+  private ImageView iconOpen_eye; // Icon for toggling password visibility (visible state).
+
+  @FXML
+  private ImageView iconClose_eye; // Icon for toggling password visibility (hidden state).
+
+  @FXML
+  private TextField usernameField; // Input field for the username.
+
+  @FXML
+  private PasswordField passwordField; // Input field for the password (masked).
+
+  @FXML
+  private Button loginButton; // Button to initiate the login process.
+
+  private final AccountService accountService = new AccountService(); // Handles account-related logic.
+  private static final Logger logger = Logger.getLogger(
+      LoginController.class.getName()); // Logger for debugging and tracking.
+  private String password; // Stores the current password value.
 
   /**
-   * Initializes the controller. Sets default visibility for password field elements and assigns
-   * event handlers.
+   * Initializes the controller's components and sets up event handlers.
    */
   @FXML
   private void initialize() {
-    textShowPassword.setVisible(false);
-    iconClose_eye.setVisible(true);
-    iconOpen_eye.setVisible(false);
+    textShowPassword.setVisible(false); // Initially hide the plain text password field.
+    iconClose_eye.setVisible(true); // Display the "eye closed" icon by default.
+    iconOpen_eye.setVisible(false); // Hide the "eye open" icon by default.
 
-    // Set an event handler on the password field to listen for the Enter key
+    // Set event handler to trigger login when the Enter key is pressed.
     passwordField.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.ENTER) {
         try {
@@ -68,70 +73,72 @@ public class LoginController {
   }
 
   /**
-   * Updates the visible password field when a key is pressed.
+   * Updates the plain text password field when a key is pressed in the masked password field.
    *
    * @param keyEvent The KeyEvent triggered when a key is pressed.
    */
   public void hidePasswordOnAction(KeyEvent keyEvent) {
-    password = passwordField.getText();
-    textShowPassword.setText(password);
+    password = passwordField.getText(); // Retrieve the current password.
+    textShowPassword.setText(password); // Update the plain text field with the password.
   }
 
   /**
-   * Updates the masked password field when a key is pressed.
+   * Updates the masked password field when a key is pressed in the plain text password field.
    *
    * @param keyEvent The KeyEvent triggered when a key is pressed.
    */
   public void showPasswordOnAction(KeyEvent keyEvent) {
-    password = textShowPassword.getText();
-    passwordField.setText(password);
+    password = textShowPassword.getText(); // Retrieve the password from the plain text field.
+    passwordField.setText(password); // Update the masked field with the password.
   }
 
   /**
-   * Toggles visibility to show the password in plain text.
+   * Toggles the UI to show the password in plain text.
    *
    * @param mouseEvent The MouseEvent triggered when the "eye open" icon is clicked.
    */
   public void closeClickedOnAction(MouseEvent mouseEvent) {
-    textShowPassword.setVisible(true);
-    iconOpen_eye.setVisible(true);
-    iconClose_eye.setVisible(false);
-    passwordField.setVisible(false);
+    textShowPassword.setVisible(true); // Show the plain text password field.
+    iconOpen_eye.setVisible(true); // Display the "eye open" icon.
+    iconClose_eye.setVisible(false); // Hide the "eye closed" icon.
+    passwordField.setVisible(false); // Hide the masked password field.
   }
 
   /**
-   * Toggles visibility to mask the password.
+   * Toggles the UI to mask the password.
    *
    * @param mouseEvent The MouseEvent triggered when the "eye closed" icon is clicked.
    */
   public void openClickedOnAction(MouseEvent mouseEvent) {
-    textShowPassword.setVisible(false);
-    iconOpen_eye.setVisible(false);
-    iconClose_eye.setVisible(true);
-    passwordField.setVisible(true);
+    textShowPassword.setVisible(false); // Hide the plain text password field.
+    iconOpen_eye.setVisible(false); // Hide the "eye open" icon.
+    iconClose_eye.setVisible(true); // Display the "eye closed" icon.
+    passwordField.setVisible(true); // Show the masked password field.
   }
 
   /**
-   * Handles the login button action. Authenticates the user and navigates to the admin panel if
-   * login is successful.
+   * Handles the login action, authenticates the user, and navigates to the admin panel.
    *
    * @throws SQLException If there is an error during the login process.
    */
   @FXML
   private void handleLoginButton() throws SQLException {
-    String username = usernameField.getText().trim();
-    String password = passwordField.getText();
+    String username = usernameField.getText().trim(); // Retrieve and trim the username.
+    String password = passwordField.getText(); // Retrieve the password.
 
-    logger.info("Login attempt with username: " + username);
+    logger.info("Login attempt with username: " + username); // Log the login attempt.
 
+    // Validate that username and password fields are not empty.
     if (username.isEmpty() || password.isEmpty()) {
       showAlert("Login Failed", "Please enter both username and password!");
       return;
     }
 
+    // Authenticate the user using AccountService.
     if (accountService.login(username, password)) {
       Optional<Librarian> librarian = FactoryDAO.getLibrarianDAO().getById(username);
 
+      // If a librarian is found, set it in the session manager.
       if (librarian.isPresent()) {
         SessionManager.getInstance().setCurrentLibrarian(librarian.get());
       } else {
@@ -139,6 +146,7 @@ public class LoginController {
       }
 
       try {
+        // Load the admin panel view and navigate to it.
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminPane.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) loginButton.getScene().getWindow();
@@ -148,10 +156,12 @@ public class LoginController {
         stage.centerOnScreen();
         stage.show();
       } catch (IOException e) {
+        // Log and show an alert if the admin panel fails to load.
         logger.severe("Failed to load admin panel: " + e.getMessage());
         showAlert("Error", "Unable to load the admin panel.");
       }
     } else {
+      // Show an alert if the login credentials are incorrect.
       showAlert("Login Failed", "Incorrect username or password!");
     }
   }
@@ -163,12 +173,10 @@ public class LoginController {
    * @param message The message to display in the alert dialog.
    */
   private void showAlert(String title, String message) {
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle(title);
-    alert.setHeaderText(null);
-    alert.setContentText(message);
-    alert.showAndWait();
+    Alert alert = new Alert(Alert.AlertType.ERROR); // Create an error alert.
+    alert.setTitle(title); // Set the title of the alert.
+    alert.setHeaderText(null); // No header text for this alert.
+    alert.setContentText(message); // Set the content message.
+    alert.showAndWait(); // Display the alert and wait for user response.
   }
-
-
 }
