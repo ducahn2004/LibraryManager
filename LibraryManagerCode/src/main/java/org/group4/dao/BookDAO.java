@@ -161,7 +161,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
       preparedStatement.setString(1, isbn);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
-          return Optional.of(mapRowToBook(resultSet)); // Map row to Book object
+          return Optional.ofNullable(mapRowToBook(resultSet)); // Map row to Book object
         }
       }
     } catch (SQLException e) {
@@ -190,17 +190,21 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
    *
    * @param resultSet the result set from a SQL query
    * @return a Book object
-   * @throws SQLException if a database access error occurs
    */
-  private Book mapRowToBook(ResultSet resultSet) throws SQLException {
-    String isbn = resultSet.getString(COLUMN_ISBN);
-    String title = resultSet.getString(COLUMN_TITLE);
-    String subject = resultSet.getString(COLUMN_SUBJECT);
-    String publisher = resultSet.getString(COLUMN_PUBLISHER);
-    String language = resultSet.getString(COLUMN_LANGUAGE);
-    int numberOfPages = resultSet.getInt(COLUMN_NUMBER_OF_PAGES);
-    Set<Author> authors = authorDAO.getAuthorsByBook(isbn);
-    return new Book(isbn, title, subject, publisher, language, numberOfPages, authors);
+  private Book mapRowToBook(ResultSet resultSet) {
+    try {
+      String isbn = resultSet.getString(COLUMN_ISBN);
+      String title = resultSet.getString(COLUMN_TITLE);
+      String subject = resultSet.getString(COLUMN_SUBJECT);
+      String publisher = resultSet.getString(COLUMN_PUBLISHER);
+      String language = resultSet.getString(COLUMN_LANGUAGE);
+      int numberOfPages = resultSet.getInt(COLUMN_NUMBER_OF_PAGES);
+      Set<Author> authors = authorDAO.getAuthorsByBook(isbn);
+      return new Book(isbn, title, subject, publisher, language, numberOfPages, authors);
+    } catch (SQLException e) {
+      logger.error("Error mapping row to Book object", e);
+      return null;
+    }
   }
 
   /**
@@ -226,15 +230,20 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   }
 
   /**
-   * Retrieves all BookItems for a given book using its ISBN.
+   * Retrieves all book items associated with a book.
    *
-   * @param isbn the ISBN of the book.
-   * @return a list of BookItems associated with the given ISBN.
-   * @throws SQLException if a database access error occurs.
+   * @param isbn the ISBN of the book
+   * @return a list of book items associated with the book
    */
-  public List<BookItem> getAllBookItems(String isbn) throws SQLException {
-    BookItemDAO bookItemDAO = new BookItemDAO();
-    return bookItemDAO.getAllByIsbn(isbn);
+  public List<BookItem> getAllBookItems(String isbn) {
+    try {
+      BookItemDAO bookItemDAO = new BookItemDAO();
+      return bookItemDAO.getAllByIsbn(isbn);
+    } catch (Exception e) {
+      logger.error("Error retrieving book items for book with ISBN {}: {}", isbn, e);
+      return new ArrayList<>();
+    }
+
   }
 
   /**
@@ -261,12 +270,13 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
    *
    * @param connection the connection to the database
    * @param book the book to update
-   * @throws SQLException if a database access error occurs
    */
-  private void updateBookAuthors(Connection connection, Book book) throws SQLException {
+  private void updateBookAuthors(Connection connection, Book book) {
     try (PreparedStatement deleteAuthorsStmt = connection.prepareStatement(DELETE_BOOK_AUTHORS_SQL)) {
       deleteAuthorsStmt.setString(1, book.getISBN());
       deleteAuthorsStmt.executeUpdate();
+    } catch (SQLException e) {
+      logger.error("Error deleting authors for book: {}", book, e);
     }
 
     // Add authors to book_authors table
@@ -276,6 +286,8 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
         bookAuthorStmt.setString(1, book.getISBN());
         bookAuthorStmt.setString(2, authorId);
         bookAuthorStmt.executeUpdate();
+      } catch (SQLException e) {
+        logger.error("Error adding author to book: {}", author, e);
       }
     }
   }

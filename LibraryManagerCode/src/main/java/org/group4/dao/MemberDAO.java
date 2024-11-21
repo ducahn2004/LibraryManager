@@ -90,9 +90,8 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
    *
    * @param connection the database connection
    * @return the generated member ID
-   * @throws SQLException if a database access error occurs
    */
-  private String generateMemberId(Connection connection) throws SQLException {
+  private String generateMemberId(Connection connection) {
     String currentYear = String.valueOf(LocalDate.now().getYear());
     String likePattern = currentYear + "%";
     try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_MAX_MEMBER_ID_SQL)) {
@@ -105,6 +104,8 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
           return currentYear + String.format("%04d", nextId); // Format to year + 4-digit ID
         }
       }
+    } catch (SQLException e) {
+      logger.error("Error generating member ID", e);
     }
     return currentYear + "0001"; // First ID for the year
   }
@@ -148,7 +149,7 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
       preparedStatement.setString(1, memberId); // Set member ID in query
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
-        return Optional.of(mapRowToMember(resultSet)); // Map result to Member object
+        return Optional.ofNullable(mapRowToMember(resultSet)); // Map result to Member object
       }
     } catch (SQLException e) {
       logger.error("Error finding member by ID: {}", memberId, e);
@@ -193,18 +194,22 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
   }
 
   /**
-   * Maps a row from the result set to a Member object.
+   * Maps a row from the members table to a Member object.
    *
-   * @param resultSet the result set from a SQL query
-   * @return a Member object
-   * @throws SQLException if an SQL error occurs during mapping
+   * @param resultSet the result set from a database query
+   * @return the mapped Member object
    */
-  private Member mapRowToMember(ResultSet resultSet) throws SQLException {
-    return new Member(resultSet.getString(COLUMN_MEMBER_ID),
-        resultSet.getString(COLUMN_NAME),
-        resultSet.getDate(COLUMN_DATE_OF_BIRTH).toLocalDate(),
-        resultSet.getString(COLUMN_EMAIL),
-        resultSet.getString(COLUMN_PHONE_NUMBER),
-        resultSet.getInt(COLUMN_TOTAL_BOOKS_CHECKED_OUT));
+  private Member mapRowToMember(ResultSet resultSet) {
+    try {
+      return new Member(resultSet.getString(COLUMN_MEMBER_ID),
+          resultSet.getString(COLUMN_NAME),
+          resultSet.getDate(COLUMN_DATE_OF_BIRTH).toLocalDate(),
+          resultSet.getString(COLUMN_EMAIL),
+          resultSet.getString(COLUMN_PHONE_NUMBER),
+          resultSet.getInt(COLUMN_TOTAL_BOOKS_CHECKED_OUT));
+    } catch (SQLException e) {
+      logger.error("Error mapping row to Member", e);
+    }
+    return null;
   }
 }

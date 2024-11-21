@@ -103,7 +103,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
       preparedStatement.setString(1, authorId);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
-          return Optional.of(mapRowToAuthor(resultSet));
+          return Optional.ofNullable(mapRowToAuthor(resultSet));
         }
       }
     } catch (SQLException e) {
@@ -150,16 +150,20 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   }
 
   /**
-   * Maps a ResultSet row to an Author object.
+   * Maps a row from the authors table to an Author object.
    *
-   * @param resultSet the ResultSet to map
+   * @param resultSet the result set from a database query
    * @return an Author object
-   * @throws SQLException if a database access error occurs
    */
-  private Author mapRowToAuthor(ResultSet resultSet) throws SQLException {
-    String authorId = resultSet.getString(COLUMN_AUTHOR_ID);
-    String name = resultSet.getString(COLUMN_NAME);
-    return new Author(authorId, name);
+  private Author mapRowToAuthor(ResultSet resultSet) {
+    try {
+      String authorId = resultSet.getString(COLUMN_AUTHOR_ID);
+      String name = resultSet.getString(COLUMN_NAME);
+      return new Author(authorId, name);
+    } catch (SQLException e) {
+      logger.error("Error mapping row to Author", e);
+    }
+    return null;
   }
 
   /**
@@ -167,9 +171,8 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
    *
    * @param connection the database connection
    * @return a new Author ID
-   * @throws SQLException if a database access error occurs
    */
-  private String generateAuthorId(Connection connection) throws SQLException {
+  private String generateAuthorId(Connection connection) {
     try (PreparedStatement statement = connection.prepareStatement(GET_MAX_AUTHOR_ID_SQL);
         ResultSet resultSet = statement.executeQuery()) {
       if (resultSet.next()) {
@@ -180,6 +183,8 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
           return String.format("AUTHOR-%03d", nextId);
         }
       }
+    } catch (SQLException e) {
+      logger.error("Error generating new author ID", e);
     }
     return "AUTHOR-001"; // Default Author ID
   }

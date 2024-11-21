@@ -3,7 +3,6 @@ package org.group4.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +59,7 @@ public class QRCodeDAO extends BaseDAO {
    * @param barcode the barcode of the book item
    * @return the QR code URL if it exists
    */
-  public Optional<String> getByBarcode(String barcode) throws SQLException {
+  public Optional<String> getByBarcode(String barcode) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_BARCODE)) {
       preparedStatement.setString(1, barcode);
@@ -68,11 +67,10 @@ public class QRCodeDAO extends BaseDAO {
         if (resultSet.next()) {
           return Optional.of(resultSet.getString(COLUMN_QR_CODE_URL));
         }
-      } catch (Exception e) {
-        logger.error("Failed to get QR code for book item with barcode: {}", barcode, e);
       }
+    } catch (Exception e) {
+      logger.error("Failed to get QR code for book item with barcode: {}", barcode, e);
     }
-
     return Optional.empty();
   }
 

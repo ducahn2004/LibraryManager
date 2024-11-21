@@ -84,15 +84,17 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   }
 
   @Override
-  public Optional<Rack> getById(Integer numberRack) throws SQLException {
+  public Optional<Rack> getById(Integer numberRack) {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_RACK_BY_ID_SQL)) {
       preparedStatement.setInt(1, numberRack);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
-          return Optional.of(mapRowToRack(resultSet));
+          return Optional.ofNullable(mapRowToRack(resultSet));
         }
       }
+    } catch (SQLException e) {
+      logger.error("Error getting rack by ID: {}", numberRack, e);
     }
     return Optional.empty();
   }
@@ -114,15 +116,19 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   }
 
   /**
-   * Maps a row in the {@code ResultSet} to a {@link Rack} object.
+   * Maps a row in the ResultSet to a {@link Rack} object.
    *
-   * @param rs the {@code ResultSet} to map
-   * @return a {@code Rack} object
-   * @throws SQLException if an error occurs while accessing the {@code ResultSet}
+   * @param rs The ResultSet containing the row to map.
+   * @return The Rack object mapped from the row, or null if an error occurred.
    */
-  private Rack mapRowToRack(ResultSet rs) throws SQLException {
-    int numberRack = rs.getInt(COLUMN_NUMBER_RACK);
-    String locationIdentifier = rs.getString(COLUMN_LOCATION_IDENTIFIER);
-    return new Rack(numberRack, locationIdentifier);
+  private Rack mapRowToRack(ResultSet rs) {
+    try {
+      int numberRack = rs.getInt(COLUMN_NUMBER_RACK);
+      String locationIdentifier = rs.getString(COLUMN_LOCATION_IDENTIFIER);
+      return new Rack(numberRack, locationIdentifier);
+    } catch (SQLException e) {
+      logger.error("Error mapping row to Rack", e);
+      return null;
+    }
   }
 }

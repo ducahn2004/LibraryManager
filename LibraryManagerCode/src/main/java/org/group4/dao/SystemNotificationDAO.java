@@ -20,16 +20,22 @@ import org.slf4j.LoggerFactory;
  */
 public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemNotification, String> {
 
-  /** Logger for the SystemNotificationDAO class. */
+  /**
+   * Logger for the SystemNotificationDAO class.
+   */
   private static final Logger logger = LoggerFactory.getLogger(SystemNotificationDAO.class);
 
-  /** Column names for the system_notifications table. */
+  /**
+   * Column names for the system_notifications table.
+   */
   private static final String COLUMN_NOTIFICATION_ID = "notificationId";
   private static final String COLUMN_TYPE = "type";
   private static final String COLUMN_CONTENT = "content";
   private static final String COLUMN_CREATED_ON = "createdOn";
 
-  /** SQL statements for CRUD operations on the system_notifications table. */
+  /**
+   * SQL statements for CRUD operations on the system_notifications table.
+   */
   private static final String ADD_NOTIFICATION_SQL =
       "INSERT INTO system_notifications ("
           + COLUMN_NOTIFICATION_ID + ", "
@@ -74,7 +80,8 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
    */
   public boolean delete(String notificationId) {
     try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_NOTIFICATION_SQL)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(
+            DELETE_NOTIFICATION_SQL)) {
       preparedStatement.setString(1, notificationId);
       return preparedStatement.executeUpdate() > 0;
     } catch (SQLException e) {
@@ -84,18 +91,19 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
   }
 
   /**
-   * Retrieves a system notification by its ID.
+   * Retrieves a system notification by its ID from the database.
    *
    * @param notificationId The ID of the notification to retrieve.
-   * @return An Optional containing the SystemNotification if found, or an empty Optional otherwise.
+   * @return An {@code Optional} containing the notification if found, or empty otherwise.
    */
   public Optional<SystemNotification> getById(String notificationId) {
     try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(GET_NOTIFICATION_BY_ID_SQL)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(
+            GET_NOTIFICATION_BY_ID_SQL)) {
       preparedStatement.setString(1, notificationId);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         if (resultSet.next()) {
-          return Optional.of(mapRowToSystemNotification(resultSet));
+          return Optional.ofNullable(mapRowToSystemNotification(resultSet));
         }
       }
     } catch (SQLException e) {
@@ -112,7 +120,8 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
   public List<SystemNotification> getAll() {
     List<SystemNotification> notifications = new ArrayList<>();
     try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_NOTIFICATIONS_SQL);
+        PreparedStatement preparedStatement = connection.prepareStatement(
+            GET_ALL_NOTIFICATIONS_SQL);
         ResultSet rs = preparedStatement.executeQuery()) {
       while (rs.next()) {
         notifications.add(mapRowToSystemNotification(rs));
@@ -124,17 +133,21 @@ public class SystemNotificationDAO extends BaseDAO implements GenericDAO<SystemN
   }
 
   /**
-   * Maps a ResultSet row to a SystemNotification object.
+   * Maps a row from the system_notifications table to a SystemNotification object.
    *
    * @param resultSet The ResultSet containing the row data.
-   * @return A SystemNotification object.
-   * @throws SQLException If an error occurs while mapping the data.
+   * @return A SystemNotification object with the data from the ResultSet.
    */
-  private SystemNotification mapRowToSystemNotification(ResultSet resultSet) throws SQLException {
-    return new SystemNotification(
-        resultSet.getString(COLUMN_NOTIFICATION_ID),
-        NotificationType.valueOf(resultSet.getString(COLUMN_TYPE)),
-        resultSet.getString(COLUMN_CONTENT),
-        resultSet.getDate(COLUMN_CREATED_ON).toLocalDate());
+  private SystemNotification mapRowToSystemNotification(ResultSet resultSet) {
+    try {
+      return new SystemNotification(
+          resultSet.getString(COLUMN_NOTIFICATION_ID),
+          NotificationType.valueOf(resultSet.getString(COLUMN_TYPE)),
+          resultSet.getString(COLUMN_CONTENT),
+          resultSet.getDate(COLUMN_CREATED_ON).toLocalDate());
+    } catch (SQLException e) {
+      logger.error("Error mapping row to SystemNotification", e);
+    }
+    return null;
   }
 }
