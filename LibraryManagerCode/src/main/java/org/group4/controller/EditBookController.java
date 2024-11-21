@@ -11,43 +11,47 @@ import org.group4.module.manager.SessionManager;
 import org.group4.module.users.Librarian;
 
 /**
- * Controller class for editing book details.
+ * Controller class for editing book details. Handles the logic for updating book information and
+ * interacting with the UI components in the edit book form.
  */
 public class EditBookController {
 
   @FXML
-  private TextField bookISBN;         // Text field for book ISBN
+  private TextField bookISBN;         // Text field for the book ISBN
   @FXML
-  private TextField bookName;         // Text field for book title
+  private TextField bookName;         // Text field for the book title
   @FXML
-  private TextField bookSubject;      // Text field for book subject
+  private TextField bookSubject;      // Text field for the book subject
   @FXML
-  private TextField bookPublisher;    // Text field for book publisher
+  private TextField bookPublisher;    // Text field for the book publisher
   @FXML
-  private TextField bookLanguage;     // Text field for book language
+  private TextField bookLanguage;     // Text field for the book language
   @FXML
-  private TextField numberOfPages;    // Text field for number of pages
+  private TextField numberOfPages;    // Text field for the number of pages
   @FXML
-  private TextField bookAuthor;       // Text field for book authors
+  private TextField bookAuthor;       // Text field for the book authors
 
   private Book currentBook;                    // The book currently being edited
   private BookViewController parentController; // Reference to the parent controller
-  // Default librarian instance
+
+  /**
+   * Librarian instance managing the session.
+   */
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   /**
-   * Sets the parent controller to allow table refresh after saving book data.
+   * Sets the parent controller for enabling table refresh after saving book data.
    *
-   * @param bookViewController the parent controller instance
+   * @param bookViewController The parent controller instance.
    */
   public void setParentController(BookViewController bookViewController) {
     this.parentController = bookViewController;
   }
 
   /**
-   * Populates form fields with the book's current data.
+   * Populates the form fields with the current book's data for editing.
    *
-   * @param book the book to be edited
+   * @param book The book to be edited.
    */
   public void setBookData(Book book) {
     this.currentBook = book;
@@ -61,10 +65,10 @@ public class EditBookController {
   }
 
   /**
-   * Saves the edited book data after validating all required fields. If fields are valid, updates
-   * the book and refreshes the table.
+   * Saves the updated book details after validating all required fields. If successful, updates the
+   * book, refreshes the table, and closes the form.
    *
-   * @param actionEvent the event triggered by the save button
+   * @param actionEvent The event triggered by the save button.
    */
   public void saveBook(ActionEvent actionEvent) {
     // Validate required fields
@@ -73,7 +77,7 @@ public class EditBookController {
         bookLanguage.getText().isEmpty() || numberOfPages.getText().isEmpty()) {
 
       showAlert("Incomplete Information", "Please fill in all required information.");
-      return; // Stop execution to allow user to correct input
+      return; // Exit the method to allow user to correct input
     }
 
     // Set book details after validation
@@ -83,40 +87,49 @@ public class EditBookController {
     currentBook.setPublisher(bookPublisher.getText());
     currentBook.setLanguage(bookLanguage.getText());
 
-    // Parse and set the number of pages, with error handling for invalid input
+    // Parse and validate the number of pages
     try {
       currentBook.setNumberOfPages(Integer.parseInt(numberOfPages.getText()));
     } catch (NumberFormatException e) {
       showAlert("Invalid Input", "Please enter a valid number for the page count.");
-      return; // Stop execution to allow user to correct input
+      return; // Exit the method to allow user to correct input
     }
+
+    // Attempt to save the book
     returnCheckEditBook();
-    // Refresh the table and close the form if all validations pass
+
+    // Refresh the parent table view if the controller is available
     if (parentController != null) {
       parentController.refreshTable();
     }
+
+    // Close the form after a successful save
     closeForm();
   }
 
+  /**
+   * Updates the book in the system. Throws an exception if the update fails due to a duplicate
+   * ISBN.
+   */
   private void returnCheckEditBook() {
     boolean successEdit = librarian.updateBook(currentBook);
+
     if (successEdit) {
-      // TODO Uncomment after notification complete
-      //SystemNotification.sendNotification(String type, String content);
+      // Log the successful update (TODO: Add notifications if implemented)
       System.out.println(
           "Book with ISBN: " + currentBook.getISBN() + " has been edited successfully.");
     } else {
-
+      // Log the failure and throw an exception
       System.out.println("Failed to edit book with ISBN: " + currentBook.getISBN());
       throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
     }
   }
 
   /**
-   * Displays a warning alert with specified title and content.
+   * Displays a warning alert with a specified title and message.
    *
-   * @param title   the title of the alert
-   * @param content the content message of the alert
+   * @param title   The title of the alert dialog.
+   * @param content The message content of the alert dialog.
    */
   private void showAlert(String title, String content) {
     Alert alert = new Alert(AlertType.WARNING);
@@ -127,20 +140,19 @@ public class EditBookController {
   }
 
   /**
-   * Cancels the edit operation and closes the form.
+   * Cancels the edit operation and closes the form window.
    *
-   * @param actionEvent the event triggered by the cancel button
+   * @param actionEvent The event triggered by the cancel button.
    */
   public void cancel(ActionEvent actionEvent) {
     closeForm();
   }
 
   /**
-   * Closes the current form window.
+   * Closes the form window.
    */
   private void closeForm() {
     Stage stage = (Stage) bookISBN.getScene().getWindow();
     stage.close();
   }
-
 }
