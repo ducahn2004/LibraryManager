@@ -70,7 +70,7 @@ public class QRCodeGenerator {
      */
     public static String generateQRCodeForBookItem(BookItem bookItem) throws IOException {
         // Ensure the directory exists
-        Path path = Paths.get("LibraryManager/LibraryManagerCode/src/main/resources/qrImage");
+        Path path = Paths.get("LibraryManager/LibraryManagerCode/src/main/resources/Image");
         if (!Files.exists(path)) {
             Files.createDirectories(path);
         }
@@ -79,7 +79,7 @@ public class QRCodeGenerator {
         String bookItemInfo = bookItem.toQRCodeString();
         String imageName = bookItem.getBarcode() + ".png";
         String filePath =
-            "LibraryManager/LibraryManagerCode/src/main/resources/qrImage/" + imageName;
+            "LibraryManager/LibraryManagerCode/src/main/resources/Image/" + imageName;
 
         // Generate and save the QR code
         generateQRCode(bookItemInfo, filePath, 350, 350);

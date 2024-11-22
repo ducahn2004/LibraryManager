@@ -8,10 +8,7 @@ import org.group4.model.users.Librarian;
  */
 public class SessionManager {
 
-  /** Singleton instance of the session manager. */
   private static SessionManager instance;
-
-  /** The current logged-in librarian. */
   private Librarian currentLibrarian;
 
   /** Private constructor to enforce singleton pattern. */
