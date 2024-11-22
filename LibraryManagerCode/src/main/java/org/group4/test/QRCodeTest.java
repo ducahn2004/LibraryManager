@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 import org.group4.dao.FactoryDAO;
-import org.group4.module.books.BookItem;
-import org.group4.module.qrcode.QRCodeGenerator;
-import org.group4.module.qrcode.QRCodeReader;
+import org.group4.model.books.BookItem;
+import org.group4.model.qrcode.QRCodeGenerator;
+import org.group4.model.qrcode.QRCodeReader;
 
 public class QRCodeTest {
   public static void main(String[] args) throws SQLException, IOException, NotFoundException {

@@ -6,7 +6,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
-import org.group4.module.services.AccountService;
+import org.group4.model.services.AccountService;
 
 public class SettingController {
 

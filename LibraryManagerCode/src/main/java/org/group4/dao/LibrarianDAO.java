@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-import org.group4.module.users.Librarian;
+import org.group4.model.users.Librarian;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

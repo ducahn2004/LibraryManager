@@ -11,10 +11,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.module.books.BookItem;
-import org.group4.module.books.Rack;
-import org.group4.module.enums.BookFormat;
-import org.group4.module.enums.BookStatus;
+import org.group4.model.books.BookItem;
+import org.group4.model.books.Rack;
+import org.group4.model.enums.BookFormat;
+import org.group4.model.enums.BookStatus;
 
 /**
  * Controller class for editing a book item. Handles UI interactions for editing details such as

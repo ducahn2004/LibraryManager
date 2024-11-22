@@ -6,9 +6,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.module.books.Book;
-import org.group4.module.manager.SessionManager;
-import org.group4.module.users.Librarian;
+import org.group4.model.books.Book;
+import org.group4.model.manager.SessionManager;
+import org.group4.model.users.Librarian;
 
 /**
  * Controller class for editing book details. Handles the logic for updating book information and

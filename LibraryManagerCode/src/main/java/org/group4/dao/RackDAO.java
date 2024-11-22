@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.group4.module.books.Rack;
+import org.group4.model.books.Rack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package org.group4.controller;
 
-import org.group4.module.enums.BookStatus;
+import org.group4.model.enums.BookStatus;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -16,12 +16,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
-import org.group4.module.books.BookItem;
-import org.group4.module.manager.SessionManager;
-import org.group4.module.transactions.BookLending;
-import org.group4.module.transactions.Fine;
-import org.group4.module.users.Librarian;
-import org.group4.module.users.Member;
+import org.group4.model.books.BookItem;
+import org.group4.model.manager.SessionManager;
+import org.group4.model.transactions.BookLending;
+import org.group4.model.transactions.Fine;
+import org.group4.model.users.Librarian;
+import org.group4.model.users.Member;
 
 
 public class ReturningBookController {

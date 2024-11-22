@@ -22,9 +22,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
-import org.group4.module.books.Book;
-import org.group4.module.manager.SessionManager;
-import org.group4.module.users.Librarian;
+import org.group4.model.books.Book;
+import org.group4.model.manager.SessionManager;
+import org.group4.model.users.Librarian;
 
 /**
  * Controller for managing book-related operations in the application.

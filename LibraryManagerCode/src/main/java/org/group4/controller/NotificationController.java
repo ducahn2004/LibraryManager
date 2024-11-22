@@ -15,11 +15,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
-import org.group4.module.manager.SessionManager;
-import org.group4.module.notifications.EmailNotification;
-import org.group4.module.notifications.Notification;
-import org.group4.module.notifications.SystemNotification;
-import org.group4.module.users.Librarian;
+import org.group4.model.manager.SessionManager;
+import org.group4.model.notifications.EmailNotification;
+import org.group4.model.notifications.Notification;
+import org.group4.model.notifications.SystemNotification;
+import org.group4.model.users.Librarian;
 
 public class NotificationController {
 

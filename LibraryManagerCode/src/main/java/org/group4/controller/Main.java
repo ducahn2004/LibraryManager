@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.group4.module.services.AutoNotificationService;
+import org.group4.model.services.AutoNotificationService;
 
 import java.io.IOException;
 

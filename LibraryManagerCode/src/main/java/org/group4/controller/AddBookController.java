@@ -16,11 +16,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.module.books.Author;
-import org.group4.module.books.Book;
-import org.group4.module.manager.SessionManager;
-import org.group4.module.users.Librarian;
-import org.group4.module.services.GoogleBooksService;
+import org.group4.model.books.Author;
+import org.group4.model.books.Book;
+import org.group4.model.manager.SessionManager;
+import org.group4.model.users.Librarian;
+import org.group4.model.services.GoogleBooksService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

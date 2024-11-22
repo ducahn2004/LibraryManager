@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.group4.module.enums.NotificationType;
-import org.group4.module.notifications.SystemNotification;
+import org.group4.model.enums.NotificationType;
+import org.group4.model.notifications.SystemNotification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

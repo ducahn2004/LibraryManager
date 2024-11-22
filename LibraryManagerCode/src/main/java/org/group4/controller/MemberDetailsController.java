@@ -14,9 +14,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
-import org.group4.module.books.BookItem;
-import org.group4.module.transactions.BookLending;
-import org.group4.module.users.Member;
+import org.group4.model.books.BookItem;
+import org.group4.model.transactions.BookLending;
+import org.group4.model.users.Member;
 
 /**
  * Controller for displaying member details and their associated book lendings. Provides

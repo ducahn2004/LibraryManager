@@ -18,9 +18,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
-import org.group4.module.manager.SessionManager;
-import org.group4.module.services.AccountService;
-import org.group4.module.users.Librarian;
+import org.group4.model.manager.SessionManager;
+import org.group4.model.services.AccountService;
+import org.group4.model.users.Librarian;
 
 /**
  * Controller for the Login screen in the Library Manager application. Manages user authentication,

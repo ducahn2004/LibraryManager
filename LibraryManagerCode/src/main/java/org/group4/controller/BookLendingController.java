@@ -12,7 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
-import org.group4.module.transactions.BookLending;
+import org.group4.model.transactions.BookLending;
 
 import java.util.List;
 

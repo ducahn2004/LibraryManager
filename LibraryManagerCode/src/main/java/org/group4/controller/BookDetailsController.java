@@ -24,12 +24,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
-import org.group4.module.books.BookItem;
-import org.group4.module.books.Book;
-import org.group4.module.enums.BookFormat;
-import org.group4.module.enums.BookStatus;
-import org.group4.module.manager.SessionManager;
-import org.group4.module.users.Librarian;
+import org.group4.model.books.BookItem;
+import org.group4.model.books.Book;
+import org.group4.model.enums.BookFormat;
+import org.group4.model.enums.BookStatus;
+import org.group4.model.manager.SessionManager;
+import org.group4.model.users.Librarian;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

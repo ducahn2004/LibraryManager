@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.group4.module.books.Author;
-import org.group4.module.books.Book;
+import org.group4.model.books.Author;
+import org.group4.model.books.Book;
 
-import org.group4.module.books.BookItem;
+import org.group4.model.books.BookItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

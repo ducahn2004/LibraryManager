@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.group4.module.books.Book;
-import org.group4.module.books.BookItem;
-import org.group4.module.books.Rack;
-import org.group4.module.enums.BookFormat;
-import org.group4.module.enums.BookStatus;
+import org.group4.model.books.Book;
+import org.group4.model.books.BookItem;
+import org.group4.model.books.Rack;
+import org.group4.model.enums.BookFormat;
+import org.group4.model.enums.BookStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

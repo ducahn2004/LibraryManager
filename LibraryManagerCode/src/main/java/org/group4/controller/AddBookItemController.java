@@ -10,13 +10,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.module.books.Book;
-import org.group4.module.books.BookItem;
-import org.group4.module.books.Rack;
-import org.group4.module.enums.BookFormat;
-import org.group4.module.enums.BookStatus;
-import org.group4.module.manager.SessionManager;
-import org.group4.module.users.Librarian;
+import org.group4.model.books.Book;
+import org.group4.model.books.BookItem;
+import org.group4.model.books.Rack;
+import org.group4.model.enums.BookFormat;
+import org.group4.model.enums.BookStatus;
+import org.group4.model.manager.SessionManager;
+import org.group4.model.users.Librarian;
 
 /**
  * Controller for the "Add Book Item" view.

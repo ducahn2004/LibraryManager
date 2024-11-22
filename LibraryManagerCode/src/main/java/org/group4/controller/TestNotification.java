@@ -1,6 +1,6 @@
 package org.group4.controller;
 
-import org.group4.module.notifications.EmailNotification;
+import org.group4.model.notifications.EmailNotification;
 
 public class TestNotification {
 
