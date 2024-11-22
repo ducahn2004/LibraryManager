@@ -280,7 +280,7 @@ public class BookDetailsController {
 
     confirmAlert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
-        if (librarian.deleteBookItem(item.getBarcode())) {
+        if (librarian.getBookItemManager().delete(item.getBarcode())) {
           bookItems.remove(item);
           System.out.println("Item deleted: " + item);
         }

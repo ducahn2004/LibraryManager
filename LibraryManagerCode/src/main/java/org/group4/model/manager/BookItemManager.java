@@ -1,6 +1,7 @@
 package org.group4.model.manager;
 
 import java.io.IOException;
+import java.util.List;
 import org.group4.dao.BookItemDAO;
 import org.group4.dao.FactoryDAO;
 import org.group4.dao.QRCodeDAO;
@@ -45,5 +46,10 @@ public class BookItemManager implements GenericManager<BookItem> {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public List<BookItem> getAll() {
+    return bookItemDAO.getAll();
   }
 }

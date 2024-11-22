@@ -1,6 +1,7 @@
 package org.group4.model.manager;
 
 import java.io.IOException;
+import java.util.Collection;
 
 public interface GenericManager<T> {
 
@@ -27,4 +28,11 @@ public interface GenericManager<T> {
    * @return {@code true} if the entity was deleted successfully, {@code false} otherwise
    */
   boolean delete(String id);
+
+  /**
+   * Gets all entities in the library.
+   *
+   * @return a collection of all entities in the library
+   */
+  Collection<T> getAll();
 }

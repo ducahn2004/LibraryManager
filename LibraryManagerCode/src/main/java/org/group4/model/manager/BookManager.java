@@ -1,5 +1,6 @@
 package org.group4.model.manager;
 
+import java.util.List;
 import org.group4.dao.BookDAO;
 import org.group4.dao.FactoryDAO;
 import org.group4.model.books.Book;
@@ -36,5 +37,10 @@ public class BookManager implements GenericManager<Book> {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public List<Book> getAll() {
+    return bookDAO.getAll();
   }
 }

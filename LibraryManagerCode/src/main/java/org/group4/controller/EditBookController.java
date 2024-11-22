@@ -112,7 +112,7 @@ public class EditBookController {
    * ISBN.
    */
   private void returnCheckEditBook() {
-    boolean successEdit = librarian.updateBook(currentBook);
+    boolean successEdit = librarian.getBookManager().update(currentBook);
 
     if (successEdit) {
       // Log the successful update (TODO: Add notifications if implemented)

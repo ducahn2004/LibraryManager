@@ -247,7 +247,7 @@ public class MemberViewController {
     alert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
         memberList.remove(member);
-        librarian.deleteMember(member.getMemberId());
+        librarian.getMemberManager().delete(member.getMemberId());
       }
     });
   }

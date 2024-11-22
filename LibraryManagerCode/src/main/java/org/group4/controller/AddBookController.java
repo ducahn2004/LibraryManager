@@ -117,6 +117,8 @@ public class AddBookController {
           "The book has been added to the library.");
     } catch (IllegalArgumentException e) {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -198,8 +200,8 @@ public class AddBookController {
    *
    * @param book The book to add
    */
-  private void addBookToLibrary(Book book) {
-    boolean successAdded = librarian.addBook(book);
+  private void addBookToLibrary(Book book) throws IOException {
+    boolean successAdded = librarian.getBookManager().add(book);
     if (!successAdded) {
       throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
     }

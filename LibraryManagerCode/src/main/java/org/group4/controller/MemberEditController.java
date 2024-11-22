@@ -159,7 +159,7 @@ public class MemberEditController {
    * Checks if the member's update is successful. Throws an exception if the update fails.
    */
   private void returnCheckEditMember() {
-    boolean successEdit = librarian.updateMember(currentMember);
+    boolean successEdit = librarian.getMemberManager().update(currentMember);
     if (!successEdit) {
       throw new IllegalArgumentException(
           "Member with the same details already exists in the library.");

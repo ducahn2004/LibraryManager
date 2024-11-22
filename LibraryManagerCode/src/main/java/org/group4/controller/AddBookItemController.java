@@ -134,7 +134,7 @@ public class AddBookItemController {
         new Rack(1, placeAtTextField.getText()) // Rack location
     );
 
-    boolean added = librarian.addBookItem(bookItem);
+    boolean added = librarian.getBookItemManager().add(bookItem);
     if (!added) {
       System.out.println("ISBN Current Book is: " + currentBook.getISBN());
       throw new IllegalArgumentException("Could not add book item to the library.");

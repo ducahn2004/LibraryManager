@@ -1,5 +1,6 @@
 package org.group4.controller;
 
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -78,6 +79,8 @@ public class AddMemberController {
     } catch (IllegalArgumentException e) {
       // Display an error message if input validation fails
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -116,7 +119,7 @@ public class AddMemberController {
    * <p>
    * Checks for duplicate entries before adding and updates the parent controller if successful.
    */
-  private void addMemberToLibrary() {
+  private void addMemberToLibrary() throws IOException {
     // Verify that the member does not already exist
     returnCheckAddMember();
 
@@ -163,7 +166,7 @@ public class AddMemberController {
    * <p>
    * Throws an exception if a duplicate is detected.
    */
-  private void returnCheckAddMember() {
+  private void returnCheckAddMember() throws IOException {
     currentMember = new Member(
         memberName.getText(),
         memberBirth.getValue(),
@@ -171,7 +174,7 @@ public class AddMemberController {
         memberPhone.getText()
     );
 
-    boolean successEdit = librarian.addMember(currentMember);
+    boolean successEdit = librarian.getMemberManager().add(currentMember);
     if (successEdit) {
       // TODO Uncomment after notification is implemented
       // SystemNotification.sendNotification(String type, String content);

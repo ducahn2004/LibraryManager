@@ -255,7 +255,7 @@ public class BookViewController {
     alert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
         // Delete the book and update the table view
-        if (librarian.deleteBook(book.getISBN())) {
+        if (librarian.getBookManager().delete(book.getISBN())) {
           System.out.println(
               "Book with ISBN: " + book.getISBN() + " has been deleted successfully.");
           bookList.remove(book);

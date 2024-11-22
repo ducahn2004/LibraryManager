@@ -1,5 +1,6 @@
 package org.group4.model.manager;
 
+import java.util.List;
 import org.group4.dao.FactoryDAO;
 import org.group4.dao.MemberDAO;
 import org.group4.model.enums.NotificationType;
@@ -36,5 +37,10 @@ public class MemberManager implements GenericManager<Member> {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public List<Member> getAll() {
+    return memberDAO.getAll();
   }
 }
