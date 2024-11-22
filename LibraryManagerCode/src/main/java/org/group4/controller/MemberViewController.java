@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Controller for managing member views and operations in the library system.
+ */
 public class MemberViewController {
 
   @FXML
@@ -58,15 +61,21 @@ public class MemberViewController {
 
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
+  /**
+   * Initializes the controller by setting up the table columns, loading members, and adding
+   * listeners for search and row double-click events.
+   */
   @FXML
   public void initialize() {
     setUpTableColumns();
     loadMembers();
     setUpSearchListener();
     setUpRowDoubleClick();
-    //setUpActionColumn();
   }
 
+  /**
+   * Configures the table columns to display member information.
+   */
   private void setUpTableColumns() {
     memberTableID.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getMemberId()));
@@ -78,20 +87,18 @@ public class MemberViewController {
         cellData -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
     memberTableEmail.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+
     memberTableAction.setCellFactory(param -> new TableCell<>() {
       private final Hyperlink editLink = new Hyperlink("Edit");
       private final Hyperlink deleteLink = new Hyperlink("Delete");
 
       {
-        editLink.setUnderline(true);
-        // Xử lý sự kiện cho liên kết Edit
-        editLink.setOnAction((ActionEvent event) -> {
+        // Set up event handlers for edit and delete links
+        editLink.setOnAction(event -> {
           Member item = getTableView().getItems().get(getIndex());
           showEditForm(item);
         });
-
-        // Xử lý sự kiện cho liên kết Delete
-        deleteLink.setOnAction((ActionEvent event) -> {
+        deleteLink.setOnAction(event -> {
           Member item = getTableView().getItems().get(getIndex());
           showDeleteConfirmation(item);
         });
@@ -103,14 +110,16 @@ public class MemberViewController {
         if (empty) {
           setGraphic(null);
         } else {
-          HBox hBox = new HBox(10, editLink, deleteLink);
-          setGraphic(hBox);
+          setGraphic(new HBox(10, editLink, deleteLink));
         }
       }
     });
     memberTable.setItems(memberList);
   }
 
+  /**
+   * Loads members into the table by fetching them from the DAO asynchronously.
+   */
   private void loadMembers() {
     memberList.clear();
     Task<ObservableList<Member>> loadTask = new Task<>() {
@@ -126,6 +135,9 @@ public class MemberViewController {
     new Thread(loadTask).start();
   }
 
+  /**
+   * Sets up a listener for the search field to filter members based on input.
+   */
   private void setUpSearchListener() {
     searchField.textProperty()
         .addListener((observable, oldValue, newValue) -> filterPersonList(newValue));
@@ -136,6 +148,9 @@ public class MemberViewController {
     });
   }
 
+  /**
+   * Configures double-clicking a row to open the member detail page.
+   */
   private void setUpRowDoubleClick() {
     memberTable.setRowFactory(tv -> {
       TableRow<Member> row = new TableRow<>();
@@ -148,30 +163,44 @@ public class MemberViewController {
     });
   }
 
-
+  /**
+   * Filters the member list based on the search text.
+   *
+   * @param searchText The text to filter members by.
+   */
   private void filterPersonList(String searchText) {
     if (searchText == null || searchText.isEmpty()) {
       memberTable.setItems(memberList);
     } else {
       ObservableList<Member> filteredList = memberList.filtered(member ->
           member.getMemberId().toLowerCase().contains(searchText.toLowerCase()) ||
-              member.getName().toLowerCase().contains(searchText.toLowerCase())
-      );
+              member.getName().toLowerCase().contains(searchText.toLowerCase()));
       memberTable.setItems(filteredList);
     }
   }
 
+  /**
+   * Refreshes the table view to ensure the latest data is displayed.
+   */
   public void refreshTable() {
     memberTable.refresh();
   }
 
+  /**
+   * Opens the member detail page for the specified member.
+   *
+   * @param member The member whose details will be displayed.
+   */
   private void showDetailPage(Member member) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
       Stage detailStage = new Stage();
       detailStage.setScene(new Scene(loader.load()));
+
+      // Pass the selected member to the details controller
       MemberDetailsController controller = loader.getController();
       controller.setItemDetail(member);
+
       detailStage.setTitle("Member Detail");
       detailStage.show();
     } catch (IOException e) {
@@ -179,16 +208,21 @@ public class MemberViewController {
     }
   }
 
+  /**
+   * Opens the edit form for the specified member.
+   *
+   * @param member The member to edit.
+   */
   private void showEditForm(Member member) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberEditForm.fxml"));
       Stage editStage = new Stage();
       editStage.setScene(new Scene(loader.load()));
 
-      // Lấy controller và truyền dữ liệu member vào
+      // Pass the member and parent controller to the edit form
       MemberEditController controller = loader.getController();
       controller.setMemberData(member);
-      controller.setParentController(this);  // Truyền controller cha như một listener
+      controller.setParentController(this);
 
       editStage.setTitle("Edit Member");
       editStage.showAndWait();
@@ -197,11 +231,19 @@ public class MemberViewController {
     }
   }
 
-
+  /**
+   * Shows a confirmation dialog for deleting a member.
+   *
+   * @param member The member to be deleted.
+   */
   private void showDeleteConfirmation(Member member) {
-    Alert alert = createAlert(AlertType.CONFIRMATION, "Delete Confirmation",
+    Alert alert = createAlert(
+        AlertType.CONFIRMATION,
+        "Delete Confirmation",
         "Are you sure you want to delete this member?",
-        "ID: " + member.getMemberId() + "\nName: " + member.getName());
+        "ID: " + member.getMemberId() + "\nName: " + member.getName()
+    );
+
     alert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
         memberList.remove(member);
@@ -210,6 +252,15 @@ public class MemberViewController {
     });
   }
 
+  /**
+   * Creates a reusable alert with the specified parameters.
+   *
+   * @param type    The type of alert (e.g., ERROR, CONFIRMATION).
+   * @param title   The title of the alert window.
+   * @param header  The header text of the alert.
+   * @param content The content text of the alert.
+   * @return A configured Alert instance.
+   */
   private Alert createAlert(AlertType type, String title, String header, String content) {
     Alert alert = new Alert(type);
     alert.setTitle(title);
@@ -218,11 +269,24 @@ public class MemberViewController {
     return alert;
   }
 
+  /**
+   * Logs an error and shows an error alert.
+   *
+   * @param message The error message to log and display.
+   * @param e       The exception that occurred.
+   */
   private void logAndShowError(String message, Exception e) {
     Logger.getLogger(MemberViewController.class.getName()).log(Level.SEVERE, message, e);
     showAlert(AlertType.ERROR, "Error", message);
   }
 
+  /**
+   * Displays an alert with the specified type, title, and content.
+   *
+   * @param type    The type of alert.
+   * @param title   The title of the alert.
+   * @param content The content of the alert.
+   */
   void showAlert(AlertType type, String title, String content) {
     Alert alert = new Alert(type);
     alert.setTitle(title);
@@ -231,6 +295,11 @@ public class MemberViewController {
     alert.showAndWait();
   }
 
+  /**
+   * Clears all input fields in the form and deselects any selected table row.
+   *
+   * @param actionEvent The event triggered by the cancel action.
+   */
   @FXML
   public void cancel(ActionEvent actionEvent) {
     memberID.clear();
@@ -241,14 +310,19 @@ public class MemberViewController {
     memberTable.getSelectionModel().clearSelection();
   }
 
-
+  /**
+   * Handles the action of adding a new member by opening the add member form.
+   *
+   * @param actionEvent The event triggered by clicking the add member button.
+   */
   public void addMemberAction(ActionEvent actionEvent) {
     try {
-      FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("AddMember.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("AddMember.fxml"));
       Parent root = loader.load();
+
+      // Pass the parent controller to the add member form
       AddMemberController controller = loader.getController();
-      controller.setParentController(this);  // Set the parent controller
+      controller.setParentController(this);
 
       Stage stage = new Stage();
       stage.setTitle("Add Member");
@@ -259,17 +333,26 @@ public class MemberViewController {
     }
   }
 
-  // Add a member to the list and refresh the table
+  /**
+   * Adds a new member to the list and refreshes the table.
+   *
+   * @param newMember The new member to add.
+   */
   public void addMemberToList(Member newMember) {
     memberList.add(newMember);  // Adds the new member to the ObservableList
-    memberTable.setItems(memberList);  // Updates the TableView to display the new member
-    memberTable.refresh();  // Refresh the table view to show the newly added member
+    memberTable.refresh();     // Refreshes the table to display the new member
   }
 
-
+  /**
+   * Returns the current stage of the view.
+   *
+   * @return The current Stage object.
+   */
   private Stage getStage() {
-    return (Stage) homeButton.getScene().getWindow(); // Có thể sử dụng bất kỳ button nào
+    return (Stage) homeButton.getScene().getWindow();
   }
+
+  // Navigation actions for switching between different views
 
   public void HomeAction(ActionEvent actionEvent) throws IOException {
     SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
@@ -295,9 +378,13 @@ public class MemberViewController {
     SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 
+  /**
+   * Closes the application.
+   *
+   * @param actionEvent The event triggered by clicking the close button.
+   */
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
-
-
 }
+
