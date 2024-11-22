@@ -11,8 +11,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.model.books.BookItem;
-import org.group4.model.books.Rack;
+import org.group4.model.book.BookItem;
+import org.group4.model.book.Rack;
 import org.group4.model.enums.BookFormat;
 import org.group4.model.enums.BookStatus;
 

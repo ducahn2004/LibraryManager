@@ -4,8 +4,8 @@ import com.google.zxing.NotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
-import org.group4.dao.FactoryDAO;
-import org.group4.model.books.BookItem;
+import org.group4.dao.base.FactoryDAO;
+import org.group4.model.book.BookItem;
 import org.group4.service.qrcode.QRCodeGenerator;
 import org.group4.service.qrcode.QRCodeReader;
 

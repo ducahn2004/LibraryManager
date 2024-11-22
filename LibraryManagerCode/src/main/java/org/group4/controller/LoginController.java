@@ -17,10 +17,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import org.group4.dao.FactoryDAO;
-import org.group4.service.manager.SessionManager;
-import org.group4.service.AccountService;
-import org.group4.model.users.Librarian;
+import org.group4.dao.base.FactoryDAO;
+import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.AccountService;
+import org.group4.model.user.Librarian;
 
 /**
  * Controller for the Login screen in the Library Manager application. Manages user authentication,
@@ -140,7 +140,7 @@ public class LoginController {
 
       // If a librarian is found, set it in the session manager.
       if (librarian.isPresent()) {
-        SessionManager.getInstance().setCurrentLibrarian(librarian.get());
+        SessionManagerService.getInstance().setCurrentLibrarian(librarian.get());
       } else {
         logger.warning("Librarian not found for username: " + username);
       }

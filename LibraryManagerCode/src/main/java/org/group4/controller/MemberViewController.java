@@ -16,10 +16,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.group4.dao.FactoryDAO;
-import org.group4.service.manager.SessionManager;
-import org.group4.model.users.Librarian;
-import org.group4.model.users.Member;
+import org.group4.dao.base.FactoryDAO;
+import org.group4.service.user.SessionManagerService;
+import org.group4.model.user.Librarian;
+import org.group4.model.user.Member;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -59,7 +59,7 @@ public class MemberViewController {
 
   private final ObservableList<Member> memberList = FXCollections.observableArrayList();
 
-  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   /**
    * Initializes the controller by setting up the table columns, loading members, and adding

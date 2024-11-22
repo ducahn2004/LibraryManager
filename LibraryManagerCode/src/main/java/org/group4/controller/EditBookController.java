@@ -6,9 +6,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.model.books.Book;
-import org.group4.service.manager.SessionManager;
-import org.group4.model.users.Librarian;
+import org.group4.model.book.Book;
+import org.group4.service.user.SessionManagerService;
+import org.group4.model.user.Librarian;
 
 /**
  * Controller class for editing book details. Handles the logic for updating book information and
@@ -37,7 +37,7 @@ public class EditBookController {
   /**
    * Librarian instance managing the session.
    */
-  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   /**
    * Sets the parent controller for enabling table refresh after saving book data.

@@ -23,13 +23,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.group4.dao.FactoryDAO;
-import org.group4.model.books.BookItem;
-import org.group4.model.books.Book;
+import org.group4.dao.base.FactoryDAO;
+import org.group4.model.book.BookItem;
+import org.group4.model.book.Book;
 import org.group4.model.enums.BookFormat;
 import org.group4.model.enums.BookStatus;
-import org.group4.service.manager.SessionManager;
-import org.group4.model.users.Librarian;
+import org.group4.service.user.SessionManagerService;
+import org.group4.model.user.Librarian;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 public class BookDetailsController {
 
   // Current librarian obtained from the session manager.
-  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   // The book currently being displayed in the details view.
   private Book currentBook;

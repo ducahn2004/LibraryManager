@@ -9,9 +9,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.service.manager.SessionManager;
-import org.group4.model.users.Librarian;
-import org.group4.model.users.Member;
+import org.group4.service.user.SessionManagerService;
+import org.group4.model.user.Librarian;
+import org.group4.model.user.Member;
 
 /**
  * Controller for editing member details. This class handles the UI interactions and business logic
@@ -34,7 +34,7 @@ public class MemberEditController {
   private MemberViewController parentController;
 
   // Librarian instance for performing member updates
-  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   /**
    * Sets the parent controller, allowing the parent to refresh the member list after editing.

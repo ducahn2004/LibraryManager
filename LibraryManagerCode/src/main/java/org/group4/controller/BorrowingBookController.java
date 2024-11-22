@@ -13,13 +13,13 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.dao.FactoryDAO;
-import org.group4.model.books.BookItem;
+import org.group4.dao.base.FactoryDAO;
+import org.group4.model.book.BookItem;
 import org.group4.model.enums.BookStatus;
-import org.group4.service.manager.SessionManager;
-import org.group4.model.transactions.BookLending;
-import org.group4.model.users.Librarian;
-import org.group4.model.users.Member;
+import org.group4.service.user.SessionManagerService;
+import org.group4.model.transaction.BookLending;
+import org.group4.model.user.Librarian;
+import org.group4.model.user.Member;
 
 /**
  * Controller for managing the borrowing of books. Handles interactions between the user interface
@@ -30,7 +30,7 @@ public class BorrowingBookController {
   /**
    * The librarian currently managing the session.
    */
-  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   @FXML
   private Button cancelButton;

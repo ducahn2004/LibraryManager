@@ -11,8 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.group4.dao.FactoryDAO;
-import org.group4.model.transactions.BookLending;
+import org.group4.dao.base.FactoryDAO;
+import org.group4.model.transaction.BookLending;
 
 import java.util.List;
 

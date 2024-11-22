@@ -13,8 +13,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.group4.dao.BookDAO;
-import org.group4.dao.MemberDAO;
+import org.group4.model.user.Librarian;
+import org.group4.service.user.SessionManagerService;
 
 /**
  * Controller for the Admin Pane.
@@ -51,15 +51,15 @@ public class AdminPaneController {
   @FXML
   private JFXButton closeButton;
 
-  private MemberDAO memberDAO = new MemberDAO();
-  private BookDAO bookDAO = new BookDAO();
   private Stage stage;
+
+  Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   /**
    * Updates the total number of members displayed in the UI.
    */
   public void updateTotalMembers() {
-    int totalMembers = memberDAO.getTotalMembers();
+    int totalMembers = librarian.getMemberManager().getAll().size();
     total_Members.setText(String.valueOf(totalMembers));
   }
 
@@ -67,7 +67,7 @@ public class AdminPaneController {
    * Updates the total number of books displayed in the UI.
    */
   public void updateTotalBooks() {
-    int totalBooks = bookDAO.getTotalBooks();
+    int totalBooks = librarian.getBookManager().getAll().size();
     total_books.setText(String.valueOf(totalBooks));
   }
 
@@ -77,8 +77,8 @@ public class AdminPaneController {
   public void Home_chart() {
     home_chart.getData().clear();
 
-    int totalBooks = bookDAO.getTotalBooks();
-    int totalMembers = memberDAO.getTotalMembers();
+    int totalBooks = librarian.getBookManager().getAll().size();
+    int totalMembers = librarian.getMemberManager().getAll().size();
 
     // Create and populate the "Books" series
     XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();

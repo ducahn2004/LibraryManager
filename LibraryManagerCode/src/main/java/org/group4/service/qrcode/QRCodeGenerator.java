@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.group4.model.books.BookItem;
+import org.group4.model.book.BookItem;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

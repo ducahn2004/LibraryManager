@@ -21,10 +21,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.group4.dao.FactoryDAO;
-import org.group4.model.books.Book;
-import org.group4.service.manager.SessionManager;
-import org.group4.model.users.Librarian;
+import org.group4.dao.base.FactoryDAO;
+import org.group4.model.book.Book;
+import org.group4.service.user.SessionManagerService;
+import org.group4.model.user.Librarian;
 
 /**
  * Controller for managing book-related operations in the application.
@@ -75,7 +75,7 @@ public class BookViewController {
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();
 
   // Current librarian retrieved from session manager
-  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   /**
    * Initializes the controller and sets up the UI components and their bindings.

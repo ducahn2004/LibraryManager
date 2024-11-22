@@ -9,9 +9,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.service.manager.SessionManager;
-import org.group4.model.users.Member;
-import org.group4.model.users.Librarian;
+import org.group4.service.user.SessionManagerService;
+import org.group4.model.user.Member;
+import org.group4.model.user.Librarian;
 
 /**
  * Controller for the "Add Member" functionality.
@@ -34,7 +34,7 @@ public class AddMemberController {
   private TextField memberPhone;
 
   private MemberViewController parentController;
-  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
   private Member currentMember;
   private Stage memberFormStage;
 

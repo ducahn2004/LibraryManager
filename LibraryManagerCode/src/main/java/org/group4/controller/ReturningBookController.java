@@ -15,13 +15,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.group4.dao.FactoryDAO;
-import org.group4.model.books.BookItem;
-import org.group4.service.manager.SessionManager;
-import org.group4.model.transactions.BookLending;
-import org.group4.model.transactions.Fine;
-import org.group4.model.users.Librarian;
-import org.group4.model.users.Member;
+import org.group4.dao.base.FactoryDAO;
+import org.group4.model.book.BookItem;
+import org.group4.service.transaction.FineCalculationService;
+import org.group4.service.user.SessionManagerService;
+import org.group4.model.transaction.BookLending;
+import org.group4.model.transaction.Fine;
+import org.group4.model.user.Librarian;
+import org.group4.model.user.Member;
 
 /**
  * Controller class for handling book return actions in the library system. This class allows for
@@ -30,7 +31,7 @@ import org.group4.model.users.Member;
 public class ReturningBookController {
 
   // The current librarian session
-  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   // FXML components for UI
   @FXML
@@ -235,7 +236,7 @@ public class ReturningBookController {
     }
 
     Fine amountFine = new Fine(currentBookLending);
-    double fineAmount = amountFine.calculateFine();
+    double fineAmount = FineCalculationService.calculateFine(amountFine);
     feeField.setText(Double.toString(fineAmount));
   }
 
@@ -323,7 +324,7 @@ public class ReturningBookController {
     // Update the book status based on the checkbox
     currentBookItem.setStatus(isChecked ? BookStatus.AVAILABLE : BookStatus.LOST);
     Fine amountFine = new Fine(findBookLendingById(currentBookItem.getBarcode()));
-    double fineAmount = amountFine.calculateFine();
+    double fineAmount = FineCalculationService.calculateFine(amountFine);
     feeField.setText(Double.toString(fineAmount));
 
     if (isChecked) {

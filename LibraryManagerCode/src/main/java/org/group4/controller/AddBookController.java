@@ -16,11 +16,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.model.books.Author;
-import org.group4.model.books.Book;
-import org.group4.service.manager.SessionManager;
-import org.group4.model.users.Librarian;
-import org.group4.service.GoogleBooksService;
+import org.group4.model.book.Author;
+import org.group4.model.book.Book;
+import org.group4.service.user.SessionManagerService;
+import org.group4.model.user.Librarian;
+import org.group4.service.book.GoogleBooksService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -67,7 +67,7 @@ public class AddBookController {
   private final GoogleBooksService googleBooksService = new GoogleBooksService();
 
   // Current librarian using the system.
-  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   // Book instance for the current operation.
   private Book book;

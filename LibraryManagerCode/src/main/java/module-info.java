@@ -38,24 +38,30 @@ module org.group.librarymanagercode {
   exports org.group4.controller;
   opens org.group4.controller to javafx.fxml;
 
-  exports org.group4.model.notifications;
-  opens org.group4.model.notifications to javafx.fxml;
+  exports org.group4.model.notification;
+  opens org.group4.model.notification to javafx.fxml;
 
-  exports org.group4.model.users;
-  opens org.group4.model.users to javafx.fxml;
+  exports org.group4.model.user;
+  opens org.group4.model.user to javafx.fxml;
 
-  exports org.group4.model.books;
-  opens org.group4.model.books to javafx.fxml;
+  exports org.group4.model.book;
+  opens org.group4.model.book to javafx.fxml;
 
   exports org.group4.model.enums;
   opens org.group4.model.enums to javafx.fxml;
 
-  exports org.group4.model.transactions;
-  opens org.group4.model.transactions to javafx.fxml;
+  exports org.group4.model.transaction;
+  opens org.group4.model.transaction to javafx.fxml;
 
-  exports org.group4.service.manager;
-  opens org.group4.service.manager to javafx.fxml;
+  exports org.group4.service.transaction;
+  opens org.group4.service.transaction to javafx.fxml;
 
   exports org.group4.test;
   opens org.group4.test to junit;
+  exports org.group4.service.book;
+  opens org.group4.service.book to javafx.fxml;
+  exports org.group4.service.user;
+  opens org.group4.service.user to javafx.fxml;
+  exports org.group4.service.interfaces;
+  opens org.group4.service.interfaces to javafx.fxml;
 }
