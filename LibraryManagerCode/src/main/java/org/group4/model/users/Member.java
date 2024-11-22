@@ -9,10 +9,7 @@ import java.time.LocalDate;
  */
 public class Member extends Person {
 
-  /** The unique identifier for the member */
   private String memberId;
-
-  /** The total number of books lent by the member */
   private int totalBooksCheckedOut;
 
   /**

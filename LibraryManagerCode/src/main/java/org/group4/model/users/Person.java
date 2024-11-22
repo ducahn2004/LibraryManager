@@ -8,16 +8,9 @@ import java.time.LocalDate;
  */
 public class Person {
 
-  /** The name of the person. */
   private String name;
-
-  /** The date of birth of the person. */
   private LocalDate dateOfBirth;
-
-  /** The email address of the person. */
   private String email;
-
-  /** The phone number of the person. */
   private String phoneNumber;
 
   /**
