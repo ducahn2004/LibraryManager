@@ -7,10 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class Account {
 
-  /** The unique identifier for the account */
   private final String id;
-
-  /** The hashed password for the account */
   private String password;
 
   /**

@@ -1,4 +1,4 @@
-package org.group4.model.qrcode;
+package org.group4.service.qrcode;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;

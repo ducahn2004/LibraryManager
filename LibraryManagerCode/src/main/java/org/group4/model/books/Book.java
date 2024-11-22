@@ -13,25 +13,12 @@ import java.util.Set;
  */
 public class Book {
 
-  /** ISBN of the book, serving as a unique identifier. */
   private String ISBN;
-
-  /** Title of the book. */
   private String title;
-
-  /** Subject or genre of the book. */
   private String subject;
-
-  /** Publisher of the book. */
   private String publisher;
-
-  /** Language in which the book is written. */
   private String language;
-
-  /** Number of pages contained in the book. */
   private int numberOfPages;
-
-  /** Set of authors who contributed to the book. */
   private Set<Author> authors;
 
   /**

@@ -1,4 +1,4 @@
-package org.group4.model.services;
+package org.group4.service;
 
 import java.time.LocalDate;
 import java.util.List;

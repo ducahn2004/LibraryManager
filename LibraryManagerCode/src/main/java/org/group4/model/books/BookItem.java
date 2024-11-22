@@ -13,34 +13,15 @@ import org.group4.model.enums.BookStatus;
  */
 public class BookItem extends Book {
 
-  /** Barcode of the book item, unique identifier for each instance */
   private String barcode;
-
-  /** Indicates if the book is for reference only (cannot be borrowed) */
   private boolean isReferenceOnly;
-
-  /** Date when the book item was borrowed */
   private LocalDate borrowed;
-
-  /** Due date for returning the book item */
   private LocalDate dueDate;
-
-  /** Price of the book item */
   private double price;
-
-  /** Format of the book item (e.g., HARDCOVER, PAPERBACK) */
   private BookFormat format;
-
-  /** Current status of the book item (e.g., AVAILABLE, LOST) */
   private BookStatus status;
-
-  /** Date when the book item was purchased */
   private LocalDate dateOfPurchase;
-
-  /** Publication date of the book item */
   private LocalDate publicationDate;
-
-  /** Rack location where the book item is placed */
   private Rack placedAt;
 
   /**

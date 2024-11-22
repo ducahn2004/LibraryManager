@@ -1,4 +1,4 @@
-package org.group4.model.services;
+package org.group4.service;
 
 import org.group4.model.users.Account;
 import org.group4.dao.AccountDAO;

@@ -1,4 +1,4 @@
-package org.group4.model.manager;
+package org.group4.service.manager;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.group4.dao.QRCodeDAO;
 import org.group4.model.books.BookItem;
 import org.group4.model.enums.NotificationType;
 import org.group4.model.notifications.SystemNotification;
-import org.group4.model.qrcode.QRCodeGenerator;
+import org.group4.service.qrcode.QRCodeGenerator;
 
 public class BookItemManager implements GenericManager<BookItem> {
 

@@ -11,19 +11,10 @@ import org.group4.model.users.Member;
  */
 public class BookLending {
 
-  /** The barcode of the book item being lent. */
   private final BookItem bookItem;
-
-  /** The ID of the member borrowing the book item. */
   private final Member member;
-
-  /** The date when the book item was lent. */
   private final LocalDate lendingDate;
-
-  /** The date when the book item is due for return. */
   private final LocalDate dueDate;
-
-  /** The date when the book item was returned, or null if not yet returned. */
   private LocalDate returnDate;
 
   /**

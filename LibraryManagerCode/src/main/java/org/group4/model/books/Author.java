@@ -7,10 +7,7 @@ package org.group4.model.books;
  */
 public class Author {
 
-    /** The unique identifier of the author. */
     private String authorId;
-
-    /** The name of the author. */
     private String name;
 
     /**

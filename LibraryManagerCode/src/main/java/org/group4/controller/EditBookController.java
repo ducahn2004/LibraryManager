@@ -7,7 +7,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.model.books.Book;
-import org.group4.model.manager.SessionManager;
+import org.group4.service.manager.SessionManager;
 import org.group4.model.users.Librarian;
 
 /**

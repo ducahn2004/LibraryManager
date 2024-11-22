@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 import org.group4.model.books.Book;
 import org.group4.model.books.BookItem;
-import org.group4.model.manager.BookItemManager;
-import org.group4.model.manager.BookLendingManager;
-import org.group4.model.manager.BookLendingManagerImp;
-import org.group4.model.manager.BookManager;
-import org.group4.model.manager.GenericManager;
-import org.group4.model.manager.MemberManager;
+import org.group4.service.manager.BookItemManager;
+import org.group4.service.manager.BookLendingManager;
+import org.group4.service.manager.BookLendingManagerImp;
+import org.group4.service.manager.BookManager;
+import org.group4.service.manager.GenericManager;
+import org.group4.service.manager.MemberManager;
 
 
 /**

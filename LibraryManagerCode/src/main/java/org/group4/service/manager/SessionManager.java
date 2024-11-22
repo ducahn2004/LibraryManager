@@ -1,4 +1,4 @@
-package org.group4.model.manager;
+package org.group4.service.manager;
 
 import org.group4.model.users.Librarian;
 

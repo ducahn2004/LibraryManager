@@ -6,10 +6,7 @@ package org.group4.model.books;
  */
 public class Rack {
 
-  /** Unique number of the rack */
   private final int numberRack;
-
-  /** Identifier for the location of the rack within the library */
   private String locationIdentifier;
 
   /**

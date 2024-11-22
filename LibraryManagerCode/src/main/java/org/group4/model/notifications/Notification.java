@@ -12,16 +12,9 @@ import org.group4.model.enums.NotificationType;
  */
 public abstract class Notification {
 
-  /** Unique identifier for the notification, generated from type and timestamp. */
   private final String notificationId;
-
-  /** Date when the notification was created. */
   private final LocalDate createdOn;
-
-  /** Type of the notification as defined by the NotificationType enum. */
   private final NotificationType type;
-
-  /** Content or message of the notification. */
   private String content;
 
   /**
@@ -31,8 +24,7 @@ public abstract class Notification {
    * @param type    The type of notification, as defined by NotificationType
    */
   public Notification(NotificationType type) {
-    this.notificationId = type.toString() + "_" + LocalDateTime.now()
-        .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+    this.notificationId = generateNotificationId(type);
     this.createdOn = LocalDate.now();
     this.type = type;
     this.content = "";
@@ -52,6 +44,17 @@ public abstract class Notification {
     this.createdOn = createdOn;
     this.type = type;
     this.content = content;
+  }
+
+  /**
+   * Generates a unique ID for the notification using the type and the current timestamp.
+   *
+   * @param type The type of notification, as defined by NotificationType
+   * @return A String representing the unique notification ID
+   */
+  private String generateNotificationId(NotificationType type) {
+    return type.toString() + "_" + LocalDateTime.now()
+        .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
   }
 
   /**

@@ -61,12 +61,12 @@
     <ImageView fx:id="iconClose_eye" fitHeight="20.0" fitWidth="25.0" layoutX="253.0"
       layoutY="104.0"
       onMouseClicked="#closeClickedOnAction" pickOnBounds="true" preserveRatio="true">
-      <Image url="@Image/closeEye.png"/>
+      <Image url="@../../../Image/closeEye.png"/>
     </ImageView>
     <ImageView fx:id="iconOpen_eye" fitHeight="20.0" fitWidth="25.0" layoutX="253.0" layoutY="104.0"
       onMouseClicked="#openClickedOnAction" pickOnBounds="true" preserveRatio="true"
       visible="false">
-      <Image url="@Image/open_eye.png"/>
+      <Image url="@../../../Image/open_eye.png"/>
     </ImageView>
   </Pane>
 
@@ -74,15 +74,15 @@
   <AnchorPane layoutY="-2.0" prefHeight="550.0" prefWidth="351.0">
     <ImageView fitHeight="208.0" fitWidth="358.0" layoutX="-1.0" pickOnBounds="true"
       preserveRatio="true">
-      <Image url="@Image/blueBackground.png"/>
+      <Image url="@../../../Image/blueBackground.png"/>
     </ImageView>
     <ImageView fitHeight="208.0" fitWidth="358.0" layoutX="-1.0" layoutY="201.0" pickOnBounds="true"
       preserveRatio="true">
-      <Image url="@Image/blueBackground.png"/>
+      <Image url="@../../../Image/blueBackground.png"/>
     </ImageView>
     <ImageView fitHeight="208.0" fitWidth="358.0" layoutX="-1.0" layoutY="384.0" pickOnBounds="true"
       preserveRatio="true">
-      <Image url="@Image/blueBackground.png"/>
+      <Image url="@../../../Image/blueBackground.png"/>
     </ImageView>
     <FontAwesomeIconView fill="WHITE" glyphName="BOOK" layoutX="90.0" layoutY="292.0"
       selectionFill="#f7f7f7"
@@ -98,7 +98,7 @@
   <!-- Logo -->
   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="450.0" layoutY="45.0" pickOnBounds="true"
     preserveRatio="true">
-    <Image url="@Image/pageIcon.png"/>
+    <Image url="@../../../Image/pageIcon.png"/>
   </ImageView>
 
 </AnchorPane>

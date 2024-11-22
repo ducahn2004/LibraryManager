@@ -15,7 +15,7 @@ import org.group4.model.books.BookItem;
 import org.group4.model.books.Rack;
 import org.group4.model.enums.BookFormat;
 import org.group4.model.enums.BookStatus;
-import org.group4.model.manager.SessionManager;
+import org.group4.service.manager.SessionManager;
 import org.group4.model.users.Librarian;
 
 /**

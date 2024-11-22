@@ -1,4 +1,4 @@
-package org.group4.model.manager;
+package org.group4.service.manager;
 
 import java.util.List;
 import org.group4.dao.FactoryDAO;

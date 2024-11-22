@@ -1,9 +1,9 @@
 package org.group4.model.notifications;
 
+import java.time.LocalDate;
+
 import org.group4.dao.FactoryDAO;
 import org.group4.model.enums.NotificationType;
-
-import java.time.LocalDate;
 
 /**
  * Represents a system notification with a unique ID, creation date, type, and content.

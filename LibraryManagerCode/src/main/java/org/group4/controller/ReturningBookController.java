@@ -17,7 +17,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.group4.dao.FactoryDAO;
 import org.group4.model.books.BookItem;
-import org.group4.model.manager.SessionManager;
+import org.group4.service.manager.SessionManager;
 import org.group4.model.transactions.BookLending;
 import org.group4.model.transactions.Fine;
 import org.group4.model.users.Librarian;

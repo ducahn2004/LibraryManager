@@ -53,8 +53,8 @@ module org.group.librarymanagercode {
   exports org.group4.model.transactions;
   opens org.group4.model.transactions to javafx.fxml;
 
-  exports org.group4.model.manager;
-  opens org.group4.model.manager to javafx.fxml;
+  exports org.group4.service.manager;
+  opens org.group4.service.manager to javafx.fxml;
 
   exports org.group4.test;
   opens org.group4.test to junit;
