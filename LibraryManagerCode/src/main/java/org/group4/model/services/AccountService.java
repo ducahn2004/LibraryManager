@@ -5,11 +5,15 @@ import org.group4.dao.AccountDAO;
 import org.group4.dao.FactoryDAO;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Service class for handling account-related business logic.
  */
 public class AccountService {
+
+  private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
   /** The data access object for account entities. */
   private final AccountDAO accountDAO;
@@ -36,20 +40,33 @@ public class AccountService {
   }
 
   /**
-   * Changes the account's password if the old password is correct.
+   * Changes the password for the specified account.
    *
    * @param id          the account ID
-   * @param oldPassword the current password for verification
-   * @param newPassword the new plain text password
-   * @return {@code true} if the password change is successful, {@code false} otherwise
+   * @param oldPassword the old password
+   * @param newPassword the new password
+   * @return {@code true} if the password is successfully changed, {@code false} otherwise
    */
   public boolean changePassword(String id, String oldPassword, String newPassword) {
     return accountDAO
         .getById(id)
-        .filter(account -> BCrypt.checkpw(oldPassword, account.getPassword()))
+        .filter(account -> {
+          boolean isOldPasswordCorrect = BCrypt.checkpw(oldPassword, account.getPassword());
+          if (!isOldPasswordCorrect) {
+            logger.warn("Old password is incorrect for account ID: {}", id);
+          }
+          return isOldPasswordCorrect;
+        })
         .map(account -> {
-          account.setPassword(Account.hashPassword(newPassword));
-          return accountDAO.update(account);
+          String hashedNewPassword = Account.hashPassword(newPassword);
+          Account updatedAccount = new Account(id, hashedNewPassword);
+          boolean isUpdated = accountDAO.update(updatedAccount);
+          if (isUpdated) {
+            logger.info("Password updated successfully for account ID: {}", id);
+          } else {
+            logger.error("Failed to update password for account ID: {}", id);
+          }
+          return isUpdated;
         })
         .orElse(false);
   }
