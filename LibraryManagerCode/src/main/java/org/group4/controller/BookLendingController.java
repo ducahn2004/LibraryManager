@@ -11,15 +11,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.group4.dao.base.FactoryDAO;
 import org.group4.model.transaction.BookLending;
 
 import java.util.List;
+import org.group4.model.user.Librarian;
+import org.group4.service.user.SessionManagerService;
 
 /**
  * Controller class for managing book lending functionality in the library system.
  */
 public class BookLendingController {
+
+  // Librarian instance for managing book lending operations
+  private static final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   // TableView and columns for displaying book lending information
   @FXML
@@ -85,7 +89,7 @@ public class BookLendingController {
    * Loads book lending data from the database and populates the TableView.
    */
   private void loadBookLending() {
-    List<BookLending> bookLendings = FactoryDAO.getBookLendingDAO().getAll();
+    List<BookLending> bookLendings = librarian.getLendingManager().getAll();
     if (bookLendings == null || bookLendings.isEmpty()) {
       showAlert(Alert.AlertType.WARNING, "No Data Found",
           "No book lending data found in the database.");

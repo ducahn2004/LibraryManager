@@ -23,7 +23,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.group4.dao.base.FactoryDAO;
 import org.group4.model.book.BookItem;
 import org.group4.model.book.Book;
 import org.group4.model.enums.BookFormat;
@@ -176,13 +175,12 @@ public class BookDetailsController {
 
   /**
    * Loads data for the current book and populates the TableView.
-   *
-   * @throws SQLException If there is an error accessing the database.
+   * <p> Clears the existing list of book items and adds all items for the current book. </p>
    */
-  void loadData() throws SQLException {
+  void loadData() {
     if (currentBook != null) {
       bookItems.clear();
-      bookItems.addAll(FactoryDAO.getBookDAO().getAllBookItems(currentBook.getISBN()));
+      bookItems.addAll(librarian.getBookManager().getAllBookItems(currentBook.getISBN()));
       System.out.println("Data loaded: " + bookItems.size() + " items");
     }
   }

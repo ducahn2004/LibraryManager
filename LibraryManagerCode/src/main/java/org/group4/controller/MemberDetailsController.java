@@ -13,10 +13,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import org.group4.dao.base.FactoryDAO;
 import org.group4.model.book.BookItem;
 import org.group4.model.transaction.BookLending;
+import org.group4.model.user.Librarian;
 import org.group4.model.user.Member;
+import org.group4.service.user.SessionManagerService;
 
 /**
  * Controller for displaying member details and their associated book lendings. Provides
@@ -53,6 +54,7 @@ public class MemberDetailsController {
   @FXML
   private Label memberIDLabel;
 
+  private static final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
   // Current member and their book lending data
   private Member currentMember;
   private final ObservableList<BookLending> bookLendings = FXCollections.observableArrayList();
@@ -120,7 +122,7 @@ public class MemberDetailsController {
       bookLendings.clear();
       // Load all book lendings associated with the current member
       bookLendings.addAll(
-          FactoryDAO.getBookLendingDAO().getByMemberId(currentMember.getMemberId()));
+          librarian.getLendingManager().getByMemberId(currentMember.getMemberId()));
       System.out.println("Data loaded: " + bookLendings.size() + " items");
     }
   }

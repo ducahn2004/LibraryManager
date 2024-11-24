@@ -17,7 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import org.group4.dao.base.FactoryDAO;
 import org.group4.service.user.SessionManagerService;
 import org.group4.service.user.AccountService;
 import org.group4.model.user.Librarian;
@@ -136,7 +135,7 @@ public class LoginController {
 
     // Authenticate the user using AccountService.
     if (accountService.login(username, password)) {
-      Optional<Librarian> librarian = FactoryDAO.getLibrarianDAO().getById(username);
+      Optional<Librarian> librarian = accountService.getLibrarian(username);
 
       // If a librarian is found, set it in the session manager.
       if (librarian.isPresent()) {

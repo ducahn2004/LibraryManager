@@ -14,7 +14,8 @@ import org.group4.model.user.Librarian;
  * Controller class for editing book details. Handles the logic for updating book information and
  * interacting with the UI components in the edit book form.
  */
-public class EditBookController {
+public class
+EditBookController {
 
   @FXML
   private TextField bookISBN;         // Text field for the book ISBN

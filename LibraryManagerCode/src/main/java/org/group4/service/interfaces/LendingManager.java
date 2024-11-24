@@ -1,7 +1,9 @@
 package org.group4.service.interfaces;
 
+import java.util.List;
 import org.group4.model.book.BookItem;
 import org.group4.model.enums.BookStatus;
+import org.group4.model.transaction.BookLending;
 import org.group4.model.user.Member;
 
 public interface LendingManager {
@@ -24,4 +26,27 @@ public interface LendingManager {
    * @return {@code true} if the book item was returned successfully, {@code false} otherwise
    */
   boolean returnBookItem(BookItem bookItem, Member member, BookStatus status);
+
+  /**
+   * Get all book lendings.
+   *
+   * @return a list of all book lendings
+   */
+  List<BookLending> getAll();
+
+  /**
+   * Get all book lendings by member ID.
+   *
+   * @param memberId the member ID
+   * @return a list of all book lendings by the member
+   */
+  List<BookLending> getByMemberId(String memberId);
+
+  /**
+   * Get all book lendings by book barcode.
+   *
+   * @param barcode the book barcode
+   * @return a list of all book lendings of the book
+   */
+  List<BookLending> getByBarcode(String barcode);
 }

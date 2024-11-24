@@ -182,7 +182,7 @@ public class BorrowingBookController {
    * @throws Exception If the borrowing process fails.
    */
   private void borrowingBook(BookItem bookItem, Member member) throws Exception {
-    boolean isBorrowed = librarian.getBookLendingManager().borrowBookItem(bookItem, member);
+    boolean isBorrowed = librarian.getLendingManager().borrowBookItem(bookItem, member);
     if (!isBorrowed) {
       Alert alert = new Alert(AlertType.WARNING);
       alert.setTitle("Warning");

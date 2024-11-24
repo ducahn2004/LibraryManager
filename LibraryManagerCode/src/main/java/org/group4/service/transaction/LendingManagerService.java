@@ -2,6 +2,7 @@ package org.group4.service.transaction;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.group4.dao.base.FactoryDAO;
@@ -123,4 +124,21 @@ public class LendingManagerService implements LendingManager {
       return false;
     }
   }
+
+  @Override
+  public List<BookLending> getAll() {
+    return FactoryDAO.getBookLendingDAO().getAll();
+  }
+
+  @Override
+  public List<BookLending> getByMemberId(String memberId) {
+    return FactoryDAO.getBookLendingDAO().getByMemberId(memberId);
+  }
+
+  @Override
+  public List<BookLending> getByBarcode(String barcode) {
+    return FactoryDAO.getBookLendingDAO().getByBarcode(barcode);
+  }
+
+
 }

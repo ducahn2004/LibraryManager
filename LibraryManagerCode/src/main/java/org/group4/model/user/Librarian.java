@@ -19,9 +19,9 @@ import org.group4.service.user.MemberManagerService;
 public class Librarian extends Person {
 
   String librarianId;
-  private final GenericManagerService<Book> bookManager;
-  private final GenericManagerService<BookItem> bookItemManager;
-  private final GenericManagerService<Member> memberManager;
+  private final BookManagerService bookManager;
+  private final BookItemManagerService bookItemManager;
+  private final MemberManagerService memberManager;
   private final LendingManager bookLendingManager;
 
 
@@ -59,7 +59,7 @@ public class Librarian extends Person {
    *
    * @return the book manager
    */
-  public GenericManagerService<Book> getBookManager() {
+  public BookManagerService getBookManager() {
     return bookManager;
   }
 
@@ -68,7 +68,7 @@ public class Librarian extends Person {
    *
    * @return the book item manager
    */
-  public GenericManagerService<BookItem> getBookItemManager() {
+  public BookItemManagerService getBookItemManager() {
     return bookItemManager;
   }
 
@@ -77,7 +77,7 @@ public class Librarian extends Person {
    *
    * @return the member manager
    */
-  public GenericManagerService<Member> getMemberManager() {
+  public MemberManagerService getMemberManager() {
     return memberManager;
   }
 
@@ -86,7 +86,7 @@ public class Librarian extends Person {
    *
    * @return the book lending manager
    */
-  public LendingManager getBookLendingManager() {
+  public LendingManager getLendingManager() {
     return bookLendingManager;
   }
 }

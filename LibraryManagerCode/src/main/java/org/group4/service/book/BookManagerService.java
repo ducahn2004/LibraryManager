@@ -4,6 +4,7 @@ import java.util.List;
 import org.group4.dao.book.BookDAO;
 import org.group4.dao.base.FactoryDAO;
 import org.group4.model.book.Book;
+import org.group4.model.book.BookItem;
 import org.group4.model.enums.NotificationType;
 import org.group4.service.interfaces.GenericManagerService;
 import org.group4.service.notification.SystemNotificationService;
@@ -45,5 +46,15 @@ public class BookManagerService implements GenericManagerService<Book> {
   @Override
   public List<Book> getAll() {
     return bookDAO.getAll();
+  }
+
+  /**
+   * Retrieves all book items of a book with the specified ISBN.
+   *
+   * @param isbn The ISBN of the book.
+   * @return A list of book items of the book.
+   */
+  public List<BookItem> getAllBookItems(String isbn) {
+    return bookDAO.getAllBookItems(isbn);
   }
 }

@@ -355,7 +355,7 @@ public class ReturningBookController {
    */
   private void returningBookToLibrary(BookLending bookLending) throws Exception {
     // Return the book item to the library system
-    boolean successAdded = librarian.getBookLendingManager().returnBookItem(bookLending.getBookItem(),
+    boolean successAdded = librarian.getLendingManager().returnBookItem(bookLending.getBookItem(),
         bookLending.getMember(), getBookStatus(statusCheckBox));
     if (!successAdded) {
       System.out.println("Failed to edit book with ISBN: " + bookLending.getBookItem().getISBN());

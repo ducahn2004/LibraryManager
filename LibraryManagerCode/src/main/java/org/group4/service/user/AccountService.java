@@ -1,9 +1,11 @@
 package org.group4.service.user;
 
+import java.util.Optional;
 import org.group4.model.user.Account;
 import org.group4.dao.user.AccountDAO;
 import org.group4.dao.base.FactoryDAO;
 
+import org.group4.model.user.Librarian;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,5 +71,9 @@ public class AccountService {
           return isUpdated;
         })
         .orElse(false);
+  }
+
+  public Optional<Librarian> getLibrarian(String id) {
+   return FactoryDAO.getLibrarianDAO().getById(id);
   }
 }

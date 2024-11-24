@@ -16,7 +16,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.group4.dao.base.FactoryDAO;
 import org.group4.service.user.SessionManagerService;
 import org.group4.model.user.Librarian;
 import org.group4.model.user.Member;
@@ -118,14 +117,14 @@ public class MemberViewController {
   }
 
   /**
-   * Loads members into the table by fetching them from the DAO asynchronously.
+   * Loads all members from the database and populates the member list.
    */
   private void loadMembers() {
     memberList.clear();
     Task<ObservableList<Member>> loadTask = new Task<>() {
       @Override
       protected ObservableList<Member> call() {
-        return FXCollections.observableArrayList(FactoryDAO.getMemberDAO().getAll());
+        return FXCollections.observableArrayList(librarian.getMemberManager().getAll());
       }
     };
 

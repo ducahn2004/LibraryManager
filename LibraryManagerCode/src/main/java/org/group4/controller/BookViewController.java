@@ -21,7 +21,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.group4.dao.base.FactoryDAO;
 import org.group4.model.book.Book;
 import org.group4.service.user.SessionManagerService;
 import org.group4.model.user.Librarian;
@@ -137,7 +136,7 @@ public class BookViewController {
    * Loads book data from the database and populates the table view.
    */
   private void loadBookData() {
-    List<Book> books = FactoryDAO.getBookDAO().getAll();
+    List<Book> books = librarian.getBookManager().getAll();
 
     if (books == null) {
       showAlert(AlertType.WARNING, "No Data Found", "No books were found in the database.");
@@ -174,7 +173,7 @@ public class BookViewController {
   public void refreshTable() {
     tableView.getItems().clear();
     bookList.clear();
-    bookList.addAll(FactoryDAO.getBookDAO().getAll());
+    bookList.addAll(librarian.getBookManager().getAll());
     tableView.setItems(bookList);
   }
 

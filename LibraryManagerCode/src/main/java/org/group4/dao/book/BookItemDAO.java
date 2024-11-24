@@ -96,7 +96,8 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   public boolean add(BookItem bookItem) {
     try (Connection connection = getConnection()) {
       // Check if the rack exists in the database
-      if (bookItem.getPlacedAt() == null || !rackExists(connection, bookItem.getPlacedAt().getNumberRack())) {
+      if (bookItem.getPlacedAt() == null
+          || !rackExists(connection, bookItem.getPlacedAt().getNumberRack())) {
         logger.error("Invalid rack or rack does not exist");
         return false;
       }
