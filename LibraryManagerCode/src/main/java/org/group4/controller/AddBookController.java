@@ -118,8 +118,6 @@ public class AddBookController {
           "The book has been added to the library.");
     } catch (IllegalArgumentException e) {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
-    } catch (IOException | SQLException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -166,17 +164,28 @@ public class AddBookController {
    * Parses a comma-separated list of authors into a set of Author objects.
    *
    * @param authorsText A string containing author names separated by commas
-   * @return A set of Author objects
-   * @throws IllegalArgumentException if the input is empty
+   * @return A set of Author objects, or null if the input is invalid
    */
   private Set<Author> parseAuthors(String authorsText) {
-    if (authorsText == null || authorsText.isEmpty()) {
-      throw new IllegalArgumentException("Authors cannot be empty.");
+    Set<Author> authors = null;
+
+    try {
+      if (authorsText == null || authorsText.trim().isEmpty()) {
+        showAlert(Alert.AlertType.ERROR, "Invalid Input", "Authors cannot be empty.");
+        return null; // Return null if the input is invalid
+      }
+
+      authors = authorsText.lines()
+          .map(String::trim)
+          .map(Author::new)
+          .collect(Collectors.toCollection(HashSet::new));
+
+    } catch (Exception e) {
+      showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while parsing the authors.");
+      return null; // Return null if there is any error during processing
     }
-    return authorsText.lines()
-        .map(String::trim)
-        .map(Author::new)
-        .collect(Collectors.toCollection(HashSet::new));
+
+    return authors;
   }
 
   /**
@@ -195,18 +204,30 @@ public class AddBookController {
   }
 
   /**
-   * Adds a book to the library system.
+   * Adds a book to the library.
    *
-   * <p>Throws an exception if the book already exists.
+   * <p>Displays an alert if the addition fails due to duplicate ISBN or other issues.
    *
-   * @param book The book to add
+   * @param book The book to be added to the library.
    */
-  private void addBookToLibrary(Book book) throws IOException, SQLException {
-    boolean successAdded = librarian.getBookManager().add(book);
-    if (!successAdded) {
-      throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
+  private void addBookToLibrary(Book book) {
+    try {
+      boolean successAdded = librarian.getBookManager().add(book);
+      if (!successAdded) {
+        throw new IllegalArgumentException(
+            "Book with the same ISBN already exists in the library.");
+      }
+      System.out.println("Book with ISBN: " + book.getISBN() + " has been added successfully.");
+      showAlert(Alert.AlertType.INFORMATION, "Success", "Book added successfully!");
+    } catch (IllegalArgumentException e) {
+      showAlert(Alert.AlertType.ERROR, "Duplicate ISBN", e.getMessage());
+    } catch (SQLException e) {
+      showAlert(Alert.AlertType.ERROR, "Database Error",
+          "An error occurred while accessing the database: " + e.getMessage());
+    } catch (Exception e) {
+      showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+          "An unexpected error occurred. Please try again.");
     }
-    System.out.println("Book with ISBN: " + book.getISBN() + " has been added successfully.");
   }
 
   /**
@@ -215,27 +236,44 @@ public class AddBookController {
    * <p>Validates the input and calculates the checksum for the ISBN-13.
    *
    * @param isbn10 The 10-digit ISBN string to convert
-   * @return The 13-digit ISBN string
-   * @throws IllegalArgumentException if the input is not a valid ISBN-10
+   * @return The 13-digit ISBN string, or null if the input is invalid
    */
   public String convertISBN10toISBN13(String isbn10) {
-    if (isbn10.length() == 13) {
-      return isbn10;
-    } else if (isbn10.length() != 10) {
-      throw new IllegalArgumentException(
-          "Invalid ISBN-10! The input must be exactly 10 characters long.");
+    try {
+      if (isbn10.length() == 13) {
+        return isbn10;
+      } else if (isbn10.length() != 10) {
+        throw new IllegalArgumentException(
+            "Invalid ISBN-10! The input must be exactly 10 characters long."
+        );
+      }
+
+      String isbn13WithoutChecksum = "978" + isbn10.substring(0, 9);
+
+      int checksum = 0;
+      for (int i = 0; i < isbn13WithoutChecksum.length(); i++) {
+        int digit = Character.getNumericValue(isbn13WithoutChecksum.charAt(i));
+        checksum += (i % 2 == 0) ? digit : digit * 3;
+      }
+
+      checksum = (10 - (checksum % 10)) % 10;
+      return isbn13WithoutChecksum + checksum;
+
+    } catch (IllegalArgumentException e) {
+      showAlert(
+          Alert.AlertType.ERROR,
+          "Invalid Input",
+          "Error: " + e.getMessage()
+      );
+      return null;
+    } catch (Exception e) {
+      showAlert(
+          Alert.AlertType.ERROR,
+          "Unexpected Error",
+          "An unexpected error occurred. Please check the input and try again."
+      );
+      return null;
     }
-
-    String isbn13WithoutChecksum = "978" + isbn10.substring(0, 9);
-
-    int checksum = 0;
-    for (int i = 0; i < isbn13WithoutChecksum.length(); i++) {
-      int digit = Character.getNumericValue(isbn13WithoutChecksum.charAt(i));
-      checksum += (i % 2 == 0) ? digit : digit * 3;
-    }
-
-    checksum = (10 - (checksum % 10)) % 10;
-    return isbn13WithoutChecksum + checksum;
   }
 
   /**
