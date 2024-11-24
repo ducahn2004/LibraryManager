@@ -27,16 +27,16 @@ public class BookItem extends Book {
   /**
    * Constructs a {@code BookItem} instance with specific details.
    *
-   * @param book the book to create an item for
+   * @param book            the book to create an item for
    * @param isReferenceOnly whether the book is for reference only
-   * @param borrowed the date the book was borrowed
-   * @param dueDate the due date for returning the book
-   * @param price the price of the book item
-   * @param format the format of the book item
-   * @param status the status of the book item
-   * @param dateOfPurchase the date the book item was purchased
+   * @param borrowed        the date the book was borrowed
+   * @param dueDate         the due date for returning the book
+   * @param price           the price of the book item
+   * @param format          the format of the book item
+   * @param status          the status of the book item
+   * @param dateOfPurchase  the date the book item was purchased
    * @param publicationDate the publication date of the book item
-   * @param placedAt the rack location of the book item
+   * @param placedAt        the rack location of the book item
    */
   public BookItem(Book book, boolean isReferenceOnly, LocalDate borrowed,
       LocalDate dueDate, double price, BookFormat format, BookStatus status,
@@ -57,13 +57,13 @@ public class BookItem extends Book {
   /**
    * Constructs a {@code BookItem} instance with specific details.
    *
-   * @param book the book to create an item for
+   * @param book            the book to create an item for
    * @param isReferenceOnly whether the book is for reference only
-   * @param price the price of the book item
-   * @param format the format of the book item
-   * @param dateOfPurchase the date the book item was purchased
+   * @param price           the price of the book item
+   * @param format          the format of the book item
+   * @param dateOfPurchase  the date the book item was purchased
    * @param publicationDate the publication date of the book item
-   * @param placedAt the rack location of the book item
+   * @param placedAt        the rack location of the book item
    */
   public BookItem(Book book, boolean isReferenceOnly, double price, BookFormat format,
       LocalDate dateOfPurchase, LocalDate publicationDate, Rack placedAt) {
@@ -81,23 +81,23 @@ public class BookItem extends Book {
   /**
    * Constructs a {@code BookItem} instance with specific details.
    *
-   * @param ISBN the ISBN of the book
-   * @param title the title of the book
-   * @param subject the subject of the book
-   * @param publisher the publisher of the book
-   * @param language the language of the book
-   * @param numberOfPages the number of pages in the book
-   * @param authors the set of authors for the book
-   * @param barcode the unique barcode for this book item
+   * @param ISBN            the ISBN of the book
+   * @param title           the title of the book
+   * @param subject         the subject of the book
+   * @param publisher       the publisher of the book
+   * @param language        the language of the book
+   * @param numberOfPages   the number of pages in the book
+   * @param authors         the set of authors for the book
+   * @param barcode         the unique barcode for this book item
    * @param isReferenceOnly whether the book is for reference only
-   * @param borrowed the date the book was borrowed
-   * @param dueDate the due date for returning the book
-   * @param price the price of the book item
-   * @param format the format of the book item
-   * @param status the status of the book item
-   * @param dateOfPurchase the date the book item was purchased
+   * @param borrowed        the date the book was borrowed
+   * @param dueDate         the due date for returning the book
+   * @param price           the price of the book item
+   * @param format          the format of the book item
+   * @param status          the status of the book item
+   * @param dateOfPurchase  the date the book item was purchased
    * @param publicationDate the publication date of the book item
-   * @param placedAt the rack location of the book item
+   * @param placedAt        the rack location of the book item
    */
   public BookItem(String ISBN, String title, String subject, String publisher, String language,
       int numberOfPages, Set<Author> authors, String barcode, boolean isReferenceOnly,
@@ -115,6 +115,7 @@ public class BookItem extends Book {
     this.publicationDate = publicationDate;
     this.placedAt = placedAt;
   }
+
 
   /**
    * Retrieves the barcode of the book item.
@@ -298,7 +299,8 @@ public class BookItem extends Book {
 
   /**
    * Checks if the book item can be checked out.
-   * <p>A book item can be checked out only if it is not for reference and is currently available.</p>
+   * <p>A book item can be checked out only if it is not for reference and is currently
+   * available.</p>
    *
    * @return true if the book item can be checked out, false otherwise
    */
