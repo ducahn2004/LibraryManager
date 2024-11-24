@@ -106,110 +106,46 @@ public class AdminPaneController {
   }
 
   /**
-   * Handles the action for the Home button.
-   * <p>
-   * Navigates to the Admin Pane view.
+   * Returns the current stage of the view.
    *
-   * @param actionEvent The event triggered by clicking the Home button.
-   * @throws IOException If the FXML file cannot be loaded.
+   * @return The current Stage object.
    */
-  public void HomeAction(ActionEvent actionEvent) throws IOException {
-    navigateToView("AdminPane.fxml", homeButton, "Library Manager");
-    System.out.println("Home button clicked");
+  private Stage getStage() {
+    return (Stage) homeButton.getScene().getWindow();
+  }
+
+// Navigation actions for switching between different views
+
+  public void HomeAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
+  }
+
+  public void MemberAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
+  }
+
+  public void BookAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
+  }
+
+  public void BookLendingAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
+  }
+
+  public void notificationAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
+  }
+
+  public void SettingAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 
   /**
-   * Handles the action for the Member button.
-   * <p>
-   * Navigates to the Member View.
+   * Closes the application.
    *
-   * @param actionEvent The event triggered by clicking the Member button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  public void MemberAction(ActionEvent actionEvent) throws IOException {
-    navigateToView("MemberView.fxml", MemberButton, "Library Manager");
-    System.out.println("Member button clicked");
-  }
-
-  /**
-   * Handles the action for the Book button.
-   * <p>
-   * Navigates to the Book View.
-   *
-   * @param actionEvent The event triggered by clicking the Book button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  public void BookAction(ActionEvent actionEvent) throws IOException {
-    navigateToView("BookView.fxml", bookButton, "Library Manager");
-    System.out.println("Book button clicked");
-  }
-
-  /**
-   * Handles the action for the Book Lending button.
-   * <p>
-   * Navigates to the Book Lending View.
-   *
-   * @param actionEvent The event triggered by clicking the Book Lending button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
-    navigateToView("BookLending.fxml", bookLendingButton, "Library Manager");
-    System.out.println("Book Lending button clicked");
-  }
-
-  /**
-   * Handles the action for the Notification button.
-   * <p>
-   * Navigates to the Notification View.
-   *
-   * @param actionEvent The event triggered by clicking the Notification button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  public void notificationAction(ActionEvent actionEvent) throws IOException {
-    navigateToView("Notification.fxml", notificationButton, "Library Manager");
-    System.out.println("Notification button clicked");
-  }
-
-  /**
-   * Handles the action for the Setting button.
-   * <p>
-   * Navigates to the Setting View.
-   *
-   * @param actionEvent The event triggered by clicking the Setting button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  public void SettingAction(ActionEvent actionEvent) throws IOException {
-    navigateToView("Setting.fxml", settingButton, "Library Manager");
-    System.out.println("Setting button clicked");
-  }
-
-  /**
-   * Handles the action for the Close button.
-   * <p>
-   * Exits the application.
-   *
-   * @param actionEvent The event triggered by clicking the Close button.
+   * @param actionEvent The event triggered by clicking the close button.
    */
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
-  }
-
-  /**
-   * Navigates to a specified view.
-   *
-   * @param fxmlFile The FXML file to load.
-   * @param button   The button triggering the navigation.
-   * @param title    The title of the new scene.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  private void navigateToView(String fxmlFile, JFXButton button, String title) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxmlFile));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    // Get the stage from the button's scene
-    Stage stage = (Stage) button.getScene().getWindow();
-    stage.setTitle(title);
-    stage.setScene(scene);
-    stage.show();
   }
 }
