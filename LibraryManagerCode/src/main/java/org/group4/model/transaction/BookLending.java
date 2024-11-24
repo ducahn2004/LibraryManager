@@ -7,7 +7,8 @@ import org.group4.model.user.Member;
 
 /**
  * Represents a book lending transaction, where a member borrows a book item for a specific period.
- * Includes details such as the book's barcode, the member's ID, and the lending, due, and return dates.
+ * Includes details such as the book's barcode, the member's ID, and the lending, due, and return
+ * dates.
  */
 public class BookLending {
 
@@ -18,10 +19,10 @@ public class BookLending {
   private LocalDate returnDate;
 
   /**
-   * Constructs a new {@code BookLending} instance with the specified book item and member.
-   * The lending date is set to the current date,
-   * and the due date is set to 14 days from the lending date.
-   * The return date is initially null, indicating that the book has not yet been returned.
+   * Constructs a new {@code BookLending} instance with the specified book item and member. The
+   * lending date is set to the current date, and the due date is set to 14 days from the lending
+   * date. The return date is initially null, indicating that the book has not yet been returned.
+   *
    * @param bookItem the book item being lent
    * @param member   the member borrowing the book item
    */
@@ -35,6 +36,7 @@ public class BookLending {
 
   /**
    * Constructs a new {@code BookLending} instance with the specified book item, member, and dates.
+   *
    * @param bookItem    the book item being lent
    * @param member      the member borrowing the book item
    * @param lendingDate the date when the book item was lent
@@ -89,8 +91,8 @@ public class BookLending {
   /**
    * Returns the return date if present.
    *
-   * @return an {@link Optional} containing the return date if it is not null,
-   *         or an empty {@link Optional} if the return date is null.
+   * @return an {@link Optional} containing the return date if it is not null, or an empty
+   * {@link Optional} if the return date is null.
    */
   public Optional<LocalDate> getReturnDate() {
     return Optional.ofNullable(returnDate);
@@ -111,6 +113,7 @@ public class BookLending {
         + "member = " + member.getName() + ",\n"
         + "lendingDate = " + lendingDate.toString() + ",\n"
         + "dueDate = " + dueDate.toString() + ",\n"
-        + "returnDate = " + returnDate.toString();
+        + "returnDate = " + (returnDate != null ? returnDate.toString() : "null");
   }
+
 }
