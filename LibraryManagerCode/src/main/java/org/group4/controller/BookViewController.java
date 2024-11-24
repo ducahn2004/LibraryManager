@@ -90,7 +90,6 @@ public class BookViewController {
       }
     });
 
-    // Add row click event listener
     tableView.setRowFactory(tv -> {
       TableRow<Book> row = new TableRow<>();
       row.setOnMouseClicked(event -> {
@@ -117,8 +116,10 @@ public class BookViewController {
       if (books == null || books.isEmpty()) {
         showAlert(AlertType.WARNING, "No Data Found", "No books were found in the database.");
       } else {
-        bookList.addAll(books);
-        tableView.setItems(bookList);
+        if (bookList.isEmpty()) {
+          bookList.addAll(books);
+          tableView.setItems(bookList);
+        }
       }
     } catch (SQLException e) {
       logAndShowError("Failed to load book data", e);
@@ -231,7 +232,6 @@ public class BookViewController {
       detailStage.setTitle("Book Item Detail");
       detailStage.show();
     } catch (Exception e) {
-      // Show an alert to the user in case of an error
       showAlert(Alert.AlertType.ERROR, "Error",
           "Failed to load the book details page. Please try again.");
     }
