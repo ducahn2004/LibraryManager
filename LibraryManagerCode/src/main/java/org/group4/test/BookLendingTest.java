@@ -21,21 +21,17 @@ public class BookLendingTest {
 
   @Before
   public void setUp() {
-    // Mock BookItem và Member
     mockBookItem = mock(BookItem.class);
     mockMember = mock(Member.class);
 
-    // Thiết lập giá trị giả lập cho mock
     when(mockBookItem.getTitle()).thenReturn("Mock Book Title");
     when(mockMember.getName()).thenReturn("Mock Member Name");
 
-    // Tạo BookLending với constructor mặc định
     bookLending = new BookLending(mockBookItem, mockMember);
   }
 
   @Test
   public void testConstructorDefault() {
-    // Kiểm tra giá trị mặc định
     assertEquals(mockBookItem, bookLending.getBookItem());
     assertEquals(mockMember, bookLending.getMember());
     assertEquals(LocalDate.now(), bookLending.getLendingDate());
@@ -52,7 +48,6 @@ public class BookLendingTest {
     BookLending customLending = new BookLending(mockBookItem, mockMember, lendingDate, dueDate,
         returnDate);
 
-    // Kiểm tra các giá trị đã được thiết lập
     assertEquals(lendingDate, customLending.getLendingDate());
     assertEquals(dueDate, customLending.getDueDate());
     assertTrue(customLending.getReturnDate().isPresent());
@@ -63,10 +58,8 @@ public class BookLendingTest {
   public void testSetReturnDate() {
     LocalDate returnDate = LocalDate.of(2024, 11, 20);
 
-    // Gọi phương thức setReturnDate
     bookLending.setReturnDate(returnDate);
 
-    // Kiểm tra giá trị returnDate
     assertTrue(bookLending.getReturnDate().isPresent());
     assertEquals(returnDate, bookLending.getReturnDate().get());
   }
