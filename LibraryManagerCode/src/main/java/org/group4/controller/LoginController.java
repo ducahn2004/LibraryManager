@@ -50,9 +50,6 @@ public class LoginController {
       LoginController.class.getName()); // Logger for debugging and tracking.
   private String password; // Stores the current password value.
 
-  /**
-   * Initializes the controller's components and sets up event handlers.
-   */
   @FXML
   private void initialize() {
     textShowPassword.setVisible(false); // Initially hide the plain text password field.
@@ -63,9 +60,13 @@ public class LoginController {
     passwordField.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.ENTER) {
         try {
-          handleLoginButton();
+          handleLoginButton();  // Try to handle the login action
         } catch (SQLException e) {
-          throw new RuntimeException("Error during login process", e);
+          // If an error occurs, show an alert with the error message
+          showAlert(Alert.AlertType.ERROR, "Login Error",
+              "An error occurred during the login process. Please try again.");
+          // Optionally, log the error
+          e.printStackTrace();
         }
       }
     });
@@ -177,5 +178,20 @@ public class LoginController {
     alert.setHeaderText(null); // No header text for this alert.
     alert.setContentText(message); // Set the content message.
     alert.showAndWait(); // Display the alert and wait for user response.
+  }
+
+  /**
+   * Shows an alert to the user.
+   *
+   * @param type    The type of alert (e.g., ERROR, INFORMATION).
+   * @param title   The title of the alert window.
+   * @param content The content of the alert message.
+   */
+  private void showAlert(Alert.AlertType type, String title, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);  // Optional: leave header empty
+    alert.setContentText(content);
+    alert.showAndWait();
   }
 }

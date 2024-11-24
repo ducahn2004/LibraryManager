@@ -1,6 +1,7 @@
 package org.group4.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -54,7 +56,8 @@ public class MemberDetailsController {
   @FXML
   private Label memberIDLabel;
 
-  private static final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private static final Librarian librarian = SessionManagerService.getInstance()
+      .getCurrentLibrarian();
   // Current member and their book lending data
   private Member currentMember;
   private final ObservableList<BookLending> bookLendings = FXCollections.observableArrayList();
@@ -105,11 +108,7 @@ public class MemberDetailsController {
     tableView.getSelectionModel().selectedItemProperty()
         .addListener((obs, oldSelection, newSelection) -> {
           if (newSelection != null) {
-            try {
-              openReturningBookPage(newSelection.getBookItem());
-            } catch (IOException e) {
-              throw new RuntimeException(e);
-            }
+            openReturningBookPage(newSelection.getBookItem());
           }
         });
   }
@@ -146,7 +145,7 @@ public class MemberDetailsController {
    * @param bookItem The book item to be returned.
    * @throws IOException If the FXML file cannot be loaded.
    */
-  private void openReturningBookPage(BookItem bookItem) throws IOException {
+  private void openReturningBookPage(BookItem bookItem) {
     try {
       // Load the ReturningBook.fxml file and set up the new scene
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
@@ -162,9 +161,29 @@ public class MemberDetailsController {
       controller.setPreviousPage("memberDetails");
 
       currentStage.setTitle("Book Item Detail");
-    } catch (Exception e) {
+    } catch (IOException | SQLException e) {
+      // Log the error (optional) and show an alert to the user
       Logger.getLogger(MemberDetailsController.class.getName())
           .log(Level.SEVERE, "Failed to load book details page", e);
+
+      // Show an alert with the error message
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "Failed to load the returning book page. Please try again.");
     }
+  }
+
+  /**
+   * Shows an alert to the user.
+   *
+   * @param type    The type of alert (e.g., ERROR, INFORMATION).
+   * @param title   The title of the alert window.
+   * @param content The content of the alert message.
+   */
+  private void showAlert(Alert.AlertType type, String title, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);  // Optional: leave header empty
+    alert.setContentText(content);
+    alert.showAndWait();
   }
 }

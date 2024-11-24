@@ -237,23 +237,48 @@ public class BorrowingBookController {
    * @throws IOException  If loading the book details view fails.
    * @throws SQLException If a database error occurs.
    */
-  public void handleCancel(ActionEvent actionEvent) throws IOException, SQLException {
+  public void handleCancel(ActionEvent actionEvent) {
     loadBookDetail();
   }
 
   /**
    * Loads the book details view and updates the UI.
-   *
-   * @throws IOException  If loading the view fails.
-   * @throws SQLException If a database error occurs.
    */
-  private void loadBookDetail() throws IOException, SQLException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
-    Scene bookDetailScene = new Scene(loader.load());
-    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-    currentStage.setScene(bookDetailScene);
+  private void loadBookDetail() {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      Scene bookDetailScene = new Scene(loader.load());
+      Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+      currentStage.setScene(bookDetailScene);
 
-    BookDetailsController bookDetailsController = loader.getController();
-    bookDetailsController.setItemDetail(currentBookItem);
+      BookDetailsController bookDetailsController = loader.getController();
+      bookDetailsController.setItemDetail(currentBookItem);
+    } catch (IOException e) {
+      // Handle IO exceptions (e.g., FXML loading issues)
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "Failed to load the book details view. Please try again.");
+    } catch (SQLException e) {
+      // Handle SQL exceptions (e.g., database access issues)
+      showAlert(Alert.AlertType.ERROR, "Database Error",
+          "An error occurred while accessing the database. Please try again.");
+    } catch (Exception e) {
+      // Handle any other unforeseen errors
+      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
+    }
+  }
+
+  /**
+   * Shows a simple alert dialog with the specified type, title, and content.
+   *
+   * @param type    The type of alert.
+   * @param title   The title of the alert.
+   * @param content The content message of the alert.
+   */
+  private void showAlert(Alert.AlertType type, String title, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(content);
+    alert.showAndWait();
   }
 }

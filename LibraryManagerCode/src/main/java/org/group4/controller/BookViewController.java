@@ -4,8 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -89,6 +87,26 @@ public class BookViewController {
         } else {
           setGraphic(new HBox(10, editLink, deleteLink));
         }
+      }
+    });
+
+    // Add row click event listener
+    tableView.setRowFactory(tv -> {
+      TableRow<Book> row = new TableRow<>();
+      row.setOnMouseClicked(event -> {
+        if (event.getClickCount() == 2 && !row.isEmpty()) {
+          showDetailPage(row.getItem());
+        }
+      });
+      return row;
+    });
+
+    // Add a listener for the search field
+    searchField.textProperty()
+        .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
+    searchField.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        filterBookList(searchField.getText());
       }
     });
   }
@@ -177,7 +195,6 @@ public class BookViewController {
   }
 
   private void logAndShowError(String message, Exception e) {
-    Logger.getLogger(BookViewController.class.getName()).log(Level.SEVERE, message, e);
     showAlert(AlertType.ERROR, "Error", message);
   }
 
@@ -185,7 +202,6 @@ public class BookViewController {
    * Handles the action for adding a new book. Switches to the "AddBook.fxml" scene.
    *
    * @param actionEvent The event triggered by the "Add Book" button.
-   * @throws IOException If the FXML file cannot be loaded.
    */
   @FXML
   public void addBookAction(ActionEvent actionEvent) {
@@ -200,6 +216,24 @@ public class BookViewController {
           "Error",
           "Failed to load Add Book View. Please try again."
       );
+    }
+  }
+
+  private void showDetailPage(Book book) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      Stage detailStage = new Stage();
+      detailStage.setScene(new Scene(loader.load()));
+
+      BookDetailsController controller = loader.getController();
+      controller.setItemDetail(book);
+
+      detailStage.setTitle("Book Item Detail");
+      detailStage.show();
+    } catch (Exception e) {
+      // Show an alert to the user in case of an error
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "Failed to load the book details page. Please try again.");
     }
   }
 

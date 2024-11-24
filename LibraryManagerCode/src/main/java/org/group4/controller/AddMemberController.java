@@ -167,24 +167,30 @@ public class AddMemberController {
   /**
    * Checks if the member already exists and adds it to the database if not.
    * <p>
-   * Throws an exception if a duplicate is detected.
+   * If a duplicate is detected, shows an alert instead of throwing an exception.
    */
-  private void returnCheckAddMember() throws IOException, SQLException {
-    currentMember = new Member(
-        memberName.getText(),
-        memberBirth.getValue(),
-        memberEmail.getText(),
-        memberPhone.getText()
-    );
+  private void returnCheckAddMember() {
+    try {
+      currentMember = new Member(
+          memberName.getText(),
+          memberBirth.getValue(),
+          memberEmail.getText(),
+          memberPhone.getText()
+      );
 
-    boolean successEdit = librarian.getMemberManager().add(currentMember);
-    if (successEdit) {
-      System.out.println(
-          "Member with member ID: " + currentMember.getMemberId()
-              + " has been edited successfully.");
-    } else {
-      throw new IllegalArgumentException(
-          "Member with the same information already exists in the library.");
+      boolean successEdit = librarian.getMemberManager().add(currentMember);
+      if (successEdit) {
+        System.out.println(
+            "Member with member ID: " + currentMember.getMemberId()
+                + " has been added successfully.");
+      } else {
+        // Show an alert instead of throwing an exception for duplicate
+        showAlert(Alert.AlertType.ERROR, "Duplicate Member",
+            "Member with the same information already exists in the library.");
+      }
+    } catch (Exception e) {
+      // Catch any unexpected errors and show an alert
+      showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while adding the member.");
     }
   }
 

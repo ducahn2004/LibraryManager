@@ -13,7 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.group4.model.transaction.BookLending;
-
+import org.group4.controller.SceneSwitcher;
 import java.util.List;
 import org.group4.model.user.Librarian;
 import org.group4.service.user.SessionManagerService;
@@ -24,7 +24,8 @@ import org.group4.service.user.SessionManagerService;
 public class BookLendingController {
 
   // Librarian instance for managing book lending operations
-  private static final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private static final Librarian librarian = SessionManagerService.getInstance()
+      .getCurrentLibrarian();
 
   // TableView and columns for displaying book lending information
   @FXML
@@ -138,57 +139,48 @@ public class BookLendingController {
     alert.showAndWait();
   }
 
-  // Navigation methods for various sections of the application
-
-  @FXML
-  public void HomeAction(ActionEvent event) throws IOException {
-    switchScene("AdminPane.fxml", "Library Manager");
+  /**
+   * Returns the current stage of the view.
+   *
+   * @return The current Stage object.
+   */
+  private Stage getStage() {
+    return (Stage) homeButton.getScene().getWindow();
   }
 
-  @FXML
-  public void MemberAction(ActionEvent event) throws IOException {
-    switchScene("MemberView.fxml", "Library Manager");
+// Navigation actions for switching between different views
+
+  public void HomeAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
   }
 
-  @FXML
-  public void BookAction(ActionEvent event) throws IOException {
-    switchScene("BookView.fxml", "Library Manager");
+  public void MemberAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
   }
 
-  @FXML
-  public void BookLendingAction(ActionEvent event) throws IOException {
-    switchScene("BookLending.fxml", "Library Manager");
+  public void BookAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
 
-  @FXML
-  public void notificationAction(ActionEvent event) throws IOException {
-    switchScene("Notification.fxml", "Library Manager");
+  public void BookLendingAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
   }
 
-  @FXML
-  public void SettingAction(ActionEvent event) throws IOException {
-    switchScene("Setting.fxml", "Library Manager");
+  public void notificationAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
+  }
+
+  public void SettingAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 
   /**
    * Closes the application.
    *
-   * @param event the action event triggering the close
+   * @param actionEvent The event triggered by clicking the close button.
    */
-  @FXML
-  public void Close(ActionEvent event) {
+  public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
 
-  /**
-   * Switches the scene to the specified FXML file and updates the window title.
-   *
-   * @param fxmlFile the name of the FXML file to load
-   * @param title    the title of the window
-   * @throws IOException if the FXML file cannot be loaded
-   */
-  private void switchScene(String fxmlFile, String title) throws IOException {
-    Stage stage = (Stage) homeButton.getScene().getWindow();
-    SceneSwitcher.switchScene(stage, fxmlFile, title);
-  }
 }
