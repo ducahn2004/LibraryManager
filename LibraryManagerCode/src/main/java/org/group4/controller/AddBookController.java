@@ -253,113 +253,46 @@ public class AddBookController {
   }
 
   /**
-   * Handles navigation to the home screen.
+   * Returns the current stage of the view.
    *
-   * @param actionEvent The action event triggered by the home button
-   * @throws IOException if the FXML file cannot be loaded
+   * @return The current Stage object.
    */
-  public void homeAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("AdminPane.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    Stage stage = (Stage) homeButton.getScene().getWindow();
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Home button clicked");
+  private Stage getStage() {
+    return (Stage) homeButton.getScene().getWindow();
   }
 
-  /**
-   * Handles navigation to the member view.
-   *
-   * @param actionEvent The action event triggered by the member button
-   * @throws IOException if the FXML file cannot be loaded
-   */
-  public void memberAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MemberView.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+// Navigation actions for switching between different views
 
-    Stage stage = (Stage) MemberButton.getScene().getWindow();
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Member button clicked");
+  public void HomeAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
   }
 
-  /**
-   * Handles navigation to the book view.
-   *
-   * @param actionEvent The action event triggered by the book button
-   * @throws IOException if the FXML file cannot be loaded
-   */
-  public void bookAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookView.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    Stage stage = (Stage) bookButton.getScene().getWindow();
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Book button clicked");
+  public void MemberAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
   }
 
-  /**
-   * Handles navigation to the book lending view.
-   *
-   * @param actionEvent The action event triggered by the book lending button
-   * @throws IOException if the FXML file cannot be loaded
-   */
-  public void bookLendingAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("BookLending.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    Stage stage = (Stage) bookButton.getScene().getWindow();
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Book lending button clicked");
+  public void BookAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
 
-  /**
-   * Handles navigation to the notification view.
-   *
-   * @param actionEvent The action event triggered by the notification button
-   * @throws IOException if the FXML file cannot be loaded
-   */
-  public void notificationAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Notification.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
-
-    Stage stage = (Stage) notificationButton.getScene().getWindow();
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Notification button clicked");
+  public void BookLendingAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
   }
 
-  /**
-   * Handles navigation to the settings view.
-   *
-   * @param actionEvent The action event triggered by the settings button
-   * @throws IOException if the FXML file cannot be loaded
-   */
-  public void settingAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Setting.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+  public void notificationAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
+  }
 
-    Stage stage = (Stage) settingButton.getScene().getWindow();
-    stage.setTitle("Library Manager");
-    stage.setScene(scene);
-    stage.show();
-    System.out.println("Setting button clicked");
+  public void SettingAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 
   /**
    * Closes the application.
    *
-   * @param actionEvent The action event triggered by the close button
+   * @param actionEvent The event triggered by clicking the close button.
    */
-  public void close(ActionEvent actionEvent) {
+  public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
 }

@@ -25,63 +25,38 @@ import org.group4.model.book.Book;
 import org.group4.service.user.SessionManagerService;
 import org.group4.model.user.Librarian;
 
-/**
- * Controller for managing book-related operations in the application.
- */
 public class BookViewController {
 
-  // FXML injected fields for UI components
   @FXML
-  private JFXButton bookLendingButton;
-  @FXML
-  private JFXButton homeButton;
-  @FXML
-  private JFXButton MemberButton;
-  @FXML
-  private JFXButton bookButton;
-  @FXML
-  private JFXButton settingButton;
-  @FXML
-  private JFXButton notificationButton;
-  @FXML
-  private JFXButton closeButton;
-
+  private JFXButton bookLendingButton, homeButton, MemberButton, bookButton, settingButton, notificationButton, closeButton;
   @FXML
   private TableView<Book> tableView;
   @FXML
-  private TableColumn<Book, String> ISBN;
-  @FXML
-  private TableColumn<Book, String> bookName;
-  @FXML
-  private TableColumn<Book, String> bookSubject;
-  @FXML
-  private TableColumn<Book, String> bookPublisher;
-  @FXML
-  private TableColumn<Book, String> bookLanguage;
+  private TableColumn<Book, String> ISBN, bookName, bookSubject, bookPublisher, bookLanguage, bookAuthor;
   @FXML
   private TableColumn<Book, Integer> numberOfPages;
   @FXML
-  private TableColumn<Book, String> bookAuthor;
-  @FXML
   private TableColumn<Book, Void> actionColumn;
-
   @FXML
   private TextField searchField;
   @FXML
   private Button addBookButton;
 
-  // Observable list for storing book data
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();
-
-  // Current librarian retrieved from session manager
   private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
-  /**
-   * Initializes the controller and sets up the UI components and their bindings.
-   */
   @FXML
-  public void initialize() throws SQLException {
-    // Configure table column bindings
+  public void initialize() {
+    try {
+      setupTableColumns();
+      loadBookData();
+      setupSearchFunctionality();
+    } catch (Exception e) {
+      logAndShowError("Initialization failed", e);
+    }
+  }
+
+  private void setupTableColumns() {
     ISBN.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getISBN()));
     bookName.setCellValueFactory(
         cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
@@ -96,7 +71,6 @@ public class BookViewController {
     bookAuthor.setCellValueFactory(cellData -> new SimpleStringProperty(
         cellData.getValue().getAuthors().iterator().next().getName()));
 
-    // Configure action column with edit and delete options
     actionColumn.setCellFactory(param -> new TableCell<>() {
       private final Hyperlink editLink = new Hyperlink("Edit");
       private final Hyperlink deleteLink = new Hyperlink("Delete");
@@ -113,16 +87,27 @@ public class BookViewController {
         if (empty) {
           setGraphic(null);
         } else {
-          HBox hBox = new HBox(10, editLink, deleteLink);
-          setGraphic(hBox);
+          setGraphic(new HBox(10, editLink, deleteLink));
         }
       }
     });
+  }
 
-    // Load initial book data
-    loadBookData();
+  private void loadBookData() {
+    try {
+      List<Book> books = librarian.getBookManager().getAll();
+      if (books == null || books.isEmpty()) {
+        showAlert(AlertType.WARNING, "No Data Found", "No books were found in the database.");
+      } else {
+        bookList.addAll(books);
+        tableView.setItems(bookList);
+      }
+    } catch (SQLException e) {
+      logAndShowError("Failed to load book data", e);
+    }
+  }
 
-    // Set up search functionality
+  private void setupSearchFunctionality() {
     searchField.textProperty()
         .addListener((observable, oldValue, newValue) -> filterBookList(newValue));
     searchField.setOnKeyPressed(event -> {
@@ -132,28 +117,6 @@ public class BookViewController {
     });
   }
 
-  /**
-   * Loads book data from the database and populates the table view.
-   */
-  private void loadBookData() throws SQLException {
-    List<Book> books = librarian.getBookManager().getAll();
-
-    if (books == null) {
-      showAlert(AlertType.WARNING, "No Data Found", "No books were found in the database.");
-      return;
-    }
-
-    if (bookList.isEmpty()) {
-      bookList.addAll(books);
-      tableView.setItems(bookList);
-    }
-  }
-
-  /**
-   * Filters the book list based on the search text.
-   *
-   * @param searchText The text used to filter the book list.
-   */
   private void filterBookList(String searchText) {
     if (searchText == null || searchText.isEmpty()) {
       tableView.setItems(bookList);
@@ -161,67 +124,28 @@ public class BookViewController {
       String lowerCaseFilter = searchText.toLowerCase();
       ObservableList<Book> filteredList = bookList.filtered(book ->
           book.getISBN().toLowerCase().contains(lowerCaseFilter) ||
-              book.getTitle().toLowerCase().contains(lowerCaseFilter)
-      );
+              book.getTitle().toLowerCase().contains(lowerCaseFilter));
       tableView.setItems(filteredList);
     }
   }
 
-  /**
-   * Refreshes the book table by reloading data from the database.
-   */
-  public void refreshTable() throws SQLException {
-    tableView.getItems().clear();
-    bookList.clear();
-    bookList.addAll(librarian.getBookManager().getAll());
-    tableView.setItems(bookList);
-  }
-
-  /**
-   * Displays the details of a selected book in a new window.
-   *
-   * @param book The book whose details are to be displayed.
-   */
-  private void showBookDetail(Book book) {
+  public void refreshTable() {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
-      Parent root = loader.load();
-      Stage stage = new Stage();
-      stage.setScene(new Scene(root));
-
-      BookDetailsController controller = loader.getController();
-      controller.setItemDetail(book);
-
-      stage.setTitle("Book Detail");
-      stage.show();
-    } catch (IOException | SQLException e) {
-      logAndShowError("Failed to load book detail form", e);
+      tableView.getItems().clear();
+      bookList.clear();
+      bookList.addAll(librarian.getBookManager().getAll());
+      tableView.setItems(bookList);
+    } catch (SQLException e) {
+      logAndShowError("Failed to refresh table", e);
     }
   }
 
-  /**
-   * Logs an error and displays an alert to the user.
-   *
-   * @param message The error message.
-   * @param e       The exception that occurred.
-   */
-  private void logAndShowError(String message, Exception e) {
-    Logger.getLogger(BookViewController.class.getName()).log(Level.SEVERE, message, e);
-    showAlert(AlertType.ERROR, "Error", message);
-  }
-
-  /**
-   * Displays the edit form for the specified book.
-   *
-   * @param book The book to be edited.
-   */
   private void showEditForm(Book book) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("EditBook.fxml"));
       Stage editStage = new Stage();
       editStage.setScene(new Scene(loader.load()));
 
-      // Pass book data and parent controller to the edit form
       EditBookController controller = loader.getController();
       controller.setBookData(book);
       controller.setParentController(this);
@@ -233,75 +157,28 @@ public class BookViewController {
     }
   }
 
-  /**
-   * Displays a confirmation dialog for deleting the specified book.
-   *
-   * @param book The book to be deleted.
-   */
   private void showDeleteConfirmation(Book book) {
-    Alert alert = createAlert(
-        AlertType.CONFIRMATION,
-        "Delete Confirmation",
+    Alert alert = createAlert(AlertType.CONFIRMATION, "Delete Confirmation",
         "Are you sure you want to delete this book?",
-        "ID: " + book.getISBN()
-            + "\nName: " + book.getTitle()
-            + "\nSubject: " + book.getSubject()
-            + "\nLanguage: " + book.getLanguage()
-            + "\nNumber Of Pages: " + book.getNumberOfPages()
-            + "\nAuthor: " + book.authorsToString()
-    );
-
+        "Book: " + book.getTitle());
     alert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
-        // Delete the book and update the table view
         try {
           if (librarian.getBookManager().delete(book.getISBN())) {
-            System.out.println(
-                "Book with ISBN: " + book.getISBN() + " has been deleted successfully.");
             bookList.remove(book);
           } else {
-            System.out.println("Failed to delete book with ISBN: " + book.getISBN());
-            showAlert(AlertType.ERROR, "Deletion Failed",
-                "The book with the ISBN " + book.getISBN()
-                    + " could not be deleted because it is still in use.");
+            showAlert(AlertType.ERROR, "Deletion Failed", "Failed to delete the book.");
           }
         } catch (SQLException e) {
-          throw new RuntimeException(e);
+          logAndShowError("Failed to delete the book", e);
         }
       }
     });
   }
 
-  /**
-   * Displays an alert with the specified type, title, and content.
-   *
-   * @param type    The type of alert to display.
-   * @param title   The title of the alert dialog.
-   * @param content The content message of the alert.
-   */
-  void showAlert(AlertType type, String title, String content) {
-    Alert alert = new Alert(type);
-    alert.setTitle(title);
-    alert.setHeaderText(null);
-    alert.setContentText(content);
-    alert.showAndWait();
-  }
-
-  /**
-   * Creates a new alert dialog with the specified parameters.
-   *
-   * @param type    The type of alert.
-   * @param title   The title of the alert.
-   * @param header  The header text of the alert.
-   * @param content The content message of the alert.
-   * @return The created Alert object.
-   */
-  private Alert createAlert(AlertType type, String title, String header, String content) {
-    Alert alert = new Alert(type);
-    alert.setTitle(title);
-    alert.setHeaderText(header);
-    alert.setContentText(content);
-    return alert;
+  private void logAndShowError(String message, Exception e) {
+    Logger.getLogger(BookViewController.class.getName()).log(Level.SEVERE, message, e);
+    showAlert(AlertType.ERROR, "Error", message);
   }
 
   /**
@@ -311,94 +188,80 @@ public class BookViewController {
    * @throws IOException If the FXML file cannot be loaded.
    */
   @FXML
-  public void addBookAction(ActionEvent actionEvent) throws IOException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
-    Parent root = loader.load();
-    Stage stage = (Stage) addBookButton.getScene().getWindow();
-    stage.getScene().setRoot(root);
+  public void addBookAction(ActionEvent actionEvent) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
+      Parent root = loader.load();
+      Stage stage = (Stage) addBookButton.getScene().getWindow();
+      stage.getScene().setRoot(root);
+    } catch (IOException e) {
+      showAlert(
+          Alert.AlertType.ERROR,
+          "Error",
+          "Failed to load Add Book View. Please try again."
+      );
+    }
+  }
+
+  private void showAlert(AlertType type, String title, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(content);
+    alert.showAndWait();
+  }
+
+  private Alert createAlert(AlertType type, String title, String header, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(header);
+    alert.setContentText(content);
+    return alert;
   }
 
   /**
-   * Handles the action for navigating to the home view.
+   * Returns the current stage of the view.
    *
-   * @param actionEvent The event triggered by the "Home" button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  @FXML
-  public void HomeAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
-  }
-
-  /**
-   * Handles the action for navigating to the member view.
-   *
-   * @param actionEvent The event triggered by the "Member" button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  @FXML
-  public void MemberAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
-  }
-
-  /**
-   * Handles the action for navigating to the book view.
-   *
-   * @param actionEvent The event triggered by the "Book" button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  @FXML
-  public void BookAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
-  }
-
-  /**
-   * Handles the action for navigating to the notification view.
-   *
-   * @param actionEvent The event triggered by the "Notification" button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  @FXML
-  public void notificationAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
-  }
-
-  /**
-   * Handles the action for navigating to the settings view.
-   *
-   * @param actionEvent The event triggered by the "Setting" button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  @FXML
-  public void SettingAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
-  }
-
-  /**
-   * Handles the action for navigating to the book lending view.
-   *
-   * @param actionEvent The event triggered by the "Book Lending" button.
-   * @throws IOException If the FXML file cannot be loaded.
-   */
-  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
-    SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
-  }
-
-  /**
-   * Exits the application.
-   *
-   * @param actionEvent The event triggered by the "Close" button.
-   */
-  @FXML
-  public void Close(ActionEvent actionEvent) {
-    Platform.exit();
-  }
-
-  /**
-   * Retrieves the current stage.
-   *
-   * @return The current stage.
+   * @return The current Stage object.
    */
   private Stage getStage() {
     return (Stage) homeButton.getScene().getWindow();
   }
+
+// Navigation actions for switching between different views
+
+  public void HomeAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
+  }
+
+  public void MemberAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
+  }
+
+  public void BookAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
+  }
+
+  public void BookLendingAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
+  }
+
+  public void notificationAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
+  }
+
+  public void SettingAction(ActionEvent actionEvent) {
+    SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
+  }
+
+  /**
+   * Closes the application.
+   *
+   * @param actionEvent The event triggered by clicking the close button.
+   */
+  public void Close(ActionEvent actionEvent) {
+    Platform.exit();
+  }
+
+
 }

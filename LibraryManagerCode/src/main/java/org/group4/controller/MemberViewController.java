@@ -356,29 +356,29 @@ public class MemberViewController {
     return (Stage) homeButton.getScene().getWindow();
   }
 
-  // Navigation actions for switching between different views
+// Navigation actions for switching between different views
 
-  public void HomeAction(ActionEvent actionEvent) throws IOException {
+  public void HomeAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
   }
 
-  public void MemberAction(ActionEvent actionEvent) throws IOException {
+  public void MemberAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
   }
 
-  public void BookAction(ActionEvent actionEvent) throws IOException {
+  public void BookAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
 
-  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
+  public void BookLendingAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
   }
 
-  public void notificationAction(ActionEvent actionEvent) throws IOException {
+  public void notificationAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
   }
 
-  public void SettingAction(ActionEvent actionEvent) throws IOException {
+  public void SettingAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 

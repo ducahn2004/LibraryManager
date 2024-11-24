@@ -162,7 +162,7 @@ public class NotificationController {
   }
 
   /**
-   * Retrieves the current stage (window) from the home button's scene.
+   * Returns the current stage of the view.
    *
    * @return The current Stage object.
    */
@@ -170,68 +170,34 @@ public class NotificationController {
     return (Stage) homeButton.getScene().getWindow();
   }
 
-  /**
-   * Handles the action to navigate to the home page.
-   *
-   * @param actionEvent The event triggered by clicking the home button.
-   * @throws IOException If there is an issue loading the scene.
-   */
-  public void HomeAction(ActionEvent actionEvent) throws IOException {
+// Navigation actions for switching between different views
+
+  public void HomeAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
   }
 
-  /**
-   * Handles the action to navigate to the member page.
-   *
-   * @param actionEvent The event triggered by clicking the member button.
-   * @throws IOException If there is an issue loading the scene.
-   */
-  public void MemberAction(ActionEvent actionEvent) throws IOException {
+  public void MemberAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
   }
 
-  /**
-   * Handles the action to navigate to the book page.
-   *
-   * @param actionEvent The event triggered by clicking the book button.
-   * @throws IOException If there is an issue loading the scene.
-   */
-  public void BookAction(ActionEvent actionEvent) throws IOException {
+  public void BookAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
 
-  /**
-   * Handles the action to navigate to the book lending page.
-   *
-   * @param actionEvent The event triggered by clicking the book lending button.
-   * @throws IOException If there is an issue loading the scene.
-   */
-  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
+  public void BookLendingAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
   }
 
-  /**
-   * Handles the action to navigate to the notification page.
-   *
-   * @param actionEvent The event triggered by clicking the notification button.
-   * @throws IOException If there is an issue loading the scene.
-   */
-  public void notificationAction(ActionEvent actionEvent) throws IOException {
+  public void notificationAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
   }
 
-  /**
-   * Handles the action to navigate to the settings page.
-   *
-   * @param actionEvent The event triggered by clicking the setting button.
-   * @throws IOException If there is an issue loading the scene.
-   */
-  public void SettingAction(ActionEvent actionEvent) throws IOException {
+  public void SettingAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 
   /**
-   * Closes the application when the close button is clicked.
+   * Closes the application.
    *
    * @param actionEvent The event triggered by clicking the close button.
    */

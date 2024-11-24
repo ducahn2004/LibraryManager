@@ -2,6 +2,8 @@ package org.group4.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,11 +21,9 @@ public class SceneSwitcher {
    * @param title        the title for the new scene window
    * @param width        the width of the new scene window
    * @param height       the height of the new scene window
-   * @throws IOException if the FXML file cannot be loaded
    */
   public static void switchScene(Stage stage, String fxmlFileName, String title, double width,
-      double height)
-      throws IOException {
+      double height) {
     try {
       FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxmlFileName));
       Scene scene = new Scene(fxmlLoader.load(), width, height);
@@ -33,9 +33,17 @@ public class SceneSwitcher {
       stage.show();
       System.out.println(title + " scene switched");
     } catch (IOException e) {
+      // Log the error to the console
       System.err.println("Error loading FXML file: " + fxmlFileName);
       e.printStackTrace();
-      throw e;  // rethrow the exception after logging it
+
+      // Show an alert dialog to the user
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.setTitle("Error");
+      alert.setHeaderText("Scene Load Error");
+      alert.setContentText(
+          "Failed to load the scene: " + fxmlFileName + "\nPlease contact support.");
+      alert.showAndWait();
     }
   }
 
@@ -45,10 +53,8 @@ public class SceneSwitcher {
    * @param stage        the current stage (window)
    * @param fxmlFileName the name of the FXML file to load
    * @param title        the title for the new scene window
-   * @throws IOException if the FXML file cannot be loaded
    */
-  public static void switchScene(Stage stage, String fxmlFileName, String title)
-      throws IOException {
+  public static void switchScene(Stage stage, String fxmlFileName, String title) {
     switchScene(stage, fxmlFileName, title, 1000, 700);
   }
 }
