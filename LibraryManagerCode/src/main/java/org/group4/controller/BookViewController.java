@@ -185,7 +185,6 @@ public class BookViewController {
    * Handles the action for adding a new book. Switches to the "AddBook.fxml" scene.
    *
    * @param actionEvent The event triggered by the "Add Book" button.
-   * @throws IOException If the FXML file cannot be loaded.
    */
   @FXML
   public void addBookAction(ActionEvent actionEvent) {

@@ -156,14 +156,21 @@ public class MemberEditController {
     return phone.matches("\\d{10}");
   }
 
-  /**
-   * Checks if the member's update is successful. Throws an exception if the update fails.
-   */
-  private void returnCheckEditMember() throws SQLException {
-    boolean successEdit = librarian.getMemberManager().update(currentMember);
-    if (!successEdit) {
-      throw new IllegalArgumentException(
-          "Member with the same details already exists in the library.");
+  private void returnCheckEditMember() {
+    try {
+      boolean successEdit = librarian.getMemberManager().update(currentMember);
+      if (!successEdit) {
+        // If the update fails, show an alert
+        showAlert(Alert.AlertType.ERROR, "Error",
+            "Member with the same details already exists in the library.");
+      } else {
+        System.out.println("Member updated successfully.");
+      }
+    } catch (SQLException e) {
+      // Log the error and show an alert if an SQLException occurs
+      // Show an alert to the user indicating the failure
+      showAlert(Alert.AlertType.ERROR, "Database Error",
+          "Failed to update member details. Please try again later.");
     }
   }
 

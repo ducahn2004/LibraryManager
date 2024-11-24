@@ -209,9 +209,8 @@ public class BookDetailsController {
    * Opens the Borrowing Book page for the selected book item.
    *
    * @param bookItem The book item to borrow.
-   * @throws IOException If there is an error loading the FXML file.
    */
-  private void openBorrowingBookPage(BookItem bookItem) throws IOException {
+  private void openBorrowingBookPage(BookItem bookItem) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
       Scene borrowingBookScene = new Scene(loader.load());
@@ -222,8 +221,15 @@ public class BookDetailsController {
       BorrowingBookController controller = loader.getController();
       controller.setItemDetailBorrowing(bookItem);
       currentStage.setTitle("Book Item Detail");
-    } catch (Exception e) {
+    } catch (IOException e) {
+      // Handle the specific IOException if loading the FXML fails
       logger.error("Failed to load borrowing book page", e);
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "Failed to load Borrowing Book page. Please try again.");
+    } catch (Exception e) {
+      // Handle other unforeseen errors
+      logger.error("Unexpected error", e);
+      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
     }
   }
 
@@ -371,6 +377,21 @@ public class BookDetailsController {
         setGraphic(hBox);
       }
     }
+  }
+
+  /**
+   * Shows a simple alert dialog with the specified type, title, and content.
+   *
+   * @param type    The type of alert.
+   * @param title   The title of the alert.
+   * @param content The content message of the alert.
+   */
+  private void showAlert(Alert.AlertType type, String title, String content) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(content);
+    alert.showAndWait();
   }
 }
 
