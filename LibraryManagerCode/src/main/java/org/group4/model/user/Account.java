@@ -49,12 +49,16 @@ public class Account {
   }
 
   /**
-   * Hashes the given plain text password using BCrypt.
+   * Hashes the given plain text password using the BCrypt algorithm. The BCrypt algorithm applies a
+   * salt to the password and hashes it, making it secure against brute force and rainbow table
+   * attacks.
    *
    * @param plainTextPassword the plain text password to hash
    * @return the hashed password
    */
   public static String hashPassword(String plainTextPassword) {
+    // Generate a salt and hash the password using BCrypt
     return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
   }
+
 }
