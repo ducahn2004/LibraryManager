@@ -179,8 +179,6 @@ public class AddMemberController {
 
     boolean successEdit = librarian.getMemberManager().add(currentMember);
     if (successEdit) {
-      // TODO Uncomment after notification is implemented
-      // SystemNotification.sendNotification(String type, String content);
       System.out.println(
           "Member with member ID: " + currentMember.getMemberId()
               + " has been edited successfully.");

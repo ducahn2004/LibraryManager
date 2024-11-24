@@ -88,10 +88,8 @@ public class AddBookItemController {
       }
       showAlert(Alert.AlertType.INFORMATION, "Add Book Item Successfully",
           "The book item has been added to the library.");
-    } catch (IllegalArgumentException | IOException e) {
+    } catch (IllegalArgumentException e) {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
     }
     closeForm();
   }
@@ -124,23 +122,53 @@ public class AddBookItemController {
    *
    * @throws IOException If there is an issue with accessing resources.
    */
-  private void addBookItemToLibrary() throws IOException, SQLException {
-    bookItem = new BookItem(
-        currentBook,
-        referenceOnlyCheckBox.isSelected(), // Indicates if the book is reference-only
-        null, null, // Placeholder for future attributes
-        Double.parseDouble(priceTextField.getText()), // Parse price from input field
-        formatComboBox.getValue(), // Selected book format
-        BookStatus.AVAILABLE, // Default book status
-        dateOfPurchasePicker.getValue(), // Date of purchase
-        publicationDatePicker.getValue(), // Publication date
-        new Rack(1, placeAtTextField.getText()) // Rack location
-    );
+  /**
+   * Adds a book item to the library.
+   * <p>
+   * Creates a new {@link BookItem} instance and adds it to the library via the librarian. If the
+   * addition fails, an alert is shown to the user.
+   */
+  private void addBookItemToLibrary() {
+    try {
+      bookItem = new BookItem(
+          currentBook,
+          referenceOnlyCheckBox.isSelected(), // Indicates if the book is reference-only
+          null, null, // Placeholder for future attributes
+          Double.parseDouble(priceTextField.getText()), // Parse price from input field
+          formatComboBox.getValue(), // Selected book format
+          BookStatus.AVAILABLE, // Default book status
+          dateOfPurchasePicker.getValue(), // Date of purchase
+          publicationDatePicker.getValue(), // Publication date
+          new Rack(1, placeAtTextField.getText()) // Rack location
+      );
 
-    boolean added = librarian.getBookItemManager().add(bookItem);
-    if (!added) {
-      System.out.println("ISBN Current Book is: " + currentBook.getISBN());
-      throw new IllegalArgumentException("Could not add book item to the library.");
+      boolean added = librarian.getBookItemManager().add(bookItem);
+      if (!added) {
+        System.out.println("ISBN Current Book is: " + currentBook.getISBN());
+        showAlert(
+            Alert.AlertType.ERROR,
+            "Error",
+            "Could not add the book item to the library. Please check the details and try again."
+        );
+      }
+    } catch (NumberFormatException e) {
+      showAlert(
+          Alert.AlertType.ERROR,
+          "Invalid Input",
+          "Please enter a valid price for the book item."
+      );
+    } catch (SQLException e) {
+      showAlert(
+          Alert.AlertType.ERROR,
+          "Database Error",
+          "An error occurred while accessing the database. Please try again later."
+      );
+    } catch (Exception e) {
+      showAlert(
+          Alert.AlertType.ERROR,
+          "Unexpected Error",
+          "An unexpected error occurred. Please contact support if the issue persists."
+      );
     }
   }
 
