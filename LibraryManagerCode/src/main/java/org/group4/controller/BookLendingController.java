@@ -1,7 +1,6 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
-import java.io.IOException;
 import java.sql.SQLException;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.group4.model.transaction.BookLending;
-import org.group4.controller.SceneSwitcher;
 import java.util.List;
 import org.group4.model.user.Librarian;
 import org.group4.service.user.SessionManagerService;
@@ -50,7 +48,7 @@ public class BookLendingController {
    * Initializes the controller after the FXML file has been loaded.
    */
   @FXML
-  public void initialize() throws SQLException {
+  public void initialize() {
     // Set cell value factories for the TableView columns
     bookBarcode.setCellValueFactory(
         data -> new SimpleStringProperty(data.getValue().getBookItem().getBarcode()));
@@ -88,19 +86,24 @@ public class BookLendingController {
   }
 
   /**
-   * Loads book lending data from the database and populates the TableView.
+   * Loads all book lending data from the database and displays it in the TableView.
    */
-  private void loadBookLending() throws SQLException {
-    List<BookLending> bookLendings = librarian.getLendingManager().getAll();
-    if (bookLendings == null || bookLendings.isEmpty()) {
-      showAlert(Alert.AlertType.WARNING, "No Data Found",
-          "No book lending data found in the database.");
-      return;
-    }
+  private void loadBookLending() {
+    try {
+        List<BookLending> bookLendings = librarian.getLendingManager().getAll();
+        if (bookLendings == null || bookLendings.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "No Data Found",
+                "No book lending data found in the database.");
+            return;
+        }
 
-    bookLendingsList.setAll(bookLendings);
-    tableView.setItems(bookLendingsList);
-  }
+        bookLendingsList.setAll(bookLendings);
+        tableView.setItems(bookLendingsList);
+    } catch (SQLException e) {
+        showAlert(Alert.AlertType.ERROR, "Database Error",
+            "An error occurred while fetching book lending data: " + e.getMessage());
+    }
+}
 
   /**
    * Filters the book lending list based on the provided search text.
