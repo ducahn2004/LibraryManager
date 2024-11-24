@@ -2,6 +2,7 @@ module org.group.librarymanagercode {
   requires javafx.fxml;
   requires javafx.web;
   requires junit;
+  requires org.mockito;
 
   requires org.controlsfx.controls;
   requires com.dlsc.formsfx;
@@ -34,6 +35,7 @@ module org.group.librarymanagercode {
   requires java.sql;
   requires org.slf4j;
   requires mysql.connector.j;
+  requires org.junit.jupiter.api;
 
   exports org.group4.controller;
   opens org.group4.controller to javafx.fxml;
