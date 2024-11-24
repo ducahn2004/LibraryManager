@@ -81,7 +81,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   }
 
   @Override
-  public boolean add(Book book) {
+  public boolean add(Book book) throws SQLException {
     try (Connection connection = getConnection()) {
       if (getById(book.getISBN()).isPresent()) { // Book already exists
         return false;
@@ -110,7 +110,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   }
 
   @Override
-  public boolean update(Book book) {
+  public boolean update(Book book) throws SQLException {
     try (Connection connection = getConnection()) {
       PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_SQL);
       preparedStatement.setString(1, book.getTitle());
@@ -130,7 +130,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   }
 
   @Override
-  public boolean delete(String isbn) {
+  public boolean delete(String isbn) throws SQLException {
     try (Connection connection = getConnection()) {
       connection.setAutoCommit(false);
 
@@ -156,7 +156,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   }
 
   @Override
-  public Optional<Book> getById(String isbn) {
+  public Optional<Book> getById(String isbn) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_BY_ID_SQL)) {
       preparedStatement.setString(1, isbn);
@@ -172,7 +172,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
   }
 
   @Override
-  public List<Book> getAll() {
+  public List<Book> getAll() throws SQLException {
     List<Book> books = new ArrayList<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_BOOKS_SQL);
@@ -192,7 +192,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
    * @param resultSet the result set from a SQL query
    * @return a Book object
    */
-  private Book mapRowToBook(ResultSet resultSet) {
+  private Book mapRowToBook(ResultSet resultSet) throws SQLException {
     try {
       String isbn = resultSet.getString(COLUMN_ISBN);
       String title = resultSet.getString(COLUMN_TITLE);
@@ -214,7 +214,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
    * @param author the author to find or create
    * @return the author's ID
    */
-  private String findOrCreateAuthor(Author author) {
+  private String findOrCreateAuthor(Author author) throws SQLException {
     // Check if the author already exists
     Optional<Author> existingAuthor = authorDAO.getAll().stream()
         .filter(a -> a.getName().equals(author.getName()))
@@ -237,14 +237,8 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
    * @return a list of book items associated with the book
    */
   public List<BookItem> getAllBookItems(String isbn) {
-    try {
-      BookItemDAO bookItemDAO = new BookItemDAO();
-      return bookItemDAO.getAllByIsbn(isbn);
-    } catch (Exception e) {
-      logger.error("Error retrieving book items for book with ISBN {}: {}", isbn, e);
-      return new ArrayList<>();
-    }
-
+    BookItemDAO bookItemDAO = new BookItemDAO();
+    return bookItemDAO.getAllByIsbn(isbn);
   }
 
   /**
@@ -253,7 +247,7 @@ public class BookDAO extends BaseDAO implements GenericDAO<Book, String> {
    * @param connection the connection to the database
    * @param book the book to update
    */
-  private void updateBookAuthors(Connection connection, Book book) {
+  private void updateBookAuthors(Connection connection, Book book) throws SQLException {
     try (PreparedStatement deleteAuthorsStmt = connection.prepareStatement(DELETE_BOOK_AUTHORS_SQL)) {
       deleteAuthorsStmt.setString(1, book.getISBN());
       deleteAuthorsStmt.executeUpdate();

@@ -93,7 +93,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
       "SELECT 1 FROM racks WHERE " + COLUMN_RACK_NUMBER + " = ?";
 
   @Override
-  public boolean add(BookItem bookItem) {
+  public boolean add(BookItem bookItem) throws SQLException {
     try (Connection connection = getConnection()) {
       // Check if the rack exists in the database
       if (bookItem.getPlacedAt() == null
@@ -131,7 +131,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   }
 
   @Override
-  public boolean update(BookItem bookItem) {
+  public boolean update(BookItem bookItem) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_ITEM_SQL)) {
       preparedStatement.setBoolean(1, bookItem.getIsReferenceOnly());
@@ -154,7 +154,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   }
 
   @Override
-  public boolean delete(String barcode) {
+  public boolean delete(String barcode) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BOOK_ITEM_SQL)) {
       preparedStatement.setString(1, barcode);
@@ -166,7 +166,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   }
 
   @Override
-  public Optional<BookItem> getById(String barcode) {
+  public Optional<BookItem> getById(String barcode) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_ITEM_BY_BARCODE_SQL)) {
       preparedStatement.setString(1, barcode);
@@ -182,7 +182,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
   }
 
   @Override
-  public List<BookItem> getAll() {
+  public List<BookItem> getAll() throws SQLException {
     List<BookItem> bookItems = new ArrayList<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_BOOK_ITEMS_SQL);
@@ -203,8 +203,9 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
    *
    * @param resultSet the ResultSet to map
    * @return a BookItem object
+   * @throws SQLException if an error occurs while accessing the database
    */
-  private BookItem mapRowToBookItem(ResultSet resultSet) {
+  private BookItem mapRowToBookItem(ResultSet resultSet) throws SQLException {
     try {
       // Retrieve the associated Book object using ISBN from the database
       Book book = FactoryDAO.getBookDAO().getById(resultSet.getString("isbn"))
@@ -280,7 +281,7 @@ public class BookItemDAO extends BaseDAO implements GenericDAO<BookItem, String>
    * @param isbn the ISBN of the book
    * @return a list of book items associated with the ISBN
    */
-  public List<BookItem> getAllByIsbn(String isbn) {
+  public List<BookItem> getAllByIsbn(String isbn)  {
     List<BookItem> bookItems = new ArrayList<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_ITEM_BY_ISBN_SQL)) {

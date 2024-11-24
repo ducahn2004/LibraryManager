@@ -48,7 +48,7 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
       "SELECT * FROM racks WHERE "+ COLUMN_NUMBER_RACK +" = ?";
 
   @Override
-  public boolean add(Rack rack) {
+  public boolean add(Rack rack) throws SQLException  {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(ADD_RACK_SQL)) {
       preparedStatement.setInt(1, rack.getNumberRack());
@@ -61,7 +61,7 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   }
 
   @Override
-  public boolean update(Rack rack) {
+  public boolean update(Rack rack) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_RACK_SQL)) {
       preparedStatement.setString(1, rack.getLocationIdentifier());
@@ -74,7 +74,7 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   }
 
   @Override
-  public boolean delete(Integer numberRack) {
+  public boolean delete(Integer numberRack) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_RACK_SQL)) {
       preparedStatement.setInt(1, numberRack);
@@ -86,7 +86,7 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   }
 
   @Override
-  public Optional<Rack> getById(Integer numberRack) {
+  public Optional<Rack> getById(Integer numberRack) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_RACK_BY_ID_SQL)) {
       preparedStatement.setInt(1, numberRack);
@@ -102,7 +102,7 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   }
 
   @Override
-  public List<Rack> getAll() {
+  public List<Rack> getAll() throws SQLException {
     List<Rack> racks = new ArrayList<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_RACKS_SQL);
@@ -120,13 +120,13 @@ public class RackDAO extends BaseDAO implements GenericDAO<Rack, Integer> {
   /**
    * Maps a row in the ResultSet to a {@link Rack} object.
    *
-   * @param rs The ResultSet containing the row to map.
+   * @param resultSet The ResultSet containing the row to map.
    * @return The Rack object mapped from the row, or null if an error occurred.
    */
-  private Rack mapRowToRack(ResultSet rs) {
+  private Rack mapRowToRack(ResultSet resultSet) throws SQLException  {
     try {
-      int numberRack = rs.getInt(COLUMN_NUMBER_RACK);
-      String locationIdentifier = rs.getString(COLUMN_LOCATION_IDENTIFIER);
+      int numberRack = resultSet.getInt(COLUMN_NUMBER_RACK);
+      String locationIdentifier = resultSet.getString(COLUMN_LOCATION_IDENTIFIER);
       return new Rack(numberRack, locationIdentifier);
     } catch (SQLException e) {
       logger.error("Error mapping row to Rack", e);

@@ -1,5 +1,6 @@
 package org.group4.service.notification;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +71,7 @@ public class AutoNotificationService {
      *
      * @return List of loaned book items.
      */
-    private List<BookItem> getLoanedBookItems() {
+    private List<BookItem> getLoanedBookItems() throws SQLException {
         return bookItemDAO.getAll()
             .stream()
             .filter(bookItem -> bookItem.getStatus() == BookStatus.LOANED)

@@ -1,6 +1,7 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
+import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -65,7 +66,7 @@ public class MemberEditController {
    * @param actionEvent The event triggered by clicking the save button.
    */
   @FXML
-  private void saveMember(ActionEvent actionEvent) {
+  private void saveMember(ActionEvent actionEvent) throws SQLException {
     // Validate inputs before saving
     if (!validateAllInputs()) {
       return;
@@ -158,7 +159,7 @@ public class MemberEditController {
   /**
    * Checks if the member's update is successful. Throws an exception if the update fails.
    */
-  private void returnCheckEditMember() {
+  private void returnCheckEditMember() throws SQLException {
     boolean successEdit = librarian.getMemberManager().update(currentMember);
     if (!successEdit) {
       throw new IllegalArgumentException(

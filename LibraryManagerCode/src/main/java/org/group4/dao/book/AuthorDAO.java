@@ -55,7 +55,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
       "SELECT MAX(" + COLUMN_AUTHOR_ID + ") AS " + COLUMN_MAX_ID + " FROM authors";
 
   @Override
-  public boolean add(Author author) {
+  public boolean add(Author author) throws SQLException {
     try (Connection connection = getConnection()) {
       // Generate a new Author ID
       String newAuthorId = generateAuthorId(connection);
@@ -74,7 +74,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   }
 
   @Override
-  public boolean update(Author author) {
+  public boolean update(Author author) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_AUTHOR_SQL)) {
       preparedStatement.setString(1, author.getName());
@@ -87,7 +87,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   }
 
   @Override
-  public boolean delete(String authorId) {
+  public boolean delete(String authorId) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_AUTHOR_SQL)) {
       preparedStatement.setString(1, authorId);
@@ -99,7 +99,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   }
 
   @Override
-  public Optional<Author> getById(String authorId) {
+  public Optional<Author> getById(String authorId) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_AUTHOR_BY_ID_SQL)) {
       preparedStatement.setString(1, authorId);
@@ -115,7 +115,7 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
   }
 
   @Override
-  public Set<Author> getAll() {
+  public Set<Author> getAll() throws SQLException {
     Set<Author> authors = new HashSet<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_AUTHORS_SQL);
@@ -134,8 +134,9 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
    *
    * @param isbn the ISBN of the book
    * @return a set of authors associated with the book
+   * @throws SQLException if an error occurs while accessing the database
    */
-  public Set<Author> getAuthorsByBook(String isbn) {
+  public Set<Author> getAuthorsByBook(String isbn) throws SQLException {
     Set<Author> authors = new HashSet<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_AUTHORS_BY_BOOK_SQL)) {
@@ -156,8 +157,9 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
    *
    * @param resultSet the result set from a database query
    * @return an Author object
+   * @throws SQLException if an error occurs while accessing the result set
    */
-  private Author mapRowToAuthor(ResultSet resultSet) {
+  private Author mapRowToAuthor(ResultSet resultSet) throws SQLException {
     try {
       String authorId = resultSet.getString(COLUMN_AUTHOR_ID);
       String name = resultSet.getString(COLUMN_NAME);
@@ -173,8 +175,9 @@ public class AuthorDAO extends BaseDAO implements GenericDAO<Author, String> {
    *
    * @param connection the database connection
    * @return a new Author ID
+   * @throws SQLException if an error occurs while accessing the database
    */
-  private String generateAuthorId(Connection connection) {
+  private String generateAuthorId(Connection connection) throws SQLException {
     try (PreparedStatement statement = connection.prepareStatement(GET_MAX_AUTHOR_ID_SQL);
         ResultSet resultSet = statement.executeQuery()) {
       if (resultSet.next()) {

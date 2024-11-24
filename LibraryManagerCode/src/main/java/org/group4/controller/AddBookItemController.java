@@ -2,6 +2,7 @@ package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
+import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -89,6 +90,8 @@ public class AddBookItemController {
           "The book item has been added to the library.");
     } catch (IllegalArgumentException | IOException e) {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
     closeForm();
   }
@@ -121,7 +124,7 @@ public class AddBookItemController {
    *
    * @throws IOException If there is an issue with accessing resources.
    */
-  private void addBookItemToLibrary() throws IOException {
+  private void addBookItemToLibrary() throws IOException, SQLException {
     bookItem = new BookItem(
         currentBook,
         referenceOnlyCheckBox.isSelected(), // Indicates if the book is reference-only

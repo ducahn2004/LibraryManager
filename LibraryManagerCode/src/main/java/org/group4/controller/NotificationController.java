@@ -2,6 +2,7 @@ package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
+import java.sql.SQLException;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -129,7 +130,7 @@ public class NotificationController {
     emailNotificationObservableList.clear();
     Task<ObservableList<EmailNotification>> loadTask = new Task<>() {
       @Override
-      protected ObservableList<EmailNotification> call() {
+      protected ObservableList<EmailNotification> call() throws SQLException {
         return FXCollections.observableArrayList(FactoryDAO.getEmailNotificationDAO().getAll());
       }
     };

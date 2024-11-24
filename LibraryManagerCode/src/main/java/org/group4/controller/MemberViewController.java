@@ -1,6 +1,7 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
+import java.sql.SQLException;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -123,7 +124,7 @@ public class MemberViewController {
     memberList.clear();
     Task<ObservableList<Member>> loadTask = new Task<>() {
       @Override
-      protected ObservableList<Member> call() {
+      protected ObservableList<Member> call() throws SQLException {
         return FXCollections.observableArrayList(librarian.getMemberManager().getAll());
       }
     };
@@ -246,7 +247,11 @@ public class MemberViewController {
     alert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
         memberList.remove(member);
-        librarian.getMemberManager().delete(member.getMemberId());
+        try {
+          librarian.getMemberManager().delete(member.getMemberId());
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
       }
     });
   }

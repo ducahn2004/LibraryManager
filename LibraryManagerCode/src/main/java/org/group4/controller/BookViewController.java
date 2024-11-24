@@ -80,7 +80,7 @@ public class BookViewController {
    * Initializes the controller and sets up the UI components and their bindings.
    */
   @FXML
-  public void initialize() {
+  public void initialize() throws SQLException {
     // Configure table column bindings
     ISBN.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getISBN()));
     bookName.setCellValueFactory(
@@ -135,7 +135,7 @@ public class BookViewController {
   /**
    * Loads book data from the database and populates the table view.
    */
-  private void loadBookData() {
+  private void loadBookData() throws SQLException {
     List<Book> books = librarian.getBookManager().getAll();
 
     if (books == null) {
@@ -170,7 +170,7 @@ public class BookViewController {
   /**
    * Refreshes the book table by reloading data from the database.
    */
-  public void refreshTable() {
+  public void refreshTable() throws SQLException {
     tableView.getItems().clear();
     bookList.clear();
     bookList.addAll(librarian.getBookManager().getAll());
@@ -254,15 +254,19 @@ public class BookViewController {
     alert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
         // Delete the book and update the table view
-        if (librarian.getBookManager().delete(book.getISBN())) {
-          System.out.println(
-              "Book with ISBN: " + book.getISBN() + " has been deleted successfully.");
-          bookList.remove(book);
-        } else {
-          System.out.println("Failed to delete book with ISBN: " + book.getISBN());
-          showAlert(AlertType.ERROR, "Deletion Failed",
-              "The book with the ISBN " + book.getISBN()
-                  + " could not be deleted because it is still in use.");
+        try {
+          if (librarian.getBookManager().delete(book.getISBN())) {
+            System.out.println(
+                "Book with ISBN: " + book.getISBN() + " has been deleted successfully.");
+            bookList.remove(book);
+          } else {
+            System.out.println("Failed to delete book with ISBN: " + book.getISBN());
+            showAlert(AlertType.ERROR, "Deletion Failed",
+                "The book with the ISBN " + book.getISBN()
+                    + " could not be deleted because it is still in use.");
+          }
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
         }
       }
     });

@@ -42,7 +42,7 @@ public class FineDAO extends BaseDAO implements GenericDAO<Fine, BookLending> {
       "SELECT * FROM fines WHERE " + COLUMN_BARCODE + " = ? AND " + COLUMN_MEMBER_ID + " = ?";
 
   @Override
-  public boolean add(Fine fine) {
+  public boolean add(Fine fine) throws SQLException {
     try (Connection connection = getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(ADD_FINE_SQL)) {
       preparedStatement.setString(1, fine.getBookLending().getBookItem().getBarcode());
@@ -56,7 +56,7 @@ public class FineDAO extends BaseDAO implements GenericDAO<Fine, BookLending> {
   }
 
   @Override
-  public boolean delete(BookLending bookLending) {
+  public boolean delete(BookLending bookLending) throws SQLException {
     try (Connection connection = getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FINE_SQL)) {
       preparedStatement.setString(1, bookLending.getBookItem().getBarcode());
@@ -69,7 +69,7 @@ public class FineDAO extends BaseDAO implements GenericDAO<Fine, BookLending> {
   }
 
   @Override
-  public Optional<Fine> getById(BookLending bookLending) {
+  public Optional<Fine> getById(BookLending bookLending) throws SQLException {
     try (Connection connection = getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(FIND_FINE_BY_ID_SQL)) {
       preparedStatement.setString(1, bookLending.getBookItem().getBarcode());

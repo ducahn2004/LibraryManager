@@ -73,7 +73,7 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
       "SELECT * FROM book_lendings";
 
   @Override
-  public boolean add(BookLending bookLending) {
+  public boolean add(BookLending bookLending) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(ADD_BOOK_LENDING_SQL)) {
       preparedStatement.setString(1, bookLending.getBookItem().getBarcode());
@@ -93,7 +93,7 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   }
 
   @Override
-  public boolean update(BookLending bookLending) {
+  public boolean update(BookLending bookLending) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_LENDING_SQL)) {
       preparedStatement.setDate(1, Date.valueOf(bookLending.getLendingDate()));
@@ -113,7 +113,7 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   }
 
   @Override
-  public boolean delete(BookLending bookLending) {
+  public boolean delete(BookLending bookLending) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BOOK_LENDING_SQL)) {
       preparedStatement.setString(1, bookLending.getBookItem().getBarcode());
@@ -126,7 +126,7 @@ public class BookLendingDAO extends BaseDAO implements GenericDAO<BookLending, B
   }
 
   @Override
-  public List<BookLending> getAll() {
+  public List<BookLending> getAll() throws SQLException {
     List<BookLending> bookLendings = new ArrayList<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_BOOK_LENDINGS_SQL);

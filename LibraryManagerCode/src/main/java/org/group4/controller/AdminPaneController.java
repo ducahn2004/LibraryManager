@@ -1,5 +1,6 @@
 package org.group4.controller;
 
+import java.sql.SQLException;
 import javafx.application.Platform;
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class AdminPaneController {
   /**
    * Updates the total number of members displayed in the UI.
    */
-  public void updateTotalMembers() {
+  public void updateTotalMembers() throws SQLException {
     int totalMembers = librarian.getMemberManager().getAll().size();
     total_Members.setText(String.valueOf(totalMembers));
   }
@@ -66,7 +67,7 @@ public class AdminPaneController {
   /**
    * Updates the total number of books displayed in the UI.
    */
-  public void updateTotalBooks() {
+  public void updateTotalBooks() throws SQLException {
     int totalBooks = librarian.getBookManager().getAll().size();
     total_books.setText(String.valueOf(totalBooks));
   }
@@ -74,7 +75,7 @@ public class AdminPaneController {
   /**
    * Updates the bar chart with total members and total books data.
    */
-  public void Home_chart() {
+  public void Home_chart() throws SQLException {
     home_chart.getData().clear();
 
     int totalBooks = librarian.getBookManager().getAll().size();
@@ -98,7 +99,7 @@ public class AdminPaneController {
    * Initializes the Admin Pane by updating statistics and the chart.
    */
   @FXML
-  public void initialize() {
+  public void initialize() throws SQLException {
     updateTotalMembers();
     updateTotalBooks();
     Home_chart();

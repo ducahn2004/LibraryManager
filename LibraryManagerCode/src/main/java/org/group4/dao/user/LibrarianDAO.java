@@ -55,7 +55,7 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
       "SELECT * FROM librarian WHERE " + COLUMN_ID + " = ?";
 
   @Override
-  public boolean add(Librarian librarian) {
+  public boolean add(Librarian librarian) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(ADD_LIBRARIAN_SQL)) {
       preparedStatement.setString(1, librarian.getLibrarianId());
@@ -71,7 +71,7 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
   }
 
   @Override
-  public boolean update(Librarian librarian) {
+  public boolean update(Librarian librarian) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_LIBRARIAN_SQL)) {
       preparedStatement.setString(1, librarian.getName());
@@ -87,7 +87,7 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
   }
 
   @Override
-  public boolean delete(String id) {
+  public boolean delete(String id) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_LIBRARIAN_SQL)) {
       preparedStatement.setString(1, id);
@@ -99,7 +99,7 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
   }
 
   @Override
-  public Optional<Librarian> getById(String id) {
+  public Optional<Librarian> getById(String id) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_LIBRARIAN_BY_ID_SQL)) {
       preparedStatement.setString(1, id);
@@ -119,8 +119,9 @@ public class LibrarianDAO extends BaseDAO implements GenericDAO<Librarian, Strin
    *
    * @param resultSet the result set from a SQL query.
    * @return a Librarian object.
+   * @throws SQLException if an error occurs while mapping the row to a Librarian object.
    */
-  public Librarian mapRowToLibrarian(ResultSet resultSet){
+  public Librarian mapRowToLibrarian(ResultSet resultSet) throws SQLException {
     try {
       return new Librarian(
           resultSet.getString(COLUMN_ID),

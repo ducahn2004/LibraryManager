@@ -39,7 +39,7 @@ public class AccountDAO extends BaseDAO {
    * @param id the account ID
    * @return an {@code Optional} containing the account if found, or empty otherwise
    */
-  public Optional<Account> getById(String id) {
+  public Optional<Account> getById(String id) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ACCOUNT_BY_ID_SQL)) {
       preparedStatement.setString(1, id);
@@ -62,7 +62,7 @@ public class AccountDAO extends BaseDAO {
    * @param account the account to update
    * @return {@code true} if the update was successful, {@code false} otherwise
    */
-  public boolean update(Account account) {
+  public boolean update(Account account) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_SQL)) {
       preparedStatement.setString(1, account.getPassword());

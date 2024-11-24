@@ -66,7 +66,7 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
       "SELECT MAX("+ COLUMN_MEMBER_ID +") FROM members WHERE "+ COLUMN_MEMBER_ID +" LIKE ?";
 
   @Override
-  public boolean add(Member member) {
+  public boolean add(Member member) throws SQLException {
     // Adds a new member and sets a unique ID
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(ADD_MEMBER_SQL)) {
@@ -90,8 +90,9 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
    *
    * @param connection the database connection
    * @return the generated member ID
+   * @throws SQLException if an error occurs while generating the ID
    */
-  private String generateMemberId(Connection connection) {
+  private String generateMemberId(Connection connection) throws SQLException {
     String currentYear = String.valueOf(LocalDate.now().getYear());
     String likePattern = currentYear + "%";
     try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_MAX_MEMBER_ID_SQL)) {
@@ -111,7 +112,7 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
   }
 
   @Override
-  public boolean update(Member member) {
+  public boolean update(Member member) throws SQLException {
     // Updates information for an existing member
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEMBER_SQL)) {
@@ -129,7 +130,7 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
   }
 
   @Override
-  public boolean delete(String memberId) {
+  public boolean delete(String memberId) throws SQLException {
     // Deletes a member from the database by ID
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MEMBER_SQL)) {
@@ -142,7 +143,7 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
   }
 
   @Override
-  public Optional<Member> getById(String memberId) {
+  public Optional<Member> getById(String memberId) throws SQLException {
     // Finds a member by ID and returns it as Optional
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(FIND_MEMBER_BY_ID_SQL)) {
@@ -158,7 +159,7 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
   }
 
   @Override
-  public List<Member> getAll() {
+  public List<Member> getAll() throws SQLException {
     // Retrieves a list of all members
     List<Member> members = new ArrayList<>();
     try (Connection connection = getConnection();
@@ -179,8 +180,9 @@ public class MemberDAO extends BaseDAO implements GenericDAO<Member, String> {
    *
    * @param resultSet the result set from a database query
    * @return the mapped Member object
+   * @throws SQLException if an error occurs while mapping the row
    */
-  private Member mapRowToMember(ResultSet resultSet) {
+  private Member mapRowToMember(ResultSet resultSet) throws SQLException {
     try {
       return new Member(resultSet.getString(COLUMN_MEMBER_ID),
           resultSet.getString(COLUMN_NAME),

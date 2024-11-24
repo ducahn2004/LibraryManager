@@ -2,14 +2,14 @@ package org.group4.model.user;
 
 import java.time.LocalDate;
 
-import org.group4.model.book.Book;
-import org.group4.model.book.BookItem;
-import org.group4.service.book.BookItemManagerService;
-import org.group4.service.interfaces.LendingManager;
-import org.group4.service.transaction.LendingManagerService;
-import org.group4.service.book.BookManagerService;
-import org.group4.service.interfaces.GenericManagerService;
-import org.group4.service.user.MemberManagerService;
+import org.group4.service.book.BookItemManagerServiceImpl;
+import org.group4.service.book.BookManagerServiceImpl;
+import org.group4.service.interfaces.BookItemManagerService;
+import org.group4.service.interfaces.BookManagerService;
+import org.group4.service.interfaces.LendingManagerService;
+import org.group4.service.interfaces.MemberManagerService;
+import org.group4.service.transaction.LendingManagerServiceImpl;
+import org.group4.service.user.MemberManagerServiceImpl;
 
 
 /**
@@ -22,7 +22,7 @@ public class Librarian extends Person {
   private final BookManagerService bookManager;
   private final BookItemManagerService bookItemManager;
   private final MemberManagerService memberManager;
-  private final LendingManager bookLendingManager;
+  private final LendingManagerService bookLendingManager;
 
 
   /**
@@ -39,10 +39,10 @@ public class Librarian extends Person {
       String phoneNumber) {
     super(name, dateOfBirth, email, phoneNumber);
     this.librarianId = librarianId;
-    this.bookManager = new BookManagerService();
-    this.bookItemManager = new BookItemManagerService();
-    this.memberManager = new MemberManagerService();
-    this.bookLendingManager = new LendingManagerService();
+    this.bookManager = new BookManagerServiceImpl();
+    this.bookItemManager = new BookItemManagerServiceImpl();
+    this.memberManager = new MemberManagerServiceImpl();
+    this.bookLendingManager = new LendingManagerServiceImpl();
   }
 
   /**
@@ -86,7 +86,7 @@ public class Librarian extends Person {
    *
    * @return the book lending manager
    */
-  public LendingManager getLendingManager() {
+  public LendingManagerService getLendingManager() {
     return bookLendingManager;
   }
 }

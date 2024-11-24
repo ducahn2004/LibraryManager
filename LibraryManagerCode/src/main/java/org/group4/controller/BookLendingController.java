@@ -2,6 +2,7 @@ package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
+import java.sql.SQLException;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -48,7 +49,7 @@ public class BookLendingController {
    * Initializes the controller after the FXML file has been loaded.
    */
   @FXML
-  public void initialize() {
+  public void initialize() throws SQLException {
     // Set cell value factories for the TableView columns
     bookBarcode.setCellValueFactory(
         data -> new SimpleStringProperty(data.getValue().getBookItem().getBarcode()));
@@ -88,7 +89,7 @@ public class BookLendingController {
   /**
    * Loads book lending data from the database and populates the TableView.
    */
-  private void loadBookLending() {
+  private void loadBookLending() throws SQLException {
     List<BookLending> bookLendings = librarian.getLendingManager().getAll();
     if (bookLendings == null || bookLendings.isEmpty()) {
       showAlert(Alert.AlertType.WARNING, "No Data Found",

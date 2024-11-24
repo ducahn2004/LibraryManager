@@ -1,15 +1,16 @@
 package org.group4.service.book;
 
+import java.sql.SQLException;
 import java.util.List;
 import org.group4.dao.book.BookDAO;
 import org.group4.dao.base.FactoryDAO;
 import org.group4.model.book.Book;
 import org.group4.model.book.BookItem;
 import org.group4.model.enums.NotificationType;
-import org.group4.service.interfaces.GenericManagerService;
+import org.group4.service.interfaces.BookManagerService;
 import org.group4.service.notification.SystemNotificationService;
 
-public class BookManagerService implements GenericManagerService<Book> {
+public class BookManagerServiceImpl implements BookManagerService {
 
   private static final BookDAO bookDAO = FactoryDAO.getBookDAO();
   private final SystemNotificationService systemNotificationService =
@@ -17,7 +18,7 @@ public class BookManagerService implements GenericManagerService<Book> {
 
 
   @Override
-  public boolean add(Book book) {
+  public boolean add(Book book) throws SQLException {
     if (bookDAO.add(book)) {
       systemNotificationService.sendNotification(NotificationType.ADD_BOOK_SUCCESS, book.toString());
       return true;
@@ -26,7 +27,7 @@ public class BookManagerService implements GenericManagerService<Book> {
   }
 
   @Override
-  public boolean update(Book book) {
+  public boolean update(Book book) throws SQLException {
     if (bookDAO.update(book)) {
       systemNotificationService.sendNotification(NotificationType.UPDATE_BOOK_SUCCESS, book.toString());
       return true;
@@ -35,7 +36,7 @@ public class BookManagerService implements GenericManagerService<Book> {
   }
 
   @Override
-  public boolean delete(String id) {
+  public boolean delete(String id) throws SQLException {
     if (bookDAO.delete(id)) {
       systemNotificationService.sendNotification(NotificationType.DELETE_BOOK_SUCCESS, id);
       return true;
@@ -44,7 +45,7 @@ public class BookManagerService implements GenericManagerService<Book> {
   }
 
   @Override
-  public List<Book> getAll() {
+  public List<Book> getAll() throws SQLException {
     return bookDAO.getAll();
   }
 

@@ -278,9 +278,13 @@ public class BookDetailsController {
 
     confirmAlert.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
-        if (librarian.getBookItemManager().delete(item.getBarcode())) {
-          bookItems.remove(item);
-          System.out.println("Item deleted: " + item);
+        try {
+          if (librarian.getBookItemManager().delete(item.getBarcode())) {
+            bookItems.remove(item);
+            System.out.println("Item deleted: " + item);
+          }
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
         }
       }
     });

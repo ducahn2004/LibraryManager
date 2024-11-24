@@ -48,7 +48,7 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
   private static final String GET_ALL_NOTIFICATIONS_SQL = "SELECT * FROM email_notifications";
 
   @Override
-  public boolean add(EmailNotification emailNotification) {
+  public boolean add(EmailNotification emailNotification) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(ADD_NOTIFICATION_SQL)) {
       setData(preparedStatement, emailNotification);
@@ -60,7 +60,7 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
   }
 
   @Override
-  public boolean delete(String notificationId) {
+  public boolean delete(String notificationId) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_NOTIFICATION_SQL)) {
       preparedStatement.setString(1, notificationId);
@@ -72,7 +72,7 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
   }
 
   @Override
-  public Optional<EmailNotification> getById(String notificationId) {
+  public Optional<EmailNotification> getById(String notificationId) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_NOTIFICATION_BY_ID_SQL)) {
       preparedStatement.setString(1, notificationId);
@@ -88,7 +88,7 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
   }
 
   @Override
-  public List<EmailNotification> getAll() {
+  public List<EmailNotification> getAll() throws SQLException {
     List<EmailNotification> emailNotifications = new ArrayList<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_NOTIFICATIONS_SQL);
@@ -108,7 +108,7 @@ public class EmailNotificationDAO extends BaseDAO implements GenericDAO<EmailNot
    * @param resultSet The ResultSet to map
    * @return The EmailNotification object
    */
-  private EmailNotification mapRowToEmailNotification(ResultSet resultSet) {
+  private EmailNotification mapRowToEmailNotification(ResultSet resultSet) throws SQLException {
     try {
       return new EmailNotification(
           resultSet.getString(COLUMN_NOTIFICATION_ID),

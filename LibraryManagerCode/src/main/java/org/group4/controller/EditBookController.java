@@ -1,5 +1,6 @@
 package org.group4.controller;
 
+import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -71,7 +72,7 @@ EditBookController {
    *
    * @param actionEvent The event triggered by the save button.
    */
-  public void saveBook(ActionEvent actionEvent) {
+  public void saveBook(ActionEvent actionEvent) throws SQLException {
     // Validate required fields
     if (bookISBN.getText().isEmpty() || bookName.getText().isEmpty() ||
         bookSubject.getText().isEmpty() || bookPublisher.getText().isEmpty() ||
@@ -112,7 +113,7 @@ EditBookController {
    * Updates the book in the system. Throws an exception if the update fails due to a duplicate
    * ISBN.
    */
-  private void returnCheckEditBook() {
+  private void returnCheckEditBook() throws SQLException {
     boolean successEdit = librarian.getBookManager().update(currentBook);
 
     if (successEdit) {

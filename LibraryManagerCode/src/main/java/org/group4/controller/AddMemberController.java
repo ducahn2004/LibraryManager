@@ -1,6 +1,7 @@
 package org.group4.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -81,6 +82,8 @@ public class AddMemberController {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
     } catch (IOException e) {
       throw new RuntimeException(e);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -119,7 +122,7 @@ public class AddMemberController {
    * <p>
    * Checks for duplicate entries before adding and updates the parent controller if successful.
    */
-  private void addMemberToLibrary() throws IOException {
+  private void addMemberToLibrary() throws IOException, SQLException {
     // Verify that the member does not already exist
     returnCheckAddMember();
 
@@ -166,7 +169,7 @@ public class AddMemberController {
    * <p>
    * Throws an exception if a duplicate is detected.
    */
-  private void returnCheckAddMember() throws IOException {
+  private void returnCheckAddMember() throws IOException, SQLException {
     currentMember = new Member(
         memberName.getText(),
         memberBirth.getValue(),

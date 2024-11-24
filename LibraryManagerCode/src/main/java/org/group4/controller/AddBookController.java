@@ -2,6 +2,7 @@ package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -117,7 +118,7 @@ public class AddBookController {
           "The book has been added to the library.");
     } catch (IllegalArgumentException e) {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
-    } catch (IOException e) {
+    } catch (IOException | SQLException e) {
       throw new RuntimeException(e);
     }
   }
@@ -200,7 +201,7 @@ public class AddBookController {
    *
    * @param book The book to add
    */
-  private void addBookToLibrary(Book book) throws IOException {
+  private void addBookToLibrary(Book book) throws IOException, SQLException {
     boolean successAdded = librarian.getBookManager().add(book);
     if (!successAdded) {
       throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");

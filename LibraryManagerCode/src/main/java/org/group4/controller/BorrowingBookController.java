@@ -107,7 +107,11 @@ public class BorrowingBookController {
     // Add a listener to the memberIdField to trigger search on input
     memberIdField.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.isEmpty()) {
-        findMemberById(newValue);
+        try {
+          findMemberById(newValue);
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
       }
     });
   }
@@ -117,7 +121,7 @@ public class BorrowingBookController {
    *
    * @param memberId The ID of the member to find.
    */
-  private void findMemberById(String memberId) {
+  private void findMemberById(String memberId) throws SQLException {
     Member foundMember = null;
     for (Member member : FactoryDAO.getMemberDAO().getAll()) {
       if (member.getMemberId().equals(memberId)) {
@@ -144,7 +148,7 @@ public class BorrowingBookController {
    * @param memberId The ID of the member.
    * @return The {@code Member} object if found, otherwise null.
    */
-  private Member returnMember(String memberId) {
+  private Member returnMember(String memberId) throws SQLException {
     Member foundMember = null;
     for (Member member : FactoryDAO.getMemberDAO().getAll()) {
       if (member.getMemberId().equals(memberId)) {

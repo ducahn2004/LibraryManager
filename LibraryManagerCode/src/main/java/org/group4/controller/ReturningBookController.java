@@ -117,7 +117,7 @@ public class ReturningBookController {
    * @return the found BookLending object
    * @throws IllegalArgumentException if the barcode is invalid or the book lending is not found
    */
-  private BookLending findBookLendingById(String bookItemBarCode) {
+  private BookLending findBookLendingById(String bookItemBarCode) throws SQLException {
     if (bookItemBarCode == null || bookItemBarCode.isEmpty()) {
       throw new IllegalArgumentException("Barcode cannot be null or empty.");
     }
@@ -125,7 +125,7 @@ public class ReturningBookController {
     BookLending foundBookItem = null;
 
     // Search through all book lendings to find the corresponding one
-    for (BookLending bookLending : FactoryDAO.getBookLendingDAO().getAll()) {
+    for (BookLending bookLending : librarian.getLendingManager().getAll()) {
       if (bookLending.getBookItem().getBarcode().equals(bookItemBarCode)) {
         foundBookItem = bookLending;
         break;
