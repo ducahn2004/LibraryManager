@@ -1,5 +1,7 @@
 package org.group4.controller;
 
+import static org.group4.service.qrcode.QRCodeGenerator.generateQRCodeForBookItem;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -306,10 +308,7 @@ public class BookDetailsController {
 
   private void showQRCode(BookItem bookItem) throws IOException {
     // Tạo file QR
-    String qrFilePath = "qr_codes/" + bookItem.getBarcode() + ".png";
-    Files.createDirectories(Paths.get("qr_codes"));
-    QRCodeGenerator.generateQRCode(bookItem.getBarcode(), qrFilePath, 200, 200);
-
+    String qrFilePath = generateQRCodeForBookItem(bookItem);
     // Hiển thị QR Code trong cửa sổ mới
     Stage qrStage = new Stage();
     FXMLLoader loader = new FXMLLoader(getClass().getResource("QRCodeDisplay.fxml"));
