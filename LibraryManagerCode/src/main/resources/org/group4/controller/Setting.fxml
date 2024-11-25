@@ -102,7 +102,7 @@
         </Pane>
         <Pane maxWidth="500.0" prefHeight="30.0" prefWidth="500.0">
           <children>
-            <PasswordField fx:id="currentPassword" maxWidth="500.0" prefHeight="30.0" prefWidth="500.0" promptText="Current Password" style="-fx-background-radius: 0; -fx-border-color: transparent transparent black transparent; -fx-background-color: transparent; -fx-border-width: 1;">
+            <PasswordField fx:id="currentPassword" maxWidth="500.0" onKeyReleased="#hideCurrentPasswordOnAction" prefHeight="30.0" prefWidth="500.0" promptText="Current Password" style="-fx-background-radius: 0; -fx-border-color: transparent transparent black transparent; -fx-background-color: transparent; -fx-border-width: 1;">
               <font>
                 <Font size="13.0" />
               </font>
@@ -122,7 +122,7 @@
         </Pane>
         <Pane maxWidth="500.0" prefHeight="30.0" prefWidth="500.0">
           <children>
-            <PasswordField fx:id="newPassword" maxWidth="500.0" prefHeight="30.0" prefWidth="500.0" promptText="New Password" style="-fx-background-radius: 0; -fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;">
+            <PasswordField fx:id="newPassword" maxWidth="500.0" onKeyReleased="#hidePasswordOnActionNew" prefHeight="30.0" prefWidth="500.0" promptText="New Password" style="-fx-background-radius: 0; -fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;">
               <font>
                 <Font size="13.0" />
               </font>
@@ -142,7 +142,7 @@
         </Pane>
         <Pane prefHeight="30.0" prefWidth="500.0">
           <children>
-            <PasswordField fx:id="newPassword2" maxWidth="500.0" prefHeight="30.0" prefWidth="500.0" promptText="Re-enter New Password" style="-fx-background-radius: 0; -fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;">
+            <PasswordField fx:id="newPassword2" maxWidth="500.0" onKeyReleased="#hidePasswordOnActionNew2" prefHeight="30.0" prefWidth="500.0" promptText="Re-enter New Password" style="-fx-background-radius: 0; -fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;">
               <font>
                 <Font size="13.0" />
               </font>
