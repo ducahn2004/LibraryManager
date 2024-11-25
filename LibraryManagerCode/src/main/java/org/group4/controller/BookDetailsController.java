@@ -1,13 +1,10 @@
 package org.group4.controller;
 
-import static org.group4.service.qrcode.QRCodeGenerator.generateQRCodeForBookItem;
-
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -25,19 +22,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.group4.model.book.BookItem;
 import org.group4.model.book.Book;
+import org.group4.model.book.BookItem;
 import org.group4.model.enums.BookFormat;
 import org.group4.model.enums.BookStatus;
-import org.group4.service.qrcode.QRCodeGenerator;
-import org.group4.service.user.SessionManagerService;
 import org.group4.model.user.Librarian;
+import org.group4.service.user.SessionManagerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * Controller class for managing the book details view.
@@ -165,11 +160,7 @@ public class BookDetailsController {
         qrLink.setOnAction(event -> {
           BookItem bookItem = getTableView().getItems().get(getIndex());
           if (bookItem != null) {
-            try {
-              showQRCode(bookItem);
-            } catch (IOException e) {
-              logger.error("Error showing QR Code", e);
-            }
+            showQRCode(bookItem);
           }
         });
       }
@@ -259,12 +250,12 @@ public class BookDetailsController {
     } catch (IOException e) {
       // Handle the specific IOException if loading the FXML fails
       logger.error("Failed to load borrowing book page", e);
-      showAlert(Alert.AlertType.ERROR, "Error",
+      showAlert(
           "Failed to load Borrowing Book page. Please try again.");
     } catch (Exception e) {
       // Handle other unforeseen errors
       logger.error("Unexpected error", e);
-      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
+      showAlert("An unexpected error occurred. Please try again.");
     }
   }
 
@@ -306,20 +297,46 @@ public class BookDetailsController {
     return "";
   }
 
-  private void showQRCode(BookItem bookItem) throws IOException {
-    // Tạo file QR
-    String qrFilePath = generateQRCodeForBookItem(bookItem);
-    // Hiển thị QR Code trong cửa sổ mới
-    Stage qrStage = new Stage();
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("QRCodeDisplay.fxml"));
-    Parent root = loader.load();
+  /**
+   * Displays the QR Code of a given BookItem in a new window.
+   *
+   * @param bookItem The BookItem whose QR Code needs to be displayed.
+   */
+  private void showQRCode(BookItem bookItem) {
+    try {
+      // Retrieve the QR Code file path for the given BookItem from the BookItemManager.
+      Optional<String> qrFilePath = librarian.getBookItemManager().getQRCode(bookItem.getBarcode());
 
-    QRCodeDisplayController controller = loader.getController();
-    controller.setQRCodeImage(qrFilePath);
+      // Check if the QR Code file path is present.
+      if (qrFilePath.isPresent()) {
+        // Load the QR Code display window.
+        Stage qrStage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("QRCodeDisplay.fxml"));
+        Parent root = loader.load();
 
-    qrStage.setTitle("QR Code");
-    qrStage.setScene(new Scene(root));
-    qrStage.show();
+        // Set the QR Code image in the QRCodeDisplayController.
+        QRCodeDisplayController controller = loader.getController();
+        controller.setQRCodeImage(qrFilePath.get());
+
+        // Configure and show the new stage for QR Code display.
+        qrStage.setTitle("QR Code");
+        qrStage.setScene(new Scene(root));
+        qrStage.show();
+      } else {
+        // Display an alert if the QR Code file path is not found.
+        showAlert("QR Code not found for the selected book item.");
+      }
+    } catch (IOException e) {
+      // Handle IOException and display an alert.
+      showAlert(
+          "Failed to load QR Code display window: " + e.getMessage());
+    } catch (SQLException e) {
+      // Handle SQLException and display an alert.
+      showAlert("Database error occurred: " + e.getMessage());
+    } catch (Exception e) {
+      // Handle unexpected exceptions and display an alert.
+      showAlert("An unexpected error occurred: " + e.getMessage());
+    }
   }
 
   /**
@@ -433,13 +450,11 @@ public class BookDetailsController {
   /**
    * Shows a simple alert dialog with the specified type, title, and content.
    *
-   * @param type    The type of alert.
-   * @param title   The title of the alert.
    * @param content The content message of the alert.
    */
-  private void showAlert(Alert.AlertType type, String title, String content) {
-    Alert alert = new Alert(type);
-    alert.setTitle(title);
+  private void showAlert(String content) {
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Error");
     alert.setHeaderText(null);
     alert.setContentText(content);
     alert.showAndWait();
