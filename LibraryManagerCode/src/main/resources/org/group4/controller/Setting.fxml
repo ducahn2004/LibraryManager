@@ -164,8 +164,8 @@
         <!-- Action Buttons -->
         <HBox alignment="CENTER" maxWidth="500.0" prefHeight="50.0" prefWidth="500.0" spacing="18.0">
           <children>
-            <Button fx:id="cancel" onAction="#cancel" prefHeight="25.0" prefWidth="240.0" style="-fx-background-color: #2B579A;" text="Cancel" />
-            <Button fx:id="save" onAction="#changePassword" prefHeight="25.0" prefWidth="240.0" style="-fx-background-color: #2B579A;" text="Save" />
+            <Button fx:id="cancel" onAction="#cancel" prefHeight="25.0" prefWidth="240.0" style="-fx-background-color: #2B579A;" text="Cancel" textFill="WHITE" />
+            <Button fx:id="save" onAction="#changePassword" prefHeight="25.0" prefWidth="240.0" style="-fx-background-color: #2B579A;" text="Save" textFill="WHITE" />
           </children>
           <VBox.margin>
             <Insets top="10.0" />
