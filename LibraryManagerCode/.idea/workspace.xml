@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b1381dc6-1017-492f-89b7-87d30bc1f173" name="Changes" comment="Update Controller Module">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/group4/controller/SettingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/group4/controller/SettingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/group4/controller/BookLending.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/group4/controller/BookLending.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/group4/controller/BookView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/group4/controller/BookView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/group4/controller/Setting.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/group4/controller/Setting.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +61,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ducahn2004/LibraryManager.git&quot;,
-    &quot;accountId&quot;: &quot;7e00dfee-d36c-42d2-b3aa-31928fb268c0&quot;
+    &quot;accountId&quot;: &quot;2827827f-cbbd-461c-9585-0de6046cf4f7&quot;
   }
 }</component>
   <component name="MavenImportPreferences">
@@ -81,6 +85,10 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AccountTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BookLendingTest.testToString.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LibrarianTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PersonTest.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -96,12 +104,12 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <envs>
-        <env name="JDBC_DATABASE_URL" value="jdbc:mysql://127.0.0.1:3306/librarymanager" />
+        <env name="JDBC_DATABASE_PASSWORD" value="Tranducanh2004@" />
+        <env name="JDBC_DATABASE_URL" value="jdbc:mysql://127.0.0.1:3307/library_database" />
         <env name="JDBC_DATABASE_USERNAME" value="root" />
-        <env name="JDBC_DATABASE_PASSWORD" value="12345678" />
       </envs>
       <option name="MAIN_CLASS_NAME" value="org.group4.controller.Main" />
       <module name="LibraryManagerCode" />
@@ -115,9 +123,93 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="AccountTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="LibraryManagerCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.group4.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.group4.test" />
+      <option name="MAIN_CLASS_NAME" value="org.group4.test.AccountTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="JDBC_DATABASE_PASSWORD" value="Tranducnah2004@" />
+        <env name="JDBC_DATABASE_URL" value="jdbc:mysql://127.0.0.1:3307/library_database" />
+        <env name="JDBC_DATABASE_USERNAME" value="root" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookLendingTest.testToString" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="LibraryManagerCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.group4.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.group4.test" />
+      <option name="MAIN_CLASS_NAME" value="org.group4.test.BookLendingTest" />
+      <option name="METHOD_NAME" value="testToString" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LibrarianTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="LibraryManagerCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.group4.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.group4.test" />
+      <option name="MAIN_CLASS_NAME" value="org.group4.test.LibrarianTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="JDBC_DATABASE_PASSWORD" value="Tranducanh2004@" />
+        <env name="JDBC_DATABASE_URL" value="jdbc:mysql://127.0.0.1:3307/library_database" />
+        <env name="JDBC_DATABASE_USERNAME" value="root" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PersonTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="LibraryManagerCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.group4.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.group4.test" />
+      <option name="MAIN_CLASS_NAME" value="org.group4.test.PersonTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.BookLendingTest.testToString" />
+      <item itemvalue="JUnit.PersonTest" />
+      <item itemvalue="JUnit.AccountTest" />
+      <item itemvalue="JUnit.LibrarianTest" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.BookLendingTest.testToString" />
+        <item itemvalue="JUnit.PersonTest" />
+        <item itemvalue="JUnit.LibrarianTest" />
+        <item itemvalue="JUnit.AccountTest" />
       </list>
     </recent_temporary>
   </component>

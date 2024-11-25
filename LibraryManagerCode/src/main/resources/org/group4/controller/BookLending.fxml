@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.group4.controller.BookLendingController">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group4.controller.BookLendingController">
   <left>
     <VBox prefHeight="582.0" prefWidth="130.0" style="-fx-background-color: #2B579A;" BorderPane.alignment="CENTER">
       <JFXButton fx:id="homeButton" alignment="TOP_LEFT" contentDisplay="TOP" onAction="#HomeAction" prefHeight="46.0" prefWidth="135.0" text="Home" textFill="WHITE" textOverrun="CLIP">
@@ -83,17 +83,17 @@
   </top>
   <center>
     <VBox spacing="10">
-      <TableView fx:id="tableView">
+      <TableView fx:id="tableView" prefHeight="572.0" prefWidth="870.0">
         <columns>
           <TableColumn fx:id="bookBarcode" text="Barcode" />
           <TableColumn fx:id="bookISBN" text="ISBN" />
           <TableColumn fx:id="bookTitle" text="Book Title" />
           <TableColumn fx:id="memberID" text="Member ID" />
-          <TableColumn fx:id="memberName" text="Member Name" />
-          <TableColumn fx:id="Status" text="Status" />
-          <TableColumn fx:id="creationDate" text="Lending Date" />
-          <TableColumn fx:id="dueDate" text="Due Date" />
-          <TableColumn fx:id="returnDate" text="Return Date" />
+          <TableColumn fx:id="memberName" prefWidth="108.0" text="Member Name" />
+          <TableColumn fx:id="Status" prefWidth="52.0" text="Status" />
+          <TableColumn fx:id="creationDate" prefWidth="89.59994506835938" text="Lending Date" />
+          <TableColumn fx:id="dueDate" prefWidth="148.79998779296875" text="Due Date" />
+          <TableColumn fx:id="returnDate" prefWidth="152.800048828125" text="Return Date" />
         </columns>
       </TableView>
     </VBox>

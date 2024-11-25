@@ -94,6 +94,27 @@ public class SettingController {
           "Password must be at least 8 characters long.");
       return false;
     }
+    String password = newPassword.getText();
+    if (!password.matches(".*[a-z].*")) {
+      showAlert(AlertType.INFORMATION, "Password Complexity",
+          "Password must contain at least one lowercase letter.");
+      return false;
+    }
+    if (!password.matches(".*[A-Z].*")) {
+      showAlert(AlertType.INFORMATION, "Password Complexity",
+          "Password must contain at least one uppercase letter.");
+      return false;
+    }
+    if (!password.matches(".*\\d.*")) {
+      showAlert(AlertType.INFORMATION, "Password Complexity",
+          "Password must contain at least one digit.");
+      return false;
+    }
+    if (!password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+      showAlert(AlertType.INFORMATION, "Password Complexity",
+          "Password must contain at least one special character (e.g., !@#$%^&*).");
+      return false;
+    }
     return true;
   }
 
@@ -308,4 +329,9 @@ public class SettingController {
     Platform.exit();
   }
 
+  public void showCurrentPasswordOnAction(KeyEvent keyEvent) {
+    String password = newPassword.getText(); // Retrieve the current password.
+    textShowNewPassword.setText(password); // Update the plain text field with the password.
+  }
 }
+
