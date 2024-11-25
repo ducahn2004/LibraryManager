@@ -358,10 +358,16 @@ public class BookDetailsController {
             System.out.println("Item deleted: " + item);
           }
         } catch (SQLException e) {
-          throw new RuntimeException(e);
+          // Show an error alert instead of throwing an exception
+          Alert errorAlert = new Alert(AlertType.ERROR);
+          errorAlert.setTitle("Deletion Error");
+          errorAlert.setHeaderText("Failed to delete the item.");
+          errorAlert.setContentText("Error: " + e.getMessage());
+          errorAlert.showAndWait();
         }
       }
     });
+    
   }
 
   /**
@@ -426,6 +432,14 @@ public class BookDetailsController {
           openEditBookItemPage(item);
         } catch (IOException e) {
           logger.error("Failed to open edit page", e);
+
+          // Show alert to inform the user about the error
+          Alert alert = new Alert(Alert.AlertType.ERROR);
+          alert.setTitle("Error");
+          alert.setHeaderText("Failed to Open Edit Page");
+          alert.setContentText(
+              "An error occurred while trying to open the edit page. Please try again.");
+          alert.showAndWait();
         }
       });
 
