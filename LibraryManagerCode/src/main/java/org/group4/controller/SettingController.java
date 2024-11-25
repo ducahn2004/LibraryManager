@@ -170,6 +170,7 @@ public class SettingController {
     iconOpenEyeNew2.setVisible(false);
   }
 
+  private String current_Password;
 
   /**
    * Updates the plain text password field when a key is pressed in the masked password field.
@@ -177,8 +178,9 @@ public class SettingController {
    * @param keyEvent The KeyEvent triggered when a key is pressed.
    */
   public void hideCurrentPasswordOnAction(KeyEvent keyEvent) {
-    String password = currentPassword.getText(); // Retrieve the current password.
-    textShowCurrentPassword.setText(password); // Update the plain text field with the password.
+    current_Password = currentPassword.getText(); // Retrieve the current password.
+    textShowCurrentPassword.setText(
+        current_Password); // Update the plain text field with the password.
   }
 
   /**
@@ -186,9 +188,9 @@ public class SettingController {
    *
    * @param keyEvent The KeyEvent triggered when a key is pressed.
    */
-  public void showPasswordOnActionCurrent(KeyEvent keyEvent) {
-    String password = textShowCurrentPassword.getText(); // Retrieve the password from the plain text field.
-    currentPassword.setText(password); // Update the masked field with the password.
+  public void showCurrentPasswordOnAction(KeyEvent keyEvent) {
+    current_Password = textShowCurrentPassword.getText(); // Retrieve the password from the plain text field.
+    currentPassword.setText(current_Password); // Update the masked field with the password.
   }
 
   /**
@@ -215,14 +217,16 @@ public class SettingController {
     currentPassword.setVisible(true); // Show the masked password field.
   }
 
+  private String new_Password;
+
   /**
    * Updates the plain text password field when a key is pressed in the masked password field.
    *
    * @param keyEvent The KeyEvent triggered when a key is pressed.
    */
   public void hidePasswordOnActionNew(KeyEvent keyEvent) {
-    String password = newPassword.getText(); // Retrieve the current password.
-    textShowNewPassword.setText(password); // Update the plain text field with the password.
+    new_Password = newPassword.getText(); // Retrieve the current password.
+    textShowNewPassword.setText(new_Password); // Update the plain text field with the password.
   }
 
   /**
@@ -231,8 +235,8 @@ public class SettingController {
    * @param keyEvent The KeyEvent triggered when a key is pressed.
    */
   public void showPasswordOnActionNew(KeyEvent keyEvent) {
-    String password = textShowNewPassword.getText(); // Retrieve the password from the plain text field.
-    newPassword.setText(password); // Update the masked field with the password.
+    new_Password = textShowNewPassword.getText(); // Retrieve the password from the plain text field.
+    newPassword.setText(new_Password); // Update the masked field with the password.
   }
 
   /**
@@ -260,14 +264,16 @@ public class SettingController {
   }
 
 
+  private String password_again;
+
   /**
    * Updates the plain text password field when a key is pressed in the masked password field.
    *
    * @param keyEvent The KeyEvent triggered when a key is pressed.
    */
   public void hidePasswordOnActionNew2(KeyEvent keyEvent) {
-    String password = newPassword2.getText(); // Retrieve the current password.
-    textShowNewPassword2.setText(password); // Update the plain text field with the password.
+    password_again = newPassword2.getText(); // Retrieve the current password.
+    textShowNewPassword2.setText(password_again); // Update the plain text field with the password.
   }
 
   /**
@@ -276,8 +282,8 @@ public class SettingController {
    * @param keyEvent The KeyEvent triggered when a key is pressed.
    */
   public void showPasswordOnActionNew2(KeyEvent keyEvent) {
-    String password = textShowNewPassword2.getText(); // Retrieve the password from the plain text field.
-    newPassword2.setText(password); // Update the masked field with the password.
+    password_again = textShowNewPassword2.getText(); // Retrieve the password from the plain text field.
+    newPassword2.setText(password_again); // Update the masked field with the password.
   }
 
   /**
@@ -344,9 +350,5 @@ public class SettingController {
     Platform.exit();
   }
 
-  public void showCurrentPasswordOnAction(KeyEvent keyEvent) {
-    String password = newPassword.getText(); // Retrieve the current password.
-    textShowNewPassword.setText(password); // Update the plain text field with the password.
-  }
 }
 

@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -68,7 +69,6 @@ public class AddBookController {
   private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   // Book instance for the current operation.
-  private Book book;
 
   /**
    * Searches for a book by its ISBN using the Google Books API.
@@ -84,14 +84,37 @@ public class AddBookController {
       return;
     }
 
-    Optional<JSONObject> bookDetails = googleBooksService.getBookDetails(isbn);
-    if (bookDetails.isEmpty()) {
-      showAlert(Alert.AlertType.ERROR, "Book Not Found", "No book found with the entered ISBN.");
-      return;
-    }
+    // Create a Task to run the search on a background thread
+    Task<Optional<JSONObject>> searchTask = new Task<>() {
+      @Override
+      protected Optional<JSONObject> call() {
+        return googleBooksService.getBookDetails(isbn);
+      }
+    };
 
-    populateFieldsFromJson(bookDetails.get());
+    // Define the action when the task is successful
+    searchTask.setOnSucceeded(event -> {
+      Optional<JSONObject> bookDetails = searchTask.getValue();
+      if (bookDetails.isEmpty()) {
+        showAlert(Alert.AlertType.ERROR, "Book Not Found", "No book found with the entered ISBN.");
+      } else {
+        populateFieldsFromJson(bookDetails.get());
+        showAlert(Alert.AlertType.INFORMATION, "Search Successful",
+            "Book details fetched successfully!");
+      }
+    });
+
+    // Define the action when the task fails
+    searchTask.setOnFailed(event -> {
+      Throwable exception = searchTask.getException();
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "An error occurred during the search: " + exception.getMessage());
+    });
+
+    // Run the task in a background thread
+    new Thread(searchTask).start();
   }
+
 
   /**
    * Adds a new book to the library.
