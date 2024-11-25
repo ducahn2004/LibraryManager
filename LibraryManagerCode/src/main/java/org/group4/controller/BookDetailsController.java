@@ -122,14 +122,10 @@ public class BookDetailsController {
     if (mouseEvent.getClickCount() == 2) {
       BookItem selectedItem = tableView.getSelectionModel().getSelectedItem();
       if (selectedItem != null) {
-        try {
-          if (selectedItem.getStatus() == BookStatus.AVAILABLE) {
-            openBorrowingBookPage(selectedItem);
-          } else if (selectedItem.getStatus() == BookStatus.LOANED) {
-            openReturningBookPage(selectedItem);
-          }
-        } catch (IOException e) {
-          logger.error(e.getMessage(), e);
+        if (selectedItem.getStatus() == BookStatus.AVAILABLE) {
+          openBorrowingBookPage(selectedItem);
+        } else if (selectedItem.getStatus() == BookStatus.LOANED) {
+          openReturningBookPage(selectedItem);
         }
       }
     }
@@ -263,24 +259,10 @@ public class BookDetailsController {
    * Opens the Returning Book page for the selected book item.
    *
    * @param bookItem The book item to return.
-   * @throws IOException If there is an error loading the FXML file.
    */
-  private void openReturningBookPage(BookItem bookItem) throws IOException {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
-      Scene returningBookScene = new Scene(loader.load());
-      Stage currentStage = (Stage) tableView.getScene().getWindow();
-
-      currentStage.setScene(returningBookScene);
-
-      ReturningBookController controller = loader.getController();
-      controller.setItemDetailReturning(bookItem);
-      controller.setPreviousPage("bookDetails");
-
-      currentStage.setTitle("Book Item Detail");
-    } catch (Exception e) {
-      logger.error("Failed to load returning book page", e);
-    }
+  private void openReturningBookPage(BookItem bookItem) {
+    Stage currentStage = (Stage) tableView.getScene().getWindow();
+    PageLoader.openReturningBookPage(currentStage, bookItem, "memberDetails");
   }
 
   /**
@@ -358,16 +340,11 @@ public class BookDetailsController {
             System.out.println("Item deleted: " + item);
           }
         } catch (SQLException e) {
-          // Show an error alert instead of throwing an exception
-          Alert errorAlert = new Alert(AlertType.ERROR);
-          errorAlert.setTitle("Deletion Error");
-          errorAlert.setHeaderText("Failed to delete the item.");
-          errorAlert.setContentText("Error: " + e.getMessage());
-          errorAlert.showAndWait();
+          logger.error("Failed to delete item: {}", item, e);
+          showAlert("Failed to delete item. Please try again.");
         }
       }
     });
-    
   }
 
   /**
@@ -389,6 +366,7 @@ public class BookDetailsController {
       stage.show();
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
+      showAlert("Failed to load Add Book Item page. Please try again.");
     }
   }
 
@@ -432,14 +410,6 @@ public class BookDetailsController {
           openEditBookItemPage(item);
         } catch (IOException e) {
           logger.error("Failed to open edit page", e);
-
-          // Show alert to inform the user about the error
-          Alert alert = new Alert(Alert.AlertType.ERROR);
-          alert.setTitle("Error");
-          alert.setHeaderText("Failed to Open Edit Page");
-          alert.setContentText(
-              "An error occurred while trying to open the edit page. Please try again.");
-          alert.showAndWait();
         }
       });
 

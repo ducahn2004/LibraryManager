@@ -1,7 +1,6 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
 import java.io.IOException;
 import java.sql.SQLException;
 import javafx.application.Platform;
@@ -12,12 +11,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.group4.service.user.AccountService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SettingController {
 
@@ -25,36 +25,52 @@ public class SettingController {
 
   @FXML
   private TextField username, textShowCurrentPassword, textShowNewPassword, textShowNewPassword2;
-  ;
+
   @FXML
   private JFXButton homeButton;
+
   @FXML
   private JFXButton MemberButton;
+
   @FXML
   private JFXButton bookButton;
+
   @FXML
   private JFXButton bookLendingButton;
+
   @FXML
   private JFXButton settingButton;
+
   @FXML
   private JFXButton notificationButton;
+
   @FXML
   private JFXButton closeButton;
+
   @FXML
   private PasswordField currentPassword;
+
   @FXML
   private PasswordField newPassword;
+
   @FXML
   private PasswordField newPassword2;
+
   @FXML
-  private ImageView iconCloseEyeCurrent, iconOpenEyeCurrent, iconCloseEyeNew, iconOpenEyeNew, iconCloseEyeNew2, iconOpenEyeNew2;
+  private ImageView iconCloseEyeCurrent, iconOpenEyeCurrent, iconCloseEyeNew, iconOpenEyeNew,
+      iconCloseEyeNew2, iconOpenEyeNew2;
+
   @FXML
   private Button save;
+
   @FXML
   private Button cancel;
 
   @FXML
   private void changePassword(ActionEvent event) {
+
+    Logger logger = LoggerFactory.getLogger(SettingController.class);
+
     String userId = username.getText();
     String currentPass = currentPassword.getText();
     String newPass = newPassword.getText();
@@ -67,14 +83,14 @@ public class SettingController {
         if (isPasswordChanged) {
           showAlert(AlertType.INFORMATION, "Notification",
               "Password has been successfully changed.");
-          clearFields(); // Xóa các trường nhập sau khi thay đổi mật khẩu thành công
+          clearFields();
         } else {
           showAlert(AlertType.ERROR, "Error",
               "The old password is incorrect or an error occurred.");
         }
-      } catch (SQLException ex) {
+      } catch (SQLException e) {
+        logger.error("An error occurred while changing the password: {}", e.getMessage());
         showAlert(AlertType.ERROR, "Error", "An error occurred while changing the password.");
-        ex.printStackTrace();
       }
     }
   }
@@ -102,6 +118,7 @@ public class SettingController {
     }
     if (!password.matches(".*[A-Z].*")) {
       showAlert(AlertType.INFORMATION, "Password Complexity",
+          
           "Password must contain at least one uppercase letter.");
       return false;
     }
@@ -129,7 +146,6 @@ public class SettingController {
 
   @FXML
   private void cancel(ActionEvent event) {
-    // When you click Cancel, all input boxes are cleared
     clearFields();
   }
 
@@ -137,9 +153,6 @@ public class SettingController {
     currentPassword.clear();
     newPassword.clear();
     newPassword2.clear();
-    textShowCurrentPassword.clear();
-    textShowNewPassword.clear();
-    textShowNewPassword2.clear();
   }
 
   @FXML

@@ -1,7 +1,6 @@
 package org.group4.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
@@ -140,36 +139,13 @@ public class MemberDetailsController {
   }
 
   /**
-   * Opens the "Returning Book" page for the selected book item.
+   * Opens the returning book page for the selected book item.
    *
-   * @param bookItem The book item to be returned.
-   * @throws IOException If the FXML file cannot be loaded.
+   * @param bookItem The book item to return.
    */
   private void openReturningBookPage(BookItem bookItem) {
-    try {
-      // Load the ReturningBook.fxml file and set up the new scene
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
-      Scene returningBookScene = new Scene(loader.load());
-      Stage currentStage = (Stage) tableView.getScene().getWindow();
-
-      // Switch to the new scene
-      currentStage.setScene(returningBookScene);
-
-      // Pass details to the ReturningBookController
-      ReturningBookController controller = loader.getController();
-      controller.setItemDetailReturning(bookItem);
-      controller.setPreviousPage("memberDetails");
-
-      currentStage.setTitle("Book Item Detail");
-    } catch (IOException | SQLException e) {
-      // Log the error (optional) and show an alert to the user
-      Logger.getLogger(MemberDetailsController.class.getName())
-          .log(Level.SEVERE, "Failed to load book details page", e);
-
-      // Show an alert with the error message
-      showAlert(Alert.AlertType.ERROR, "Error",
-          "Failed to load the returning book page. Please try again.");
-    }
+    Stage currentStage = (Stage) tableView.getScene().getWindow();
+    PageLoader.openReturningBookPage(currentStage, bookItem, "memberDetails");
   }
 
   /**

@@ -31,10 +31,11 @@ module org.group.librarymanagercode {
   requires jbcrypt;
   requires javax.mail.api;
   requires com.zaxxer.hikari;
-  requires java.sql;
   requires org.slf4j;
   requires mysql.connector.j;
   requires org.mockito;
+  requires org.apache.logging.log4j;
+  requires java.sql;
 
   exports org.group4.controller;
   opens org.group4.controller to javafx.fxml;

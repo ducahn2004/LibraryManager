@@ -2,6 +2,7 @@ package org.group4.service.user;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import org.group4.dao.base.FactoryDAO;
 import org.group4.dao.user.MemberDAO;
 import org.group4.model.enums.NotificationType;
@@ -41,6 +42,11 @@ public class MemberManagerServiceImpl implements MemberManagerService {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public Optional<Member> getById(String id) throws SQLException {
+    return memberDAO.getById(id);
   }
 
   @Override
