@@ -1,5 +1,6 @@
 package org.group4.service.book;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -24,10 +25,14 @@ public class BookItemManagerServiceImpl implements BookItemManagerService {
   @Override
   public boolean add(BookItem bookItem) throws IOException, SQLException {
     if (bookItemDAO.add(bookItem)) {
+
+      // Generate QR code for book item
       String qrPath= QRCodeGenerator.generateQRCodeForBookItem(bookItem);
       if (!qrCodeDAO.addQRCode(bookItem.getBarcode(), qrPath)) {
         return false;
       }
+
+      // Send notification
       systemNotificationService.sendNotification(NotificationType.ADD_BOOK_ITEM_SUCCESS,
           bookItem.toString());
       return true;
@@ -48,9 +53,21 @@ public class BookItemManagerServiceImpl implements BookItemManagerService {
   @Override
   public boolean delete(String barcode) throws SQLException {
     if (bookItemDAO.delete(barcode)) {
+      // Delete QR code from database
       if (!qrCodeDAO.deleteByBarcode(barcode)) {
         return false;
       }
+
+      // Delete QR code image
+      Optional<String> filePath = qrCodeDAO.getByBarcode(barcode);
+      if (filePath.isPresent()) {
+        File file = new File(filePath.get());
+        if (file.delete()) {
+          return false;
+        }
+      }
+
+      // Send notification
       systemNotificationService.sendNotification(NotificationType.DELETE_BOOK_ITEM_SUCCESS,
           barcode);
       return true;
