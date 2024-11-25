@@ -25,6 +25,7 @@ import org.group4.service.user.SessionManagerService;
  */
 public class AdminPaneController {
 
+  public Label total_members_borrowed;
   @FXML
   private Label total_Members;
   @FXML
@@ -70,6 +71,11 @@ public class AdminPaneController {
   public void updateTotalBooks() throws SQLException {
     int totalBooks = librarian.getBookManager().getAll().size();
     total_books.setText(String.valueOf(totalBooks));
+  }
+
+  public void updateMembersWhoBorrowed() throws SQLException {
+    int totalMembersWhoBorrowed = librarian.getLendingManager().getAll().size();
+    total_members_borrowed.setText(String.valueOf(totalMembersWhoBorrowed)); // Hiển thị lên UI
   }
 
   /**
