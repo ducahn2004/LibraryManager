@@ -33,7 +33,9 @@ import org.slf4j.LoggerFactory;
  */
 public class ReturningBookController {
 
-  /** The current librarian using the system. */
+  /**
+   * The current librarian using the system.
+   */
   private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   @FXML
@@ -100,6 +102,7 @@ public class ReturningBookController {
 
   private BookItem currentBookItem;
   private String previousPage;
+  private Member currentMember;
 
   /**
    * Sets the previous page for navigation purposes.
@@ -120,7 +123,8 @@ public class ReturningBookController {
       this.currentBookItem = bookItem;
 
       BookLending currentBookLending = findBookLendingById(bookItem.getBarcode());
-
+      assert currentBookLending != null;
+      this.currentMember = currentBookLending.getMember();
       // Display book and member details and setup return details
       displayBookDetails(currentBookLending);
       displayMemberDetails(currentBookLending);
@@ -131,10 +135,10 @@ public class ReturningBookController {
 
     } catch (Exception e) {
       // Catch other unexpected exceptions
-      logger.error("Unexpected error occurred: {}", e.getMessage(), e);
+      logger.error("Unexpected error occurred in returning book: {}", e.getMessage(), e);
 
       // Show an alert for the unexpected error
-      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred.");
+      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred in returning book.");
     }
   }
 
@@ -170,7 +174,8 @@ public class ReturningBookController {
 
     } catch (SQLException e) {
       logger.error("SQL error while finding book lending: {}", e.getMessage(), e);
-      showAlert(Alert.AlertType.ERROR, "Database Error", "An error occurred while accessing the database.");
+      showAlert(Alert.AlertType.ERROR, "Database Error",
+          "An error occurred while accessing the database in find book lending by Id.");
       return null;
     } catch (Exception e) {
       logger.error("Unexpected error: {}", e.getMessage(), e);
@@ -216,7 +221,8 @@ public class ReturningBookController {
     referenceOnlyCheck.setText(bookItem.getIsReferenceOnly() ? "Yes" : "No");
 
     // Optionally log the details
-    logger.info("Displaying book details: ISBN={}, Title={}", bookItem.getISBN(), bookItem.getTitle());
+    logger.info("Displaying book details: ISBN={}, Title={}", bookItem.getISBN(),
+        bookItem.getTitle());
   }
 
   /**
@@ -310,7 +316,7 @@ public class ReturningBookController {
     } catch (SQLException e) {
       // Handle SQLException if it occurs and show an alert
       showAlert(AlertType.ERROR, "Database Error",
-          "An error occurred while calculating the fine.");
+          "An error occurred while calculating the fine in calculator fine.");
     } catch (Exception e) {
       // Handle any other unexpected exceptions
       showAlert(AlertType.ERROR, "Error",
@@ -372,21 +378,41 @@ public class ReturningBookController {
    * Loads the book details page for the current book item.
    */
   private void loadBookDetail() {
-    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-    SceneLoader.loadBookDetail(currentStage, currentBookItem);
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      Scene bookDetailScene = new Scene(loader.load());
+      Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+      currentStage.setScene(bookDetailScene);
+
+      BookDetailsController bookDetailsController = loader.getController();
+      bookDetailsController.setItemDetail(currentBookItem);
+    } catch (IOException e) {
+      // Handle IO exceptions (e.g., FXML loading issues)
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "Failed to load the book details view. Please try again.");
+    } catch (SQLException e) {
+      // Handle SQL exceptions (e.g., database access issues)
+      showAlert(Alert.AlertType.ERROR, "Database Error",
+          "An error occurred while accessing the database. Please try again.");
+    } catch (Exception e) {
+      // Handle any other unforeseen errors
+      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
+    }
   }
 
   private void loadMemberDetail() {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
       Scene memberDetailScene = new Scene(loader.load());
-
       Stage currentStage = (Stage) memberIdField.getScene().getWindow();
       currentStage.setScene(memberDetailScene);
 
-      // Set the book item detail in the controller of the loaded scene
-      BookDetailsController bookDetailsController = loader.getController();
-      bookDetailsController.setItemDetail(currentBookItem);
+      MemberDetailsController memberDetailsController = loader.getController();
+      if (currentMember == null) {
+        System.out.println("currentMember is null, cannot pass to MemberDetailsController");
+      } else {
+        memberDetailsController.setMemberDetail(currentMember);
+      }
 
     } catch (IOException e) {
       // Handle IOException (e.g., FXML loading failure)
@@ -435,7 +461,7 @@ public class ReturningBookController {
     } catch (SQLException e) {
       // Handle database-related issues (e.g., when querying lending data)
       showAlert(AlertType.ERROR, "Database Error",
-          "An error occurred while accessing the database. Please try again later.");
+          "An error occurred while accessing the database because Fine. Please try again later.");
       logger.error("SQLException in handleUserAction: {}", e.getMessage(), e);
 
     } catch (NullPointerException e) {

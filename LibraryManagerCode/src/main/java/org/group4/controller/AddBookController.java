@@ -238,7 +238,6 @@ public class AddBookController {
             "Book with the same ISBN already exists in the library.");
       }
       System.out.println("Book with ISBN: " + book.getISBN() + " has been added successfully.");
-      showAlert(Alert.AlertType.INFORMATION, "Success", "Book added successfully!");
     } catch (IllegalArgumentException e) {
       showAlert(Alert.AlertType.ERROR, "Duplicate ISBN", e.getMessage());
     } catch (SQLException e) {

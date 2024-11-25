@@ -199,12 +199,16 @@ public class MemberViewController {
 
       // Pass the selected member to the details controller
       MemberDetailsController controller = loader.getController();
-      controller.setItemDetail(member);
+      controller.setMemberDetail(member);
 
       detailStage.setTitle("Member Detail");
       detailStage.show();
     } catch (IOException e) {
       logAndShowError("Failed to load member details page", e);
+    } catch (SQLException e) {
+      // Handle SQL exceptions (e.g., database access issues)
+      showAlert(Alert.AlertType.ERROR, "Database Error",
+          "An error occurred while accessing the database. Please try again.");
     }
   }
 
@@ -289,6 +293,21 @@ public class MemberViewController {
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(content);
+    alert.showAndWait();
+  }
+
+  /**
+   * Displays an alert dialog with the specified type, title, and content.
+   *
+   * @param alertType the type of alert (e.g., INFORMATION, WARNING)
+   * @param title     the title of the alert dialog
+   * @param message   the message of the alert dialog
+   */
+  private static void showAlert(AlertType alertType, String title, String message) {
+    Alert alert = new Alert(alertType);
+    alert.setTitle(title);
+    alert.setHeaderText(title);
+    alert.setContentText(message);
     alert.showAndWait();
   }
 

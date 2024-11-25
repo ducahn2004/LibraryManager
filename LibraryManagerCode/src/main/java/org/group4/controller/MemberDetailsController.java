@@ -1,6 +1,7 @@
 package org.group4.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.group4.model.book.BookItem;
+import org.group4.model.enums.BookStatus;
 import org.group4.model.transaction.BookLending;
 import org.group4.model.user.Librarian;
 import org.group4.model.user.Member;
@@ -75,7 +77,7 @@ public class MemberDetailsController {
    *
    * @param member The member to display details for.
    */
-  public void setItemDetail(Member member) {
+  public void setMemberDetail(Member member) throws SQLException {
     this.currentMember = member;
     displayMemberDetails();
     loadData();
@@ -106,7 +108,7 @@ public class MemberDetailsController {
     // Add a listener for row selection in the table
     tableView.getSelectionModel().selectedItemProperty()
         .addListener((obs, oldSelection, newSelection) -> {
-          if (newSelection != null) {
+          if (newSelection != null && newSelection.getBookItem().getStatus() == BookStatus.LOANED) {
             openReturningBookPage(newSelection.getBookItem());
           }
         });
@@ -144,8 +146,30 @@ public class MemberDetailsController {
    * @param bookItem The book item to return.
    */
   private void openReturningBookPage(BookItem bookItem) {
-    Stage currentStage = (Stage) tableView.getScene().getWindow();
-    PageLoader.openReturningBookPage(currentStage, bookItem, "memberDetails");
+    try {
+      // Load the ReturningBook.fxml file and set up the new scene
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
+      Scene returningBookScene = new Scene(loader.load());
+      Stage currentStage = (Stage) tableView.getScene().getWindow();
+
+      // Switch to the new scene
+      currentStage.setScene(returningBookScene);
+
+      // Pass details to the ReturningBookController
+      ReturningBookController controller = loader.getController();
+      controller.setItemDetailReturning(bookItem);
+      controller.setPreviousPage("memberDetails");
+
+      currentStage.setTitle("Book Item Detail");
+    } catch (IOException e) {
+      // Log the error (optional) and show an alert to the user
+      Logger.getLogger(MemberDetailsController.class.getName())
+          .log(Level.SEVERE, "Failed to load book details page", e);
+
+      // Show an alert with the error message
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "Failed to load the returning book page. Please try again.");
+    }
   }
 
   /**

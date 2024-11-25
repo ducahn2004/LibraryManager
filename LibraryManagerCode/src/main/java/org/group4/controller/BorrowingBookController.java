@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DatePicker;
@@ -28,7 +30,9 @@ public class BorrowingBookController {
 
   private static final Logger logger = LoggerFactory.getLogger(BorrowingBookController.class);
 
-  /** The logger for the BorrowingBookController class. */
+  /**
+   * The logger for the BorrowingBookController class.
+   */
   private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   @FXML
@@ -166,14 +170,14 @@ public class BorrowingBookController {
 
         // Show an alert if any of the required fields are empty
         showAlert(Alert.AlertType.WARNING, "Incomplete Information",
-            "Please ensure all required fields are filled before borrowing the book.");
+            "Please ensure all required fields are filled before submitting the form.");
         return;
       }
-
       // Check if the book item is available
       if (currentBookItem != null && currentBookItem.getStatus() == BookStatus.AVAILABLE) {
         // Proceed with creating the lending record and borrowing the book
-        Optional<Member> memberOptional = librarian.getMemberManager().getById(memberIdField.getText());
+        Optional<Member> memberOptional = librarian.getMemberManager()
+            .getById(memberIdField.getText());
         if (memberOptional.isEmpty()) {
           showAlert(Alert.AlertType.ERROR, "Member Not Found",
               "The member with the given ID was not found.");
@@ -193,7 +197,7 @@ public class BorrowingBookController {
     } catch (SQLException e) {
       // Handle SQL exceptions if there are issues interacting with the database
       showAlert(Alert.AlertType.ERROR, "Database Error",
-          "An error occurred while processing the book borrowing. Please try again later.");
+          "An error occurred while access borrowing book database. Please try again later.");
       logger.error("SQLException in handleSubmit: {}", e.getMessage(), e);
     } catch (IOException e) {
       // Handle IOExceptions if there are issues with loading the book details page
@@ -203,7 +207,7 @@ public class BorrowingBookController {
     } catch (Exception e) {
       // Catch any other unexpected exceptions
       showAlert(Alert.AlertType.ERROR, "Unexpected Error",
-          "An unexpected error occurred. Please try again later.");
+          "An unexpected error occurred in borrowing book. Please try again later.");
       logger.error("Unexpected error in handleSubmit: {}", e.getMessage(), e);
     }
   }
@@ -222,8 +226,26 @@ public class BorrowingBookController {
    * Loads the book details view.
    */
   private void loadBookDetail() {
-    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-    SceneLoader.loadBookDetail(currentStage, currentBookItem);
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      Scene bookDetailScene = new Scene(loader.load());
+      Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+      currentStage.setScene(bookDetailScene);
+
+      BookDetailsController bookDetailsController = loader.getController();
+      bookDetailsController.setItemDetail(currentBookItem);
+    } catch (IOException e) {
+      // Handle IO exceptions (e.g., FXML loading issues)
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "Failed to load the book details view. Please try again.");
+    } catch (SQLException e) {
+      // Handle SQL exceptions (e.g., database access issues)
+      showAlert(Alert.AlertType.ERROR, "Database Error",
+          "An error occurred while accessing the database. Please try again.");
+    } catch (Exception e) {
+      // Handle any other unforeseen errors
+      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
+    }
   }
 
   /**
