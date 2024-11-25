@@ -1,6 +1,8 @@
 package org.group4.controller;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,12 +23,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.group4.model.book.BookItem;
 import org.group4.model.book.Book;
 import org.group4.model.enums.BookFormat;
 import org.group4.model.enums.BookStatus;
+import org.group4.service.qrcode.QRCodeGenerator;
 import org.group4.service.user.SessionManagerService;
 import org.group4.model.user.Librarian;
 import org.slf4j.Logger;
@@ -67,6 +72,8 @@ public class BookDetailsController {
   // TableView and its columns for displaying book items.
   @FXML
   private TableView<BookItem> tableView;
+  @FXML
+  private TableColumn<BookItem, Void> qrColumn;
   @FXML
   private TableColumn<BookItem, String> barCode;
   @FXML
@@ -149,6 +156,32 @@ public class BookDetailsController {
    * Initializes the TableView and sets up column bindings.
    */
   private void initializeTable() {
+    qrColumn.setCellFactory(param -> new TableCell<>() {
+      private final Hyperlink qrLink = new Hyperlink("Generate QR");
+
+      {
+        qrLink.setOnAction(event -> {
+          BookItem bookItem = getTableView().getItems().get(getIndex());
+          if (bookItem != null) {
+            try {
+              showQRCode(bookItem);
+            } catch (IOException e) {
+              logger.error("Error showing QR Code", e);
+            }
+          }
+        });
+      }
+
+      @Override
+      protected void updateItem(Void item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setGraphic(null);
+        } else {
+          setGraphic(qrLink);
+        }
+      }
+    });
     barCode.setCellValueFactory(cellData ->
         new SimpleStringProperty(cellData.getValue().getBarcode()));
     referenceOnly.setCellValueFactory(cellData ->
@@ -269,6 +302,25 @@ public class BookDetailsController {
       return date.format(formatter);
     }
     return "";
+  }
+
+  private void showQRCode(BookItem bookItem) throws IOException {
+    // Tạo file QR
+    String qrFilePath = "qr_codes/" + bookItem.getBarcode() + ".png";
+    Files.createDirectories(Paths.get("qr_codes"));
+    QRCodeGenerator.generateQRCode(bookItem.getBarcode(), qrFilePath, 200, 200);
+
+    // Hiển thị QR Code trong cửa sổ mới
+    Stage qrStage = new Stage();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("QRCodeDisplay.fxml"));
+    Parent root = loader.load();
+
+    QRCodeDisplayController controller = loader.getController();
+    controller.setQRCodeImage(qrFilePath);
+
+    qrStage.setTitle("QR Code");
+    qrStage.setScene(new Scene(root));
+    qrStage.show();
   }
 
   /**
