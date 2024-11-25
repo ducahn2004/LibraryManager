@@ -129,7 +129,7 @@ public class SettingController {
 
   @FXML
   private void cancel(ActionEvent event) {
-    // Khi bấm Cancel, xóa tất cả các ô nhập
+    // When you click Cancel, all input boxes are cleared
     clearFields();
   }
 
