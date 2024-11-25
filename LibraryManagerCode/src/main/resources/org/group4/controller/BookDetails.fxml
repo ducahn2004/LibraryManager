@@ -88,6 +88,7 @@
       </HBox>
       <TableView fx:id="tableView">
         <columns>
+          <TableColumn fx:id="qrColumn" prefWidth="80" text="QR Code"/>
           <TableColumn fx:id="barCode" prefWidth="127.99998319149017" text="Bar Code"/>
           <TableColumn fx:id="referenceOnly" prefWidth="95.20001220703125" text="Reference Only"/>
           <TableColumn fx:id="status" prefWidth="75.20001220703125" text="Status"/>
