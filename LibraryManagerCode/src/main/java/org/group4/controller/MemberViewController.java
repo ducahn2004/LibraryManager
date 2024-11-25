@@ -130,7 +130,7 @@ public class MemberViewController {
     };
 
     loadTask.setOnSucceeded(event -> memberList.setAll(loadTask.getValue()));
-    loadTask.setOnFailed(event -> showAlert(AlertType.ERROR, "Error Loading Members",
+    loadTask.setOnFailed(event -> showAlert("Error Loading Members",
         "An error occurred while loading member data."));
     new Thread(loadTask).start();
   }
@@ -238,9 +238,6 @@ public class MemberViewController {
    */
   private void showDeleteConfirmation(Member member) {
     Alert alert = createAlert(
-        AlertType.CONFIRMATION,
-        "Delete Confirmation",
-        "Are you sure you want to delete this member?",
         "ID: " + member.getMemberId() + "\nName: " + member.getName()
     );
 
@@ -259,16 +256,13 @@ public class MemberViewController {
   /**
    * Creates a reusable alert with the specified parameters.
    *
-   * @param type    The type of alert (e.g., ERROR, CONFIRMATION).
-   * @param title   The title of the alert window.
-   * @param header  The header text of the alert.
    * @param content The content text of the alert.
    * @return A configured Alert instance.
    */
-  private Alert createAlert(AlertType type, String title, String header, String content) {
-    Alert alert = new Alert(type);
-    alert.setTitle(title);
-    alert.setHeaderText(header);
+  private Alert createAlert(String content) {
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("Delete Confirmation");
+    alert.setHeaderText("Are you sure you want to delete this member?");
     alert.setContentText(content);
     return alert;
   }
@@ -281,18 +275,17 @@ public class MemberViewController {
    */
   private void logAndShowError(String message, Exception e) {
     Logger.getLogger(MemberViewController.class.getName()).log(Level.SEVERE, message, e);
-    showAlert(AlertType.ERROR, "Error", message);
+    showAlert("Error", message);
   }
 
   /**
    * Displays an alert with the specified type, title, and content.
    *
-   * @param type    The type of alert.
    * @param title   The title of the alert.
    * @param content The content of the alert.
    */
-  void showAlert(AlertType type, String title, String content) {
-    Alert alert = new Alert(type);
+  void showAlert(String title, String content) {
+    Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(content);
