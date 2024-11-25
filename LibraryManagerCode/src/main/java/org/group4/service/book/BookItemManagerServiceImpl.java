@@ -53,17 +53,13 @@ public class BookItemManagerServiceImpl implements BookItemManagerService {
   @Override
   public boolean delete(String barcode) throws SQLException {
     if (bookItemDAO.delete(barcode)) {
-      // Delete QR code from database
-      if (!qrCodeDAO.deleteByBarcode(barcode)) {
-        return false;
-      }
-
-      // Delete QR code image
       Optional<String> filePath = qrCodeDAO.getByBarcode(barcode);
       if (filePath.isPresent()) {
         File file = new File(filePath.get());
-        if (file.delete()) {
-          return false;
+        if (file.delete()) { // Delete QR code image
+          if (!qrCodeDAO.deleteByBarcode(barcode)) { // Delete QR code from database
+            return false;
+          }
         }
       }
 
