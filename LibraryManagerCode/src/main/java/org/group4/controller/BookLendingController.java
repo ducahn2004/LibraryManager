@@ -69,7 +69,7 @@ public class BookLendingController {
     returnDate.setCellValueFactory(
         data -> new SimpleStringProperty(
             data.getValue().getReturnDate().isPresent()
-                ? data.getValue().getReturnDate().toString()
+                ? data.getValue().getReturnDate().get().toString()
                 : "Not Returned"));
 
     // Load book lending data into the TableView
