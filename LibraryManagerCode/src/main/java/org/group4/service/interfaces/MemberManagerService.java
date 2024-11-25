@@ -3,6 +3,7 @@ package org.group4.service.interfaces;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import org.group4.model.user.Member;
 
 /**
@@ -37,6 +38,15 @@ public interface MemberManagerService {
    * @throws SQLException if an error occurs while deleting the member
    */
   boolean delete(String id) throws SQLException;
+
+  /**
+   * Retrieves a member by its ID from the database.
+   *
+   * @param id the identifier of the member to retrieve
+   * @return an optional containing the member if it exists, otherwise an empty optional
+   * @throws SQLException if an error occurs while retrieving the member
+   */
+  Optional<Member> getById(String id) throws SQLException;
 
   /**
    * Retrieves all members from the database.

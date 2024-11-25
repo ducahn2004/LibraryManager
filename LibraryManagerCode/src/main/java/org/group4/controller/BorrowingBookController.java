@@ -2,24 +2,23 @@ package org.group4.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.group4.dao.base.FactoryDAO;
 import org.group4.model.book.BookItem;
 import org.group4.model.enums.BookStatus;
 import org.group4.service.user.SessionManagerService;
 import org.group4.model.transaction.BookLending;
 import org.group4.model.user.Librarian;
 import org.group4.model.user.Member;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controller for managing the borrowing of books. Handles interactions between the user interface
@@ -27,13 +26,10 @@ import org.group4.model.user.Member;
  */
 public class BorrowingBookController {
 
-  /**
-   * The librarian currently managing the session.
-   */
-  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private static final Logger logger = LoggerFactory.getLogger(BorrowingBookController.class);
 
-  @FXML
-  private Button cancelButton;
+  /** The logger for the BorrowingBookController class. */
+  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
   @FXML
   private Label priceField;
@@ -85,19 +81,6 @@ public class BorrowingBookController {
    */
   private BookItem currentBookItem;
 
-  /**
-   * The current borrowing transaction.
-   */
-  private BookLending currentBookLending;
-
-  /**
-   * Returns the current book lending transaction.
-   *
-   * @return The current {@code BookLending} object.
-   */
-  public BookLending returnBookLending() {
-    return this.currentBookLending;
-  }
 
   /**
    * Initializes the controller. Sets up listeners and prepares the user interface.
@@ -107,56 +90,32 @@ public class BorrowingBookController {
     // Add a listener to the memberIdField to trigger search on input
     memberIdField.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.isEmpty()) {
-        try {
-          findMemberById(newValue);
-        } catch (SQLException e) {
-          throw new RuntimeException(e);
-        }
+        findMemberById(newValue);
       }
     });
   }
 
-  /**
-   * Searches for a member by ID and updates the UI with the member's details.
-   *
-   * @param memberId The ID of the member to find.
-   */
-  private void findMemberById(String memberId) throws SQLException {
-    Member foundMember = null;
-    for (Member member : FactoryDAO.getMemberDAO().getAll()) {
-      if (member.getMemberId().equals(memberId)) {
-        foundMember = member;
-        break;
+  private void findMemberById(String memberId) {
+    try {
+      Optional<Member> memberOptional = librarian.getMemberManager().getById(memberId);
+      if (memberOptional.isPresent()) {
+        Member foundMember = memberOptional.get();
+        memberNameField.setText(foundMember.getName());
+        dobDatePicker.setValue(foundMember.getDateOfBirth());
+        emailField.setText(foundMember.getEmail());
+        phoneField.setText(foundMember.getPhoneNumber());
+      } else {
+        // Clear fields if no member is found
+        memberNameField.clear();
+        emailField.clear();
+        phoneField.clear();
       }
+    } catch (SQLException e) {
+      // Handle SQL exceptions if there are issues interacting with the database
+      showAlert(Alert.AlertType.ERROR, "Database Error",
+          "An error occurred while searching for the member. Please try again later.");
+      logger.error("SQLException in findMemberById: {}", e.getMessage(), e);
     }
-    if (foundMember != null) {
-      memberNameField.setText(foundMember.getName());
-      dobDatePicker.setValue(foundMember.getDateOfBirth());
-      emailField.setText(foundMember.getEmail());
-      phoneField.setText(foundMember.getPhoneNumber());
-    } else {
-      // Clear fields if no member is found
-      memberNameField.clear();
-      emailField.clear();
-      phoneField.clear();
-    }
-  }
-
-  /**
-   * Retrieves a member by their ID.
-   *
-   * @param memberId The ID of the member.
-   * @return The {@code Member} object if found, otherwise null.
-   */
-  private Member returnMember(String memberId) throws SQLException {
-    Member foundMember = null;
-    for (Member member : FactoryDAO.getMemberDAO().getAll()) {
-      if (member.getMemberId().equals(memberId)) {
-        foundMember = member;
-        break;
-      }
-    }
-    return foundMember;
   }
 
   /**
@@ -188,97 +147,97 @@ public class BorrowingBookController {
   private void borrowingBook(BookItem bookItem, Member member) throws Exception {
     boolean isBorrowed = librarian.getLendingManager().borrowBookItem(bookItem, member);
     if (!isBorrowed) {
-      Alert alert = new Alert(AlertType.WARNING);
-      alert.setTitle("Warning");
-      alert.setHeaderText("Borrowing Failed");
-      alert.setContentText(
-          "The book is not available or the member has reached the maximum number of books borrowed.");
-      alert.showAndWait();
+      // Show an alert if the book is not successfully borrowed
+      showAlert(Alert.AlertType.ERROR, "Book Not Borrowed",
+          "The book could not be borrowed. Please try again later.");
     }
   }
 
   /**
-   * Handles the submission of the borrowing form.
+   * Handles the submission of the borrowing form. Validates the input fields and borrows the book.
    *
    * @param actionEvent The event triggered by clicking the submit button.
-   * @throws Exception If the submission process fails.
    */
-  public void handleSubmit(ActionEvent actionEvent) throws Exception {
-    if (memberNameField.getText().isEmpty() || memberIdField.getText().isEmpty() ||
-        emailField.getText().isEmpty() || phoneField.getText().isEmpty()) {
+  public void handleSubmit(ActionEvent actionEvent) {
+    try {
+      // Check if any of the required fields are empty
+      if (memberNameField.getText().isEmpty() || memberIdField.getText().isEmpty() ||
+          emailField.getText().isEmpty() || phoneField.getText().isEmpty()) {
 
-      Alert alert = new Alert(AlertType.WARNING);
-      alert.setTitle("Warning");
-      alert.setHeaderText("Incomplete Member Information");
-      alert.setContentText(
-          "Please enter the member information to proceed with borrowing the book.");
-      alert.showAndWait();
-    } else {
+        // Show an alert if any of the required fields are empty
+        showAlert(Alert.AlertType.WARNING, "Incomplete Information",
+            "Please ensure all required fields are filled before borrowing the book.");
+        return;
+      }
+
+      // Check if the book item is available
       if (currentBookItem != null && currentBookItem.getStatus() == BookStatus.AVAILABLE) {
-        currentBookLending = new BookLending(currentBookItem,
-            returnMember(memberIdField.getText()));
+        // Proceed with creating the lending record and borrowing the book
+        Optional<Member> memberOptional = librarian.getMemberManager().getById(memberIdField.getText());
+        if (memberOptional.isEmpty()) {
+          showAlert(Alert.AlertType.ERROR, "Member Not Found",
+              "The member with the given ID was not found.");
+          return;
+        }
+
+        BookLending currentBookLending = new BookLending(currentBookItem, memberOptional.get());
         borrowingBook(currentBookLending.getBookItem(), currentBookLending.getMember());
 
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("The book has been successfully borrowed.");
-        alert.showAndWait();
+        // Show an alert if the book is successfully borrowed
+        showAlert(Alert.AlertType.INFORMATION, "Book Borrowed",
+            "The book has been successfully borrowed.");
 
+        // Load the book detail page after successful borrowing
         loadBookDetail();
       }
+    } catch (SQLException e) {
+      // Handle SQL exceptions if there are issues interacting with the database
+      showAlert(Alert.AlertType.ERROR, "Database Error",
+          "An error occurred while processing the book borrowing. Please try again later.");
+      logger.error("SQLException in handleSubmit: {}", e.getMessage(), e);
+    } catch (IOException e) {
+      // Handle IOExceptions if there are issues with loading the book details page
+      showAlert(Alert.AlertType.ERROR, "Page Load Error",
+          "An error occurred while loading the book details page.");
+      logger.error("IOException in handleSubmit: {}", e.getMessage(), e);
+    } catch (Exception e) {
+      // Catch any other unexpected exceptions
+      showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+          "An unexpected error occurred. Please try again later.");
+      logger.error("Unexpected error in handleSubmit: {}", e.getMessage(), e);
     }
   }
+
 
   /**
    * Cancels the borrowing process and reloads the book details view.
    *
    * @param actionEvent The event triggered by clicking the cancel button.
-   * @throws IOException  If loading the book details view fails.
-   * @throws SQLException If a database error occurs.
    */
   public void handleCancel(ActionEvent actionEvent) {
     loadBookDetail();
   }
 
   /**
-   * Loads the book details view and updates the UI.
+   * Loads the book details view.
    */
   private void loadBookDetail() {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
-      Scene bookDetailScene = new Scene(loader.load());
-      Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-      currentStage.setScene(bookDetailScene);
-
-      BookDetailsController bookDetailsController = loader.getController();
-      bookDetailsController.setItemDetail(currentBookItem);
-    } catch (IOException e) {
-      // Handle IO exceptions (e.g., FXML loading issues)
-      showAlert(Alert.AlertType.ERROR, "Error",
-          "Failed to load the book details view. Please try again.");
-    } catch (SQLException e) {
-      // Handle SQL exceptions (e.g., database access issues)
-      showAlert(Alert.AlertType.ERROR, "Database Error",
-          "An error occurred while accessing the database. Please try again.");
-    } catch (Exception e) {
-      // Handle any other unforeseen errors
-      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
-    }
+    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+    SceneLoader.loadBookDetail(currentStage, currentBookItem);
   }
 
   /**
-   * Shows a simple alert dialog with the specified type, title, and content.
+   * Shows an alert with the provided parameters.
    *
-   * @param type    The type of alert.
-   * @param title   The title of the alert.
-   * @param content The content message of the alert.
+   * @param alertType the type of the alert (e.g., ERROR, INFORMATION)
+   * @param title     the title of the alert
+   * @param message   the content message of the alert
    */
-  private void showAlert(Alert.AlertType type, String title, String content) {
-    Alert alert = new Alert(type);
+  private void showAlert(AlertType alertType, String title, String message) {
+    Alert alert = new Alert(alertType);
     alert.setTitle(title);
-    alert.setHeaderText(null);
-    alert.setContentText(content);
+    alert.setHeaderText(title);
+    alert.setContentText(message);
     alert.showAndWait();
   }
 }

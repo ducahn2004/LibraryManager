@@ -1,7 +1,6 @@
 package org.group4.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
@@ -143,7 +142,6 @@ public class MemberDetailsController {
    * Opens the "Returning Book" page for the selected book item.
    *
    * @param bookItem The book item to be returned.
-   * @throws IOException If the FXML file cannot be loaded.
    */
   private void openReturningBookPage(BookItem bookItem) {
     try {
@@ -161,7 +159,7 @@ public class MemberDetailsController {
       controller.setPreviousPage("memberDetails");
 
       currentStage.setTitle("Book Item Detail");
-    } catch (IOException | SQLException e) {
+    } catch (IOException e) {
       // Log the error (optional) and show an alert to the user
       Logger.getLogger(MemberDetailsController.class.getName())
           .log(Level.SEVERE, "Failed to load book details page", e);

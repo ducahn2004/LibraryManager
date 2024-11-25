@@ -2,12 +2,12 @@ package org.group4.dao.base;
 
 import org.group4.dao.user.AccountDAO;
 import org.group4.dao.book.AuthorDAO;
-import org.group4.dao.notification.EmailNotificationDAO;
 import org.group4.dao.transaction.FineDAO;
 import org.group4.dao.user.LibrarianDAO;
 import org.group4.dao.user.MemberDAO;
 import org.group4.dao.misc.QRCodeDAO;
 import org.group4.dao.book.RackDAO;
+import org.group4.dao.notification.EmailNotificationDAO;
 import org.group4.dao.notification.SystemNotificationDAO;
 import org.group4.dao.book.BookDAO;
 import org.group4.dao.book.BookItemDAO;

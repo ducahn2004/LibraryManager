@@ -122,14 +122,10 @@ public class BookDetailsController {
     if (mouseEvent.getClickCount() == 2) {
       BookItem selectedItem = tableView.getSelectionModel().getSelectedItem();
       if (selectedItem != null) {
-        try {
-          if (selectedItem.getStatus() == BookStatus.AVAILABLE) {
-            openBorrowingBookPage(selectedItem);
-          } else if (selectedItem.getStatus() == BookStatus.LOANED) {
-            openReturningBookPage(selectedItem);
-          }
-        } catch (IOException e) {
-          logger.error(e.getMessage(), e);
+        if (selectedItem.getStatus() == BookStatus.AVAILABLE) {
+          openBorrowingBookPage(selectedItem);
+        } else if (selectedItem.getStatus() == BookStatus.LOANED) {
+          openReturningBookPage(selectedItem);
         }
       }
     }
@@ -263,9 +259,8 @@ public class BookDetailsController {
    * Opens the Returning Book page for the selected book item.
    *
    * @param bookItem The book item to return.
-   * @throws IOException If there is an error loading the FXML file.
    */
-  private void openReturningBookPage(BookItem bookItem) throws IOException {
+  private void openReturningBookPage(BookItem bookItem) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
       Scene returningBookScene = new Scene(loader.load());
@@ -278,8 +273,12 @@ public class BookDetailsController {
       controller.setPreviousPage("bookDetails");
 
       currentStage.setTitle("Book Item Detail");
+    } catch (IOException e) {
+      logger.error("Failed to load returning book page", e);
+      showAlert("Failed to load Returning Book page. Please try again.");
     } catch (Exception e) {
       logger.error("Failed to load returning book page", e);
+      showAlert("An unexpected error occurred. Please try again.");
     }
   }
 
@@ -358,7 +357,8 @@ public class BookDetailsController {
             System.out.println("Item deleted: " + item);
           }
         } catch (SQLException e) {
-          throw new RuntimeException(e);
+          logger.error("Failed to delete item: {}", item, e);
+          showAlert("Failed to delete item. Please try again.");
         }
       }
     });
@@ -383,6 +383,7 @@ public class BookDetailsController {
       stage.show();
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
+      showAlert("Failed to load Add Book Item page. Please try again.");
     }
   }
 

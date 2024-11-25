@@ -1,9 +1,9 @@
 package org.group4.controller;
 
-import org.group4.model.enums.BookStatus;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,70 +15,90 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.group4.dao.base.FactoryDAO;
+
 import org.group4.model.book.BookItem;
-import org.group4.service.transaction.FineCalculationService;
-import org.group4.service.user.SessionManagerService;
 import org.group4.model.transaction.BookLending;
 import org.group4.model.transaction.Fine;
 import org.group4.model.user.Librarian;
 import org.group4.model.user.Member;
+import org.group4.model.enums.BookStatus;
+import org.group4.service.transaction.FineCalculationService;
+import org.group4.service.user.SessionManagerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Controller class for handling book return actions in the library system. This class allows for
- * displaying book details, member details, and fine information when a book is returned.
+ * Controller class for returning a book to the library system. Handles the UI interactions for
+ * returning a book, calculating fines, and updating the book status.
  */
 public class ReturningBookController {
 
-  // The current librarian session
+  /** The current librarian using the system. */
   private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
 
-  // FXML components for UI
   @FXML
   private Button cancelButton;
+
   @FXML
   private DatePicker creationDatePicker;
+
   @FXML
   private DatePicker dueDatePicker;
+
   @FXML
   private DatePicker returnDatePicker;
+
   @FXML
   private CheckBox statusCheckBox;
+
   @FXML
   private Label feeField;
+
   @FXML
   private Label memberIdField;
+
   @FXML
   private Label memberNameField;
+
   @FXML
   private Label dobDatePicker;
+
   @FXML
   private Label emailField;
+
   @FXML
   private Label phoneField;
+
   @FXML
   private Label barcodeField;
+
   @FXML
   private Label placeField;
+
   @FXML
   private Label subjectField;
+
   @FXML
   private Label languageField;
+
   @FXML
   private Label authorField;
+
   @FXML
   private Label noPageField;
+
   @FXML
   private Label isbnField;
+
   @FXML
   private Label titleField;
+
   @FXML
   private Label referenceOnlyCheck;
 
-  // Current book item being processed
-  private BookItem currentBookItem;
+  private static final Logger logger = LoggerFactory.getLogger(ReturningBookController.class);
 
-  // Previous page to navigate to after returning the book
+  private BookItem currentBookItem;
   private String previousPage;
 
   /**
@@ -91,31 +111,38 @@ public class ReturningBookController {
   }
 
   /**
-   * Sets the book details for returning based on the provided book item.
+   * Sets the book item details for returning the book.
    *
    * @param bookItem the book item to be returned
-   * @throws SQLException if there is an error with the database
    */
-  public void setItemDetailReturning(BookItem bookItem) throws SQLException {
-    this.currentBookItem = bookItem;
+  public void setItemDetailReturning(BookItem bookItem) {
+    try {
+      this.currentBookItem = bookItem;
 
-    BookLending currentBookLending = findBookLendingById(bookItem.getBarcode());
+      BookLending currentBookLending = findBookLendingById(bookItem.getBarcode());
 
-    // Display book and member details and setup return details
-    displayBookDetails(currentBookLending);
-    displayMemberDetails(currentBookLending);
-    setupReturnDetails(currentBookLending);
-    calculateAndDisplayFine(currentBookLending);
+      // Display book and member details and setup return details
+      displayBookDetails(currentBookLending);
+      displayMemberDetails(currentBookLending);
+      setupReturnDetails(currentBookLending);
+      calculateAndDisplayFine(currentBookLending);
 
-    System.out.println("End show information");
+      logger.info("End show information");
+
+    } catch (Exception e) {
+      // Catch other unexpected exceptions
+      logger.error("Unexpected error occurred: {}", e.getMessage(), e);
+
+      // Show an alert for the unexpected error
+      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred.");
+    }
   }
 
   private BookLending findBookLendingById(String bookItemBarCode) {
     try {
       if (bookItemBarCode == null || bookItemBarCode.isEmpty()) {
-        // Show an alert if the barcode is invalid
         showAlert(Alert.AlertType.ERROR, "Invalid Barcode", "Barcode cannot be null or empty.");
-        return null;  // Return null or handle as necessary
+        return null;
       }
 
       BookLending foundBookItem = null;
@@ -128,53 +155,68 @@ public class ReturningBookController {
         }
       }
 
-      // If the lending is not found, show an alert
       if (foundBookItem == null) {
         showAlert(Alert.AlertType.ERROR, "Book Lending Not Found",
             "No lending found for the barcode: " + bookItemBarCode);
-        return null;  // Return null or handle as necessary
+        return null;
       }
 
-      System.out.println("Found book lending:");
-      System.out.println("ISBN: " + foundBookItem.getBookItem().getISBN());
-      System.out.println("MEMBER ID: " + foundBookItem.getMember().getName());
-      System.out.println("BarCode: " + foundBookItem.getBookItem().getBarcode());
+      logger.info("Found book lending: ISBN: {}, MEMBER ID: {}, BarCode: {}",
+          foundBookItem.getBookItem().getISBN(),
+          foundBookItem.getMember().getName(),
+          foundBookItem.getBookItem().getBarcode());
 
       return foundBookItem;
 
     } catch (SQLException e) {
-      // Handle SQL exception
-      showAlert(Alert.AlertType.ERROR, "Database Error",
-          "An error occurred while accessing the database.");
+      logger.error("SQL error while finding book lending: {}", e.getMessage(), e);
+      showAlert(Alert.AlertType.ERROR, "Database Error", "An error occurred while accessing the database.");
       return null;
     } catch (Exception e) {
-      // Handle any other unexpected exceptions
+      logger.error("Unexpected error: {}", e.getMessage(), e);
       showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred.");
       return null;
     }
   }
 
-
+  /**
+   * Displays the book details for the book being returned.
+   *
+   * @param currentBookLending the BookLending object containing the book details
+   */
   private void displayBookDetails(BookLending currentBookLending) {
     if (currentBookLending == null) {
-      throw new IllegalArgumentException("Book lending cannot be null.");
+      showAlert(AlertType.ERROR, "Error", "The book lending information is missing.");
+      return;
     }
 
     BookItem bookItem = currentBookLending.getBookItem();
     if (bookItem == null) {
-      throw new IllegalArgumentException("Book item in lending cannot be null.");
+      showAlert(AlertType.ERROR, "Error", "The book item is missing in the lending record.");
+      return;
     }
 
-    // Set the values in the UI labels
-    isbnField.setText(bookItem.getISBN());
-    titleField.setText(bookItem.getTitle());
-    subjectField.setText(bookItem.getSubject());
-    languageField.setText(bookItem.getLanguage());
-    authorField.setText(bookItem.authorsToString());
-    noPageField.setText(String.valueOf(bookItem.getNumberOfPages()));
-    barcodeField.setText(bookItem.getBarcode());
-    placeField.setText(bookItem.getPlacedAt().getLocationIdentifier());
+    // Set values in the UI labels
+    isbnField.setText(bookItem.getISBN() != null
+        ? bookItem.getISBN() : "N/A");
+    titleField.setText(bookItem.getTitle() != null
+        ? bookItem.getTitle() : "Unknown Title");
+    subjectField.setText(bookItem.getSubject() != null
+        ? bookItem.getSubject() : "Unknown Subject");
+    languageField.setText(bookItem.getLanguage() != null
+        ? bookItem.getLanguage() : "Unknown");
+    authorField.setText(bookItem.authorsToString() != null
+        ? bookItem.authorsToString() : "Unknown Author(s)");
+    noPageField.setText(bookItem.getNumberOfPages() > 0
+        ? String.valueOf(bookItem.getNumberOfPages()) : "N/A");
+    barcodeField.setText(bookItem.getBarcode() != null
+        ? bookItem.getBarcode() : "N/A");
+    placeField.setText(bookItem.getPlacedAt() != null
+        ? bookItem.getPlacedAt().getLocationIdentifier() : "Unknown Location");
     referenceOnlyCheck.setText(bookItem.getIsReferenceOnly() ? "Yes" : "No");
+
+    // Optionally log the details
+    logger.info("Displaying book details: ISBN={}, Title={}", bookItem.getISBN(), bookItem.getTitle());
   }
 
   /**
@@ -186,14 +228,14 @@ public class ReturningBookController {
     try {
       if (currentBookLending == null) {
         // Show alert if BookLending is null
-        showAlert(Alert.AlertType.ERROR, "Invalid Data", "Book lending cannot be null.");
+        showAlert(AlertType.ERROR, "Invalid Data", "Book lending cannot be null.");
         return;
       }
 
       Member member = currentBookLending.getMember();
       if (member == null) {
         // Show alert if Member is null
-        showAlert(Alert.AlertType.ERROR, "Invalid Data", "Member in lending cannot be null.");
+        showAlert(AlertType.ERROR, "Invalid Data", "Member in lending cannot be null.");
         return;
       }
 
@@ -206,7 +248,7 @@ public class ReturningBookController {
       phoneField.setText(member.getPhoneNumber());
     } catch (Exception e) {
       // Catch any unexpected exceptions and show an alert
-      showAlert(Alert.AlertType.ERROR, "Error",
+      showAlert(AlertType.ERROR, "Error",
           "An unexpected error occurred while displaying member details.");
     }
   }
@@ -220,7 +262,7 @@ public class ReturningBookController {
     try {
       if (currentBookLending == null) {
         // Show an alert if the BookLending is null
-        showAlert(Alert.AlertType.ERROR, "Invalid Data", "Book lending cannot be null.");
+        showAlert(AlertType.ERROR, "Invalid Data", "Book lending cannot be null.");
         return;
       }
 
@@ -233,7 +275,7 @@ public class ReturningBookController {
       BookItem bookItem = currentBookLending.getBookItem();
       if (bookItem == null) {
         // Show an alert if the BookItem is null
-        showAlert(Alert.AlertType.ERROR, "Invalid Data", "Book item in lending cannot be null.");
+        showAlert(AlertType.ERROR, "Invalid Data", "Book item in lending cannot be null.");
         return;
       }
 
@@ -243,7 +285,7 @@ public class ReturningBookController {
 
     } catch (Exception e) {
       // Catch any unexpected exceptions and show an alert
-      showAlert(Alert.AlertType.ERROR, "Error",
+      showAlert(AlertType.ERROR, "Error",
           "An unexpected error occurred while setting up return details.");
     }
   }
@@ -252,13 +294,12 @@ public class ReturningBookController {
    * Calculates and displays any fines that may be applicable when returning the book.
    *
    * @param currentBookLending the BookLending object containing the lending details
-   * @throws SQLException if there is an error calculating the fine
    */
   private void calculateAndDisplayFine(BookLending currentBookLending) {
     try {
       if (currentBookLending == null) {
         // Show an alert if the BookLending is null
-        showAlert(Alert.AlertType.ERROR, "Invalid Data", "Book lending cannot be null.");
+        showAlert(AlertType.ERROR, "Invalid Data", "Book lending cannot be null.");
         return;
       }
 
@@ -268,11 +309,11 @@ public class ReturningBookController {
 
     } catch (SQLException e) {
       // Handle SQLException if it occurs and show an alert
-      showAlert(Alert.AlertType.ERROR, "Database Error",
+      showAlert(AlertType.ERROR, "Database Error",
           "An error occurred while calculating the fine.");
     } catch (Exception e) {
       // Handle any other unexpected exceptions
-      showAlert(Alert.AlertType.ERROR, "Error",
+      showAlert(AlertType.ERROR, "Error",
           "An unexpected error occurred while calculating the fine.");
     }
   }
@@ -289,11 +330,7 @@ public class ReturningBookController {
       returningBookToLibrary(findBookLendingById(currentBookItem.getBarcode()));
 
       // Show a success alert after the operation is successful
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Success");
-      alert.setHeaderText(null);
-      alert.setContentText("The book has been successfully borrowed.");
-      alert.showAndWait();
+      showAlert(AlertType.INFORMATION, "Success", "Book has been returned successfully.");
 
       // Navigate to the previous page
       if ("memberDetails".equals(previousPage)) {
@@ -302,16 +339,12 @@ public class ReturningBookController {
         loadBookDetail();
       }
 
-    } catch (SQLException e) {
-      // Log and show an error alert if a SQLException occurs
-      showAlert(Alert.AlertType.ERROR, "Database Error",
-          "An error occurred while processing the return.");
     } catch (IllegalArgumentException e) {
       // Handle any IllegalArgumentException (e.g., invalid data)
-      showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid input or book lending not found.");
+      showAlert(AlertType.ERROR, "Input Error", "Invalid input or book lending not found.");
     } catch (Exception e) {
       // Catch any other exceptions and show a generic error alert
-      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred.");
+      showAlert(AlertType.ERROR, "Error", "An unexpected error occurred.");
     }
   }
 
@@ -319,70 +352,103 @@ public class ReturningBookController {
    * Handles the action of canceling the return and navigating to the previous page.
    *
    * @param actionEvent the action event triggering the cancel action
-   * @throws IOException  if there is an error loading the previous page
-   * @throws SQLException if there is an error with the database
    */
-  public void handleCancel(ActionEvent actionEvent) throws IOException, SQLException {
-    if ("memberDetails".equals(previousPage)) {
-      loadMemberDetail();
-    } else {
-      loadBookDetail();
+  public void handleCancel(ActionEvent actionEvent) {
+    try {
+      if ("memberDetails".equals(previousPage)) {
+        loadMemberDetail(); // Load member details page
+      } else {
+        loadBookDetail(); // Load book details page
+      }
+    } catch (Exception e) {
+      // Handle any other unexpected exceptions
+      showAlert(AlertType.ERROR, "Unexpected Error",
+          "An unexpected error occurred. Please try again later.");
+      logger.error("Unexpected error: {}", e.getMessage(), e);
     }
   }
 
   /**
-   * Loads the book detail page for further actions.
-   *
-   * @throws IOException  if there is an error loading the page
-   * @throws SQLException if there is an error with the database
+   * Loads the book details page for the current book item.
    */
-  private void loadBookDetail() throws IOException, SQLException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
-    Scene bookDetailScene = new Scene(loader.load());
-
+  private void loadBookDetail() {
     Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-    currentStage.setScene(bookDetailScene);
+    SceneLoader.loadBookDetail(currentStage, currentBookItem);
+  }
 
-    BookDetailsController bookDetailsController = loader.getController();
-    bookDetailsController.setItemDetail(currentBookItem);
+  private void loadMemberDetail() {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
+      Scene memberDetailScene = new Scene(loader.load());
+
+      Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+      currentStage.setScene(memberDetailScene);
+
+      // Set the book item detail in the controller of the loaded scene
+      BookDetailsController bookDetailsController = loader.getController();
+      bookDetailsController.setItemDetail(currentBookItem);
+
+    } catch (IOException e) {
+      // Handle IOException (e.g., FXML loading failure)
+      showAlert(AlertType.ERROR, "Page Load Error",
+          "An error occurred while loading the member details page. Please try again later.");
+      logger.error("IOException while loading MemberDetails.fxml: {}", e.getMessage(), e);
+
+    } catch (SQLException e) {
+      // Handle SQLException (e.g., database interaction failure)
+      showAlert(AlertType.ERROR, "Database Error",
+          "An error occurred while retrieving member details from the database. Please try again later.");
+      logger.error("SQLException while accessing database: {}", e.getMessage(), e);
+
+    } catch (Exception e) {
+      // Handle any other unexpected exceptions
+      showAlert(AlertType.ERROR, "Unexpected Error",
+          "An unexpected error occurred while loading the member details page.");
+      logger.error("Unexpected error: {}", e.getMessage(), e);
+    }
   }
 
   /**
-   * Loads the member detail page for further actions.
+   * Handles the action of updating the book status based on the checkbox state.
    *
-   * @throws IOException  if there is an error loading the page
-   * @throws SQLException if there is an error with the database
+   * @param actionEvent the action event triggering the status update
    */
-  private void loadMemberDetail() throws IOException, SQLException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("MemberDetails.fxml"));
-    Scene memberDetailScene = new Scene(loader.load());
+  public void handleUserAction(ActionEvent actionEvent) {
+    try {
+      boolean isChecked = statusCheckBox.isSelected();
 
-    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-    currentStage.setScene(memberDetailScene);
+      // Update the book status based on the checkbox
+      currentBookItem.setStatus(isChecked ? BookStatus.AVAILABLE : BookStatus.LOST);
 
-    BookDetailsController bookDetailsController = loader.getController();
-    bookDetailsController.setItemDetail(currentBookItem);
-  }
+      // Calculate fine based on the current lending status
+      Fine amountFine = new Fine(findBookLendingById(currentBookItem.getBarcode()));
+      double fineAmount = FineCalculationService.calculateFine(amountFine);
+      feeField.setText(Double.toString(fineAmount));
 
-  /**
-   * Handles user actions for updating the status of the book (Available or Lost).
-   *
-   * @param actionEvent the action event triggering the status change
-   * @throws SQLException if there is an error with the database
-   */
-  public void handleUserAction(ActionEvent actionEvent) throws SQLException {
-    boolean isChecked = statusCheckBox.isSelected();
+      // Log the status change
+      if (isChecked) {
+        System.out.println("User has ticked the Status checkbox.");
+      } else {
+        System.out.println("User has not ticked the Status checkbox.");
+      }
 
-    // Update the book status based on the checkbox
-    currentBookItem.setStatus(isChecked ? BookStatus.AVAILABLE : BookStatus.LOST);
-    Fine amountFine = new Fine(findBookLendingById(currentBookItem.getBarcode()));
-    double fineAmount = FineCalculationService.calculateFine(amountFine);
-    feeField.setText(Double.toString(fineAmount));
+    } catch (SQLException e) {
+      // Handle database-related issues (e.g., when querying lending data)
+      showAlert(AlertType.ERROR, "Database Error",
+          "An error occurred while accessing the database. Please try again later.");
+      logger.error("SQLException in handleUserAction: {}", e.getMessage(), e);
 
-    if (isChecked) {
-      System.out.println("User has ticked the Status checkbox.");
-    } else {
-      System.out.println("User has not ticked the Status checkbox.");
+    } catch (NullPointerException e) {
+      // Handle potential null pointer exceptions (e.g., currentBookItem is null)
+      showAlert(AlertType.ERROR, "Null Pointer Error",
+          "A required item is missing. Please check the book details and try again.");
+      logger.error("NullPointerException in handleUserAction: {}", e.getMessage(), e);
+
+    } catch (Exception e) {
+      // Catch any other unexpected exceptions
+      showAlert(AlertType.ERROR, "Unexpected Error",
+          "An unexpected error occurred. Please try again later.");
+      logger.error("Unexpected error in handleUserAction: {}", e.getMessage(), e);
     }
   }
 
@@ -416,7 +482,7 @@ public class ReturningBookController {
       // If the return operation is not successful, log and show an error alert
       if (!successAdded) {
         System.out.println("Failed to edit book with ISBN: " + bookLending.getBookItem().getISBN());
-        showAlert(Alert.AlertType.ERROR, "Error",
+        showAlert(AlertType.ERROR, "Error",
             "Book with ISBN " + bookLending.getBookItem().getISBN()
                 + " already exists in the library.");
       } else {
@@ -428,23 +494,23 @@ public class ReturningBookController {
       }
     } catch (Exception e) {
       // Catch any exceptions that occur and show an error alert
-      showAlert(Alert.AlertType.ERROR, "Return Error",
+      showAlert(AlertType.ERROR, "Return Error",
           "An error occurred while returning the book.");
     }
   }
 
   /**
-   * Shows an alert to the user.
+   * Displays an alert dialog with the specified type, title, and content.
    *
-   * @param type    The type of alert (e.g., ERROR, INFORMATION).
-   * @param title   The title of the alert window.
-   * @param content The content of the alert message.
+   * @param alertType the type of alert (e.g., INFORMATION, WARNING)
+   * @param title     the title of the alert dialog
+   * @param message   the message of the alert dialog
    */
-  private void showAlert(Alert.AlertType type, String title, String content) {
-    Alert alert = new Alert(type);
+  private static void showAlert(AlertType alertType, String title, String message) {
+    Alert alert = new Alert(alertType);
     alert.setTitle(title);
-    alert.setHeaderText(null);  // Optional: leave header empty
-    alert.setContentText(content);
+    alert.setHeaderText(title);
+    alert.setContentText(message);
     alert.showAndWait();
   }
 

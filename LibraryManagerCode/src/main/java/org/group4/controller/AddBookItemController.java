@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -170,7 +171,7 @@ public class AddBookItemController {
    * @param title     The title of the alert dialog.
    * @param message   The message content of the alert dialog.
    */
-  private void showAlert(Alert.AlertType alertType, String title, String message) {
+  private void showAlert(AlertType alertType, String title, String message) {
     Alert alert = new Alert(alertType);
     alert.setTitle(title);
     alert.setContentText(message);
