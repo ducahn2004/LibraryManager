@@ -3,6 +3,7 @@ package org.group4.dao.misc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 import org.group4.dao.base.BaseDAO;
 import org.slf4j.Logger;
@@ -42,15 +43,15 @@ public class QRCodeDAO extends BaseDAO {
    * @param qrCodeUrl the URL of the QR code
    * @return true if the QR code was successfully added
    */
-  public boolean addQRCode(String barcode, String qrCodeUrl) {
+  public boolean addQRCode(String barcode, String qrCodeUrl) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(ADD_QR_CODE)) {
       preparedStatement.setString(1, barcode);
       preparedStatement.setString(2, qrCodeUrl);
       return preparedStatement.executeUpdate() > 0;
-    } catch (Exception e) {
+    } catch (SQLException e) {
       logger.error("Failed to add QR code for book item with barcode: {}", barcode, e);
-      return false;
+      throw e;
     }
   }
 
@@ -59,8 +60,9 @@ public class QRCodeDAO extends BaseDAO {
    *
    * @param barcode the barcode of the book item
    * @return the QR code URL if it exists
+   * @throws SQLException if an error occurs while retrieving the QR code
    */
-  public Optional<String> getByBarcode(String barcode) {
+  public Optional<String> getByBarcode(String barcode) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_BARCODE)) {
       preparedStatement.setString(1, barcode);
@@ -69,8 +71,9 @@ public class QRCodeDAO extends BaseDAO {
           return Optional.of(resultSet.getString(COLUMN_QR_CODE_URL));
         }
       }
-    } catch (Exception e) {
+    } catch (SQLException e) {
       logger.error("Failed to get QR code for book item with barcode: {}", barcode, e);
+      throw e;
     }
     return Optional.empty();
   }
@@ -81,14 +84,14 @@ public class QRCodeDAO extends BaseDAO {
    * @param barcode the barcode of the book item
    * @return true if the QR code was successfully deleted
    */
-  public boolean deleteByBarcode(String barcode) {
+  public boolean deleteByBarcode(String barcode) throws SQLException {
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_BARCODE)) {
       preparedStatement.setString(1, barcode);
       return preparedStatement.executeUpdate() > 0;
-    } catch (Exception e) {
+    } catch (SQLException e) {
       logger.error("Failed to delete QR code for book item with barcode: {}", barcode, e);
-      return false;
+      throw e;
     }
   }
 }

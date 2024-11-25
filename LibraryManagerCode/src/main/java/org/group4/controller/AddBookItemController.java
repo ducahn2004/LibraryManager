@@ -1,7 +1,6 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
-import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -114,14 +113,6 @@ public class AddBookItemController {
     stage.close();
   }
 
-  /**
-   * Adds a book item to the library.
-   * <p>
-   * Creates a new {@link BookItem} instance and adds it to the library via the librarian. Throws an
-   * exception if the addition fails.
-   *
-   * @throws IOException If there is an issue with accessing resources.
-   */
   /**
    * Adds a book item to the library.
    * <p>

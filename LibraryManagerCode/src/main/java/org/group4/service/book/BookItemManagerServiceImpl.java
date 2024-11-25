@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import java.util.Optional;
 import org.group4.dao.book.BookItemDAO;
 import org.group4.dao.base.FactoryDAO;
 import org.group4.dao.misc.QRCodeDAO;
@@ -24,7 +25,9 @@ public class BookItemManagerServiceImpl implements BookItemManagerService {
   public boolean add(BookItem bookItem) throws IOException, SQLException {
     if (bookItemDAO.add(bookItem)) {
       String qrPath= QRCodeGenerator.generateQRCodeForBookItem(bookItem);
-      qrCodeDAO.addQRCode(bookItem.getBarcode(), qrPath);
+      if (!qrCodeDAO.addQRCode(bookItem.getBarcode(), qrPath)) {
+        return false;
+      }
       systemNotificationService.sendNotification(NotificationType.ADD_BOOK_ITEM_SUCCESS,
           bookItem.toString());
       return true;
@@ -45,7 +48,9 @@ public class BookItemManagerServiceImpl implements BookItemManagerService {
   @Override
   public boolean delete(String barcode) throws SQLException {
     if (bookItemDAO.delete(barcode)) {
-      qrCodeDAO.deleteByBarcode(barcode);
+      if (!qrCodeDAO.deleteByBarcode(barcode)) {
+        return false;
+      }
       systemNotificationService.sendNotification(NotificationType.DELETE_BOOK_ITEM_SUCCESS,
           barcode);
       return true;
@@ -56,5 +61,10 @@ public class BookItemManagerServiceImpl implements BookItemManagerService {
   @Override
   public List<BookItem> getAll() throws SQLException {
     return bookItemDAO.getAll();
+  }
+
+  @Override
+  public Optional<String> getQRCode(String barcode) throws SQLException {
+    return qrCodeDAO.getByBarcode(barcode);
   }
 }

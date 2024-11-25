@@ -3,6 +3,7 @@ package org.group4.service.interfaces;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import org.group4.model.book.BookItem;
 
 /**
@@ -40,4 +41,13 @@ public interface BookItemManagerService {
    * @return a list of all {@link BookItem} entities in the library
    */
   List<BookItem> getAll() throws SQLException;
+
+  /**
+   * Retrieves a {@link BookItem} by its barcode.
+   *
+   * @param barcode the barcode of the {@link BookItem} to retrieve
+   * @return an {@link Optional} containing the {@link BookItem} if it exists, otherwise an empty
+   * {@link Optional}
+   */
+  Optional<String> getQRCode(String barcode) throws SQLException;
 }

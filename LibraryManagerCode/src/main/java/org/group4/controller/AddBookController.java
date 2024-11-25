@@ -1,7 +1,6 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Optional;
@@ -10,8 +9,6 @@ import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
@@ -167,7 +164,7 @@ public class AddBookController {
    * @return A set of Author objects, or null if the input is invalid
    */
   private Set<Author> parseAuthors(String authorsText) {
-    Set<Author> authors = null;
+    Set<Author> authors;
 
     try {
       if (authorsText == null || authorsText.trim().isEmpty()) {
