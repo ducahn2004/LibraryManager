@@ -13,6 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.group4.service.user.AccountService;
 
@@ -21,7 +24,8 @@ public class SettingController {
   AccountService accountService = new AccountService();
 
   @FXML
-  private TextField username;
+  private TextField username, textShowCurrentPassword, textShowNewPassword, textShowNewPassword2;
+  ;
   @FXML
   private JFXButton homeButton;
   @FXML
@@ -43,15 +47,11 @@ public class SettingController {
   @FXML
   private PasswordField newPassword2;
   @FXML
+  private ImageView iconCloseEyeCurrent, iconOpenEyeCurrent, iconCloseEyeNew, iconOpenEyeNew, iconCloseEyeNew2, iconOpenEyeNew2;
+  @FXML
   private Button save;
   @FXML
   private Button cancel;
-  @FXML
-  private ToggleButton showCurrentPasswordBtn;
-  @FXML
-  private ToggleButton showNewPasswordBtn;
-  @FXML
-  private ToggleButton showNewPassword2Btn;
 
   @FXML
   private void changePassword(ActionEvent event) {
@@ -116,6 +116,156 @@ public class SettingController {
     currentPassword.clear();
     newPassword.clear();
     newPassword2.clear();
+  }
+
+  @FXML
+  private void initialize() {
+    // Set the initial visibility state of the password fields and icons.
+    textShowCurrentPassword.setVisible(false);
+    iconCloseEyeCurrent.setVisible(true);
+    iconOpenEyeCurrent.setVisible(false);
+
+    textShowNewPassword.setVisible(false);
+    iconCloseEyeNew.setVisible(true);
+    iconOpenEyeNew.setVisible(false);
+
+    textShowNewPassword2.setVisible(false);
+    iconCloseEyeNew2.setVisible(true);
+    iconOpenEyeNew2.setVisible(false);
+  }
+
+
+  /**
+   * Updates the plain text password field when a key is pressed in the masked password field.
+   *
+   * @param keyEvent The KeyEvent triggered when a key is pressed.
+   */
+  public void hideCurrentPasswordOnAction(KeyEvent keyEvent) {
+    String password = currentPassword.getText(); // Retrieve the current password.
+    textShowCurrentPassword.setText(password); // Update the plain text field with the password.
+  }
+
+  /**
+   * Updates the masked password field when a key is pressed in the plain text password field.
+   *
+   * @param keyEvent The KeyEvent triggered when a key is pressed.
+   */
+  public void showPasswordOnActionCurrent(KeyEvent keyEvent) {
+    String password = textShowCurrentPassword.getText(); // Retrieve the password from the plain text field.
+    currentPassword.setText(password); // Update the masked field with the password.
+  }
+
+  /**
+   * Toggles the UI to show the password in plain text.
+   *
+   * @param mouseEvent The MouseEvent triggered when the "eye open" icon is clicked.
+   */
+  public void closeClickedOnActionCurrent(MouseEvent mouseEvent) {
+    textShowCurrentPassword.setVisible(true); // Show the plain text password field.
+    iconOpenEyeCurrent.setVisible(true); // Display the "eye open" icon.
+    iconCloseEyeCurrent.setVisible(false); // Hide the "eye closed" icon.
+    currentPassword.setVisible(false); // Hide the masked password field.
+  }
+
+  /**
+   * Toggles the UI to mask the password.
+   *
+   * @param mouseEvent The MouseEvent triggered when the "eye closed" icon is clicked.
+   */
+  public void openClickedOnActionCurrent(MouseEvent mouseEvent) {
+    textShowCurrentPassword.setVisible(false); // Hide the plain text password field.
+    iconOpenEyeCurrent.setVisible(false); // Hide the "eye open" icon.
+    iconCloseEyeCurrent.setVisible(true); // Display the "eye closed" icon.
+    currentPassword.setVisible(true); // Show the masked password field.
+  }
+
+  /**
+   * Updates the plain text password field when a key is pressed in the masked password field.
+   *
+   * @param keyEvent The KeyEvent triggered when a key is pressed.
+   */
+  public void hidePasswordOnActionNew(KeyEvent keyEvent) {
+    String password = newPassword.getText(); // Retrieve the current password.
+    textShowNewPassword.setText(password); // Update the plain text field with the password.
+  }
+
+  /**
+   * Updates the masked password field when a key is pressed in the plain text password field.
+   *
+   * @param keyEvent The KeyEvent triggered when a key is pressed.
+   */
+  public void showPasswordOnActionNew(KeyEvent keyEvent) {
+    String password = textShowNewPassword.getText(); // Retrieve the password from the plain text field.
+    newPassword.setText(password); // Update the masked field with the password.
+  }
+
+  /**
+   * Toggles the UI to show the password in plain text.
+   *
+   * @param mouseEvent The MouseEvent triggered when the "eye open" icon is clicked.
+   */
+  public void closeClickedOnActionNew(MouseEvent mouseEvent) {
+    textShowNewPassword.setVisible(true); // Show the plain text password field.
+    iconOpenEyeNew.setVisible(true); // Display the "eye open" icon.
+    iconCloseEyeNew.setVisible(false); // Hide the "eye closed" icon.
+    newPassword.setVisible(false); // Hide the masked password field.
+  }
+
+  /**
+   * Toggles the UI to mask the password.
+   *
+   * @param mouseEvent The MouseEvent triggered when the "eye closed" icon is clicked.
+   */
+  public void openClickedOnActionNew(MouseEvent mouseEvent) {
+    textShowNewPassword.setVisible(false); // Hide the plain text password field.
+    iconOpenEyeNew.setVisible(false); // Hide the "eye open" icon.
+    iconCloseEyeNew.setVisible(true); // Display the "eye closed" icon.
+    newPassword.setVisible(true); // Show the masked password field.
+  }
+
+
+  /**
+   * Updates the plain text password field when a key is pressed in the masked password field.
+   *
+   * @param keyEvent The KeyEvent triggered when a key is pressed.
+   */
+  public void hidePasswordOnActionNew2(KeyEvent keyEvent) {
+    String password = newPassword2.getText(); // Retrieve the current password.
+    textShowNewPassword2.setText(password); // Update the plain text field with the password.
+  }
+
+  /**
+   * Updates the masked password field when a key is pressed in the plain text password field.
+   *
+   * @param keyEvent The KeyEvent triggered when a key is pressed.
+   */
+  public void showPasswordOnActionNew2(KeyEvent keyEvent) {
+    String password = textShowNewPassword2.getText(); // Retrieve the password from the plain text field.
+    newPassword2.setText(password); // Update the masked field with the password.
+  }
+
+  /**
+   * Toggles the UI to show the password in plain text.
+   *
+   * @param mouseEvent The MouseEvent triggered when the "eye open" icon is clicked.
+   */
+  public void closeClickedOnActionNew2(MouseEvent mouseEvent) {
+    textShowNewPassword2.setVisible(true); // Show the plain text password field.
+    iconOpenEyeNew2.setVisible(true); // Display the "eye open" icon.
+    iconCloseEyeNew2.setVisible(false); // Hide the "eye closed" icon.
+    newPassword2.setVisible(false); // Hide the masked password field.
+  }
+
+  /**
+   * Toggles the UI to mask the password.
+   *
+   * @param mouseEvent The MouseEvent triggered when the "eye closed" icon is clicked.
+   */
+  public void openClickedOnActionNew2(MouseEvent mouseEvent) {
+    textShowNewPassword2.setVisible(false); // Hide the plain text password field.
+    iconOpenEyeNew2.setVisible(false); // Hide the "eye open" icon.
+    iconCloseEyeNew2.setVisible(true); // Display the "eye closed" icon.
+    newPassword2.setVisible(true); // Show the masked password field.
   }
 
   private void showAlert(AlertType alertType, String title, String message) {
