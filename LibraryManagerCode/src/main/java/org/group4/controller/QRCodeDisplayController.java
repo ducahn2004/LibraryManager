@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
+import org.testng.annotations.Optional;
 
 public class QRCodeDisplayController {
 
