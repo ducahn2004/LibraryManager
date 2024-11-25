@@ -137,6 +137,9 @@ public class SettingController {
     currentPassword.clear();
     newPassword.clear();
     newPassword2.clear();
+    textShowCurrentPassword.clear();
+    textShowNewPassword.clear();
+    textShowNewPassword2.clear();
   }
 
   @FXML
