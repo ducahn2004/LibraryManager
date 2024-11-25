@@ -1,0 +1,152 @@
+CREATE TABLE account (
+    id VARCHAR(20) PRIMARY KEY,
+    password VARCHAR(255) NOT NULL
+);
+
+INSERT INTO account (id, password)
+VALUES ('admin', '$2a$10$2gxVeb.vMTAXGhxMLk/aqeLcmc.N5QIjPgv7bS9U7n6Hr1MeXohbC');
+
+CREATE TABLE librarian (
+    id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL
+);
+
+INSERT INTO librarian (id, name, email, phone)
+VALUES ('admin', 'Nguyễn Tuấn Anh', 'managerlibrary01@gmail.com', '0333333333');
+
+CREATE TABLE authors (
+    author_id VARCHAR(50) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE books (
+    isbn VARCHAR(20) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    language VARCHAR(50) NOT NULL,
+    number_of_pages INT NOT NULL
+);
+
+CREATE TABLE book_authors (
+    author_id VARCHAR(50),
+    isbn VARCHAR(20),
+    PRIMARY KEY (author_id, isbn),
+    FOREIGN KEY (author_id) REFERENCES authors(author_id),
+    FOREIGN KEY (isbn) REFERENCES books(isbn)
+);
+
+CREATE TABLE rack (
+    numberRack INT PRIMARY KEY,
+    location VARCHAR(255) NOT NULL
+);
+
+INSERT INTO rack (numberRack, location) VALUES
+    (1, 'Room 301, Next to the left wall'),
+    (2, 'Room 301, Near the window'),
+    (3, 'Room 301, In the center of the room'),
+    (4, 'Room 301, Along the back wall'),
+    (5, 'Room 301, Next to the door'),
+    (6, 'Room 301, Corner near the bookshelf'),
+    (7, 'Room 301, Beside the whiteboard'),
+    (8, 'Room 301, Along the right wall'),
+    (9, 'Room 301, Close to the storage cabinet'),
+    (10, 'Room 301, In front of the projector screen'),
+    (11, 'Room 301, Adjacent to the desk'),
+    (12, 'Room 301, Behind the study table'),
+    (13, 'Room 301, Corner opposite to the window'),
+    (14, 'Room 301, Near the AC unit'),
+    (15, 'Room 301, Beside the coat rack');
+
+CREATE TABLE book_items (
+    barcode VARCHAR(50) PRIMARY KEY,
+    isbn VARCHAR(20) NOT NULL,
+    isReferenceOnly BOOLEAN NOT NULL,
+    borrowed DATE,
+    dueDate DATE,
+    price double NOT NULL,
+    format ENUM('HARDCOVER',
+        'PAPERBACK',
+        'AUDIOBOOK',
+        'EBOOK',
+        'NEWSPAPER',
+        'MAGAZINE',
+        'JOURNAL') NOT NULL,
+    status ENUM('AVAILABLE',
+        'LOANED',
+        'LOST',
+        'NONE') NOT NULL,
+    dateOfPurchase DATE NOT NULL,
+    publicationDate DATE NOT NULL,
+    numberRack INT NOT NULL,
+    FOREIGN KEY (isbn) REFERENCES books(isbn),
+    FOREIGN KEY (numberRack) REFERENCES rack(numberRack)
+);
+
+CREATE TABLE qr_codes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    barcode VARCHAR(255) NOT NULL UNIQUE,
+    qr_code_url VARCHAR(255) NOT NULL,
+    FOREIGN KEY (barcode) REFERENCES book_items(barcode) ON DELETE CASCADE
+);
+
+CREATE TABLE members (
+    memberId VARCHAR(8) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    dateOfBirth DATE NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    total_book_checked_out INT NOT NULL
+);
+
+CREATE TABLE book_lendings (
+    barcode VARCHAR(50),
+    member_id VARCHAR(8),
+    lending_date DATE NOT NULL,
+    due_date DATE NOT NULL,
+    return_date DATE,
+    PRIMARY KEY (barcode, member_id),
+    FOREIGN KEY (barcode) REFERENCES book_items(barcode),
+    FOREIGN KEY (member_id) REFERENCES members(memberId)
+);
+
+CREATE TABLE fines (
+    fine_id INT PRIMARY KEY,
+    barcode VARCHAR(50),
+    member_id VARCHAR(8),
+    amount double NOT NULL,
+    FOREIGN KEY (barcode, member_id) REFERENCES book_lendings(barcode, member_id)
+);
+
+CREATE TABLE system_notifications (
+    notificationId VARCHAR(40) PRIMARY KEY,
+    type ENUM('FINE_TRANSACTION',
+        'BOOK_BORROW_SUCCESS',
+        'BOOK_RETURN_SUCCESS',
+        'ADD_BOOK_SUCCESS',
+        'DELETE_BOOK_SUCCESS',
+        'UPDATE_BOOK_SUCCESS',
+        'ADD_BOOK_ITEM_SUCCESS',
+        'UPDATE_BOOK_ITEM_SUCCESS',
+        'DELETE_BOOK_ITEM_SUCCESS',
+        'ADD_MEMBER_SUCCESS',
+        'UPDATE_MEMBER_SUCCESS',
+        'DELETE_MEMBER_SUCCESS') NOT NULL,
+    content TEXT NOT NULL,
+    createdOn DATE NOT NULL
+);
+
+CREATE TABLE email_notifications (
+    NotificationId VARCHAR(255) PRIMARY KEY,
+    type  ENUM('FORGOT_PASSWORD',
+        'DUE_DATE_REMINDER',
+        'OVERDUE_NOTIFICATION',
+        'FINE_TRANSACTION',
+        'BOOK_BORROW_SUCCESS',
+        'BOOK_RETURN_SUCCESS') NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    content TEXT NOT NULL,
+    createdOn DATE NOT NULL
+);
+
