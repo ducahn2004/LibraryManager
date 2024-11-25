@@ -2,7 +2,7 @@ package org.group4.controller;
 
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.logging.Logger;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import java.io.IOException;
@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import org.group4.service.user.SessionManagerService;
 import org.group4.service.user.AccountService;
 import org.group4.model.user.Librarian;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controller for the Login screen in the Library Manager application. Manages user authentication,
@@ -46,8 +48,7 @@ public class LoginController {
   private Button loginButton; // Button to initiate the login process.
 
   private final AccountService accountService = new AccountService(); // Handles account-related logic.
-  private static final Logger logger = Logger.getLogger(
-      LoginController.class.getName()); // Logger for debugging and tracking.
+  private static final Logger logger = LoggerFactory.getLogger(LoginController.class); // Logger instance.
   private String password; // Stores the current password value.
 
   @FXML
@@ -63,10 +64,10 @@ public class LoginController {
           handleLoginButton();  // Try to handle the login action
         } catch (SQLException e) {
           // If an error occurs, show an alert with the error message
-          showAlert(Alert.AlertType.ERROR, "Login Error",
-              "An error occurred during the login process. Please try again.");
+          showAlert(
+          );
           // Optionally, log the error
-          e.printStackTrace();
+          logger.error("Error during login process: {}", e.getMessage());
         }
       }
     });
@@ -126,7 +127,7 @@ public class LoginController {
     String username = usernameField.getText().trim(); // Retrieve and trim the username.
     String password = passwordField.getText(); // Retrieve the password.
 
-    logger.info("Login attempt with username: " + username); // Log the login attempt.
+    logger.info("Attempting to log in with username: {}", username);
 
     // Validate that username and password fields are not empty.
     if (username.isEmpty() || password.isEmpty()) {
@@ -142,7 +143,9 @@ public class LoginController {
       if (librarian.isPresent()) {
         SessionManagerService.getInstance().setCurrentLibrarian(librarian.get());
       } else {
-        logger.warning("Librarian not found for username: " + username);
+        logger.warn("Librarian not found in the database.");
+        showAlert("Error", "Librarian not found in the database.");
+        return;
       }
 
       try {
@@ -157,7 +160,7 @@ public class LoginController {
         stage.show();
       } catch (IOException e) {
         // Log and show an alert if the admin panel fails to load.
-        logger.severe("Failed to load admin panel: " + e.getMessage());
+        logger.error("Failed to load the admin panel: {}", e.getMessage());
         showAlert("Error", "Unable to load the admin panel.");
       }
     } else {
@@ -182,16 +185,12 @@ public class LoginController {
 
   /**
    * Shows an alert to the user.
-   *
-   * @param type    The type of alert (e.g., ERROR, INFORMATION).
-   * @param title   The title of the alert window.
-   * @param content The content of the alert message.
    */
-  private void showAlert(Alert.AlertType type, String title, String content) {
-    Alert alert = new Alert(type);
-    alert.setTitle(title);
+  private void showAlert() {
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Login Error");
     alert.setHeaderText(null);  // Optional: leave header empty
-    alert.setContentText(content);
+    alert.setContentText("An error occurred during the login process. Please try again.");
     alert.showAndWait();
   }
 }
