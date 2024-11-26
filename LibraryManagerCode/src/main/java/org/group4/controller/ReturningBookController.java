@@ -423,11 +423,17 @@ public class ReturningBookController {
 
       // Update the book status based on the checkbox
       currentBookItem.setStatus(isChecked ? BookStatus.AVAILABLE : BookStatus.LOST);
+      BookLending bookLending = findBookLendingById(currentBookItem.getBarcode());
 
-      // Calculate fine based on the current lending status
-      Fine amountFine = new Fine(findBookLendingById(currentBookItem.getBarcode()));
-      double fineAmount = FineCalculationService.calculateFine(amountFine);
-      feeField.setText(Double.toString(fineAmount));
+      if (bookLending != null) {
+        bookLending.setReturnDate(LocalDate.now());
+        // Calculate fine based on the current lending status
+        Fine amountFine = new Fine(bookLending);
+        double fineAmount = FineCalculationService.calculateFine(amountFine);
+        feeField.setText(Double.toString(fineAmount));
+      } else {
+        showAlert(AlertType.ERROR, "Error", "Book lending not found.");
+      }
 
       // Log the status change
       if (isChecked) {
