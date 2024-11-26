@@ -1,10 +1,17 @@
 package org.group4.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -140,7 +147,40 @@ public class MemberDetailsController {
    * @param bookItem The book item to return
    */
   private void openReturningBookPage(BookItem bookItem) {
-    Stage currentStage = (Stage) tableView.getScene().getWindow();
-    PageLoader.openReturningBookPage(currentStage, bookItem, "memberDetails");
+    try {
+      // Load the ReturningBook.fxml file and set up the new scene
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
+      Scene returningBookScene = new Scene(loader.load());
+      Stage currentStage = (Stage) tableView.getScene().getWindow();
+
+      // Switch to the new scene
+      currentStage.setScene(returningBookScene);
+
+      // Pass details to the ReturningBookController
+      ReturningBookController controller = loader.getController();
+      controller.setItemDetailReturning(bookItem);
+      controller.setPreviousPage("memberDetails");
+
+      currentStage.setTitle("Book Item Detail");
+    } catch (IOException e) {
+      // Log the error (optional) and show an alert to the user
+      Logger.getLogger(MemberDetailsController.class.getName())
+          .log(Level.SEVERE, "Failed to load book details page", e);
+
+      // Show an alert with the error message
+      showAlert(
+      );
+    }
+  }
+
+  /**
+   * Displays an alert dialog with the specified type, title, and content.
+   */
+  private static void showAlert() {
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Error");
+    alert.setHeaderText("Error");
+    alert.setContentText("Failed to load the returning book page. Please try again.");
+    alert.showAndWait();
   }
 }

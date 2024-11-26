@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -27,7 +29,9 @@ import org.slf4j.LoggerFactory;
  */
 public class BorrowingBookController {
 
-  /** The logger for the BorrowingBookController class. */
+  /**
+   * The logger for the BorrowingBookController class.
+   */
   private static final Logger logger = LoggerFactory.getLogger(BorrowingBookController.class);
 
   /**
@@ -213,8 +217,22 @@ public class BorrowingBookController {
    * Loads the book details view.
    */
   private void loadBookDetail() {
-    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-    SceneLoader.loadBookDetail(currentStage, currentBookItem);
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      Scene bookDetailScene = new Scene(loader.load());
+      Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+      currentStage.setScene(bookDetailScene);
+
+      BookDetailsController bookDetailsController = loader.getController();
+      bookDetailsController.setItemDetail(currentBookItem);
+    } catch (IOException e) {
+      // Handle IO exceptions (e.g., FXML loading issues)
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "Failed to load the book details view. Please try again.");
+    } catch (Exception e) {
+      // Handle any other unforeseen errors
+      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
+    }
   }
 
   /**

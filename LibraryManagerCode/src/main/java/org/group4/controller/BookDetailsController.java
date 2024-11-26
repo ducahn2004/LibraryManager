@@ -265,8 +265,22 @@ public class BookDetailsController {
    * @param bookItem The book item to return.
    */
   private void openReturningBookPage(BookItem bookItem) {
-    Stage currentStage = (Stage) tableView.getScene().getWindow();
-    PageLoader.openReturningBookPage(currentStage, bookItem, "memberDetails");
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturningBook.fxml"));
+      Scene returningBookScene = new Scene(loader.load());
+      Stage currentStage = (Stage) tableView.getScene().getWindow();
+
+      currentStage.setScene(returningBookScene);
+
+      ReturningBookController controller = loader.getController();
+      controller.setItemDetailReturning(bookItem);
+      controller.setPreviousPage("bookDetails");
+
+      currentStage.setTitle("Book Item Detail");
+    } catch (Exception e) {
+      logger.error("Failed to load returning book page", e);
+      showAlert("Fail to open Returning Book.");
+    }
   }
 
   /**

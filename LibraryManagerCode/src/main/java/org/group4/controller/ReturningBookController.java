@@ -374,8 +374,22 @@ public class ReturningBookController {
    * Loads the book details page for the current book item.
    */
   private void loadBookDetail() {
-    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-    PageLoader.openReturningBookPage(currentStage, currentBookItem, "bookDetails");
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+      Scene bookDetailScene = new Scene(loader.load());
+      Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+      currentStage.setScene(bookDetailScene);
+
+      BookDetailsController bookDetailsController = loader.getController();
+      bookDetailsController.setItemDetail(currentBookItem);
+    } catch (IOException e) {
+      // Handle IO exceptions (e.g., FXML loading issues)
+      showAlert(Alert.AlertType.ERROR, "Error",
+          "Failed to load the book details view. Please try again.");
+    } catch (Exception e) {
+      // Handle any other unforeseen errors
+      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
+    }
   }
 
   private void loadMemberDetail() {
@@ -427,19 +441,28 @@ public class ReturningBookController {
 
       if (bookLending != null) {
         bookLending.setReturnDate(LocalDate.now());
+        bookLending.getBookItem().setStatus(isChecked ? BookStatus.AVAILABLE : BookStatus.LOST);
+
         // Calculate fine based on the current lending status
-        Fine amountFine = new Fine(bookLending);
-        double fineAmount = FineCalculationService.calculateFine(amountFine);
-        feeField.setText(Double.toString(fineAmount));
+
+        // Update feeField based on the checkbox state
+        if (isChecked) {
+          feeField.setText("0.0"); // No fine if the book is available
+          System.out.println("User has ticked the Status checkbox. Fee set to 0.0.");
+          System.out.println(bookLending.getBookItem().getStatus().toString());
+
+        } else {
+          Fine amountFine = new Fine(bookLending);
+          double fineAmount = FineCalculationService.calculateFine(amountFine);
+          feeField.setText(Double.toString(fineAmount)); // Set the calculated fine
+          System.out.println(
+              "User has not ticked the Status checkbox. Fee set to calculated amount.");
+          System.out.println(fineAmount);
+          System.out.println(bookLending.getBookItem().getStatus().toString());
+        }
+
       } else {
         showAlert(AlertType.ERROR, "Error", "Book lending not found.");
-      }
-
-      // Log the status change
-      if (isChecked) {
-        System.out.println("User has ticked the Status checkbox.");
-      } else {
-        System.out.println("User has not ticked the Status checkbox.");
       }
 
     } catch (SQLException e) {
@@ -461,6 +484,7 @@ public class ReturningBookController {
       logger.error("Unexpected error in handleUserAction: {}", e.getMessage(), e);
     }
   }
+
 
   /**
    * Retrieves the book status based on the state of the checkbox.
