@@ -9,12 +9,13 @@ VALUES ('admin', '$2a$10$2gxVeb.vMTAXGhxMLk/aqeLcmc.N5QIjPgv7bS9U7n6Hr1MeXohbC')
 CREATE TABLE librarian (
     id VARCHAR(20) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    date_of_birth DATE NOT NULL,
     email VARCHAR(255) NOT NULL,
     phone VARCHAR(20) NOT NULL
 );
 
 INSERT INTO librarian (id, name, email, phone)
-VALUES ('admin', 'Nguyễn Tuấn Anh', 'managerlibrary01@gmail.com', '0333333333');
+VALUES ('admin', 'Nguyễn Tuấn Anh', '2004-23-01', 'managerlibrary01@gmail.com', '0333333333');
 
 CREATE TABLE authors (
     author_id VARCHAR(50) PRIMARY KEY,
