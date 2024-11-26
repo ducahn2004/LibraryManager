@@ -98,7 +98,7 @@ CREATE TABLE members (
     name VARCHAR(255) NOT NULL,
     dateOfBirth DATE NOT NULL,
     email VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
+    phoneNumber VARCHAR(20) NOT NULL,
     total_book_checked_out INT NOT NULL
 );
 
