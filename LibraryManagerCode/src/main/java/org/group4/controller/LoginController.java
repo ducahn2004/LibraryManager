@@ -2,7 +2,6 @@ package org.group4.controller;
 
 import java.sql.SQLException;
 import java.util.Optional;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import java.io.IOException;
@@ -60,15 +59,7 @@ public class LoginController {
     // Set event handler to trigger login when the Enter key is pressed.
     passwordField.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.ENTER) {
-        try {
-          handleLoginButton();  // Try to handle the login action
-        } catch (SQLException e) {
-          // If an error occurs, show an alert with the error message
-          showAlert(
-          );
-          // Optionally, log the error
-          logger.error("Error during login process: {}", e.getMessage());
-        }
+        handleLoginButton();  // Try to handle the login action
       }
     });
   }
@@ -119,11 +110,9 @@ public class LoginController {
 
   /**
    * Handles the login action, authenticates the user, and navigates to the admin panel.
-   *
-   * @throws SQLException If there is an error during the login process.
    */
   @FXML
-  private void handleLoginButton() throws SQLException {
+  private void handleLoginButton() {
     String username = usernameField.getText().trim(); // Retrieve and trim the username.
     String password = passwordField.getText(); // Retrieve the password.
 
@@ -135,37 +124,47 @@ public class LoginController {
       return;
     }
 
-    // Authenticate the user using AccountService.
-    if (accountService.login(username, password)) {
-      Optional<Librarian> librarian = accountService.getLibrarian(username);
+    try {
+      // Authenticate the user using AccountService.
+      if (accountService.login(username, password)) {
+        Optional<Librarian> librarian = accountService.getLibrarian(username);
 
-      // If a librarian is found, set it in the session manager.
-      if (librarian.isPresent()) {
-        SessionManager.getInstance().setCurrentLibrarian(librarian.get());
+        // If a librarian is found, set it in the session manager.
+        if (librarian.isPresent()) {
+          SessionManager.getInstance().setCurrentLibrarian(librarian.get());
+        } else {
+          logger.warn("Librarian not found in the database.");
+          showAlert("Error", "Librarian not found in the database.");
+          return;
+        }
+
+        try {
+          // Load the admin panel view and navigate to it.
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminPane.fxml"));
+          Parent root = loader.load();
+          Stage stage = (Stage) loginButton.getScene().getWindow();
+          Scene scene = new Scene(root, 1000, 700);
+          stage.setScene(scene);
+          stage.setTitle("Library Manager");
+          stage.centerOnScreen();
+          stage.show();
+        } catch (IOException e) {
+          // Log and show an alert if the admin panel fails to load.
+          logger.error("Failed to load the admin panel: {}", e.getMessage());
+          showAlert("Error", "Unable to load the admin panel.");
+        }
       } else {
-        logger.warn("Librarian not found in the database.");
-        showAlert("Error", "Librarian not found in the database.");
-        return;
+        // Show an alert if the login credentials are incorrect.
+        showAlert("Login Failed", "Incorrect username or password!");
       }
-
-      try {
-        // Load the admin panel view and navigate to it.
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminPane.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) loginButton.getScene().getWindow();
-        Scene scene = new Scene(root, 1000, 700);
-        stage.setScene(scene);
-        stage.setTitle("Library Manager");
-        stage.centerOnScreen();
-        stage.show();
-      } catch (IOException e) {
-        // Log and show an alert if the admin panel fails to load.
-        logger.error("Failed to load the admin panel: {}", e.getMessage());
-        showAlert("Error", "Unable to load the admin panel.");
-      }
-    } else {
-      // Show an alert if the login credentials are incorrect.
-      showAlert("Login Failed", "Incorrect username or password!");
+    } catch (SQLException e) {
+      // Log and show an alert if a database error occurs.
+      logger.error("Database error during login: {}", e.getMessage());
+      showAlert("Error", "A database error occurred. Please try again later.");
+    } catch (Exception e) {
+      // Catch any other unforeseen exceptions.
+      logger.error("An unexpected error occurred: {}", e.getMessage());
+      showAlert("Error", "An unexpected error occurred. Please contact support.");
     }
   }
 
@@ -181,16 +180,5 @@ public class LoginController {
     alert.setHeaderText(null); // No header text for this alert.
     alert.setContentText(message); // Set the content message.
     alert.showAndWait(); // Display the alert and wait for user response.
-  }
-
-  /**
-   * Shows an alert to the user.
-   */
-  private void showAlert() {
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Login Error");
-    alert.setHeaderText(null);  // Optional: leave header empty
-    alert.setContentText("An error occurred during the login process. Please try again.");
-    alert.showAndWait();
   }
 }
