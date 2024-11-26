@@ -5,10 +5,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -34,6 +33,7 @@ public class BorrowingBookController {
    * The logger for the BorrowingBookController class.
    */
   private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  public Button cancelButton;
 
   @FXML
   private Label priceField;
@@ -179,7 +179,7 @@ public class BorrowingBookController {
         Optional<Member> memberOptional = librarian.getMemberManager()
             .getById(memberIdField.getText());
         if (memberOptional.isEmpty()) {
-          showAlert(Alert.AlertType.ERROR, "Member Not Found",
+          showAlert(AlertType.ERROR, "Member Not Found",
               "The member with the given ID was not found.");
           return;
         }
@@ -188,7 +188,7 @@ public class BorrowingBookController {
         borrowingBook(currentBookLending.getBookItem(), currentBookLending.getMember());
 
         // Show an alert if the book is successfully borrowed
-        showAlert(Alert.AlertType.INFORMATION, "Book Borrowed",
+        showAlert(AlertType.INFORMATION, "Book Borrowed",
             "The book has been successfully borrowed.");
 
         // Load the book detail page after successful borrowing
@@ -196,22 +196,21 @@ public class BorrowingBookController {
       }
     } catch (SQLException e) {
       // Handle SQL exceptions if there are issues interacting with the database
-      showAlert(Alert.AlertType.ERROR, "Database Error",
+      showAlert(AlertType.ERROR, "Database Error",
           "An error occurred while access borrowing book database. Please try again later.");
       logger.error("SQLException in handleSubmit: {}", e.getMessage(), e);
     } catch (IOException e) {
       // Handle IOExceptions if there are issues with loading the book details page
-      showAlert(Alert.AlertType.ERROR, "Page Load Error",
+      showAlert(AlertType.ERROR, "Page Load Error",
           "An error occurred while loading the book details page.");
       logger.error("IOException in handleSubmit: {}", e.getMessage(), e);
     } catch (Exception e) {
       // Catch any other unexpected exceptions
-      showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+      showAlert(AlertType.ERROR, "Unexpected Error",
           "An unexpected error occurred in borrowing book. Please try again later.");
       logger.error("Unexpected error in handleSubmit: {}", e.getMessage(), e);
     }
   }
-
 
   /**
    * Cancels the borrowing process and reloads the book details view.
@@ -226,26 +225,8 @@ public class BorrowingBookController {
    * Loads the book details view.
    */
   private void loadBookDetail() {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
-      Scene bookDetailScene = new Scene(loader.load());
-      Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-      currentStage.setScene(bookDetailScene);
-
-      BookDetailsController bookDetailsController = loader.getController();
-      bookDetailsController.setItemDetail(currentBookItem);
-    } catch (IOException e) {
-      // Handle IO exceptions (e.g., FXML loading issues)
-      showAlert(Alert.AlertType.ERROR, "Error",
-          "Failed to load the book details view. Please try again.");
-    } catch (SQLException e) {
-      // Handle SQL exceptions (e.g., database access issues)
-      showAlert(Alert.AlertType.ERROR, "Database Error",
-          "An error occurred while accessing the database. Please try again.");
-    } catch (Exception e) {
-      // Handle any other unforeseen errors
-      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
-    }
+    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+    SceneLoader.loadBookDetail(currentStage, currentBookItem);
   }
 
   /**

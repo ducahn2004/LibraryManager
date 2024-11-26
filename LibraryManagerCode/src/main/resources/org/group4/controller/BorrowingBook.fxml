@@ -132,26 +132,22 @@
 
         <!-- Submit and Cancel Buttons -->
         <HBox prefHeight="100.0" prefWidth="200.0">
-          <children>
-            <Pane prefHeight="100.0" prefWidth="537.0"/>
-            <Button onAction="#handleSubmit" style="-fx-font-size: 15;" text="Submit"/>
-            <Button fx:id="cancelButton" onAction="#handleCancel" style="-fx-font-size: 15;"
-              text="Cancel"/>
-          </children>
+          <Pane prefHeight="100.0" prefWidth="537.0"/>
+          <Button onAction="#handleSubmit" style="-fx-font-size: 15;" text="Submit"/>
+          <Button fx:id="cancelButton" onAction="#handleCancel" style="-fx-font-size: 15;"
+            text="Cancel"/>
         </HBox>
       </VBox>
     </ScrollPane>
   </center>
   <top>
     <Pane prefHeight="53.0" prefWidth="700.0" BorderPane.alignment="CENTER">
-      <children>
-        <Label layoutX="240.0" layoutY="4.0" prefHeight="17.0" prefWidth="220.0"
-          style="-fx-text-fill: #2b579a;" text="Borrowing Book">
-          <font>
-            <Font size="30.0"/>
-          </font>
-        </Label>
-      </children>
+      <Label layoutX="240.0" layoutY="4.0" prefHeight="17.0" prefWidth="220.0"
+        style="-fx-text-fill: #2b579a;" text="Borrowing Book">
+        <font>
+          <Font size="30.0"/>
+        </font>
+      </Label>
     </Pane>
   </top>
 

@@ -378,26 +378,8 @@ public class ReturningBookController {
    * Loads the book details page for the current book item.
    */
   private void loadBookDetail() {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
-      Scene bookDetailScene = new Scene(loader.load());
-      Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-      currentStage.setScene(bookDetailScene);
-
-      BookDetailsController bookDetailsController = loader.getController();
-      bookDetailsController.setItemDetail(currentBookItem);
-    } catch (IOException e) {
-      // Handle IO exceptions (e.g., FXML loading issues)
-      showAlert(Alert.AlertType.ERROR, "Error",
-          "Failed to load the book details view. Please try again.");
-    } catch (SQLException e) {
-      // Handle SQL exceptions (e.g., database access issues)
-      showAlert(Alert.AlertType.ERROR, "Database Error",
-          "An error occurred while accessing the database. Please try again.");
-    } catch (Exception e) {
-      // Handle any other unforeseen errors
-      showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred. Please try again.");
-    }
+    Stage currentStage = (Stage) memberIdField.getScene().getWindow();
+    PageLoader.openReturningBookPage(currentStage, currentBookItem, "bookDetails");
   }
 
   private void loadMemberDetail() {
