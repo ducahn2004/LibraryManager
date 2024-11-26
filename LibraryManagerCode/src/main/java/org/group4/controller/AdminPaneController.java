@@ -6,14 +6,11 @@ import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.group4.model.user.Librarian;
 import org.group4.service.user.SessionManager;
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,10 +32,6 @@ public class AdminPaneController {
 
   @FXML
   private BarChart<String, Number> home_chart;
-  @FXML
-  private CategoryAxis xAxis;
-  @FXML
-  private NumberAxis yAxis;
 
   @FXML
   private JFXButton homeButton;
@@ -54,8 +47,8 @@ public class AdminPaneController {
   private JFXButton notificationButton;
   @FXML
   private JFXButton closeButton;
-
-  private Stage stage;
+  
+//  private Stage stage;
 
   private static final Logger logger = LoggerFactory.getLogger(AdminPaneController.class);
   Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
