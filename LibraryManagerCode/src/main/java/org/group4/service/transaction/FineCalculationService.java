@@ -28,7 +28,7 @@ public class FineCalculationService {
     int numberOfPages = bookItem.getNumberOfPages();
 
     double amount;
-    if (bookItem.getStatus() == BookStatus.LOST) {
+    if (bookLending.getBookItem().getStatus() == BookStatus.LOST) {
       amount = calculateLostBookFine(bookPrice, numberOfPages);
     } else {
       amount = calculateOverdueFine(bookLending, bookItem);
