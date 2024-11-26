@@ -72,17 +72,21 @@ public class AdminPaneController {
 
   public void updateMembersWhoBorrowed() throws SQLException {
     int totalMembersWhoBorrowed = librarian.getLendingManager().getAll().size();
-    total_members_borrowed.setText(String.valueOf(totalMembersWhoBorrowed)); // Hiển thị lên UI
+    total_members_borrowed.setText(String.valueOf(totalMembersWhoBorrowed));
   }
+
 
   /**
    * Updates the bar chart with total members and total books data.
    */
   public void Home_chart() throws SQLException {
+    // Clear existing data from the chart
     home_chart.getData().clear();
 
+    // Retrieve data from managers
     int totalBooks = librarian.getBookManager().getAll().size();
     int totalMembers = librarian.getMemberManager().getAll().size();
+    int totalMembersWhoBorrowed = librarian.getLendingManager().getAll().size();
 
     // Create and populate the "Books" series
     XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();
@@ -94,9 +98,16 @@ public class AdminPaneController {
     memberSeries.setName("Members");
     memberSeries.getData().add(new XYChart.Data<>("Total Members", totalMembers));
 
-    // Add data to the bar chart
-    home_chart.getData().addAll(bookSeries, memberSeries);
+    // Create and populate the "Members Borrowed" series
+    XYChart.Series<String, Number> membersBorrowedSeries = new XYChart.Series<>();
+    membersBorrowedSeries.setName("Members Borrowed");
+    membersBorrowedSeries.getData()
+        .add(new XYChart.Data<>("Members Borrowed", totalMembersWhoBorrowed));
+
+    // Add all series to the bar chart
+    home_chart.getData().addAll(bookSeries, memberSeries, membersBorrowedSeries);
   }
+
 
   /**
    * Initializes the Admin Pane by updating statistics and the chart.
@@ -105,6 +116,7 @@ public class AdminPaneController {
   public void initialize() throws SQLException {
     updateTotalMembers();
     updateTotalBooks();
+    updateMembersWhoBorrowed();
     Home_chart();
   }
 

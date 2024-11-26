@@ -109,7 +109,7 @@
             </PasswordField>
 
             <!-- TextField to Show Password (Hidden by Default) -->
-            <TextField fx:id="textShowCurrentPassword" onKeyReleased="#showCurrentPasswordOnAction" prefHeight="30.0" prefWidth="499.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;" visible="false" />
+            <TextField fx:id="textShowCurrentPassword" onKeyReleased="#showCurrentPasswordOnAction" prefHeight="30.0" prefWidth="499.0" promptText="Current Password" style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;" visible="false" />
 
             <!-- Eye Icon to Toggle Visibility -->
             <ImageView fx:id="iconCloseEyeCurrent" fitHeight="20.0" fitWidth="25.0" layoutX="466.0" layoutY="6.0" onMouseClicked="#closeClickedOnActionCurrent" pickOnBounds="true" preserveRatio="true">
@@ -129,7 +129,7 @@
             </PasswordField>
 
             <!-- TextField to Show Password (Hidden by Default) -->
-            <TextField fx:id="textShowNewPassword" onKeyReleased="#showPasswordOnActionNew" prefHeight="30.0" prefWidth="500.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;" visible="false" />
+            <TextField fx:id="textShowNewPassword" onKeyReleased="#showPasswordOnActionNew" prefHeight="30.0" prefWidth="500.0" promptText="New Password" style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;" visible="false" />
 
             <!-- Eye Icon to Toggle Visibility -->
             <ImageView fx:id="iconCloseEyeNew" fitHeight="20.0" fitWidth="25.0" layoutX="466.0" layoutY="6.0" onMouseClicked="#closeClickedOnActionNew" pickOnBounds="true" preserveRatio="true">
@@ -149,7 +149,7 @@
             </PasswordField>
 
             <!-- TextField to Show Password (Hidden by Default) -->
-            <TextField fx:id="textShowNewPassword2" onKeyReleased="#showPasswordOnActionNew2" prefHeight="30.0" prefWidth="499.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;" visible="false" />
+            <TextField fx:id="textShowNewPassword2" onKeyReleased="#showPasswordOnActionNew2" prefHeight="30.0" prefWidth="499.0" promptText="Re-enter New Password" style="-fx-background-color: transparent; -fx-border-color: transparent transparent black transparent; -fx-border-width: 1;" visible="false" />
 
             <!-- Eye Icon to Toggle Visibility -->
             <ImageView fx:id="iconCloseEyeNew2" fitHeight="20.0" fitWidth="25.0" layoutX="466.0" layoutY="6.0" onMouseClicked="#closeClickedOnActionNew2" pickOnBounds="true" preserveRatio="true">
