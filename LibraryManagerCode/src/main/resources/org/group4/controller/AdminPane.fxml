@@ -52,22 +52,17 @@
                 </AnchorPane>
                 <AnchorPane layoutX="24.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="224.0" AnchorPane.topAnchor="5.0">
                   <children>
-                    <Label layoutX="54.0" layoutY="57.0" text="Number of" textFill="#2b579a" AnchorPane.topAnchor="57.0">
-                      <font>
-                        <Font size="15.0" />
-                      </font>
-                    </Label>
-                    <Label fx:id="total_members_borrowed" layoutX="109.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="#2b579a" AnchorPane.topAnchor="14.0">
+                    <Label fx:id="total_bookItem" layoutX="109.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="#2b579a" AnchorPane.topAnchor="14.0">
                       <font>
                         <Font size="20.0" />
                       </font>
                     </Label>
-                    <Label layoutX="25.0" layoutY="76.0" text="members borrowed" textFill="#2b579a">
-                      <font>
-                        <Font size="15.0" />
-                      </font>
-                    </Label>
-                    <FontAwesomeIconView fill="#2b579a" glyphName="CHECK" layoutX="25.0" layoutY="55.0" size="30" />
+                              <Label layoutX="40.0" layoutY="62.0" text="Total BookItems" textFill="#2b579a">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <FontAwesomeIconView fill="#2b579a" glyphName="BOOK" layoutX="28.0" layoutY="55.0" size="30" text="" />
                   </children>
                 </AnchorPane>
                 <AnchorPane layoutX="224.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #BBBBBB; -fx-background-radius: 20;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="434.0" AnchorPane.topAnchor="5.0">
@@ -92,7 +87,7 @@
                         <Font size="15.0" />
                       </font>
                     </Label>
-                    <Label layoutX="104.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="#2b579a" AnchorPane.bottomAnchor="55.6">
+                    <Label fx:id="total_books_borrowed" layoutX="104.0" layoutY="14.0" prefHeight="30.0" prefWidth="70.0" text="0" textAlignment="RIGHT" textFill="#2b579a" AnchorPane.bottomAnchor="55.6">
                       <font>
                         <Font size="20.0" />
                       </font>

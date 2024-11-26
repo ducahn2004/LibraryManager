@@ -13,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.group4.model.user.Librarian;
 import org.group4.service.user.SessionManager;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controller for the Admin Pane.
@@ -22,7 +25,9 @@ import org.group4.service.user.SessionManager;
  */
 public class AdminPaneController {
 
-  public Label total_members_borrowed;
+  public Label total_bookItem;
+
+  public Label total_books_borrowed;
   @FXML
   private Label total_Members;
   @FXML
@@ -52,71 +57,104 @@ public class AdminPaneController {
 
   private Stage stage;
 
+  private static final Logger logger = LoggerFactory.getLogger(AdminPaneController.class);
   Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   /**
    * Updates the total number of members displayed in the UI.
    */
-  public void updateTotalMembers() throws SQLException {
-    int totalMembers = librarian.getMemberManager().getAll().size();
-    total_Members.setText(String.valueOf(totalMembers));
+  public void updateTotalMembers() {
+    try {
+      int totalMembers = librarian.getMemberManager().getAll().size();
+      total_Members.setText(String.valueOf(totalMembers));
+    } catch (SQLException e) {
+      logger.error("Error while");
+    }
   }
+
 
   /**
    * Updates the total number of books displayed in the UI.
    */
-  public void updateTotalBooks() throws SQLException {
-    int totalBooks = librarian.getBookManager().getAll().size();
-    total_books.setText(String.valueOf(totalBooks));
+  public void updateTotalBooks() {
+    try {
+      int totalBooks = librarian.getBookManager().getAll().size();
+      total_books.setText(String.valueOf(totalBooks));
+    } catch (SQLException e) {
+      logger.error("Error while updating total books");
+    }
   }
 
-  public void updateMembersWhoBorrowed() throws SQLException {
-    int totalMembersWhoBorrowed = librarian.getLendingManager().getAll().size();
-    total_members_borrowed.setText(String.valueOf(totalMembersWhoBorrowed));
+  public void updateBooksBorrowed() {
+    try {
+      int totalBooksBorrowed = librarian.getLendingManager().getAll().size();
+      total_books_borrowed.setText(String.valueOf(totalBooksBorrowed));
+    } catch (SQLException e) {
+      logger.error("Error while updating books borrowed");
+    }
+  }
+
+  public void updateBookItems() {
+    try {
+      int totalBookItems = librarian.getBookItemManager().getAll().size();
+      total_bookItem.setText(String.valueOf(totalBookItems));
+    } catch (SQLException e) {
+      logger.error("Error while updating book items");
+    }
   }
 
 
   /**
    * Updates the bar chart with total members and total books data.
    */
-  public void Home_chart() throws SQLException {
-    // Clear existing data from the chart
-    home_chart.getData().clear();
+  public void Home_chart() {
+    try {
+      // Clear existing data from the chart
+      home_chart.getData().clear();
 
-    // Retrieve data from managers
-    int totalBooks = librarian.getBookManager().getAll().size();
-    int totalMembers = librarian.getMemberManager().getAll().size();
-    int totalMembersWhoBorrowed = librarian.getLendingManager().getAll().size();
+      // Retrieve data from managers
+      int totalBooks = librarian.getBookManager().getAll().size();
+      int totalBookItems = librarian.getBookItemManager().getAll().size();
+      int totalMembers = librarian.getMemberManager().getAll().size();
+      int totalBooksBorrowed = librarian.getLendingManager().getAll().size();
 
-    // Create and populate the "Books" series
-    XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();
-    bookSeries.setName("Books");
-    bookSeries.getData().add(new XYChart.Data<>("Total Books", totalBooks));
+      // Create and populate the "Books" series
+      XYChart.Series<String, Number> bookSeries = new XYChart.Series<>();
+      bookSeries.setName("Books");
+      bookSeries.getData().add(new XYChart.Data<>("Total Books", totalBooks));
 
-    // Create and populate the "Members" series
-    XYChart.Series<String, Number> memberSeries = new XYChart.Series<>();
-    memberSeries.setName("Members");
-    memberSeries.getData().add(new XYChart.Data<>("Total Members", totalMembers));
+      // Create and populate the "Total BookItems" series
+      XYChart.Series<String, Number> BookItemSeries = new XYChart.Series<>();
+      BookItemSeries.setName("Book Items");
+      BookItemSeries.getData()
+          .add(new XYChart.Data<>("Book Items", totalBookItems));
 
-    // Create and populate the "Members Borrowed" series
-    XYChart.Series<String, Number> membersBorrowedSeries = new XYChart.Series<>();
-    membersBorrowedSeries.setName("Members Borrowed");
-    membersBorrowedSeries.getData()
-        .add(new XYChart.Data<>("Members Borrowed", totalMembersWhoBorrowed));
+      //Create and populate the "Books Borrowed" series
+      XYChart.Series<String, Number> booksBorrowedSeries = new XYChart.Series<>();
+      booksBorrowedSeries.setName("Books Borrowed");
+      booksBorrowedSeries.getData().add(new XYChart.Data<>("Books Borrowed", totalBooksBorrowed));
 
-    // Add all series to the bar chart
-    home_chart.getData().addAll(bookSeries, memberSeries, membersBorrowedSeries);
+      // Create and populate the "Members" series
+      XYChart.Series<String, Number> memberSeries = new XYChart.Series<>();
+      memberSeries.setName("Members");
+      memberSeries.getData().add(new XYChart.Data<>("Total Members", totalMembers));
+
+      // Add all series to the bar chart
+      home_chart.getData().addAll(memberSeries, BookItemSeries, bookSeries, booksBorrowedSeries);
+    } catch (SQLException e) {
+      logger.error("Error while updating home chart");
+    }
   }
-
 
   /**
    * Initializes the Admin Pane by updating statistics and the chart.
    */
   @FXML
-  public void initialize() throws SQLException {
+  public void initialize() {
     updateTotalMembers();
     updateTotalBooks();
-    updateMembersWhoBorrowed();
+    updateBooksBorrowed();
+    updateBookItems();
     Home_chart();
   }
 
