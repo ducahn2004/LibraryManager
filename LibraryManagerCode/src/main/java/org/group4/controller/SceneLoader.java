@@ -1,7 +1,6 @@
 package org.group4.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -27,10 +26,10 @@ public class SceneLoader {
       BookDetailsController bookDetailsController = loader.getController();
       bookDetailsController.setItemDetail(currentBookItem);
     } catch (IOException e) {
-      showAlert("Error",
+      showAlert(
           "Failed to load the book details view. Please try again.");
     } catch (Exception e) {
-      showAlert("Error",
+      showAlert(
           "An unexpected error occurred. Please try again.");
     }
   }
@@ -38,12 +37,11 @@ public class SceneLoader {
   /**
    * Shows an alert dialog with the provided title and content.
    *
-   * @param title   the title of the alert
    * @param content the content of the alert
    */
-  private static void showAlert(String title, String content) {
+  private static void showAlert(String content) {
     Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle(title);
+    alert.setTitle("Error");
     alert.setHeaderText(null);
     alert.setContentText(content);
     alert.showAndWait();

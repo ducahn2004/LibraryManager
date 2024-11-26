@@ -375,7 +375,7 @@ public class ReturningBookController {
    */
   private void loadBookDetail() {
     Stage currentStage = (Stage) memberIdField.getScene().getWindow();
-    PageLoader.openReturningBookPage(currentStage, currentBookItem, "bookDetails");
+    SceneLoader.loadBookDetail(currentStage, currentBookItem);
   }
 
   private void loadMemberDetail() {
