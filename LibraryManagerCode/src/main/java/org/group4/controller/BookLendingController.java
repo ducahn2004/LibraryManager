@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import org.group4.model.transaction.BookLending;
 import java.util.List;
 import org.group4.model.user.Librarian;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 
 /**
  * Controller class for managing book lending functionality in the library system.
@@ -22,7 +22,7 @@ import org.group4.service.user.SessionManagerService;
 public class BookLendingController {
 
   // Librarian instance for managing book lending operations
-  private static final Librarian librarian = SessionManagerService.getInstance()
+  private static final Librarian librarian = SessionManager.getInstance()
       .getCurrentLibrarian();
 
   // TableView and columns for displaying book lending information
@@ -117,12 +117,12 @@ public class BookLendingController {
     }
 
     String lowerCaseFilter = searchText.toLowerCase();
-    ObservableList<BookLending> filteredList = bookLendingsList.filtered(bookLending ->
-        bookLending.getBookItem().getISBN().toLowerCase().contains(lowerCaseFilter) ||
-            bookLending.getBookItem().getBarcode().toLowerCase().contains(lowerCaseFilter) ||
-            bookLending.getBookItem().getTitle().toLowerCase().contains(lowerCaseFilter) ||
-            bookLending.getMember().getMemberId().toLowerCase().contains(lowerCaseFilter) ||
-            bookLending.getMember().getName().toLowerCase().contains(lowerCaseFilter)
+    ObservableList<BookLending> filteredList = bookLendingsList.filtered(bookLending
+        -> bookLending.getBookItem().getISBN().toLowerCase().contains(lowerCaseFilter)
+            || bookLending.getBookItem().getBarcode().toLowerCase().contains(lowerCaseFilter)
+            || bookLending.getBookItem().getTitle().toLowerCase().contains(lowerCaseFilter)
+            || bookLending.getMember().getMemberId().toLowerCase().contains(lowerCaseFilter)
+            || bookLending.getMember().getName().toLowerCase().contains(lowerCaseFilter)
     );
     tableView.setItems(filteredList);
   }

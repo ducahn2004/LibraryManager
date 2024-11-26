@@ -6,28 +6,28 @@ import static org.junit.Assert.*;
 import java.time.LocalDate;
 
 import org.group4.model.user.Librarian;
-import org.group4.service.interfaces.BookItemManagerService;
-import org.group4.service.interfaces.BookManagerService;
-import org.group4.service.interfaces.LendingManagerService;
-import org.group4.service.interfaces.MemberManagerService;
+import org.group4.service.interfaces.BookItemManager;
+import org.group4.service.interfaces.BookManager;
+import org.group4.service.interfaces.LendingManager;
+import org.group4.service.interfaces.MemberManager;
 import org.junit.Before;
 import org.junit.Test;
 
 public class LibrarianTest {
 
   private Librarian librarian;
-  private BookManagerService bookManagerMock;
-  private BookItemManagerService bookItemManagerMock;
-  private MemberManagerService memberManagerMock;
-  private LendingManagerService lendingManagerMock;
+  private BookManager bookManagerMock;
+  private BookItemManager bookItemManagerMock;
+  private MemberManager memberManagerMock;
+  private LendingManager lendingManagerMock;
 
   @Before
   public void setUp() {
     // Mock the dependencies
-    bookManagerMock = mock(BookManagerService.class);
-    bookItemManagerMock = mock(BookItemManagerService.class);
-    memberManagerMock = mock(MemberManagerService.class);
-    lendingManagerMock = mock(LendingManagerService.class);
+    bookManagerMock = mock(BookManager.class);
+    bookItemManagerMock = mock(BookItemManager.class);
+    memberManagerMock = mock(MemberManager.class);
+    lendingManagerMock = mock(LendingManager.class);
 
     // Create the librarian with mocked services
     librarian = new Librarian("L123", "John Doe", LocalDate.of(1985, 5, 15),

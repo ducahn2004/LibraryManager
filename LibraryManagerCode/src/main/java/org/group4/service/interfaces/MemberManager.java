@@ -9,7 +9,7 @@ import org.group4.model.user.Member;
 /**
  * Interface for managing CRUD operations on {@link Member} entities in the database.
  */
-public interface MemberManagerService {
+public interface MemberManager {
 
   /**
    * Adds a new member to the database.

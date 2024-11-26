@@ -1,7 +1,6 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
-import java.io.IOException;
 import java.sql.SQLException;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,7 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.group4.dao.base.FactoryDAO;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 import org.group4.model.notification.EmailNotification;
 import org.group4.model.notification.Notification;
 import org.group4.model.notification.SystemNotification;
@@ -30,45 +29,41 @@ public class NotificationController {
   // FXML elements for system notifications
   @FXML
   private TableView<SystemNotification> systemTable;
+
   @FXML
   private TableColumn<SystemNotification, String> systemDate;
+
   @FXML
   private TableColumn<SystemNotification, String> systemType;
+
   @FXML
   private TableColumn<SystemNotification, String> systemContent;
 
   // FXML elements for email notifications
   @FXML
   private TableView<EmailNotification> emailTable;
+
   @FXML
   private TableColumn<EmailNotification, String> emailDate;
+
   @FXML
   private TableColumn<EmailNotification, String> emailType;
+
   @FXML
   private TableColumn<EmailNotification, String> emailContent;
 
   // Navigation buttons
   @FXML
   private JFXButton homeButton;
-  @FXML
-  private JFXButton MemberButton;
-  @FXML
-  private JFXButton bookButton;
-  @FXML
-  private JFXButton bookLendingButton;
-  @FXML
-  private JFXButton settingButton;
-  @FXML
-  private JFXButton notificationButton;
-  @FXML
-  private JFXButton closeButton;
 
   // ObservableLists for system and email notifications
-  private final ObservableList<SystemNotification> systemNotificationObservableList = FXCollections.observableArrayList();
-  private final ObservableList<EmailNotification> emailNotificationObservableList = FXCollections.observableArrayList();
+  private final ObservableList<SystemNotification> systemNotificationObservableList
+      = FXCollections.observableArrayList();
+  private final ObservableList<EmailNotification> emailNotificationObservableList
+      = FXCollections.observableArrayList();
 
   // Current librarian session
-  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   /**
    * Initializes the controller by setting up the table columns and loading notifications.
@@ -76,24 +71,24 @@ public class NotificationController {
   @FXML
   public void initialize() {
     // Set up system notifications table columns
-    systemDate.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getCreatedOn().toString()));
-    systemType.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
-    systemContent.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
+    systemDate.setCellValueFactory(cellData
+        -> new SimpleStringProperty(cellData.getValue().getCreatedOn().toString()));
+    systemType.setCellValueFactory(cellData
+            -> new SimpleStringProperty(cellData.getValue().getType().toString()));
+    systemContent.setCellValueFactory(cellData
+            -> new SimpleStringProperty(cellData.getValue().getContent()));
 
     // Load system notifications into the table
     loadSystemNotification();
     systemTable.setItems(systemNotificationObservableList);
 
     // Set up email notifications table columns
-    emailDate.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getCreatedOn().toString()));
-    emailType.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getType().toString()));
-    emailContent.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
+    emailDate.setCellValueFactory(cellData
+        -> new SimpleStringProperty(cellData.getValue().getCreatedOn().toString()));
+    emailType.setCellValueFactory(cellData
+            -> new SimpleStringProperty(cellData.getValue().getType().toString()));
+    emailContent.setCellValueFactory(cellData
+        -> new SimpleStringProperty(cellData.getValue().getContent()));
 
     // Load email notifications into the table
     loadEmailNotification();
@@ -107,16 +102,19 @@ public class NotificationController {
     systemNotificationObservableList.clear();
     Task<ObservableList<SystemNotification>> loadTask = new Task<>() {
       @Override
-      protected ObservableList<SystemNotification> call() {
-        return FXCollections.observableArrayList(FactoryDAO.getSystemNotificationDAO().getAll());
+      protected ObservableList<SystemNotification> call() throws SQLException {
+        return FXCollections.observableArrayList(librarian.getNotificationManager()
+            .getAllSystemNotifications());
       }
     };
 
     // When task completes, update the observable list with the loaded data
-    loadTask.setOnSucceeded(event -> systemNotificationObservableList.setAll(loadTask.getValue()));
+    loadTask.setOnSucceeded(event
+        -> systemNotificationObservableList.setAll(loadTask.getValue()));
 
     // If task fails, show an error alert
-    loadTask.setOnFailed(event -> showAlert(AlertType.ERROR, "Error Loading System Notifications",
+    loadTask.setOnFailed(event
+        -> showAlert(AlertType.ERROR, "Error Loading System Notifications",
         "An error occurred while loading System Notification data."));
 
     // Start the task in a new thread
@@ -131,15 +129,18 @@ public class NotificationController {
     Task<ObservableList<EmailNotification>> loadTask = new Task<>() {
       @Override
       protected ObservableList<EmailNotification> call() throws SQLException {
-        return FXCollections.observableArrayList(FactoryDAO.getEmailNotificationDAO().getAll());
+        return FXCollections.observableArrayList(librarian.getNotificationManager()
+            .getAllEmailNotifications());
       }
     };
 
     // When task completes, update the observable list with the loaded data
-    loadTask.setOnSucceeded(event -> emailNotificationObservableList.setAll(loadTask.getValue()));
+    loadTask.setOnSucceeded(event
+        -> emailNotificationObservableList.setAll(loadTask.getValue()));
 
     // If task fails, show an error alert
-    loadTask.setOnFailed(event -> showAlert(AlertType.ERROR, "Error Loading Email Notifications",
+    loadTask.setOnFailed(event
+        -> showAlert(AlertType.ERROR, "Error Loading Email Notifications",
         "An error occurred while loading email Notification data."));
 
     // Start the task in a new thread

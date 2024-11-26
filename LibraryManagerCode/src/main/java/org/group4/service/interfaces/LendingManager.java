@@ -7,7 +7,7 @@ import org.group4.model.enums.BookStatus;
 import org.group4.model.transaction.BookLending;
 import org.group4.model.user.Member;
 
-public interface LendingManagerService {
+public interface LendingManager {
 
   /**
    * Borrow a book item.

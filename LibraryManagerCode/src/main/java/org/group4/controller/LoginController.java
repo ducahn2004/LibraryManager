@@ -17,7 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 import org.group4.service.user.AccountService;
 import org.group4.model.user.Librarian;
 import org.slf4j.Logger;
@@ -141,7 +141,7 @@ public class LoginController {
 
       // If a librarian is found, set it in the session manager.
       if (librarian.isPresent()) {
-        SessionManagerService.getInstance().setCurrentLibrarian(librarian.get());
+        SessionManager.getInstance().setCurrentLibrarian(librarian.get());
       } else {
         logger.warn("Librarian not found in the database.");
         showAlert("Error", "Librarian not found in the database.");

@@ -7,10 +7,10 @@ import org.group4.dao.base.FactoryDAO;
 import org.group4.dao.user.MemberDAO;
 import org.group4.model.enums.NotificationType;
 import org.group4.model.user.Member;
-import org.group4.service.interfaces.MemberManagerService;
+import org.group4.service.interfaces.MemberManager;
 import org.group4.service.notification.SystemNotificationService;
 
-public class MemberManagerServiceImpl implements MemberManagerService {
+public class MemberManagerImpl implements MemberManager {
 
   private static final MemberDAO memberDAO = FactoryDAO.getMemberDAO();
   private final SystemNotificationService systemNotificationService =

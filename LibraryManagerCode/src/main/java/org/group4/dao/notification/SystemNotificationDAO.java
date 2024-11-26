@@ -120,7 +120,7 @@ public class SystemNotificationDAO extends BaseDAO implements
    *
    * @return A list of all system notifications.
    */
-  public List<SystemNotification> getAll() {
+  public List<SystemNotification> getAll() throws SQLException {
     List<SystemNotification> notifications = new ArrayList<>();
     try (Connection connection = getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(

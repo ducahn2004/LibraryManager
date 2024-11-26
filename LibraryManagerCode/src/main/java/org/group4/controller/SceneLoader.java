@@ -11,6 +11,12 @@ import org.group4.model.book.BookItem;
 
 public class SceneLoader {
 
+  /**
+   * Loads the book details page for a given book item.
+   *
+   * @param currentStage   the current stage
+   * @param currentBookItem the book item to display details for
+   */
   public static void loadBookDetail(Stage currentStage, BookItem currentBookItem) {
     try {
       FXMLLoader loader = new FXMLLoader(
@@ -32,6 +38,12 @@ public class SceneLoader {
     }
   }
 
+  /**
+   * Shows an alert dialog with the provided title and content.
+   *
+   * @param title   the title of the alert
+   * @param content the content of the alert
+   */
   private static void showAlert(String title, String content) {
     Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle(title);

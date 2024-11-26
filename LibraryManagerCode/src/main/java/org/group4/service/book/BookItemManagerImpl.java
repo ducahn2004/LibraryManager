@@ -11,11 +11,11 @@ import org.group4.dao.base.FactoryDAO;
 import org.group4.dao.misc.QRCodeDAO;
 import org.group4.model.book.BookItem;
 import org.group4.model.enums.NotificationType;
-import org.group4.service.interfaces.BookItemManagerService;
+import org.group4.service.interfaces.BookItemManager;
 import org.group4.service.notification.SystemNotificationService;
 import org.group4.service.qrcode.QRCodeGenerator;
 
-public class BookItemManagerServiceImpl implements BookItemManagerService {
+public class BookItemManagerImpl implements BookItemManager {
 
   private static final BookItemDAO bookItemDAO = FactoryDAO.getBookItemDAO();
   private static final QRCodeDAO qrCodeDAO = FactoryDAO.getQRCodeDAO();

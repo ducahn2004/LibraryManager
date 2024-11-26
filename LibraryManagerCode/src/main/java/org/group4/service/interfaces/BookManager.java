@@ -8,7 +8,7 @@ import org.group4.model.book.BookItem;
 /**
  * Service interface for managing {@link Book} entities in the library.
  */
-public interface BookManagerService {
+public interface BookManager {
 
   /**
    * Adds a book to the library.

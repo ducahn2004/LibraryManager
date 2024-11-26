@@ -7,10 +7,10 @@ import org.group4.dao.base.FactoryDAO;
 import org.group4.model.book.Book;
 import org.group4.model.book.BookItem;
 import org.group4.model.enums.NotificationType;
-import org.group4.service.interfaces.BookManagerService;
+import org.group4.service.interfaces.BookManager;
 import org.group4.service.notification.SystemNotificationService;
 
-public class BookManagerServiceImpl implements BookManagerService {
+public class BookManagerImpl implements BookManager {
 
   private static final BookDAO bookDAO = FactoryDAO.getBookDAO();
   private final SystemNotificationService systemNotificationService =

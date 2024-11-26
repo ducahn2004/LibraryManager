@@ -17,7 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 import org.group4.model.user.Librarian;
 import org.group4.model.user.Member;
 
@@ -59,7 +59,7 @@ public class MemberViewController {
 
   private final ObservableList<Member> memberList = FXCollections.observableArrayList();
 
-  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   /**
    * Initializes the controller by setting up the table columns, loading members, and adding
@@ -77,16 +77,16 @@ public class MemberViewController {
    * Configures the table columns to display member information.
    */
   private void setUpTableColumns() {
-    memberTableID.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getMemberId()));
-    memberTableName.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-    memberTableBirth.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getDateOfBirth().toString()));
-    memberTablePhone.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
-    memberTableEmail.setCellValueFactory(
-        cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+    memberTableID.setCellValueFactory(cellData
+        -> new SimpleStringProperty(cellData.getValue().getMemberId()));
+    memberTableName.setCellValueFactory(cellData
+            -> new SimpleStringProperty(cellData.getValue().getName()));
+    memberTableBirth.setCellValueFactory(cellData
+            -> new SimpleStringProperty(cellData.getValue().getDateOfBirth().toString()));
+    memberTablePhone.setCellValueFactory(cellData
+            -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
+    memberTableEmail.setCellValueFactory(cellData
+            -> new SimpleStringProperty(cellData.getValue().getEmail()));
 
     memberTableAction.setCellFactory(param -> new TableCell<>() {
       private final Hyperlink editLink = new Hyperlink("Edit");
@@ -140,7 +140,8 @@ public class MemberViewController {
    */
   private void setUpSearchListener() {
     searchField.textProperty()
-        .addListener((observable, oldValue, newValue) -> filterPersonList(newValue));
+        .addListener((observable, oldValue, newValue)
+            -> filterPersonList(newValue));
     searchField.setOnKeyPressed(keyEvent -> {
       if (keyEvent.getCode() == KeyCode.ENTER) {
         filterPersonList(searchField.getText());

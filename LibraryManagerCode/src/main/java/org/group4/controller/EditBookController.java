@@ -8,7 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.model.book.Book;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 import org.group4.model.user.Librarian;
 
 /**
@@ -39,7 +39,7 @@ EditBookController {
   /**
    * Librarian instance managing the session.
    */
-  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   /**
    * Sets the parent controller for enabling table refresh after saving book data.

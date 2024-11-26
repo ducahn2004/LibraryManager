@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SceneSwitcher {
 
+  /** The logger for the SceneSwitcher class. */
   private static final Logger logger = LoggerFactory.getLogger(SceneSwitcher.class);
 
   /**

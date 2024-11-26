@@ -3,11 +3,8 @@ package org.group4.controller;
 import java.sql.SQLException;
 import javafx.application.Platform;
 import com.jfoenix.controls.JFXButton;
-import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -15,7 +12,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.group4.model.user.Librarian;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 
 /**
  * Controller for the Admin Pane.
@@ -55,7 +52,7 @@ public class AdminPaneController {
 
   private Stage stage;
 
-  Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   /**
    * Updates the total number of members displayed in the UI.

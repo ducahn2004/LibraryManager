@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group4.model.book.BookItem;
 import org.group4.model.enums.BookStatus;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 import org.group4.model.transaction.BookLending;
 import org.group4.model.user.Librarian;
 import org.group4.model.user.Member;
@@ -32,7 +32,7 @@ public class BorrowingBookController {
   /**
    * The logger for the BorrowingBookController class.
    */
-  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
   public Button cancelButton;
 
   @FXML
@@ -146,14 +146,20 @@ public class BorrowingBookController {
    *
    * @param bookItem The book item to be borrowed.
    * @param member   The member borrowing the book.
-   * @throws Exception If the borrowing process fails.
    */
-  private void borrowingBook(BookItem bookItem, Member member) throws Exception {
-    boolean isBorrowed = librarian.getLendingManager().borrowBookItem(bookItem, member);
-    if (!isBorrowed) {
-      // Show an alert if the book is not successfully borrowed
-      showAlert(Alert.AlertType.ERROR, "Book Not Borrowed",
-          "The book could not be borrowed. Please try again later.");
+  private void borrowingBook(BookItem bookItem, Member member) {
+    try {
+      boolean isBorrowed = librarian.getLendingManager().borrowBookItem(bookItem, member);
+      if (!isBorrowed) {
+        // Show an alert if the book is not successfully borrowed
+        showAlert(AlertType.ERROR, "Book Not Borrowed",
+            "The book could not be borrowed. Please try again later.");
+      }
+    } catch (SQLException e) {
+      // Handle SQL exceptions if there are issues interacting with the database
+      showAlert(AlertType.ERROR, "Database Error",
+          "An error occurred while borrowing the book. Please try again later.");
+      logger.error("SQLException in borrowingBook: {}", e.getMessage(), e);
     }
   }
 
@@ -199,11 +205,6 @@ public class BorrowingBookController {
       showAlert(AlertType.ERROR, "Database Error",
           "An error occurred while access borrowing book database. Please try again later.");
       logger.error("SQLException in handleSubmit: {}", e.getMessage(), e);
-    } catch (IOException e) {
-      // Handle IOExceptions if there are issues with loading the book details page
-      showAlert(AlertType.ERROR, "Page Load Error",
-          "An error occurred while loading the book details page.");
-      logger.error("IOException in handleSubmit: {}", e.getMessage(), e);
     } catch (Exception e) {
       // Catch any other unexpected exceptions
       showAlert(AlertType.ERROR, "Unexpected Error",

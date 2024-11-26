@@ -10,6 +10,12 @@ import org.group4.model.book.BookItem;
 
 public class PageLoader {
 
+  /**
+   * Loads the book details page for a given book item.
+   *
+   * @param currentStage the current stage
+   * @param bookItem the book item to display details for
+   */
   public static void openReturningBookPage(Stage currentStage, BookItem bookItem, String previousPage) {
     try {
       FXMLLoader loader = new FXMLLoader(PageLoader.class.getResource("ReturningBook.fxml"));
@@ -26,6 +32,9 @@ public class PageLoader {
     }
   }
 
+  /**
+   * Shows an alert dialog for an error loading the returning book page.
+   */
   private static void showAlert() {
     Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle("Error");

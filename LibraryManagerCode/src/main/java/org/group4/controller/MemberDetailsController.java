@@ -1,15 +1,10 @@
 package org.group4.controller;
 
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -20,7 +15,7 @@ import org.group4.model.enums.BookStatus;
 import org.group4.model.transaction.BookLending;
 import org.group4.model.user.Librarian;
 import org.group4.model.user.Member;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 
 /**
  * Controller for displaying member details and their associated book lendings. Provides
@@ -57,7 +52,7 @@ public class MemberDetailsController {
   @FXML
   private Label memberIDLabel;
 
-  private static final Librarian librarian = SessionManagerService.getInstance()
+  private static final Librarian librarian = SessionManager.getInstance()
       .getCurrentLibrarian();
   // Current member and their book lending data
   private Member currentMember;

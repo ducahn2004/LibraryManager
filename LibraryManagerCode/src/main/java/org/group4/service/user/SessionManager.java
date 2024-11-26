@@ -6,22 +6,22 @@ import org.group4.model.user.Librarian;
  * SessionManager is a singleton class that manages the current session.
  * <p>It stores the current logged-in librarian.</p>
  */
-public class SessionManagerService {
+public class SessionManager {
 
-  private static SessionManagerService instance;
+  private static SessionManager instance;
   private Librarian currentLibrarian;
 
   /** Private constructor to enforce singleton pattern. */
-  private SessionManagerService() {}
+  private SessionManager() {}
 
   /**
    * Returns the singleton instance of the session manager.
    *
    * @return the singleton instance
    */
-  public static synchronized SessionManagerService getInstance() {
+  public static synchronized SessionManager getInstance() {
     if (instance == null) {
-      instance = new SessionManagerService();
+      instance = new SessionManager();
     }
     return instance;
   }

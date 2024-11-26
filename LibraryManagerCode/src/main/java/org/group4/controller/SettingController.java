@@ -1,14 +1,12 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
-import java.io.IOException;
 import java.sql.SQLException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -21,6 +19,11 @@ import org.slf4j.LoggerFactory;
 
 public class SettingController {
 
+  /**
+   * The logger for the SettingController class.
+   */
+  private static final Logger logger = LoggerFactory.getLogger(SettingController.class);
+
   AccountService accountService = new AccountService();
 
   @FXML
@@ -28,24 +31,6 @@ public class SettingController {
 
   @FXML
   private JFXButton homeButton;
-
-  @FXML
-  private JFXButton MemberButton;
-
-  @FXML
-  private JFXButton bookButton;
-
-  @FXML
-  private JFXButton bookLendingButton;
-
-  @FXML
-  private JFXButton settingButton;
-
-  @FXML
-  private JFXButton notificationButton;
-
-  @FXML
-  private JFXButton closeButton;
 
   @FXML
   private PasswordField currentPassword;
@@ -61,15 +46,7 @@ public class SettingController {
       iconCloseEyeNew2, iconOpenEyeNew2;
 
   @FXML
-  private Button save;
-
-  @FXML
-  private Button cancel;
-
-  @FXML
   private void changePassword(ActionEvent event) {
-
-    Logger logger = LoggerFactory.getLogger(SettingController.class);
 
     String userId = username.getText();
     String currentPass = currentPassword.getText();
@@ -118,7 +95,7 @@ public class SettingController {
     }
     if (!password.matches(".*[A-Z].*")) {
       showAlert(AlertType.INFORMATION, "Password Complexity",
-          
+
           "Password must contain at least one uppercase letter.");
       return false;
     }
@@ -323,33 +300,32 @@ public class SettingController {
     return (Stage) homeButton.getScene().getWindow(); // Có thể sử dụng bất kỳ button nào
   }
 
-  public void HomeAction(ActionEvent actionEvent) throws IOException {
+  public void HomeAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "AdminPane.fxml", "Library Manager");
   }
 
-  public void MemberAction(ActionEvent actionEvent) throws IOException {
+  public void MemberAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "MemberView.fxml", "Library Manager");
   }
 
-  public void BookAction(ActionEvent actionEvent) throws IOException {
+  public void BookAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "BookView.fxml", "Library Manager");
   }
 
-  public void BookLendingAction(ActionEvent actionEvent) throws IOException {
+  public void BookLendingAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "BookLending.fxml", "Library Manager");
   }
 
-  public void notificationAction(ActionEvent actionEvent) throws IOException {
+  public void notificationAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "Notification.fxml", "Library Manager");
   }
 
-  public void SettingAction(ActionEvent actionEvent) throws IOException {
+  public void SettingAction(ActionEvent actionEvent) {
     SceneSwitcher.switchScene(getStage(), "Setting.fxml", "Library Manager");
   }
 
   public void Close(ActionEvent actionEvent) {
     Platform.exit();
   }
-
 }
 

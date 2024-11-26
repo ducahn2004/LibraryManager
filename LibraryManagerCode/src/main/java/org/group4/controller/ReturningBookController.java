@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -23,7 +22,7 @@ import org.group4.model.user.Librarian;
 import org.group4.model.user.Member;
 import org.group4.model.enums.BookStatus;
 import org.group4.service.transaction.FineCalculationService;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,10 +35,7 @@ public class ReturningBookController {
   /**
    * The current librarian using the system.
    */
-  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
-
-  @FXML
-  private Button cancelButton;
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   @FXML
   private DatePicker creationDatePicker;
@@ -521,5 +517,4 @@ public class ReturningBookController {
     alert.setContentText(message);
     alert.showAndWait();
   }
-
 }

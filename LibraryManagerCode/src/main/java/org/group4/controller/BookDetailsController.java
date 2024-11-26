@@ -29,7 +29,7 @@ import org.group4.model.book.BookItem;
 import org.group4.model.enums.BookFormat;
 import org.group4.model.enums.BookStatus;
 import org.group4.model.user.Librarian;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 public class BookDetailsController {
 
   // Current librarian obtained from the session manager.
-  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   // The book currently being displayed in the details view.
   private Book currentBook;

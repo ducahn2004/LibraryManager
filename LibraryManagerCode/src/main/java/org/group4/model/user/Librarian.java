@@ -2,14 +2,16 @@ package org.group4.model.user;
 
 import java.time.LocalDate;
 
-import org.group4.service.book.BookItemManagerServiceImpl;
-import org.group4.service.book.BookManagerServiceImpl;
-import org.group4.service.interfaces.BookItemManagerService;
-import org.group4.service.interfaces.BookManagerService;
-import org.group4.service.interfaces.LendingManagerService;
-import org.group4.service.interfaces.MemberManagerService;
-import org.group4.service.transaction.LendingManagerServiceImpl;
-import org.group4.service.user.MemberManagerServiceImpl;
+import org.group4.service.book.BookItemManagerImpl;
+import org.group4.service.book.BookManagerImpl;
+import org.group4.service.interfaces.BookItemManager;
+import org.group4.service.interfaces.BookManager;
+import org.group4.service.interfaces.LendingManager;
+import org.group4.service.interfaces.MemberManager;
+import org.group4.service.interfaces.NotificationManager;
+import org.group4.service.notification.NotificationManagerImpl;
+import org.group4.service.transaction.LendingManagerImpl;
+import org.group4.service.user.MemberManagerImpl;
 
 
 /**
@@ -19,11 +21,11 @@ import org.group4.service.user.MemberManagerServiceImpl;
 public class Librarian extends Person {
 
   String librarianId;
-  private final BookManagerService bookManager;
-  private final BookItemManagerService bookItemManager;
-  private final MemberManagerService memberManager;
-  private final LendingManagerService bookLendingManager;
-
+  private final BookManager bookManager;
+  private final BookItemManager bookItemManager;
+  private final MemberManager memberManager;
+  private final LendingManager bookLendingManager;
+  private final NotificationManager notificationManager;
 
   /**
    * Constructs a new {@code Librarian} object with the specified librarian ID, name, date of birth,
@@ -39,10 +41,11 @@ public class Librarian extends Person {
       String phoneNumber) {
     super(name, dateOfBirth, email, phoneNumber);
     this.librarianId = librarianId;
-    this.bookManager = new BookManagerServiceImpl();
-    this.bookItemManager = new BookItemManagerServiceImpl();
-    this.memberManager = new MemberManagerServiceImpl();
-    this.bookLendingManager = new LendingManagerServiceImpl();
+    this.bookManager = new BookManagerImpl();
+    this.bookItemManager = new BookItemManagerImpl();
+    this.memberManager = new MemberManagerImpl();
+    this.bookLendingManager = new LendingManagerImpl();
+    this.notificationManager = new NotificationManagerImpl();
   }
 
   /**
@@ -59,7 +62,7 @@ public class Librarian extends Person {
    *
    * @return the book manager
    */
-  public BookManagerService getBookManager() {
+  public BookManager getBookManager() {
     return bookManager;
   }
 
@@ -68,7 +71,7 @@ public class Librarian extends Person {
    *
    * @return the book item manager
    */
-  public BookItemManagerService getBookItemManager() {
+  public BookItemManager getBookItemManager() {
     return bookItemManager;
   }
 
@@ -77,7 +80,7 @@ public class Librarian extends Person {
    *
    * @return the member manager
    */
-  public MemberManagerService getMemberManager() {
+  public MemberManager getMemberManager() {
     return memberManager;
   }
 
@@ -86,7 +89,16 @@ public class Librarian extends Person {
    *
    * @return the book lending manager
    */
-  public LendingManagerService getLendingManager() {
+  public LendingManager getLendingManager() {
     return bookLendingManager;
+  }
+
+  /**
+   * Retrieves the notification manager.
+   *
+   * @return the notification manager
+   */
+  public NotificationManager getNotificationManager() {
+    return notificationManager;
   }
 }

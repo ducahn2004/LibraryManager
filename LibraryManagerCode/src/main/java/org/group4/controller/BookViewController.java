@@ -20,7 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.group4.model.book.Book;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 import org.group4.model.user.Librarian;
 
 public class BookViewController {
@@ -41,7 +41,7 @@ public class BookViewController {
   private Button addBookButton;
 
   private final ObservableList<Book> bookList = FXCollections.observableArrayList();
-  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   @FXML
   public void initialize() {

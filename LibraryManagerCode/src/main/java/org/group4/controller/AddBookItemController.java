@@ -16,7 +16,7 @@ import org.group4.model.book.BookItem;
 import org.group4.model.book.Rack;
 import org.group4.model.enums.BookFormat;
 import org.group4.model.enums.BookStatus;
-import org.group4.service.user.SessionManagerService;
+import org.group4.service.user.SessionManager;
 import org.group4.model.user.Librarian;
 
 /**
@@ -45,7 +45,7 @@ public class AddBookItemController {
   private JFXButton cancelButton;
 
   private BookDetailsController parentController;
-  private final Librarian librarian = SessionManagerService.getInstance().getCurrentLibrarian();
+  private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
   private Book currentBook;
   private BookItem bookItem;
 

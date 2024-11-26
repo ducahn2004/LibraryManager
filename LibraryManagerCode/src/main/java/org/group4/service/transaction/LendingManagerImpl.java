@@ -12,7 +12,7 @@ import org.group4.model.enums.NotificationType;
 import org.group4.model.transaction.BookLending;
 import org.group4.model.transaction.Fine;
 import org.group4.model.user.Member;
-import org.group4.service.interfaces.LendingManagerService;
+import org.group4.service.interfaces.LendingManager;
 import org.group4.service.notification.EmailNotificationService;
 import org.group4.service.notification.SystemNotificationService;
 
@@ -21,7 +21,7 @@ import org.group4.service.notification.SystemNotificationService;
  * book items by library members. It includes operations like borrowing a book, returning a book,
  * and calculating fines for late returns.
  */
-public class LendingManagerServiceImpl implements LendingManagerService {
+public class LendingManagerImpl implements LendingManager {
 
   private static final int MAX_BOOKS_BORROWED = 5;
   private final SystemNotificationService systemNotificationService =
