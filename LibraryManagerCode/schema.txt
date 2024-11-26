@@ -14,8 +14,8 @@ CREATE TABLE librarian (
     phone VARCHAR(20) NOT NULL
 );
 
-INSERT INTO librarian (id, name, email, phone)
-VALUES ('admin', 'Nguyễn Tuấn Anh', '2004-23-01', 'managerlibrary01@gmail.com', '0333333333');
+INSERT INTO librarian (id, name, date_of_birth, email, phone)
+VALUES ('admin', 'Nguyễn Tuấn Anh', '2004-01-23', 'managerlibrary01@gmail.com', '0333333333');
 
 CREATE TABLE authors (
     author_id VARCHAR(50) PRIMARY KEY,
