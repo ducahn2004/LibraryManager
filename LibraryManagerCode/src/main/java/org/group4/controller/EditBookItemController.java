@@ -101,12 +101,12 @@ public class EditBookItemController {
   @FXML
   private void saveChanges() {
     // Check for missing required fields
-    if (statusComboBox.getValue() == null ||
-        priceTextField.getText().isEmpty() ||
-        formatComboBox.getValue() == null ||
-        dateOfPurchasePicker.getValue() == null ||
-        publicationDatePicker.getValue() == null ||
-        placeAtTextField.getText().isEmpty()) {
+    if (statusComboBox.getValue() == null
+        || priceTextField.getText().isEmpty()
+        || formatComboBox.getValue() == null
+        || dateOfPurchasePicker.getValue() == null
+        || publicationDatePicker.getValue() == null
+        || placeAtTextField.getText().isEmpty()) {
 
       // Display an alert for incomplete fields
       showAlert(Alert.AlertType.WARNING, "Incomplete Information",

@@ -28,19 +28,14 @@ public class SettingController {
 
   @FXML
   private TextField username, textShowCurrentPassword, textShowNewPassword, textShowNewPassword2;
-
   @FXML
   private JFXButton homeButton;
-
   @FXML
   private PasswordField currentPassword;
-
   @FXML
   private PasswordField newPassword;
-
   @FXML
   private PasswordField newPassword2;
-
   @FXML
   private ImageView iconCloseEyeCurrent, iconOpenEyeCurrent, iconCloseEyeNew, iconOpenEyeNew,
       iconCloseEyeNew2, iconOpenEyeNew2;

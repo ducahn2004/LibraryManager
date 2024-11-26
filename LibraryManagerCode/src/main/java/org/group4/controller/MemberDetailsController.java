@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -143,20 +142,5 @@ public class MemberDetailsController {
   private void openReturningBookPage(BookItem bookItem) {
     Stage currentStage = (Stage) tableView.getScene().getWindow();
     PageLoader.openReturningBookPage(currentStage, bookItem, "memberDetails");
-  }
-
-  /**
-   * Shows an alert to the user.
-   *
-   * @param type    The type of alert (e.g., ERROR, INFORMATION).
-   * @param title   The title of the alert window.
-   * @param content The content of the alert message.
-   */
-  private void showAlert(Alert.AlertType type, String title, String content) {
-    Alert alert = new Alert(type);
-    alert.setTitle(title);
-    alert.setHeaderText(null);  // Optional: leave header empty
-    alert.setContentText(content);
-    alert.showAndWait();
   }
 }

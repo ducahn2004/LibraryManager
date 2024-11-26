@@ -106,9 +106,8 @@ public class BookDetailsController {
    * Sets the details of the selected book.
    *
    * @param book The selected book.
-   * @throws SQLException If there is an error accessing the database.
    */
-  public void setItemDetail(Book book) throws SQLException {
+  public void setItemDetail(Book book) {
     this.currentBook = book;
     displayBookDetails();
     loadData();
@@ -211,20 +210,25 @@ public class BookDetailsController {
    * Opens the Edit Book Item page for the selected item.
    *
    * @param selectedItem The book item to edit.
-   * @throws IOException If there is an error loading the FXML file.
    */
-  private void openEditBookItemPage(BookItem selectedItem) throws IOException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("EditBookItem.fxml"));
-    Stage editStage = new Stage();
-    editStage.setScene(new Scene(loader.load()));
+  private void openEditBookItemPage(BookItem selectedItem) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("EditBookItem.fxml"));
+      Parent root = loader.load();
 
-    EditBookItemController controller = loader.getController();
-    controller.setBookItem(selectedItem);
+      EditBookItemController controller = loader.getController();
+      controller.setBookItem(selectedItem);
 
-    editStage.setTitle("Edit Book Item");
-    editStage.show();
+      Stage stage = new Stage();
+      stage.setTitle("Edit Book Item");
+      stage.setScene(new Scene(root));
+      stage.show();
 
-    editStage.setOnHiding(event -> tableView.refresh());
+      stage.setOnHiding(event -> tableView.refresh());
+    } catch (IOException e) {
+      logger.error("Failed to open edit page", e);
+      showAlert("Failed to open edit page. Please try again.");
+    }
   }
 
   /**
@@ -406,11 +410,7 @@ public class BookDetailsController {
 
       editLink.setOnAction((ActionEvent event) -> {
         BookItem item = getTableView().getItems().get(getIndex());
-        try {
-          openEditBookItemPage(item);
-        } catch (IOException e) {
-          logger.error("Failed to open edit page", e);
-        }
+        openEditBookItemPage(item);
       });
 
       deleteLink.setOnAction((ActionEvent event) -> {

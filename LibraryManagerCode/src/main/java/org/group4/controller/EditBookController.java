@@ -15,8 +15,7 @@ import org.group4.model.user.Librarian;
  * Controller class for editing book details. Handles the logic for updating book information and
  * interacting with the UI components in the edit book form.
  */
-public class
-EditBookController {
+public class EditBookController {
 
   @FXML
   private TextField bookISBN;         // Text field for the book ISBN
@@ -113,18 +112,24 @@ EditBookController {
    * Updates the book in the system. Throws an exception if the update fails due to a duplicate
    * ISBN.
    */
-  private void returnCheckEditBook() throws SQLException {
-    boolean successEdit = librarian.getBookManager().update(currentBook);
+  private void returnCheckEditBook() {
+    try {
+      boolean successEdit = librarian.getBookManager().update(currentBook);
 
-    if (successEdit) {
-      // Log the successful update (TODO: Add notifications if implemented)
-      System.out.println(
-          "Book with ISBN: " + currentBook.getISBN() + " has been edited successfully.");
-    } else {
-      // Log the failure and throw an exception
+      if (successEdit) {
+        System.out.println(
+            "Book with ISBN: " + currentBook.getISBN() + " has been edited successfully.");
+      } else {
+        // Log the failure and throw an exception
+        System.out.println("Failed to edit book with ISBN: " + currentBook.getISBN());
+        throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
+      }
+    } catch (SQLException e) {
+      // Log the SQL exception and show an error alert
       System.out.println("Failed to edit book with ISBN: " + currentBook.getISBN());
-      throw new IllegalArgumentException("Book with the same ISBN already exists in the library.");
+      showAlert("Database Error", "An error occurred while updating the book. Please try again later.");
     }
+
   }
 
   /**

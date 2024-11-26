@@ -16,14 +16,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Controller for the Admin Pane.
- * <p>
- * This class handles the interactions and updates for the Admin Pane, including displaying
- * statistics, handling navigation, and updating charts.
+ * <p> This class handles the interactions and updates for the Admin Pane, including displaying
+ * statistics, handling navigation, and updating charts. </p>
  */
 public class AdminPaneController {
 
+  @FXML
   public Label total_bookItem;
-
+  @FXML
   public Label total_books_borrowed;
   @FXML
   private Label total_Members;
@@ -47,11 +47,9 @@ public class AdminPaneController {
   private JFXButton notificationButton;
   @FXML
   private JFXButton closeButton;
-  
-//  private Stage stage;
 
   private static final Logger logger = LoggerFactory.getLogger(AdminPaneController.class);
-  Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private static final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
 
   /**
    * Updates the total number of members displayed in the UI.
@@ -61,10 +59,9 @@ public class AdminPaneController {
       int totalMembers = librarian.getMemberManager().getAll().size();
       total_Members.setText(String.valueOf(totalMembers));
     } catch (SQLException e) {
-      logger.error("Error while");
+      logger.error("Error while updating total members");
     }
   }
-
 
   /**
    * Updates the total number of books displayed in the UI.
@@ -78,6 +75,9 @@ public class AdminPaneController {
     }
   }
 
+  /**
+   * Updates the total number of books borrowed displayed in the UI.
+   */
   public void updateBooksBorrowed() {
     try {
       int totalBooksBorrowed = librarian.getLendingManager().getAll().size();
@@ -87,6 +87,9 @@ public class AdminPaneController {
     }
   }
 
+  /**
+   * Updates the total number of book items displayed in the UI.
+   */
   public void updateBookItems() {
     try {
       int totalBookItems = librarian.getBookItemManager().getAll().size();
@@ -95,7 +98,6 @@ public class AdminPaneController {
       logger.error("Error while updating book items");
     }
   }
-
 
   /**
    * Updates the bar chart with total members and total books data.
@@ -117,12 +119,11 @@ public class AdminPaneController {
       bookSeries.getData().add(new XYChart.Data<>("Total Books", totalBooks));
 
       // Create and populate the "Total BookItems" series
-      XYChart.Series<String, Number> BookItemSeries = new XYChart.Series<>();
-      BookItemSeries.setName("Book Items");
-      BookItemSeries.getData()
-          .add(new XYChart.Data<>("Book Items", totalBookItems));
+      XYChart.Series<String, Number> bookItemSeries = new XYChart.Series<>();
+      bookItemSeries.setName("Book Items");
+      bookItemSeries.getData().add(new XYChart.Data<>("Book Items", totalBookItems));
 
-      //Create and populate the "Books Borrowed" series
+      // Create and populate the "Books Borrowed" series
       XYChart.Series<String, Number> booksBorrowedSeries = new XYChart.Series<>();
       booksBorrowedSeries.setName("Books Borrowed");
       booksBorrowedSeries.getData().add(new XYChart.Data<>("Books Borrowed", totalBooksBorrowed));
@@ -132,10 +133,13 @@ public class AdminPaneController {
       memberSeries.setName("Members");
       memberSeries.getData().add(new XYChart.Data<>("Total Members", totalMembers));
 
-      // Add all series to the bar chart
-      home_chart.getData().addAll(memberSeries, BookItemSeries, bookSeries, booksBorrowedSeries);
+      // Add all series to the bar chart individually
+      home_chart.getData().add(memberSeries);
+      home_chart.getData().add(bookItemSeries);
+      home_chart.getData().add(bookSeries);
+      home_chart.getData().add(booksBorrowedSeries);
     } catch (SQLException e) {
-      logger.error("Error while updating home chart");
+      logger.error("Error while updating home chart", e);
     }
   }
 

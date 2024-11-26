@@ -30,19 +30,14 @@ public class LoginController {
 
   @FXML
   private TextField textShowPassword; // Text field to display the password in plain text.
-
   @FXML
   private ImageView iconOpen_eye; // Icon for toggling password visibility (visible state).
-
   @FXML
   private ImageView iconClose_eye; // Icon for toggling password visibility (hidden state).
-
   @FXML
   private TextField usernameField; // Input field for the username.
-
   @FXML
   private PasswordField passwordField; // Input field for the password (masked).
-
   @FXML
   private Button loginButton; // Button to initiate the login process.
 

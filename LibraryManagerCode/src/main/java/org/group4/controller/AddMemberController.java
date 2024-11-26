@@ -1,7 +1,5 @@
 package org.group4.controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -79,11 +77,7 @@ public class AddMemberController {
 
     } catch (IllegalArgumentException e) {
       // Display an error message if input validation fails
-      showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
+      showAlert("Invalid Input", e.getMessage());
     }
   }
 
@@ -93,7 +87,9 @@ public class AddMemberController {
    * @throws IllegalArgumentException If any input is invalid.
    */
   private void validateInputs() throws IllegalArgumentException {
-    String regex = "([A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)(\\s[A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)*";
+    String regex = "([A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠ"
+        + "ỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)(\\s[A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯỲÝỴÝĂẮẰẲẴẶÂẦẤẨẪẬÀÁÃẠẢÈÉẺẼẸÊỀẾỂỄỆÌ"
+        + "ÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ]\\p{L}*)*";
 
     // Ensure all required fields are filled
     if (memberName.getText().isEmpty() || memberEmail.getText().isEmpty() ||
@@ -122,7 +118,8 @@ public class AddMemberController {
    * <p>
    * Checks for duplicate entries before adding and updates the parent controller if successful.
    */
-  private void addMemberToLibrary() throws IOException, SQLException {
+  private void addMemberToLibrary() {
+
     // Verify that the member does not already exist
     returnCheckAddMember();
 
@@ -185,24 +182,23 @@ public class AddMemberController {
                 + " has been added successfully.");
       } else {
         // Show an alert instead of throwing an exception for duplicate
-        showAlert(Alert.AlertType.ERROR, "Duplicate Member",
+        showAlert("Duplicate Member",
             "Member with the same information already exists in the library.");
       }
     } catch (Exception e) {
       // Catch any unexpected errors and show an alert
-      showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while adding the member.");
+      showAlert("Error", "An error occurred while adding the member.");
     }
   }
 
   /**
    * Shows an alert dialog with a specified type, title, and message.
    *
-   * @param alertType The type of the alert (e.g., ERROR, INFORMATION).
-   * @param title     The title of the alert dialog.
-   * @param message   The message content of the alert dialog.
+   * @param title   The title of the alert dialog.
+   * @param message The message content of the alert dialog.
    */
-  private void showAlert(Alert.AlertType alertType, String title, String message) {
-    Alert alert = new Alert(alertType);
+  private void showAlert(String title, String message) {
+    Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle(title);
     alert.setContentText(message);
     alert.showAndWait();

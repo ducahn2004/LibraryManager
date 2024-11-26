@@ -29,9 +29,6 @@ public class SceneLoader {
     } catch (IOException e) {
       showAlert("Error",
           "Failed to load the book details view. Please try again.");
-    } catch (SQLException e) {
-      showAlert("Database Error",
-          "An error occurred while accessing the database. Please try again.");
     } catch (Exception e) {
       showAlert("Error",
           "An unexpected error occurred. Please try again.");

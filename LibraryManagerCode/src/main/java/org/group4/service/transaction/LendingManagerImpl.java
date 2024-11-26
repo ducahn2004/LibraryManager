@@ -121,9 +121,4 @@ public class LendingManagerImpl implements LendingManager {
   public List<BookLending> getByMemberId(String memberId) {
     return FactoryDAO.getBookLendingDAO().getByMemberId(memberId);
   }
-
-  @Override
-  public List<BookLending> getByBarcode(String barcode) {
-    return FactoryDAO.getBookLendingDAO().getByBarcode(barcode);
-  }
 }

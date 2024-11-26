@@ -44,8 +44,8 @@ public class AddBookItemController {
   @FXML
   private JFXButton cancelButton;
 
-  private BookDetailsController parentController;
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  private BookDetailsController parentController;
   private Book currentBook;
   private BookItem bookItem;
 
@@ -176,16 +176,5 @@ public class AddBookItemController {
     alert.setTitle(title);
     alert.setContentText(message);
     alert.showAndWait();
-  }
-
-  /**
-   * Sets the current book.
-   * <p>
-   * This method allows the book being edited or added to be set from outside this controller.
-   *
-   * @param currentBook The book to be set as the current book.
-   */
-  public void setCurrentBook(Book currentBook) {
-    this.currentBook = currentBook;
   }
 }

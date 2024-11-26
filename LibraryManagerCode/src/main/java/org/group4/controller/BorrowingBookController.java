@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class BorrowingBookController {
 
+  /** The logger for the BorrowingBookController class. */
   private static final Logger logger = LoggerFactory.getLogger(BorrowingBookController.class);
 
   /**
@@ -37,46 +38,32 @@ public class BorrowingBookController {
 
   @FXML
   private Label priceField;
-
   @FXML
   private TextField memberIdField;
-
   @FXML
   private TextField memberNameField;
-
   @FXML
   private DatePicker dobDatePicker;
-
   @FXML
   private TextField emailField;
-
   @FXML
   private TextField phoneField;
-
   @FXML
   private Label barcodeField;
-
   @FXML
   private Label placeField;
-
   @FXML
   private Label subjectField;
-
   @FXML
   private Label languageField;
-
   @FXML
   private Label authorField;
-
   @FXML
   private Label noPageField;
-
   @FXML
   private Label isbnField;
-
   @FXML
   private Label titleField;
-
   @FXML
   private Label referenceOnlyCheck;
 

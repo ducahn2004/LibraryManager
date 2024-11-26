@@ -14,7 +14,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import org.group4.dao.base.FactoryDAO;
 import org.group4.service.user.SessionManager;
 import org.group4.model.notification.EmailNotification;
 import org.group4.model.notification.Notification;

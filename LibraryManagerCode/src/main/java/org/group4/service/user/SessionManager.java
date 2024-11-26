@@ -43,11 +43,4 @@ public class SessionManager {
   public Librarian getCurrentLibrarian() {
     return currentLibrarian;
   }
-
-  /**
-   * Logs out the current librarian.
-   */
-  public void logout() {
-    this.currentLibrarian = null;
-  }
 }

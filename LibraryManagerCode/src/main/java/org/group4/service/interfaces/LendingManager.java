@@ -42,12 +42,4 @@ public interface LendingManager {
    * @return a list of all book lendings by the member
    */
   List<BookLending> getByMemberId(String memberId);
-
-  /**
-   * Get all book lendings by book barcode.
-   *
-   * @param barcode the book barcode
-   * @return a list of all book lendings of the book
-   */
-  List<BookLending> getByBarcode(String barcode);
 }
