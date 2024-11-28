@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -36,6 +38,8 @@ public class ReturningBookController {
    * The current librarian using the system.
    */
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
+  @FXML
+  private Button submitButton;
 
   @FXML
   private DatePicker creationDatePicker;
@@ -327,9 +331,23 @@ public class ReturningBookController {
    * @param actionEvent the action event triggering the submission
    */
   public void handleSubmit(ActionEvent actionEvent) {
-    try {
-      // Attempt to return the book to the library
-      returningBookToLibrary(findBookLendingById(currentBookItem.getBarcode()));
+    // Disable the submit button to prevent multiple clicks;
+    submitButton.setDisable(true);
+
+    // Create a Task to handle the return operation in the background
+    Task<Void> returnBookTask = new Task<>() {
+      @Override
+      protected Void call() throws Exception {
+        // Perform the return book operation
+        returningBookToLibrary(findBookLendingById(currentBookItem.getBarcode()));
+        return null; // Task requires Void as return type
+      }
+    };
+
+    // Define the action when the task succeeds
+    returnBookTask.setOnSucceeded(event -> {
+      // Re-enable the submit button
+      submitButton.setDisable(false);
 
       // Show a success alert after the operation is successful
       showAlert(AlertType.INFORMATION, "Success", "Book has been returned successfully.");
@@ -340,15 +358,28 @@ public class ReturningBookController {
       } else {
         loadBookDetail();
       }
+    });
 
-    } catch (IllegalArgumentException e) {
-      // Handle any IllegalArgumentException (e.g., invalid data)
-      showAlert(AlertType.ERROR, "Input Error", "Invalid input or book lending not found.");
-    } catch (Exception e) {
-      // Catch any other exceptions and show a generic error alert
-      showAlert(AlertType.ERROR, "Error", "An unexpected error occurred.");
-    }
+    // Define the action when the task fails
+    returnBookTask.setOnFailed(event -> {
+      // Re-enable the submit button
+      submitButton.setDisable(false);
+
+      Throwable exception = returnBookTask.getException();
+      if (exception instanceof IllegalArgumentException) {
+        // Handle specific exception: IllegalArgumentException
+        showAlert(AlertType.ERROR, "Input Error", "Invalid input or book lending not found.");
+      } else {
+        // Handle any other unexpected exceptions
+        showAlert(AlertType.ERROR, "Error",
+            "An unexpected error occurred: " + exception.getMessage());
+      }
+    });
+
+    // Run the task on a background thread
+    new Thread(returnBookTask).start();
   }
+
 
   /**
    * Handles the action of canceling the return and navigating to the previous page.

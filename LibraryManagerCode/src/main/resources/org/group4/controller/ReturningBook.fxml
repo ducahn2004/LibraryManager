@@ -159,8 +159,9 @@
         <!-- Submit and Cancel Buttons -->
         <HBox prefHeight="100.0" prefWidth="200.0">
           <Pane prefHeight="100.0" prefWidth="537.0"/>
-          <Button onAction="#handleSubmit" style="-fx-font-size: 15;" text="Submit"/>
-          <Button fx:id="cancelButton" onAction="#handleCancel" style="-fx-font-size: 15;"
+          <Button fx:id="submitButton" onAction="#handleSubmit" style="-fx-font-size: 15;"
+            text="Submit"/>
+          <Button onAction="#handleCancel" style="-fx-font-size: 15;"
             text="Cancel"/>
         </HBox>
       </VBox>

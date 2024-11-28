@@ -3,6 +3,7 @@ package org.group4.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,7 +39,8 @@ public class BorrowingBookController {
    * The logger for the BorrowingBookController class.
    */
   private final Librarian librarian = SessionManager.getInstance().getCurrentLibrarian();
-  public Button cancelButton;
+  @FXML
+  private Button submitButton;
 
   @FXML
   private Label priceField;
@@ -160,6 +162,9 @@ public class BorrowingBookController {
    * @param actionEvent The event triggered by clicking the submit button.
    */
   public void handleSubmit(ActionEvent actionEvent) {
+    // Disable the submit button to prevent multiple clicks
+    submitButton.setDisable(true);
+
     try {
       // Check if any of the required fields are empty
       if (memberNameField.getText().isEmpty() || memberIdField.getText().isEmpty() ||
@@ -168,41 +173,64 @@ public class BorrowingBookController {
         // Show an alert if any of the required fields are empty
         showAlert(Alert.AlertType.WARNING, "Incomplete Information",
             "Please ensure all required fields are filled before submitting the form.");
+        submitButton.setDisable(false); // Re-enable the button
         return;
       }
+
       // Check if the book item is available
       if (currentBookItem != null && currentBookItem.getStatus() == BookStatus.AVAILABLE) {
-        // Proceed with creating the lending record and borrowing the book
-        Optional<Member> memberOptional = librarian.getMemberManager()
-            .getById(memberIdField.getText());
-        if (memberOptional.isEmpty()) {
-          showAlert(AlertType.ERROR, "Member Not Found",
-              "The member with the given ID was not found.");
-          return;
-        }
+        Task<Void> submitTask = new Task<>() {
+          @Override
+          protected Void call() throws Exception {
+            Optional<Member> memberOptional = librarian.getMemberManager()
+                .getById(memberIdField.getText());
+            if (memberOptional.isEmpty()) {
+              throw new Exception("Member Not Found: The member with the given ID was not found.");
+            }
 
-        BookLending currentBookLending = new BookLending(currentBookItem, memberOptional.get());
-        borrowingBook(currentBookLending.getBookItem(), currentBookLending.getMember());
+            BookLending currentBookLending = new BookLending(currentBookItem, memberOptional.get());
+            borrowingBook(currentBookLending.getBookItem(), currentBookLending.getMember());
+            return null; // Task requires Void as return type
+          }
+        };
 
-        // Show an alert if the book is successfully borrowed
-        showAlert(AlertType.INFORMATION, "Book Borrowed",
-            "The book has been successfully borrowed.");
+        // Handle task success
+        submitTask.setOnSucceeded(event -> {
+          // Re-enable the submit button
+          submitButton.setDisable(false);
 
-        // Load the book detail page after successful borrowing
-        loadBookDetail();
+          showAlert(Alert.AlertType.INFORMATION, "Book Borrowed",
+              "The book has been successfully borrowed.");
+          loadBookDetail(); // Load book details after successful borrowing
+        });
+
+        // Handle task failure
+        submitTask.setOnFailed(event -> {
+          // Re-enable the submit button
+          submitButton.setDisable(false);
+
+          Throwable exception = submitTask.getException();
+          if (exception != null) {
+            showAlert(Alert.AlertType.ERROR, "Error",
+                "An error occurred: " + exception.getMessage());
+            logger.error("Error in handleSubmit Task: {}", exception.getMessage(), exception);
+          }
+        });
+
+        // Run the task on a background thread
+        new Thread(submitTask).start();
       }
-    } catch (SQLException e) {
-      // Handle SQL exceptions if there are issues interacting with the database
-      showAlert(AlertType.ERROR, "Database Error",
-          "An error occurred while access borrowing book database. Please try again later.");
-      logger.error("SQLException in handleSubmit: {}", e.getMessage(), e);
     } catch (Exception e) {
-      // Catch any other unexpected exceptions
-      showAlert(AlertType.ERROR, "Unexpected Error",
-          "An unexpected error occurred in borrowing book. Please try again later.");
+      // Re-enable the submit button for unexpected exceptions
+      submitButton.setDisable(false);
+
+      // Catch any unexpected exceptions
+      showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+          "An unexpected error occurred. Please try again later.");
       logger.error("Unexpected error in handleSubmit: {}", e.getMessage(), e);
     }
   }
+
 
   /**
    * Cancels the borrowing process and reloads the book details view.
