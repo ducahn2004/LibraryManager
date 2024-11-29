@@ -1,6 +1,7 @@
 package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
+import java.time.LocalDate;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -113,7 +114,16 @@ public class EditBookItemController {
           "Please ensure all required fields are filled before saving.");
       return; // Stop further execution
     }
-
+    if (dateOfPurchasePicker.getValue().isAfter(LocalDate.now())) {
+      showAlert(Alert.AlertType.WARNING, "Wrong Information",
+          "Date of purchase cannot be a future date.");
+      return;
+    }
+    if (publicationDatePicker.getValue().isAfter(LocalDate.now())) {
+      showAlert(Alert.AlertType.WARNING, "Wrong Information",
+          "Publication Date cannot be a future date.");
+      return;
+    }
     try {
       // Update the current book item's details
       currentItem.setReferenceOnly(referenceOnlyCheckBox.isSelected());
