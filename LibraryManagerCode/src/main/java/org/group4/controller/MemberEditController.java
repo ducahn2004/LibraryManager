@@ -2,6 +2,7 @@ package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -108,7 +109,12 @@ public class MemberEditController {
           "Name must start with uppercase letters for each word.");
       return false;
     }
-
+    //Validate Birth
+    if (isValidBirth()) {
+      showAlert(AlertType.WARNING, "Invalid Birth Date",
+          "Birth date cannot be in the future.");
+      return false;
+    }
     // Validate email format
     if (!isValidEmail(memberEmail.getText())) {
       showAlert(AlertType.WARNING, "Invalid Email", "Please enter a valid email address.");
@@ -156,6 +162,10 @@ public class MemberEditController {
    */
   private boolean isValidPhone(String phone) {
     return phone.matches("\\d{10}");
+  }
+
+  private boolean isValidBirth() {
+    return memberBirth.getValue().isAfter(LocalDate.now());
   }
 
   private void returnCheckEditMember() {
