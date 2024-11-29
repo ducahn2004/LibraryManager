@@ -30,17 +30,29 @@ public class Fine {
     this.amount = amount;
   }
 
-  /** Returns the amount of the fine. */
+  /**
+   * Returns the amount of the fine.
+   *
+   * @return the fine amount
+   */
   public double getAmount() {
     return amount;
   }
 
-  /** Sets the amount of the fine. */
+  /**
+   * Sets the amount of the fine.
+   *
+   * @param amount the new fine amount
+   */
   public void setAmount(double amount) {
     this.amount = amount;
   }
 
-  /** Returns the book lending information. */
+  /**
+   * Returns the book lending associated with the fine.
+   *
+   * @return the book lending
+   */
   public BookLending getBookLending() {
     return bookLending;
   }
