@@ -43,7 +43,6 @@ public class BookItemTest {
         LocalDate.now(), // dateOfPurchase
         LocalDate.of(2020, 5, 20), // publicationDate
         new Rack(1, "A1")  // Pass both an integer and a string
-
     );
   }
 

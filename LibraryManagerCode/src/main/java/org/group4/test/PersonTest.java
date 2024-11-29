@@ -11,7 +11,9 @@ public class PersonTest {
 
   private Person person;
 
-  // Concrete subclass of Person for testing purposes
+  /**
+   * Concrete subclass of Person for testing purposes.
+   */
   private class PersonTestSubclass extends Person {
 
     public PersonTestSubclass(String name, LocalDate dateOfBirth, String email,

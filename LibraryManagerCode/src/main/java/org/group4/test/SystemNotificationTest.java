@@ -12,8 +12,7 @@ import static org.junit.Assert.*;
 /**
  * Unit test class for the SystemNotification class.
  */
-public class
-SystemNotificationTest {
+public class SystemNotificationTest {
 
   private SystemNotification systemNotification;
 
@@ -50,8 +49,8 @@ SystemNotificationTest {
     String content = "This is a reminder that your due date is approaching.";
     LocalDate createdOn = LocalDate.now();
 
-    SystemNotification notification = new SystemNotification(notificationId, type, content,
-        createdOn);
+    SystemNotification notification =
+        new SystemNotification(notificationId, type, content, createdOn);
 
     // Assert
     assertNotNull(notification);

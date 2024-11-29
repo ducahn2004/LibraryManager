@@ -14,7 +14,7 @@ public class RackTest {
   public void setUp() {
     rack = new Rack(1, "A1");
   }
-
+  
   @Test
   public void testGetNumberRack() {
     assertEquals(1, rack.getNumberRack());

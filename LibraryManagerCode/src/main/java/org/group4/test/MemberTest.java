@@ -1,12 +1,11 @@
 package org.group4.test;
 
+import static org.junit.Assert.*;
+
+import java.time.LocalDate;
 import org.group4.model.user.Member;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.time.LocalDate;
-
-import static org.junit.Assert.*;
 
 public class MemberTest {
 
@@ -14,8 +13,9 @@ public class MemberTest {
 
   @Before
   public void setUp() {
-    member = new Member("M001", "John Smith", LocalDate.of(1990, 5, 10),
-        "john.smith@example.com", "123-456-7890", 5);
+    member = new Member(
+        "M001", "John Smith", LocalDate.of(1990, 5, 10), "john.smith@example.com",
+        "123-456-7890", 5);
   }
 
   @Test
@@ -43,11 +43,12 @@ public class MemberTest {
 
   @Test
   public void testToString() {
-    String expectedToString = "  memberId = 'M001',\n" +
-        "  name = 'John Smith',\n" +
-        "  dateOfBirth = 1990-05-10,\n" +
-        "  email = 'john.smith@example.com',\n" +
-        "  phoneNumber = '123-456-7890'\n";
+    String expectedToString =
+        "  memberId = 'M001',\n" +
+            "  name = 'John Smith',\n" +
+            "  dateOfBirth = 1990-05-10,\n" +
+            "  email = 'john.smith@example.com',\n" +
+            "  phoneNumber = '123-456-7890'\n";
     assertEquals(expectedToString, member.toString());
   }
 }

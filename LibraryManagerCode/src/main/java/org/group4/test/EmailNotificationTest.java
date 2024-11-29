@@ -1,13 +1,12 @@
 package org.group4.test;
 
+import static org.junit.Assert.*;
+
+import java.time.LocalDate;
 import org.group4.model.enums.NotificationType;
 import org.group4.model.notification.EmailNotification;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.time.LocalDate;
-
-import static org.junit.Assert.*;
 
 public class EmailNotificationTest {
 
@@ -17,7 +16,7 @@ public class EmailNotificationTest {
   public void setUp() {
     // Set up any required data for the tests
     String notificationId = "123";
-    NotificationType type = NotificationType.BOOK_BORROW_SUCCESS; // Sample notification type
+    NotificationType type = NotificationType.BOOK_BORROW_SUCCESS;
     String content = "You have successfully borrowed the book.";
     String email = "user@example.com";
     LocalDate createdOn = LocalDate.now();
@@ -37,8 +36,7 @@ public class EmailNotificationTest {
 
     // Assert
     assertNotNull(notification);
-    assertEquals(type,
-        notification.getType());  // Assuming getType() is a method in the parent class Notification
+    assertEquals(type, notification.getType());
     assertEquals(email, notification.getEmail());
   }
 
@@ -55,13 +53,13 @@ public class EmailNotificationTest {
   public void testConstructorWithAllFields() {
     // Act
     String notificationId = "124";
-    NotificationType type = NotificationType.DUE_DATE_REMINDER; // Sample notification type
+    NotificationType type = NotificationType.DUE_DATE_REMINDER;
     String content = "This is a reminder that your due date is approaching.";
     String email = "reminder@example.com";
     LocalDate createdOn = LocalDate.now();
 
-    EmailNotification notification = new EmailNotification(notificationId, type, content, email,
-        createdOn);
+    EmailNotification notification = new EmailNotification(
+        notificationId, type, content, email, createdOn);
 
     // Assert
     assertNotNull(notification);

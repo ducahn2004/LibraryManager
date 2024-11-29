@@ -7,6 +7,9 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the {@link Account} class.
+ */
 public class AccountTest {
 
   private Account account;
@@ -14,54 +17,54 @@ public class AccountTest {
 
   @Before
   public void setUp() {
-    // Khởi tạo một account với ID và mật khẩu
+    // Initialize an account with ID and password
     plainTextPassword = "securePassword123";
     account = new Account("user123", Account.hashPassword(plainTextPassword));
   }
 
   @Test
   public void testConstructor() {
-    // Kiểm tra constructor của Account
+    // Test the constructor of Account
     assertNotNull(account);
     assertEquals("user123", account.getId());
     assertNotNull(account.getPassword());
     assertNotEquals(plainTextPassword,
-        account.getPassword()); // Mật khẩu đã được hash, không giống mật khẩu gốc
+        account.getPassword()); // The password is hashed, so it is not the same as the original password
   }
 
   @Test
   public void testGetId() {
-    // Kiểm tra phương thức getId()
+    // Test the getId() method
     assertEquals("user123", account.getId());
   }
 
   @Test
   public void testGetPassword() {
-    // Kiểm tra phương thức getPassword()
+    // Test the getPassword() method
     assertNotNull(account.getPassword());
-    assertNotEquals(plainTextPassword, account.getPassword()); // Mật khẩu đã được mã hóa
+    assertNotEquals(plainTextPassword, account.getPassword()); // The password is hashed
   }
 
   @Test
   public void testSetPassword() {
-    // Kiểm tra phương thức setPassword()
+    // Test the setPassword() method
     String newPlainTextPassword = "newSecurePassword";
     account.setPassword(newPlainTextPassword);
 
-    assertNotEquals(newPlainTextPassword, account.getPassword()); // Mật khẩu mới phải được mã hóa
+    assertNotEquals(newPlainTextPassword,
+        account.getPassword()); // The new password should be hashed
     assertTrue(BCrypt.checkpw(newPlainTextPassword,
-        account.getPassword())); // Kiểm tra mật khẩu gốc với mật khẩu đã mã hóa
+        account.getPassword())); // Verify the original password against the hashed password
   }
 
   @Test
   public void testHashPassword() {
-    // Kiểm tra phương thức hashPassword()
+    // Test the hashPassword() method
     String hashedPassword = Account.hashPassword(plainTextPassword);
     assertNotNull(hashedPassword);
     assertNotEquals(plainTextPassword,
-        hashedPassword); // Mật khẩu đã mã hóa không giống mật khẩu gốc
+        hashedPassword); // The hashed password is different from the original password
     assertTrue(BCrypt.checkpw(plainTextPassword,
-        hashedPassword)); // Kiểm tra mật khẩu gốc với mật khẩu đã mã hóa
+        hashedPassword)); // Verify the original password against the hashed password
   }
 }
-

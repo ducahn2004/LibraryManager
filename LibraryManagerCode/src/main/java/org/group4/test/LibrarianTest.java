@@ -1,10 +1,9 @@
 package org.group4.test;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-
 import org.group4.model.user.Librarian;
 import org.group4.service.interfaces.BookItemManager;
 import org.group4.service.interfaces.BookManager;
@@ -30,8 +29,9 @@ public class LibrarianTest {
     lendingManagerMock = mock(LendingManager.class);
 
     // Create the librarian with mocked services
-    librarian = new Librarian("L123", "John Doe", LocalDate.of(1985, 5, 15),
-        "john.doe@example.com", "123-456-7890");
+    librarian = new Librarian(
+        "L123", "John Doe", LocalDate.of(1985, 5, 15), "john.doe@example.com",
+        "123-456-7890");
   }
 
   @Test

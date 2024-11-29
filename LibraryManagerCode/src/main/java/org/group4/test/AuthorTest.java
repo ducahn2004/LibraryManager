@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the {@link Author} class.
+ */
 public class AuthorTest {
 
   private Author author;

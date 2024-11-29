@@ -1,14 +1,13 @@
 package org.group4.test;
 
+import static org.junit.Assert.*;
+
+import java.util.HashSet;
+import java.util.Set;
 import org.group4.model.book.Author;
 import org.group4.model.book.Book;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.*;
 
 public class BookTest {
 
@@ -17,19 +16,25 @@ public class BookTest {
 
   @Before
   public void setUp() {
-    // Tạo một tập hợp các tác giả
+    // Create a set of authors
     authors = new HashSet<>();
     authors.add(new Author("A123", "Author 1"));
     authors.add(new Author("A456", "Author 2"));
 
-    // Khởi tạo một đối tượng Book với các giá trị mẫu
-    book = new Book("ISBN12345", "Sample Book Title", "Fiction", "Sample Publisher", "English", 300,
+    // Initialize a Book object with sample values
+    book = new Book(
+        "ISBN12345",
+        "Sample Book Title",
+        "Fiction",
+        "Sample Publisher",
+        "English",
+        300,
         authors);
   }
 
   @Test
   public void testConstructor() {
-    // Kiểm tra giá trị của các thuộc tính
+    // Verify the values of the attributes
     assertEquals("ISBN12345", book.getISBN());
     assertEquals("Sample Book Title", book.getTitle());
     assertEquals("Fiction", book.getSubject());
@@ -41,7 +46,7 @@ public class BookTest {
 
   @Test
   public void testSetters() {
-    // Thiết lập giá trị mới cho các thuộc tính của sách
+    // Set new values for the book's attributes
     Set<Author> newAuthors = new HashSet<>();
     newAuthors.add(new Author("B789", "New Author"));
 
@@ -53,7 +58,7 @@ public class BookTest {
     book.setNumberOfPages(150);
     book.setAuthors(newAuthors);
 
-    // Kiểm tra các giá trị đã được cập nhật đúng không
+    // Verify the updated values
     assertEquals("NEWISBN", book.getISBN());
     assertEquals("New Title", book.getTitle());
     assertEquals("Non-Fiction", book.getSubject());
@@ -65,7 +70,7 @@ public class BookTest {
 
   @Test
   public void testAuthorsToString() {
-    // Kiểm tra phương thức authorsToString()
+    // Verify the authorsToString() method
     String authorsString = book.authorsToString();
     assertTrue(authorsString.contains("Author 1"));
     assertTrue(authorsString.contains("Author 2"));
@@ -73,7 +78,7 @@ public class BookTest {
 
   @Test
   public void testToString() {
-    // Kiểm tra phương thức toString()
+    // Verify the toString() method
     String bookString = book.toString();
     assertTrue(bookString.contains("ISBN = 'ISBN12345'"));
     assertTrue(bookString.contains("title = 'Sample Book Title'"));
