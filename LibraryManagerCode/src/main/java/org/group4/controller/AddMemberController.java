@@ -1,5 +1,6 @@
 package org.group4.controller;
 
+import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -101,7 +102,9 @@ public class AddMemberController {
     if (!memberName.getText().matches(regex)) {
       throw new IllegalArgumentException("Name must start with uppercase letters for each word.");
     }
-
+    if (memberBirth.getValue().isAfter(LocalDate.now())) {
+      throw new IllegalArgumentException("Birthdate cannot be a future date.");
+    }
     // Validate the email format
     if (!memberEmail.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
       throw new IllegalArgumentException("Please enter a valid email address.");
