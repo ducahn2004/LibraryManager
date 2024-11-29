@@ -2,6 +2,7 @@ package org.group4.controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -82,16 +83,25 @@ public class AddBookItemController {
    */
   public void saveBookItem(ActionEvent actionEvent) {
     try {
+      if (dateOfPurchasePicker.getValue().isAfter(LocalDate.now())) {
+        throw new IllegalArgumentException("Date of purchase cannot be a future date.");
+      }
+      if (publicationDatePicker.getValue().isAfter(LocalDate.now())) {
+        throw new IllegalArgumentException("Publication Date cannot be a future date.");
+      }
+      if (publicationDatePicker.getValue().isBefore(dateOfPurchasePicker.getValue())) {
+        throw new IllegalArgumentException("Publication Date cannot be before date of Purchase.");
+      }
       addBookItemToLibrary(); // Add the new book item to the library
       if (parentController != null) {
         parentController.addBookItemToList(bookItem); // Update the parent controller's table
       }
       showAlert(Alert.AlertType.INFORMATION, "Add Book Item Successfully",
           "The book item has been added to the library.");
+      closeForm();
     } catch (IllegalArgumentException e) {
       showAlert(Alert.AlertType.ERROR, "Invalid Input", e.getMessage());
     }
-    closeForm();
   }
 
   /**
