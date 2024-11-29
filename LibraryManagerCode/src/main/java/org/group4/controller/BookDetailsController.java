@@ -121,7 +121,8 @@ public class BookDetailsController {
     if (mouseEvent.getClickCount() == 2) {
       BookItem selectedItem = tableView.getSelectionModel().getSelectedItem();
       if (selectedItem != null) {
-        if (selectedItem.getStatus() == BookStatus.AVAILABLE) {
+        if (selectedItem.getStatus() == BookStatus.AVAILABLE
+            && !selectedItem.getIsReferenceOnly()) {
           openBorrowingBookPage(selectedItem);
         } else if (selectedItem.getStatus() == BookStatus.LOANED) {
           openReturningBookPage(selectedItem);
